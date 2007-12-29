@@ -1,0 +1,140 @@
+
+一.登录服务器
+
+1.初始化 SSL ,如果需要的话。
+2. 建信号线程。最简单的方案是创建一个 AutoThread 对象，它将获取当前操作系统
+的线程并且在ThreadManager设置成当前线程。
+3.从用户中获取登录信息。 使用XmppClientSettings将信息登进XMPP服务器，比如用户
+名，密码和服务器地址。
+4.创建一个XMPP 任务管理对象(task manager object).libjingle使用XmppPump,一个
+辅助类，包装了XmppClient和处理登录进XMPP服务器，并且处理所有的XMPP任务(tasks
+),例如发送和接收状态(presence)通知和登录进服务器。
+
+4. 连接接收登录进度通知。连接上XmppPump对象的SignalStateChange信号。这个信号
+将发送关于登录的进度的通知。当它发送STATE_OPEN状态时，你已经是登录进服务器了。
+
+5. 登进服务器。 调用XmppPump::DoLogin来登录。例子代码会将Google Talk服务器设
+置成XMPP服务器。你可以在buzz::XmppClientSettings更改其值，而buzz::XmppClientSettings将会传给 XmppPump::DoLogin. Dologin将要求一个运行中的信号线程; 
+Dologin在你调用信号线程Run之前会队列等待。
+
+6. 调用信号线程的Run，以保证消息线程开始循环监听。或者，如果你有自己的方法令
+程序长久地循环，你可以调用 Start 代替。
+
+7. 监听成功或失败的消息。 如前所述，XmppPump 将发送 STATE_OPEN 当应用程序成功
+登录。
+
+8. 你将可以请求 STUN和 relay port信息，将它传给 PortAllocator对象。以便进行
+下一环节的操作(Sending and Querying Presence)
+
+一旦你已经登录，你将可以发送你的状态给服务器，并且为花名册注册状态通知，下一
+节将细说。
+
+
+二，发送和查询状态
+
+在登进XMPP服务器后，你的应用程序应该提交你的状态给服务器。并且请求好友状态信
+息（buddy list）。服务器将回复这些信息给你(away,offline,and so on),例如当前
+每个已经登录好友的JID。你可以使用这些JID和状态信息来发送连接请求。服务器将
+持续发送状态通知直至你的连接结束。
+
+libjingle 提供两个辅助的XmppTak对象来发送和请求状态:
+	PresenceOutTask ---发送你的状态给服务器。
+	PresencePushTask --- 监听从服务器发来的状态信息。 你将调用PresencePu
+shTalk::Start来启动它。你必须连接上这个类的 SignalStatusUpdate 信号，使它能
+在收到一个状态流时发出警报(指被通知的意思). 将发送给好友中每个收到状态的人。
+
+为了运行上面这几个对象(类似其它任务), 你必须实例化他们，并且传递父对象的名字
+进去(一个基于Task的对象--比如 XmppClient),填满它所需要的信息，使用它们的Start
+方法来启动他们。
+
+(重要： Task对象必须用Start这个方法来启动。虽然Task对象有其它额外的方法是你
+想运行的（例如，Send),但这些方法只是特别的动作，Task只能在Start调用后才真正
+工作。
+
+下面信息描述了怎样发送和接收状态信息(presence):
+	1. 登录以取得状态信息通知。 实例化并启动 PresencePushTask ,连接上
+OnStatusUpdate 信号。有些服务器在收到状态流(presence stanza)时会返回花名称状态
+通知。 避免丢失最初的通知，你必须在发送状态流时创建一个监听器(listener).
+
+	2. 用你的状态信息填满状态对象。这个Status对象描述普通的状态信息，比如：
+status, show, visible,和其它信息。
+
+	3. 发送你的状态到服务器。实例化并启动PresenceOutTask,用来发送你的状态
+	到服务器。服务器在收到你的状态信息后将会返回所有的好友成员的状态通知。
+
+
+在发送和接收完状态流后，你可以处理会话管理，用于发送和接收会话请求。
+
+
+
+三. 设置会话管理
+    一旦你登录进服务器，并且发送和接收了关于花名册成员的状态信息，你应该需要
+设置会话管理管道。这是会话管理集合，逻辑组件，用来监视进来的连接请求和响应
+出去的连接请求。这是libjingle应用程序中最高可定制的部分，因为不同的应用程序
+对于它们的发送或接收连接都会有不同的需求。例如，你是否需要创建或读取一系列文
+件来共享呢？ 你是否需要实例化一个额外的媒体引擎呢？ 你是否需要生成一系列编码
+来供给会话的提供者呢？
+
+    您需要发送什么样的连接请求，或响应什么样的连接请求，取决于您的应用程序。
+最基本的步骤都会在（How libjingle applications work)里描述。但所有的应用程序
+都需要实例化下面核心的libjingle对象:
+	1.实例化您的NetWorkManager, PorAllocator 子类，SessionManager对象。
+以上必须在您想初始化或接收会话请求之前完成。例子代码中，直到成功登录服务器才
+创建这些对象。这是为了避免登录失败从而引发的不必要的创建行为。然而，您可以
+在更早的时候创建他们，只要您想。
+
+	2.创建一个新的线程对象来作为工作线程[可选]. 如果您的应用程序主持着单独
+的工作线程，您可以使用talk_base::Thread对象来创建，并把它传给SessionManager
+的构造函数。 否则，您创建的SessionManager中的线程将会被默认当成工作线程。 
+文件共享的例子程序使用单线程(创建来主持FileShareClient管理对象，创建于SessionManager),
+声音例子程序创建了一个专注的线程，在CallClient::InitPhone中。确认调用Start,
+不是Run, 在工作线程里，因为Run是阻塞的调用。
+
+	3.注册您的SessionClient子类到SessionManager. SessionManager 调用
+SessionClient::OnSessionCreate 来创建一个新的会话(Session).(在外发和进入的请求
+中将发送这个通知;信号中的一个参数指定了请求的管理). SessionManager 掌握着一个
+ID/SessionClient的映射,这个ID是当前发送与接收代码中的唯一标识值。它将包含在
+XMPP流中给各计算机，而SessionManager将在进入的流中找到它.
+
+	4.启动SessionManager监听并发送XMPP信息。SessionManagerTask启动SessionManager
+的发送和接收XMPP消息功能。SessionManagerTask 是一个介于XMPP消息组件和P2P组件
+的中间人。 发送的这些消息包含了会话请求，应答会话请求和候选人列表。
+
+	5.重置STUN和转播(relay)端口信息。libjingle默认使用Google的STUN和
+中继服务器, 但你可以动态地设置这些信息，只要在HttpPortAllocator里设置这些值
+就行了。 你可以动态地从JingleInfoTask对象中要求这些信息。
+
+
+
+	五.发出和接收连接(Making and Receiving Connections)
+
+一旦你已经登录服务器并广播了你的状态，还从XMPP里收到了返回的状态通知，您已经
+可以建立连接（或者应答进来的连接请求）。某人发送一个连接请求给您是很重要的，
+您可以获取一个异步的连接请求通知，但您的计算机将立即开始协商连接而没有等待你
+的回应。取决于libjingle的代码运用，数据交换可能立即开始了。例如，在文件传输
+例子中，发起者开始发送一个图像文件时，连接已经被协商好了。（接收者也许还没有
+接受这个连接请求），虽然文件并没有开始传送，在对方明确表示接受连接时。同样地
+，语音例子程序中，声音字节会与连接被建立时同步发送。
+
+
+	发送连接请求：
+		1.发送连接请求。 发送一个连接请求意味着创建一个新的Session对
+象,创建会话特别信息的描述(编码，文件名等等），并发送他们到其它的计算机上，
+然后 Session::SignalState 将监视这些信息的请求。 具体连接会话(session)的类型
+可以参考（声音例子代码和文件传输例子代码）。 Under the covers, Session::Initiate
+用于输入接收者的JID，SessionDescription子类描述会话的细节(文件发送或请求，编
+码可用性等等)
+
+		2.应答进入的连接请求。 当一个新会话请求接收，将会自动创建一
+个新的Session对象。并且SessionClient::OnSessionCreate 将会被调用，将会有个
+标识说明这是进入还是出去的请求。 对于进入的请求，您可以通知用户是接受还是拒
+绝这个请求。 用户必须调用Session::Accept或Session::Reject来接受或拒绝请求。
+详细的说明还是看两个例子代码吧。
+
+		3. 发送和接收数据。数据是通过TransportChannel对象来发送或接
+收的，但它是怎样管理不同类型的会话的呢？ 对于语音呼叫，MediaEngine调用SendPacket
+, 而TransportChannel调用ReadPacket来发送和接收数据。如果您自己的应用程序使用
+StreamInterface来发送本地数据(比如MemoryStream),您则必须自己实现读和写的方法。
+查看StreamInterface的说明来了解更多的事实。
+
+
