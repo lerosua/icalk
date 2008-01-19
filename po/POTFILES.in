@@ -1,0 +1,33 @@
+# List of source files which contain translatable strings.
+[encoding: UTF-8]
+src/about.cpp
+src/Bodies.cpp
+src/Buddy.cpp
+src/BuddyList.cpp
+src/BuddyView.cpp
+src/BuddyInfoWindow.cpp
+src/CommandBar.cpp
+src/ConfXml.cpp
+src/MainWindow.cpp
+src/MemberList.cpp
+src/MsgBox.cpp
+src/MsgPage.cpp
+src/MsgWindow.cpp
+src/pixmaps.cpp
+src/RoomItem.cpp
+src/sounds.cpp
+src/TrayIcon.cpp
+src/TagList.cpp
+src/TalkCard.cpp
+src/TalkConnect.cpp
+src/TalkFT.cpp
+src/TalkMenu.cpp
+src/TalkMsg.cpp
+src/TalkRoomHandler.cpp
+src/StatusMsgWidget.cpp
+src/Unit.cpp
+data/icalk.desktop.in.in
+data/ui/about.glade
+data/ui/main_window.glade
+data/ui/msg_window.glade
+data/ui/statusMsg.glade

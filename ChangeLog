@@ -1,0 +1,126 @@
+2007年10月10日 星期三 11时38分18秒 lerosua
+	
+	有个bug, 就是发送给离线的人的消息的时候，再关闭窗口就
+	容易崩溃。因为关闭窗口就会删除会话。而会话中的一些后台
+	进程却未必已经完成。比如，已经发送了信号通知对方打字停止，
+	但在这时关闭窗口会马上删除会话，而后台中gloox才刚准备发送
+	信号，而会话已经没了，这时候就崩溃了。看来关闭会话的时机不好
+	，得掌握着重实现一下。现在只能把发送信号的所有函数去掉以暂时
+	屏蔽这个BUG。
+
+	那就不应该关闭窗口就关闭会话，但时机在哪呢？看来应该是同步的
+	问题啊。
+
+
+2007-08-27  yetist  <yetist@gmail.com>
+
+    * doc/Makefile.am configure.in Makefile.am autogen.sh:
+    some changes.
+
+    * data/images/Makefile.am:
+    * data/italk.desktop.in.in:
+    * data/Makefile.am:
+    add desktop file, so we can run italk from main menu.
+
+    * src/about.h:
+    * src/MainWindow.h:
+    * src/MsgWindow.h:
+    * src/Bodies.cpp:
+    * src/MainWindow.cpp:
+    * data/ui/Makefile.am:
+    * data/ui/login_window.xml:
+    * data/ui/about.xml:
+    * data/ui/main_window.xml:
+    * data/ui/msg_window.xml:
+    rename *.xml to *.glade
+
+    * po/POTFILES.in:
+    * po/zh_CN.po:
+    * po/ChangeLog:
+    translate test for zh_CN
+
+2007-08-27  yetist  <yetist@gmail.com>
+
+    * more than 40 files:
+    清除svn中无用的垃圾文件, 加入autogen.sh,
+    修改configure.in及Makefile.am等文件, 加入po支持, pixmap目录重命名,
+    重写README及ChangeLog文件内容.
+
+2007年06月13日 星期三 12时32分40秒 
+	用sigc::mem_fun调用 的函数，返回值必须是void才行。
+       6.18
+        wind搞定io监视
+
+2007年 06月 23日 星期六 08:17:06 CST
+	应该是昨天的日志，将geekr的结构更改了一下。
+	建立了一个主类 Bodies,  用以包容所有处理的类，包含消息处理和UI的类。
+
+2007年 06月 29日 星期五 23:08:01 CST
+	因为要动态增加聊天标签页，所以不用glademm而用手工生成了MsgPage类.
+
+2007年 06月 29日 星期五 23:58:01 CST
+	已经可以加入聊天室。在需要的时候再完善这功能。
+
+2007年07月13日 星期五 14时42分40秒 
+	用VCard请求并非列表中用户的vcard信息会发生段错误。
+	
+2007年07月16日 星期一 12时12分51秒
+	在关闭tab后再生成会话会段错误。
+	应用tag来设置文字的颜色没起作用。 (已经解决)
+	对方退订，非法操作，造成core dump
+2007年07月17日 星期二 21时12分51秒
+	在MsgWindow.h里有个getCurrentPage的函数，没有得到正确的Page (已经解决)
+
+2007年07月19日 星期四 14时25分19秒 
+	添加新的文件的话很容易导致 IO 不能继续执行了。表现为Talk类经常在TCL连接后就断了。不能登录上去了。是个大BUG啊
+	有个加多一个控件也会出现这种情况。(大概找出不能连接的原因，说是tls连
+接错误。
+ConnTlsFailed	The server's certificate could not be verified or the 
+TLS handshake did not complete successfully. (已解决)
+
+
+
+2007年07月23日 星期一 22时25分19秒 
+	添加了trayer。菜单回调函数有问题。(7.30,菜单回调问题解决)
+2007年07月25日 星期三 17时57分55秒 
+	修改了一点好友列表的显示代码。需要写列表的更新代码。
+	启动时有个gtkmm错误，需要更正。添加好友方面有点麻烦。
+	又是一个问题多多。烦啊烦。
+
+2007年07月26日 星期四 16时40分19秒 
+	将cyclone中写配置文件的ConfFile类搬过来。用于暂时配置保存用户的签名，
+	图标文件和状态。
+2007年07月27日 星期五 09时31分11秒 
+	找到添加好友后会段错误的原因了。是因为内在的roster已经更新，但我手工
+	做的BuddyMap好友列表没有更新这个好友，于是在状态回调的时候查找不到这
+	个好友数据，但仍有做一些操作，所以发生段错误了。应该在roster更新好友
+	时一起更新我的BuddyMap数据。这还是关于好友列表的定时更新问题~
+
+
+2007年07月30日 星期一 16时36分10秒 
+	添加了好几个对话框，在对方添加/删除我时，会跳出对话框提示或操作。
+	在MainWindow的系统菜单里添加了删除好友的回调。添加好友回调因为涉及
+	好友分组。暂时没写。 现在主要的两个问题就是好友分组和配置文件了。
+
+2007年08月04日 星期六 11时55分55秒 
+	好友暂时实现了分组。 
+	偶真是疑惑于显示/隐藏离线用户 这个功能。难道是重新加载列表，把离线的
+	好友去掉或加上来实现的吗？ treeview里有没有能让列表里的row不显示的
+	api啊。似乎没有。按照上面做，有点烦。
+	关于列表上可做的，还有可编辑与可拖拽。这两功能虽小，但也不容易实现。
+
+
+2007年08月09日 星期四 16时20分16秒 
+	好友列表中图标状态显示搞定。签名的markup,ellipsize搞定。添加了TalkFT
+	类，用于测试jabber的文件传输。能收到文件传输的请求。但和gtalk的libjingle
+	的文件传输是不同类型的。那个也要搞。
+	
+
+2007年08月17日 星期五 16时48分30秒 
+	之前搞定了xml的配置文件，算是可以用了。添加了两个菜单项目，一个静音选择
+	一个是显示离线好友。静音那个可以设置，应该。但重新启动还没读正确。显示
+	离线好友没有写响应代码。先放一放吧。想不到好办法实现。
+
+2007年08月21日 星期二 10时04分18秒 
+	显示离线好友算是能工作了。默认是不显示，选了菜单可以显示。但不保存这个
+	配置。

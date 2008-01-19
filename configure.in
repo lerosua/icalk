@@ -1,0 +1,57 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.59)
+AC_INIT(icalk, 0.01, http://code.google.com/p/geekr/issues/entry)
+AC_COPYRIGHT([Copyright (C) 2007 lerosua@gmail.com])
+
+AC_CONFIG_SRCDIR(src/about.h)
+AM_CONFIG_HEADER([config.h])
+AM_INIT_AUTOMAKE(1.7.9 dist-bzip2 no-define)
+
+
+AM_MAINTAINER_MODE
+IT_PROG_INTLTOOL([0.35.0])
+
+# Checks for programs.
+AC_ISC_POSIX
+AC_PROG_CC
+AM_PROG_CC_STDC
+AC_HEADER_STDC
+AC_PROG_CPP
+AC_PROG_CXX
+AC_PROG_CXXCPP
+AM_PROG_LIBTOOL
+
+AC_LANG_CPLUSPLUS
+
+# Checks for header files.
+AC_CHECK_HEADERS([fcntl.h unistd.h])
+
+# Checks for library functions.
+AC_CHECK_FUNCS([socket])
+
+pkg_modules="gloox >= 0.9 gtkmm-2.4 >= 2.6.0 libglademm-2.4 >= 2.4.0"
+PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
+AC_SUBST(PACKAGE_CFLAGS)
+AC_SUBST(PACKAGE_LIBS)
+
+dnl  Language Support 
+GETTEXT_PACKAGE=icalk
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Define the gettext package to be used])
+AC_SUBST(GETTEXT_PACKAGE)
+
+AM_GLIB_GNU_GETTEXT
+
+
+AC_OUTPUT([Makefile 
+           doc/Makefile
+           po/Makefile.in
+	   src/Makefile
+           data/icalk.desktop.in
+	   data/Makefile
+	   data/images/Makefile
+	   data/sounds/Makefile
+	   data/smiley/Makefile
+	   data/smiley/default/Makefile
+	   data/ui/Makefile])

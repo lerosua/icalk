@@ -1,0 +1,28 @@
+digraph G{
+
+node[fontname="simsun.ttf"]
+edge[fontname="simsun.ttf"]
+
+Bodies[shape=box label=Bodies类]
+Bodies->Talk[label=成员]
+Bodies->TalkRoom[label=成员]
+Bodies->BuddyList[label=成员]
+
+Talk[shape=box]
+TalkRoom[shape=box]
+BuddyList[shape=box]
+
+Talk->client[color=red label=成员]
+Talk->start[color=blue label=成员函数]
+
+TalkRoom->room[color=red label=成员]
+TalkRoom->joinroom[label=成员函数]
+
+client[shape=house color=green]
+room[color=green]
+client->joinroom[color=blue label=需要参与]
+client->start[color=blue label=参与]
+
+room->joinroom[color=blue label=需要参与]
+
+}
