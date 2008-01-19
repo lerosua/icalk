@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(icalk, 0.01, http://code.google.com/p/geekr/issues/entry)
+AC_INIT(icalk, 0.03, http://code.google.com/p/icalk/issues/entry)
 AC_COPYRIGHT([Copyright (C) 2007 lerosua@gmail.com])
 
 AC_CONFIG_SRCDIR(src/about.h)
