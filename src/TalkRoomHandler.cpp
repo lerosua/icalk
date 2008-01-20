@@ -102,6 +102,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 		       */
 }
 
+/*
 void TalkRoomHandler::handleMUCMessage(MUCRoom * room  ,
 				const std::string & nick,
 				const std::string & message,
@@ -133,6 +134,47 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom * room  ,
 			page->showHistroy(nick,message);
 		else
 			page->showMessage(nick,message);
+}
+*/
+void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
+		const Message& msg, bool priv)
+{
+
+	const std::string nick=msg.from().resource();
+	bool history= msg.when()?true:false;
+	printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
+			msg.body().c_str(),history ?"yes":"no",
+			priv ? "yes":"no");
+	RoomItem* item = findRoom(room);
+	MsgPage* page = item->getPage();
+	if(NULL==page)
+	{
+			const std::string  label= room->name()+"@"+room->service();
+			MsgPage* page_=new MsgPage(label,item,1);
+			item->setPage(page_);
+			page = item->getPage();
+			page->refreshMember();
+			page->setSubject();
+			Bodies::Get_Bodies().get_msg_window().add_page(*page);
+	}
+	if(priv)
+		{
+			Glib::ustring msg_ =_("said to you: ") +message;
+			page->showMessage(nick,msg_);
+			return;
+		}
+		if(history)
+		{
+			const DelayedDelivery* dd=msg.when();
+			if(dd)
+				printf("message was sent at %s\n",dd->stamp().c_str());
+			page->showHistroy(nick,msg.body());
+		}
+		else
+			page->showMessage(nick,msg.body());
+
+
+
 }
 void TalkRoomHandler::handleMUCSubject(MUCRoom * room ,
 				const std::string & nick,

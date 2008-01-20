@@ -33,7 +33,6 @@ icalk_SOURCES = \
 	       TreeViewTooltips.cpp \
 	       ServerDiscoWindow.cpp \
 	       TalkDiscoHandler.cpp \
-	       TalkIbbStreamHandler.cpp \
 	       SmileyWnd.cpp	\
 	       Unit.cpp 	\
 	       ConfXml.cpp 	\
@@ -54,7 +53,6 @@ noinst_HEADERS = \
 		 TalkConnect.h \
 		 TalkRoomHandler.h    \
 		 TalkDiscoHandler.h \
-		 TalkIbbStreamHandler.h \
 		 RoomItem.h 	\
 		 MemberList.h 	\
 		 TagList.h     \

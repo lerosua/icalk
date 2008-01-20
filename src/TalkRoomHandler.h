@@ -78,12 +78,24 @@ class TalkRoomHandler:public MUCRoomHandler {
 		 * @param history 
 		 * @param when 
 		 * @param privateMessage 表明是否私有信息。
-		 */
+		 * @note since 1.0 the code is deprecated.
 		void handleMUCMessage(MUCRoom * room ,
 				const std::string & nick,
 				const std::string & message,
 				bool history, const std::string & when  ,
 				bool privateMessage);
+		 */
+
+		/**
+		 * @brief 当聊天室有消息到达时会调用这个函数。
+		 * @param room 消息来源的房间
+		 * @param msg  消息实体，1.0后采用 Message 类
+		 * @param priv 表明是否私有信息
+		 */
+		void handleMUCMessage(MUCRoom* room,
+				const Message& msg,
+				bool priv);
+
 		/**
 		 * @brief 当聊天室的主题改变时函数会被调用。
 		 * @param room 聊天室。

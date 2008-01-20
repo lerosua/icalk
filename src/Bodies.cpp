@@ -148,7 +148,7 @@ bool Bodies::callback(Glib::IOCondition condition)
 	{
 		ce=jclient->recv();
 		//talkFT->streamLoopRecv();
-		IBBSHandler.sendIBBData("lerosua icalk testing");
+		//IBBSHandler.sendIBBData("lerosua icalk testing");
 		
 	}
 	return true;
@@ -209,7 +209,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	//talkFT=new TalkFT();
 	//talkFT->set_sipFT(jclient.get());
 	/** 初始化带内数据传输处理类*/
-	IBBSHandler.init(jclient.get());
+	//IBBSHandler.init(jclient.get());
 	if(jclient->connect(false))
 		return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
 	return -1;
