@@ -92,7 +92,7 @@ public:
 	SMILELIST& getSmileMap(){ 
 		return smileTree.getSmileList(); }
 private:
-	TagList taglist;
+	icalk::TagList taglist;
 	SmileTree<Glib::ustring::value_type> smileTree;
 
 };

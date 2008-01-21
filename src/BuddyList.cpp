@@ -154,8 +154,8 @@ bool  BuddyList::handleUnsubscriptionRequest(const JID & jid,
 	dialog.run();
 	return true;
 }
-void BuddyList::handleNonrosterPresence(Stanza * stanza)
+void BuddyList::handleNonrosterPresence(Presence * stanza)
 {
 	printf("接收到状态并不在列表中的人 %s \n",stanza->from().full().c_str());
-	printf("可能说啥: %s\n", stanza->body().c_str());
+	//printf("可能说啥: %s\n", stanza->body().c_str());
 }

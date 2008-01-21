@@ -26,6 +26,8 @@
 //using __gnu_cxx::hash_map;
 
 #define COLOR_LIST_SIZE 16
+namespace icalk
+{
 class TagList {
     public:
 	typedef Glib::RefPtr<Gtk::TextTagTable> RefTagTable;
@@ -52,5 +54,7 @@ class TagList {
 	static Tags& getTags();
 	int	colorid;
 };
+
+}
 #endif // _TAG_LIST_H_
 

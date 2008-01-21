@@ -21,6 +21,7 @@
 #include <gloox/mucroomhandler.h>
 #include <gloox/mucroom.h>
 #include <gloox/client.h>
+#include <gloox/message.h>
 #include <map>
 #include "MsgPage.h"
 #include "RoomItem.h"

@@ -45,6 +45,19 @@ void setSubject(const Glib::ustring& sub)
 		page->setSubject(subject);
 }
 */
+void RoomItem::setMemberList(const Disco::ItemList& listitem_)
+{
+	//listitem = listitem_;
+	std::string name;
+	std::string mid;
+	Disco::ItemList::const_iterator iter=listitem_.begin();
+	for(;iter != listitem_.end();iter++)
+	{
+		name=(*iter)->name();
+		mid=(*iter)->jid().full();
+		listitem.insert(pair<std::string,std::string>(name,mid));
+	}
+}
 void RoomItem::addMember(const std::string& name , const std::string& mid)
 {
 	

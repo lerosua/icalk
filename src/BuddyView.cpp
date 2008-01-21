@@ -169,10 +169,10 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 			    find_buddy(jid);
 			if (NULL == buddy)
 				return false;
-			RosterItem::SubscriptionEnum substrEnum =
+			SubscriptionType substrEnum =
 			    buddy->getSubscription();
 			status_sub = "<span weight='bold'>";
-			if (RosterItem::S10nBoth == substrEnum)
+			if (S10nBoth == substrEnum)
 				status_sub =
 				    status_sub +
 				    _("subscribed: </span>Both \n");
@@ -560,8 +560,8 @@ void BuddyView::initBuddy(Buddy * value)
 
 void BuddyView::initRoomList()
 {
-	Tag::TagList rlist = blistTag->findChildren("room");
-	Tag::TagList::const_iterator it_g;
+	gloox::TagList rlist = blistTag->findChildren("room");
+	gloox::TagList::const_iterator it_g;
 	for (it_g = rlist.begin(); it_g != rlist.end(); ++it_g) {
 		ConferenceListItem ci;
 		ci.jid = (*it_g)->findAttribute("name");
@@ -695,7 +695,7 @@ void BuddyView::add(const std::string & jid_str)
 		(*treeiter)[buddyColumns.icon] = getPix30("offline.png");
 		char *marktext;
 		const std::string & nickname = buddy->get_nickname();
-		if (buddy->getSubscription() == RosterItem::S10nNone)
+		if (buddy->getSubscription() == S10nNone)
 			marktext =
 			    g_markup_printf_escaped(_
 						    ("<span color='dim grey'>%s\nNot auth</span>"),

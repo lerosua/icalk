@@ -159,7 +159,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 	}
 	if(priv)
 		{
-			Glib::ustring msg_ =_("said to you: ") +message;
+			Glib::ustring msg_ =_("said to you: ") +msg.body();
 			page->showMessage(nick,msg_);
 			return;
 		}

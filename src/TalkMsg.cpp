@@ -24,8 +24,14 @@
 
 TalkMsg::TalkMsg(){}
 
-void TalkMsg::handleMessage(Stanza * stanza,MessageSession *session) {
-	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(stanza->from().bare());
+
+void TalkMsg::handleMessage(Message * stanza,MessageSession *session) {
+
+}
+void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
+	const JID target=session->target();
+	//Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(stanza.from().bare());
+	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
 	assert(buddy != NULL);
 	/* 发送消息已经显示的事件*/
 	//buddy->raiseMessageEvent(MessageEventDisplayed);
@@ -34,11 +40,11 @@ void TalkMsg::handleMessage(Stanza * stanza,MessageSession *session) {
 	Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
       
       Glib::ustring sender;
-      Glib::ustring msg =  stanza->body();
+      Glib::ustring msg =  stanza.body();
 	MsgPage* page_ = buddy->get_page();
 	sender = buddy->get_nickname();
 	if(sender.empty())
-		sender = stanza->from().username();
+		sender = target.username();
 	if(NULL==session)
 		return;
 	page_->showMessage(sender,msg);

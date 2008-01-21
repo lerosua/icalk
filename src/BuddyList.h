@@ -61,7 +61,7 @@ class BuddyList:public RosterListener
 		 * @brief 服务器返回错误时调用
 		 * @param stanza 关于错误的Stanza
 		 */
-		void handleRosterError(gloox::Stanza* stanza){}
+		void handleRosterError(const IQ& iq){}
 		/** 应该是某用户同意添加好友*/
 		void handleItemSubscribed(const JID& jid);
 		/** 用户已添加*/
@@ -111,7 +111,7 @@ class BuddyList:public RosterListener
 		 */
 		bool handleUnsubscriptionRequest(const JID& jid,const std::string& msg);
 		/** 当一个不在好友列表中的人发来Presence::PresenceType信息时回调,奇怪~*/
-		void handleNonrosterPresence(Stanza* stanza);
+		void handleNonrosterPresence(Presence* stanza);
 	private:
 		BUDDY_MAP buddy_map;
 };

@@ -19,6 +19,9 @@
  ***************************************************************************/
 #include "TagList.h"
 
+namespace icalk
+{
+
 TagList::Tags::Tags()
 {
     tagTable = Gtk::TextTagTable::create();
@@ -137,5 +140,6 @@ const TagList::RefTag TagList::getTitleColor(uint32_t uid)
 const TagList::RefTag TagList::getTitleColor(int id)
 {
 	return getTags().titleColorList[id];
+}
 }
 

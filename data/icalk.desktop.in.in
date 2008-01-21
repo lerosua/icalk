@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Name=无名称
+_Name=icalk
+_Comment=a gtkmm jabber client
+Exec=icalk
+Icon=icalk
+StartupNotify=true
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;
+GenericName[zh_CN]=

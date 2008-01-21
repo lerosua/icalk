@@ -39,7 +39,7 @@ class RoomItem{
 		void setPage(MsgPage* page_){ page = page_; }
 		void closePage(){page=NULL;}
 		void send(Glib::ustring& text){ mucroom->send(text); }
-		void setMemberList(const StringMap& listitem_){listitem = listitem_;}
+		void setMemberList(const Disco::ItemList& listitem_);
 		//const StringMap& getMemberList() const { return listitem; }
 		StringMap& getMemberList() { return listitem; }
 		void addMember(const std::string& name , const std::string& mid);

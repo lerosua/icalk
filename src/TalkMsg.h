@@ -26,6 +26,7 @@
 #include <gloox/messagesessionhandler.h>
 #include <gloox/messageeventhandler.h>
 #include <gloox/chatstatehandler.h>
+#include <gloox/message.h>
 
 using namespace gloox;
 
@@ -38,7 +39,8 @@ class TalkMsg:public MessageHandler,public MessageEventHandler,public ChatStateH
 {
 	public:
 		TalkMsg();
-		void handleMessage(Stanza * stanza,MessageSession *session = 0) ;
+		void handleMessage(const Message& stanza,MessageSession *session = 0) ;
+		void handleMessage(Message* stanza,MessageSession* session);
 		/**
 		 * @brief 处理消息前的事件。
 		 * @param from 发消息事件来的对方的jid
