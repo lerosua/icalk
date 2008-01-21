@@ -46,7 +46,7 @@ void TalkConnect::onConnect()
 
 void TalkConnect::onDisconnect(ConnectionError er)
 {
-	if (0 == er)
+	if (ConnNoError == er)
 		return;
 	std::cout << "Talk onDisconnect error in " << er << std::endl;
 	Gtk::MessageDialog askDialog("连接错误",
@@ -60,89 +60,90 @@ void TalkConnect::onDisconnect(ConnectionError er)
 		   std::cout<<"ConnNoError "<< er << std::endl;
 		   break;
 		 */
-	case 1:
+	case ConnStreamError:
 		std::cout << "ConnStreamError" << er << std::endl;
+		std::cout << "streamError "<<Bodies::Get_Bodies().get_client().streamError()<<std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接错误，连接流错误\n重新连接请按确定");
 		break;
-	case 2:
+	case ConnStreamVersionError:
 		std::cout << "ConnStreamVersionError" << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接流版本错误\n重新连接请按确定");
 		break;
-	case 3:
+	case ConnStreamClosed:
 		std::cout << "ConnStreamClosed " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接流关闭\n重新连接请按确定");
 		break;
-	case 4:
+	case ConnProxyAuthRequired:
 		std::cout << "ConnProxyAuthRequired " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接代理认证错误\n重新连接请按确定");
 		break;
-	case 5:
+	case ConnProxyAuthFailed:
 		std::cout << "ConnProxyAuthFailed " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接代理认证失败\n重新连接请按确定");
 		break;
-	case 6:
+	case ConnProxyNoSupportedAuth:
 		std::cout << "ConnProxyNoSupportedAuth " << er << std::
 		    endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接代理不支持认证\n重新连接请按确定");
 		break;
-	case 7:
+	case ConnIoError:
 		std::cout << "ConnIoError " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接IO错误，可能引起CPU占用。\n按确定关闭程序。");
 		break;
-	case 8:
+	case ConnParseError:
 		std::cout << "ConnParseError " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("ConnParseError\n按确定关闭程序。");
 		break;
-	case 9:
+	case ConnConnectionRefused:
 		std::cout << "ConnConnectionRefused " << er << std::endl;
 		askDialog.
 		    set_secondary_text("连接拒绝。请重新连接");
 		break;
-	case 10:
+	case ConnDnsError:
 		std::cout << "ConnDnsError " << er << std::endl;
 		askDialog.
 		    set_secondary_text("DNS错误。请重新连接");
 		break;
-	case 11:
+	case ConnOutOfMemory:
 		std::cout << "ConnOutOfMemory " << er << std::endl;
 		askDialog.
 		    set_secondary_text("内存错误。请重新连接");
 		break;
-	case 12:
+	case ConnNoSupportedAuth:
 		std::cout << "ConnNoSupportedAuth " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("连接不支持认证。请重新连接");
 		break;
-	case 13:
+	case ConnTlsFailed:
 		std::cout << "ConnTlsFailed " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("TLS连接失败。请重新连接");
 		break;
-	case 14:
+	case ConnCompressionFailed:
 		std::cout << "ConnCompressionFailed " << er << std::endl;
 		askDialog.
 		    set_secondary_text
 		    ("CompressionFailed。请重新连接");
 		break;
-	case 15:
+	case ConnAuthenticationFailed:
 		std::cout << "ConnAuthenticationFailed " << er << std::
 		    endl;
 		askDialog.
@@ -177,9 +178,9 @@ void TalkConnect::onDisconnect(ConnectionError er)
 	}
 
 
-	if (16 == er)
+	if (ConnUserDisconnected== er)
 		std::cout << "ConnUserDisconnected " << er << std::endl;
-	else if (17 == er)
+	else if (ConnNotConnected== er)
 		std::cout << "ConnNotConnected " << er << std::endl;
 }
 

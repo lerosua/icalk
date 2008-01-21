@@ -212,7 +212,12 @@ int Bodies::connect(const char *name, const char* passwd)
 	/** 初始化带内数据传输处理类*/
 	//IBBSHandler.init(jclient.get());
 	if(jclient->connect(false))
+	{
+		printf("connect call success\n");
 		return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
+	}
+	else
+		printf("connect error\n");
 	return -1;
 }
 	
