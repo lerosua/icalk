@@ -175,7 +175,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	}
 	jid=new JID(name);
 	jclient.reset(new Client(*jid,passwd));
-	jclient->disco()->setVersion("iCalk","0.01beta");
+	jclient->disco()->setVersion("iCalk","0.03beta","Linux");
 	jclient->setResource("iCalk");
 	jclient->setPresence(Presence::Available,-1);
 	jclient->disco()->setIdentity("Client","iCalk");
@@ -184,6 +184,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient->registerMessageSessionHandler(&talkmsg,0);
 	jclient->registerConnectionListener(&talkconnect);
 
+	printf("login\n");
 	if(!server.empty())
 		jclient->setServer(server);
 	
