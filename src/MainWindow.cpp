@@ -414,7 +414,7 @@ bool MainWindow::on_key_press_event(GdkEventKey * ev)
 void MainWindow::on_combo_change()
 {
 	int status = statusCombo->get_active_row_number();
-	Presence status_ = (Presence) (status + 1);
+	Presence::PresenceType status_ = (Presence::PresenceType) (status + 1);
 
 	Glib::ustring msg_ = statusEntry->get_text();
 	bodies.set_status(status_, msg_);
@@ -423,7 +423,7 @@ void MainWindow::on_combo_change()
 void MainWindow::on_entryStatus_change()
 {
 	int status = statusCombo->get_active_row_number();
-	Presence status_ = (Presence) (status + 1);
+	Presence::PresenceType status_ = (Presence::PresenceType) (status + 1);
 
 	Glib::ustring msg_ = statusEntry->get_text();
 	bodies.set_status(status_, msg_);
@@ -520,7 +520,7 @@ bool MainWindow::statusMsgTimeout()
 void MainWindow::setStatusMsg(const std::string & msg)
 {
 	int status = statusCombo->get_active_row_number();
-	Presence status_ = (Presence) (status + 1);
+	Presence::PresenceType status_ = (Presence::PresenceType) (status + 1);
 	bodies.set_status(status_, msg);
 	statusEntry->set_text(msg);
 }

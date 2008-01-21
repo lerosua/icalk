@@ -38,10 +38,10 @@ Buddy::Buddy(const RosterItem& item):
 	session(NULL),
 	message_event_filter(NULL),
 	chat_state_filter(NULL),
-	m_ibb(NULL),
+	//m_ibb(NULL),
 	page(NULL)
 {
-	status = PresenceUnavailable;
+	status = Presence::Unavailable;
 	type = TYPE_FRIEND;
 	logo = Gdk::Pixbuf::create_from_file(DATA_DIR"/images/default.png");
 
@@ -133,8 +133,10 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 
 		chat_state_filter =new ChatStateFilter(session);
 		chat_state_filter->registerChatStateHandler(handler);
+		/*
 		if(m_ibb)
 			m_ibb->attachTo(session);
+			*/
 
 		/* 这里还需要生成标签页*/
 		if (NULL == page) {
@@ -148,6 +150,7 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 	}
 
 }
+#if 0
 void Buddy::cleanIBBstream()
 {
 		if(m_ibb)
@@ -161,6 +164,7 @@ void Buddy::cleanIBBstream()
 		Bodies::Get_Bodies().getIbbStreamHandler().closeIBBStream(jid_.full());
 		m_ibb=0;
 }
+#endif
 
 void Buddy::close_session(bool closePage)
 {
@@ -171,23 +175,7 @@ void Buddy::close_session(bool closePage)
 		/** 关闭会话 */
 		session->disposeMessageFilter(message_event_filter);
 		session->disposeMessageFilter(chat_state_filter);
-		if(closePage)
-		{
-			printf("关闭总会话\n");
-			cleanIBBstream();
-		}
-		else{
-			if(m_ibb)
-			{
-			printf("移除IBB的Filter\n");
-			session->removeMessageFilter(m_ibb);
-			}
-		}
-			if(m_ibb)
-			{
-			printf("移除IBB的Filter\n");
-			session->removeMessageFilter(m_ibb);
-			}
+
 		printf(" 真正地disposeMessagesession\n");
 		Bodies::Get_Bodies().get_client().disposeMessageSession(session);
 		if(NULL != session){
@@ -205,11 +193,13 @@ void Buddy::sendPicture()
 {
 	std::string id = jid.full()+ "/" +getResource();
 	JID jid_(id);
-	Bodies::Get_Bodies().getIbbStreamHandler().newIBBrequest(jid_);
+	//Bodies::Get_Bodies().getIbbStreamHandler().newIBBrequest(jid_);
 }
 void Buddy::sendPicture(const std::string& filename)
 {
 	/**加载图片进数据*/
+
+	/*
 	   std::ifstream fin(filename.c_str(),std::ios::binary);
 	   fin.seekg(0,std::ios::end);
 	   int filesize=fin.tellg();
@@ -237,5 +227,6 @@ void Buddy::sendPicture(const std::string& filename)
 	std::string id = jid.full()+ "/" +getResource();
 	JID jid_(id);
 	Bodies::Get_Bodies().getIbbStreamHandler().newIBBrequest(jid_);
+	*/
 }
 

@@ -177,7 +177,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient.reset(new Client(*jid,passwd));
 	jclient->disco()->setVersion("iCalk","0.01beta");
 	jclient->setResource("iCalk");
-	jclient->setPresence(PresenceAvailable,-1);
+	jclient->setPresence(Presence::Available,-1);
 	jclient->disco()->setIdentity("Client","iCalk");
 	jclient->registerMessageHandler(&talkmsg);
 	jclient->rosterManager()->registerRosterListener(&buddy_list);

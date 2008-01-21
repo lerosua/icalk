@@ -50,7 +50,7 @@ RoomItem* TalkRoomHandler::findRoom(const MUCRoom* room)const
 
 void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 					    const MUCRoomParticipant
-					    participant, Presence presence)
+					    participant, Presence::PresenceType presence)
 {
 	RoomItem* item = findRoom(room);
 	MsgPage* page = item->getPage();
@@ -70,7 +70,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 		page->showStatusBarMsg(msg_);
 		}
 	}
-	if (presence == PresenceUnavailable)
+	if (presence == Presence::Unavailable)
 	{
 		item->removeMember(name);
 	if(NULL!=page)
@@ -90,14 +90,14 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 		printf("!!!!!!!!!!!!!!!! %s is in the room, too\n",
 		       participant.nick->resource().c_str());
 	}
-	else if (presence == PresenceUnavailable)
+	else if (presence == Presence::Unavailable)
 	{
 
 		printf("!!!!!!!!!!!!!!!! %s left the room\n",
 		       participant.nick->resource().c_str());
 	}
 	else
-		printf("Presence is %d of %s\n", presence,
+		printf("Presence::PresenceType is %d of %s\n", presence,
 		       participant.nick->resource().c_str());
 		       */
 }
@@ -206,7 +206,7 @@ void TalkRoomHandler::handleMUCInfo(MUCRoom * room , int features,
 	//      name.c_str(), infoForm->tag()->xml().c_str());
 }
 void TalkRoomHandler::handleMUCItems(MUCRoom *  room  ,
-			      const StringMap & items)
+			      const Disco::ItemList & items)
 {
 	RoomItem* item = findRoom(room);
 	item->setMemberList(items);

@@ -21,7 +21,6 @@ icalk_SOURCES = \
 	       RoomItem.cpp 	\
 	       MemberList.cpp 	\
 	       TalkCard.cpp   \
-	       TalkFT.cpp 	\
 	       TagList.cpp   	\
 	       MsgBox.cpp 	\
 	       TalkMenu.cpp 	\
@@ -57,7 +56,6 @@ noinst_HEADERS = \
 		 MemberList.h 	\
 		 TagList.h     \
 	         TalkCard.h 	\
-		 TalkFT.h 	\
 		 MsgBox.h  	\
 		 TalkMenu.h 	\
 		 TreeModelDnd.h \

@@ -65,7 +65,7 @@ class TalkRoomHandler:public MUCRoomHandler {
 		void handleMUCParticipantPresence(MUCRoom * room ,
 				const MUCRoomParticipant
 				participant,
-				Presence presence);
+				Presence::PresenceType presence);
 
 		/**
 		 * @brief 当聊天室有消息到达时会调用这个函数。
@@ -143,9 +143,9 @@ class TalkRoomHandler:public MUCRoomHandler {
 		 * @brief 此函数在调用MUCRoom::getRoomItems()后回调。
 		 *
 		 * @param room 聊天室.
-		 * @param Item 房间成员的map. 关键字是名字，值是成员的房间JID.当房间成员信息被设为保密时这个map为空。
+		 * @param Item 房间成员的list. 现为Item类的列表
 		 */
-		void handleMUCItems(MUCRoom * room , const StringMap & items);
+		void handleMUCItems(MUCRoom * room , const Disco::ItemList& items);
 
 		/**
 		 * @brief 此函数在用户邀请某人进入房间时（调用MUCRoom::invite（））回调。

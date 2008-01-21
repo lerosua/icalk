@@ -753,8 +753,8 @@ void BuddyView::showOffline(bool mode)
 	    Bodies::Get_Bodies().get_buddy_list().get_buddy_map();
 	BuddyList::BUDDY_MAP::const_iterator iter;
 	for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++) {
-		Presence type = (*iter).second->get_status();
-		if (PresenceUnavailable == type) {
+		Presence::PresenceType type = (*iter).second->get_status();
+		if (Presence::Unavailable == type) {
 			if (mode)
 				add((*iter).second->get_jid());
 			else {
@@ -790,7 +790,7 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 	const std::string & msg = buddy->get_sign_msg();
 	const std::string & nickname = buddy->get_nickname();
 	const std::string & buddyname = buddy->get_jid();
-	Presence status_ = buddy->get_status();
+	Presence::PresenceType status_ = buddy->get_status();
 	char *marktext;
 	Glib::RefPtr < Gdk::Pixbuf > emblem;
 	StringList g = buddy->getGroups();
@@ -844,7 +844,7 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 
 
 		/*下线时的处理情况 */
-		if (PresenceUnavailable == status_) {
+		if (Presence::Unavailable == status_) {
 			int delay = 9000;
 			Glib::RefPtr < Gdk::Pixbuf > signoff =
 			    getPix("log-out.png");
@@ -887,21 +887,21 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 			else
 				sprintf(buf, "%s", buddyname.c_str());
 			switch (status_) {
-			case PresenceXa:
+			case Presence::XA:
 				marktext =
 				    g_markup_printf_escaped
 				    (_
 				     ("%s\n<span color='dim grey'><small>extend leave</small></span>"),
 				     buf);
 				break;
-			case PresenceDnd:
+			case Presence::DND:
 				marktext =
 				    g_markup_printf_escaped
 				    (_
 				     ("%s\n<span color='dim grey'><small>don't distrub</small></span>"),
 				     buf);
 				break;
-			case PresenceAway:
+			case Presence::Away:
 				marktext =
 				    g_markup_printf_escaped
 				    (_
@@ -956,7 +956,7 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 		}
 
 		const VCard *vcard = buddy->get_vcard();
-		if (!vcard || (PresenceUnavailable == status_)) {
+		if (!vcard || (Presence::Unavailable == status_)) {
 			printf("empty vcard!\n");
 			//return;
 		}
@@ -1026,13 +1026,13 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 
 
 			switch (status_) {
-			case PresenceXa:
+			case Presence::XA:
 				emblem = getPix("Xa.png");
 				break;
-			case PresenceDnd:
+			case Presence::DND:
 				emblem = getPix("dnd.png");
 				break;
-			case PresenceAway:
+			case Presence::Away:
 				emblem = getPix("extended_away.png");
 				break;
 			default:

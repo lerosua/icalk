@@ -90,13 +90,13 @@ void BuddyList::handleRoster(const Roster & roster)
 }
 void BuddyList::handleRosterPresence(const RosterItem & item,
 		const std::string & resource,
-		Presence presence,
+		Presence::PresenceType presence,
 		const std::string & msg)
 {
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(item.jid().c_str());
 	buddy->set_status(presence);
 	buddy->setResource(resource);
-	if(PresenceUnavailable == presence)
+	if(Presence::Unavailable == presence)
 		buddy->set_sign_msg(_("offline"));
 	else
 		buddy->set_sign_msg(msg);
@@ -106,7 +106,7 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 
 void BuddyList::handleSelfPresence(const RosterItem & item,
 		const std::string & resource,
-		Presence presence,
+		Presence::PresenceType presence,
 		const std::string & msg )
 {
 	printf( "self presence received: %s/%s -- %d\n", item.jid().c_str(), resource.c_str(), presence );

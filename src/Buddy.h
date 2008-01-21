@@ -27,7 +27,7 @@
 #include <gloox/messagesession.h>
 #include <gloox/messageeventfilter.h>
 #include <gloox/chatstatefilter.h>
-#include <gloox/inbandbytestream.h>
+//#include <gloox/inbandbytestream.h>
 #include "MsgPage.h"
 #include "Unit.h"
 using namespace gloox;
@@ -64,16 +64,16 @@ class Buddy {
 		void refreshinfo();
 
 		/** 返回好友的定阅状态*/
-		RosterItem::SubscriptionEnum getSubscription(){ return subscription;}
+		SubscriptionType getSubscription(){ return subscription;}
 		/**
 		 * @brief 得到好友状态
 		 */
-		Presence get_status()const { return status; }
+		Presence::PresenceType get_status()const { return status; }
 		/**
 		 * @brief 根据得到的好友状态更新列表中好友的状态
 		 * @param presence_ 状态变量
 		 */
-		void set_status(Presence presence_) { status = presence_; }
+		void set_status(Presence::PresenceType presence_) { status = presence_; }
 		/**
 		 * @brief 获取当前的签名
 		 */
@@ -171,10 +171,10 @@ class Buddy {
 		/** 带内数据传输地发送图片--filename为文件名*/
 		void sendPicture(const std::string& filename);
 		const std::string& getCustomData(){return customSmile;}
-		void set_ibbstream(InBandBytestream* ibb){ m_ibb=ibb;}
-		InBandBytestream* get_ibbstream(){ return m_ibb;}
-		void ibbattachToSession(){ if(m_ibb&&session) m_ibb->attachTo(session);}
-		void cleanIBBstream();
+		//void set_ibbstream(InBandBytestream* ibb){ m_ibb=ibb;}
+		//InBandBytestream* get_ibbstream(){ return m_ibb;}
+		//void ibbattachToSession(){ if(m_ibb&&session) m_ibb->attachTo(session);}
+		//void cleanIBBstream();
 	public:
 		friend class BuddyView;
 	private:
@@ -183,16 +183,16 @@ class Buddy {
 	protected:
 		JID jid;
 		std::string nickname;
-		RosterItem::SubscriptionEnum subscription;
+		SubscriptionType subscription;
 		StringList groups;
 		std::string m_resource;
 		VCard* vcard;
 		MessageSession* session;
 		MessageEventFilter* message_event_filter;
 		ChatStateFilter* chat_state_filter;
-		InBandBytestream* m_ibb;
+		//InBandBytestream* m_ibb;
 		MsgPage*   page;
-		Presence status;
+		Presence::PresenceType status;
 		std::string sign_msg;
 		Glib::RefPtr<Gdk::Pixbuf> logo;
 		std::string customSmile;

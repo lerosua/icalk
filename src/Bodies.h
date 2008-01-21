@@ -36,7 +36,7 @@
 #include "TalkCard.h"
 #include "TalkRoomHandler.h"
 #include "TrayIcon.h"
-#include "TalkFT.h"
+//#include "TalkFT.h"
 #include "ConfXml.h"
 #include "TalkDiscoHandler.h"
 //#include "TalkIbbStreamHandler.h"
@@ -108,7 +108,7 @@ class Bodies
 		}
 
 		/**设置本人的状态与签名档,并且保存到配置文件中*/
-		void		set_status(Presence status_,Glib::ustring msg_=""){ 
+		void		set_status(Presence::PresenceType status_,Glib::ustring msg_=""){ 
 					jclient->setPresence(status_,1,msg_);
 					statusIcon->on_status_change(status_, jid->username(), msg_);
 					//setAccountTag("status",status_);

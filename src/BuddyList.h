@@ -79,21 +79,23 @@ class BuddyList:public RosterListener
 		 * @param item 原始的好友类
 		 * @param resource 好友的资源
 		 * @param presence 好友的状态
-		 *	@b Presence:
-		 *	@li PresenceUnknown     =0      未知状态
-		 *	@li PresenceAvailable   =1      在线并可见
-		 *	@li PresenceChat	=2	唠叨
-		 *	@li PresenceAway	=3	暂时离开
-		 *	@li PresenceDnd		=4	请勿打挠(dnd="Do Not Disturb")
-		 *	@li PresenceXa		=5	远远离开
-		 *	@li PresenceUnavailable	=6	离线
+		 *	@b Presence::PresenceType:
+		 *	@li Available   =0      在线并可见
+		 *	@li Chat	=1	唠叨
+		 *	@li Away	=2	暂时离开
+		 *	@li DND		=3	请勿打挠(dnd="Do Not Disturb")
+		 *	@li XA		=4	远远离开
+		 *	@li Unavailable	=5	离线
+		 *	@li Probe	=6      This is a presence probe.
+		 *	@li Error	=7	This is a presence error.
+		 *	@li Invalid	=8	the stanza is invalid.
 		 * 
 		 * @param msg	签名消息
 		 */
 		void handleRosterPresence(const RosterItem& item,const std::string& resource,
-				Presence presence,const std::string& msg );
+				Presence::PresenceType presence,const std::string& msg );
 		void handleSelfPresence(const RosterItem& item, const std::string& resource,
-				Presence presence,const std::string& msg );
+				Presence::PresenceType presence,const std::string& msg );
 		/**
 		 * @brief 对方要求添加为好友的请求
 		 * @param jid 对方jid
@@ -108,7 +110,7 @@ class BuddyList:public RosterListener
 		 * @return 返回真则删除，返回假则忽略请求
 		 */
 		bool handleUnsubscriptionRequest(const JID& jid,const std::string& msg);
-		/** 当一个不在好友列表中的人发来Presence信息时回调,奇怪~*/
+		/** 当一个不在好友列表中的人发来Presence::PresenceType信息时回调,奇怪~*/
 		void handleNonrosterPresence(Stanza* stanza);
 	private:
 		BUDDY_MAP buddy_map;
