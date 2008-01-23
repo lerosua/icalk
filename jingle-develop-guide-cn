@@ -1,5 +1,6 @@
 
 一.登录服务器
+http://code.google.com/apis/talk/libjingle/login.html
 
 1.初始化 SSL ,如果需要的话。
 2. 建信号线程。最简单的方案是创建一个 AutoThread 对象，它将获取当前操作系统
@@ -31,6 +32,7 @@ Dologin在你调用信号线程Run之前会队列等待。
 
 
 二，发送和查询状态
+http://code.google.com/apis/talk/libjingle/querying_presence.html
 
 在登进XMPP服务器后，你的应用程序应该提交你的状态给服务器。并且请求好友状态信
 息（buddy list）。服务器将回复这些信息给你(away,offline,and so on),例如当前
@@ -68,6 +70,8 @@ status, show, visible,和其它信息。
 
 
 三. 设置会话管理
+http://code.google.com/apis/talk/libjingle/sending_stanzas.html
+
     一旦你登录进服务器，并且发送和接收了关于花名册成员的状态信息，你应该需要
 设置会话管理管道。这是会话管理集合，逻辑组件，用来监视进来的连接请求和响应
 出去的连接请求。这是libjingle应用程序中最高可定制的部分，因为不同的应用程序
@@ -106,7 +110,8 @@ XMPP流中给各计算机，而SessionManager将在进入的流中找到它.
 
 
 
-	五.发出和接收连接(Making and Receiving Connections)
+	四.发出和接收连接(Making and Receiving Connections)
+http://code.google.com/apis/talk/libjingle/make_receive_connections.html
 
 一旦你已经登录服务器并广播了你的状态，还从XMPP里收到了返回的状态通知，您已经
 可以建立连接（或者应答进来的连接请求）。某人发送一个连接请求给您是很重要的，

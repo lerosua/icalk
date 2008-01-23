@@ -20,7 +20,7 @@
 #define  JINGLESESSION_FILE_HEADER_INC
 
 /**
- * @brief Base class for peer-to-peer session that use Jingle signaling
+ * @brief Base class for peer-to-peer session that use Jingle signaling.
  * @cn P2P会话的模板类，使用Jingle信号
  * @author lerosua <lerosua@gmail.com>
  */
@@ -28,10 +28,25 @@ class JingleSession
 {
 
 	public:
-		JingleSession();
+		typedef std::list<XMPP::Jid> JidList;
+
+		JingleSession(JabberAccount* accout,const JidList& peers);
 		~jingleSession();
 
+		const XMPP::Jid& myself() const;
+		const JidList& peers() const;
+		JidList& peers();
 	public:
+		/**
+		 * Return the type of Session(ex:share-file,voice,video,games)
+		 * Note that you must return return the XML namespace that 
+		 * define the session: ex:(http://jabber.org/protocol/jingle/sessions/audio)
+		 * @cn 返回会话的类型(例如：文件传输，语音，视频，游戏)
+		 * 注意您必须返回定义会话的XML的名字空间：比如
+		 *    http://jabber.org/protocol/jingle/sessions/audio)
+		 */
+		virtual std::string sessionType() =0;
+
 		/**
 		 * @brief Start a session with the give JID.
 		 * You Should begin the negociation here

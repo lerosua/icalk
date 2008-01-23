@@ -61,7 +61,7 @@ class BuddyList:public RosterListener
 		 * @brief 服务器返回错误时调用
 		 * @param stanza 关于错误的Stanza
 		 */
-		void handleRosterError(const IQ& iq){}
+		void handleRosterError(const IQ& iq);
 		/** 应该是某用户同意添加好友*/
 		void handleItemSubscribed(const JID& jid);
 		/** 用户已添加*/

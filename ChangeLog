@@ -1,3 +1,6 @@
+2008年 01月 23日 星期三 14:36:48 CST lerosua
+	目前版本要配合gloox 1.0alpha 以上版本编译
+
 2008-01-23  yetist  <yetist@gmail.com>
 
 	* autogen.sh: 使用gnome-autogen.sh来做自动检测。
