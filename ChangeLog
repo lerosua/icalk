@@ -1,3 +1,7 @@
+2008-01-23  yetist  <yetist@gmail.com>
+
+	* autogen.sh: 使用gnome-autogen.sh来做自动检测。
+
 2008年 01月 19日 星期六 23:33:28 CST lerosua
 	添加libjingle目录，准备将代码为转移到gloox 1.0alpha中。
 	将要先去掉IBB（带内数据传输的代码）
