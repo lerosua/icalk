@@ -19,6 +19,10 @@
 #ifndef  JINGLESESSION_FILE_HEADER_INC
 #define  JINGLESESSION_FILE_HEADER_INC
 
+using namespace gloox;
+class Client;
+
+namespace jingle{
 /**
  * @brief Base class for peer-to-peer session that use Jingle signaling.
  * @cn P2P会话的模板类，使用Jingle信号
@@ -28,12 +32,12 @@ class JingleSession
 {
 
 	public:
-		typedef std::list<XMPP::Jid> JidList;
+		typedef std::list<buzz::Jid> JidList;
 
-		JingleSession(JabberAccount* accout,const JidList& peers);
-		~jingleSession();
+		JingleSession(gloox::Client* client,const JidList& peers);
+		virtual ~jingleSession();
 
-		const XMPP::Jid& myself() const;
+		const buzz::Jid& myself() const;
 		const JidList& peers() const;
 		JidList& peers();
 	public:
@@ -69,8 +73,12 @@ class JingleSession
 		 */
 		virtual void terminate() = 0;
 
+	private:
+		buzz::Jid myself;
+		JidList peers;
+		gloox::Client* client;
 
 };
-
+}
 #endif   /* ----- #ifndef JINGLESESSION_FILE_HEADER_INC  ----- */
 

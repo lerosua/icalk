@@ -10,8 +10,8 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
+ *         Author:  lerosua (), lerosua@gmail.com
+ *        Company:  Cyclone
  *
  * =====================================================================================
  */
@@ -21,18 +21,21 @@
 
 #include <xmpp.h>
 
+using namespace gloox;
 namespace cricket
 {
 	class SessionManager;
 }
 
 class JingleSession;
+class Client;
 
 class JingleSessionManager
 {
 
 	public:
-		JingleSessionManager();
+		typedef std::list<buzz::Jid> JidList;
+		JingleSessionManager(Client* client);
 		~JingleSessionManager();
 
 		/**
@@ -45,7 +48,7 @@ class JingleSessionManager
 		 * @brief create a new Jingle session. Returned pointer is managed
 		 * by this class
 		 */
-		JingleSession* createSession(const std::string& sessionType);
+		JingleSession* createSession(const std::string& sessionType,const JidList& peers);
 		/**
 		 * Override method that create a session for a one-to-one session
 		 * @param sessionType the session you want to create. You must
@@ -53,7 +56,7 @@ class JingleSessionManager
 		 * @param user The JID of the user you want to begin a session with.
 		 * @cn 重载这个创建一对一的会话
 		 */
-		JingleSession* createSession(const std::string& sessionType,const XMPP::Jid& user);
+		JingleSession* createSession(const std::string& sessionType,const buzz::Jid& user);
 
 		void removeSession(JingleSession* session);
 
