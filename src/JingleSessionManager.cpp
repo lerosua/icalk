@@ -20,6 +20,9 @@
 #include "JingleSessionManager.h"
 #include "JingleWatchSessionTask.h"
 
+namespace jingle
+{
+
 #define JINGLE_NS "http://www.google.com/session"
 #define JINGLE_VOICE_SESSION_NS "http://www.google.com/session/phone"
 
@@ -76,3 +79,4 @@ JingleSession* JingleSessionManager::createSession(const std::string& sessionTyp
 	return createSession(sessionType_,jidList);
 }
 
+}

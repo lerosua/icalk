@@ -10,8 +10,8 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
+ *         Author:  lerosua (), lerosua@gmail.com
+ *        Company:  Cyclone
  *
  * =====================================================================================
  */
@@ -32,6 +32,9 @@ namespace cricket{
 	class Call;
 	class SocketAddress;
 }
+
+namespace jingle
+{
 
 class JingleVoiceCaller
 {
@@ -63,5 +66,7 @@ class JingleVoiceCaller
 
 
 };
+
+}
 
 #endif

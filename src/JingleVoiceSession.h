@@ -28,6 +28,9 @@ namespace cricket
 
 class JingleSession;
 
+namespace jingle
+{
+
 /**
  * Implement a Jingle voice peer-to-peer session that is compatible with Google Talk voice offering.
  * @cn 实现单对单的语音会话，兼容Gtalk提供的语音服务
@@ -51,4 +54,5 @@ class JingleVoiceSession: public JingleSession
 
 };
 
+}
 #endif

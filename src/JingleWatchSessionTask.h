@@ -10,8 +10,8 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
+ *         Author:  lerosua (), lerosua@gmail.com
+ *        Company:  Cyclone
  *
  * =====================================================================================
  */
@@ -20,6 +20,9 @@
 #define JINGLEWATCHSESSIONTASK_H_
 
 #include <xmpp_tasks.h>
+
+namespace jingle
+{
 
 /**
  * This task watch for incoming Jingle session and notify manager.
@@ -36,5 +39,6 @@ class JingleWatchSessionTask: public XMPP::Task
 		void watchSession(const std::string& sessionType,const std::string& initiator);
 };
 
+}
 #endif
 

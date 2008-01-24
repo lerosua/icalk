@@ -30,6 +30,9 @@ namespace cricket
 class JingleSession;
 class Client;
 
+namespace jingle
+{
+
 class JingleSessionManager
 {
 
@@ -76,4 +79,7 @@ class JingleSessionManager
 
 
 };
+
+
+}
 #endif

@@ -10,17 +10,22 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
+ *         Author:  lerosua (), lerosua@gmail.com
+ *        Company:  Cyclone
  *
  * =====================================================================================
  */
 
 #include "JingleWatchSessionTask.h"
 
+namespace jingle{
+
 JingleWatchSessionTask::JingleWatchSessionTask()
 {
 }
 JingleWatchSessionTask::~JingleWatchSessionTask()
 {
+}
+
+
 }
