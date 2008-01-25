@@ -34,7 +34,7 @@
 #include <libglademm/variablesmap.h>
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
-//#include <gloox/fcaps.h>
+//#include "fcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
 #include "Unit.h"
