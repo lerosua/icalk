@@ -40,7 +40,7 @@ namespace jingle
 class JingleVoiceSession: public JingleSession
 {
 	public:
-		JingleVoiceSession();
+		JingleVoiceSession(Client* client_,const JidList& peers_);
 		~JingleVoiceSession();
 
 	public:
@@ -48,9 +48,12 @@ class JingleVoiceSession: public JingleSession
 		virtual void decline();
 		virtual void start();
 		virtual void terminate();
+		void OnCallCreated(cricket::Call* call);
 
 	private:
 		void setCall(cricket::Call* call);
+		cricket::PhoneSessionClient* phoneSessionClient;
+		cricket::Call* currentCall;
 
 };
 

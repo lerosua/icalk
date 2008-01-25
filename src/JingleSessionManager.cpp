@@ -25,13 +25,18 @@ namespace jingle
 
 #define JINGLE_NS "http://www.google.com/session"
 #define JINGLE_VOICE_SESSION_NS "http://www.google.com/session/phone"
+#define JINGLE_SHARE_SESSION_NS "http://www.google.com/session/share"
 
 JingleSessionManager::JingleSessionManager(Client* client_)
 	:client(client_)
 {
 
 
+	std::string client_unique = client->jid().full();
 
+	cricket::InitRandom(client_unique.c_str(), client_unique.size());
+	// Create the libjingle NetworkManager that manager local network connections
+	networkManager = new cricket::NetWorkManager();
 	//Init the port allocator(select best ports) with the Google STUN server to help
 	cricket::SocketAddress* googleStunAddress = new cricket::SocketAddress("64.233.167.126",19302);
 	// TODO: Define a relay server.
@@ -59,10 +64,11 @@ JingleSession* JingleSessionManager::createSession(const std::string& sessionTyp
 	JingleSession* newSession = 0L;
 	if( sessionType_ == JINGLE_VOICE_SESSION_NS)
 	{
-		newSession = new JingleVoiceSession(xx,peers_);
+		newSession = new JingleVoiceSession(client,peers_);
 	}
-	else if(sessionType_ == )
+	else if(sessionType_ == JINGLE_SHARE_SESSION_NS)
 	{
+		newSession = new JingleShareSession(client,peers_);
 	}
 
 	if(newSession)
@@ -79,4 +85,9 @@ JingleSession* JingleSessionManager::createSession(const std::string& sessionTyp
 	return createSession(sessionType_,jidList);
 }
 
+void JingleSessionManager::removeSession(JingleSession* session)
+{
+	sessionList.remove(session);
+	delete session;
+}
 }

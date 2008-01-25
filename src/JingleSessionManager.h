@@ -73,6 +73,7 @@ class JingleSessionManager
 		cricket::BasicPortAllocator* portAllocator;
 		cricket::Thread* sessionThread;
 		cricket::SessionManager* cricketSessionManager;
+		gloox::Client* client;
 
 
 
