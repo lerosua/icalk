@@ -94,12 +94,17 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 		const std::string & msg)
 {
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(item.jid().c_str());
-	buddy->set_status(presence);
-	buddy->setResource(resource);
 	if(Presence::Unavailable == presence)
-		buddy->set_sign_msg(_("offline"));
+	{
+		if(buddy->get_status() == Presence::Unavailable)
+			return;
+		else
+			buddy->set_sign_msg(_("offline"));
+	}
 	else
 		buddy->set_sign_msg(msg);
+	buddy->set_status(presence);
+	buddy->setResource(resource);
 	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(item.jid());
 
 }

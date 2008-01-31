@@ -160,11 +160,11 @@ class Buddy {
 		const std::string& getResource(){return m_resource; }
 		void setResource(const std::string resource_) { m_resource=resource_ ;}
 		/** 返回此用户的类型*/
-		const int getType()const  { return type;}
+		BuddyType getType()const  { return type;}
 		/** 设置此用户的类型*/
-		void setType(int type_){ type = type_ ;}
+		void setType(BuddyType type_){ type = type_ ;}
 		/** 根据用户ID的特殊猜测用户的类型*/
-		const int guessType()const ;
+		BuddyType guessType()const ;
 
 		/** 带内数据传输地发送图片--测试*/
 		void sendPicture();
@@ -196,7 +196,7 @@ class Buddy {
 		std::string sign_msg;
 		Glib::RefPtr<Gdk::Pixbuf> logo;
 		std::string customSmile;
-		int type;
+		BuddyType type;
 		sigc::connection timer;
 };
 

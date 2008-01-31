@@ -55,14 +55,11 @@
 
 #include <gtkmm/main.h>
 /** 定义Buddy的一些类型*/
-#define TYPE_FRIEND  0
-#define TYPE_TRANPORT 1
-#define TYPE_GROUPCHAT  2
-#define TYPE_BOT	3
-#define TYPE_MSN	4
-#define TYPE_ICQ	5
-#define TYPE_YAHOO	6
-#define TYPE_OTHER	15
+enum BuddyType
+{ TYPE_FRIEND,TYPE_TRANPORT,TYPE_GROUPCHAT
+	, TYPE_BOT,TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
+	, TYPE_OTHER
+};
 /**定义Buddy的状态的类型，用于扩展组和聊天室*/
 #define STATUS_GROUP 9
 #define STATUS_ROOM 11

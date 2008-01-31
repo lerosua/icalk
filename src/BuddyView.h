@@ -69,6 +69,8 @@ class BuddyView:public Gtk::TreeView {
 	void refreshList();
 	/**初始化时添加好友进列表*/
 	void initBuddy(Buddy * value);
+	/** 初始化好友的类型*/
+	void initBuddyType(Buddy* value);
 	/** 显示/隐藏空组，未处理*/
 	void showGroup(bool mode);
 	/** 初始化聊天室列表*/

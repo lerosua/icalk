@@ -89,12 +89,16 @@ void Buddy::refreshinfo()
 	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(jid.bare());
 }
 
-const int Buddy::guessType()const 
+BuddyType Buddy::guessType()const 
 {
 	/**用户名为空，则可能为transport*/
 	if(jid.username().empty())
 		return TYPE_TRANPORT;
 	const std::string& server  = jid.server();
+	if(server.empty())
+	{
+		printf(" %s 's server empty\n",jid.username().c_str());
+	}
 	/** 服务器开头为”msn.“ 则可能为MSN用户*/
 	if(0==server.find("msn."))
 		return TYPE_MSN;

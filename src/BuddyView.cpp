@@ -445,6 +445,45 @@ void BuddyView::initial()
 	showGroup(false);
 }
 
+void BuddyView::initBuddyType(Buddy* value)
+{
+		const std::string & buddyname = value->get_jid();
+		/** 根据服务器名猜测好友类型*/
+		BuddyType buddyType = value->guessType();
+		value->setType(buddyType);
+		/*
+		switch (buddyType) {
+		case TYPE_TRANPORT:
+			value->setType(TYPE_TRANPORT);
+			break;
+		case TYPE_MSN:
+			value->setType(TYPE_MSN);
+			break;
+		default:
+			//value->setType(TYPE_FRIEND);
+			break;
+		}
+		*/
+
+		/** 根据配置设置Buddy的类型*/
+		const std::string & type_ =
+		    getBlistTag("buddy", buddyname, "type");
+		if (!type_.empty()) {
+			if (type_ == "transport")
+				value->setType(TYPE_TRANPORT);
+			else if (type_ == "groupchat")
+				value->setType(TYPE_GROUPCHAT);
+			else if ("bot" == type_)
+				value->setType(TYPE_BOT);
+			else if ("msn" == type_)
+				value->setType(TYPE_MSN);
+			else if ("other" == type_)
+				value->setType(TYPE_OTHER);
+			else
+				value->setType(TYPE_FRIEND);
+		}
+
+}
 void BuddyView::initBuddy(Buddy * value)
 {
 	StringList g = value->getGroups();
@@ -919,7 +958,8 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 		g_free(marktext);
 
 		(*treeiter)[buddyColumns.status] = (int) status_;
-		int type_ = buddy->getType();
+		initBuddyType(buddy);
+		BuddyType type_ = buddy->getType();
 		switch (type_) {
 			/*
 			   case TYPE_FRIEND:
