@@ -12,18 +12,18 @@
 
 
 #include <gloox/tag.h>
-#include "fcaps.h"
+#include "gtalkcaps.h"
 
 namespace gloox
 {
 
-	FCAPS::FCAPS(const std::string& ver,const std::string& ext):
+	GtalkCaps::GtalkCaps(const std::string& ver,const std::string& ext):
 		StanzaExtension(ExtCaps),m_ver(ver),m_ext(ext)
 	{
 	}
 
 
-	FCAPS::FCAPS(Tag* tag):
+	GtalkCaps::GtalkCaps(Tag* tag):
 		StanzaExtension(ExtCaps),m_ext("share-v1 voice-v1"),m_ver("1.0.104")
 	{
 		if(tag&&(tag->name()=="c"&&tag->hasAttribute("xmlns",XMLNS_C_CAPS)))
@@ -34,11 +34,11 @@ namespace gloox
 				}
 				}
 
-	FCAPS::~FCAPS()
+	GtalkCaps::~GtalkCaps()
 	{
 	}
 
-	Tag* FCAPS::tag()const
+	Tag* GtalkCaps::tag()const
 	{
 		Tag* t=0;
 		t=new Tag("c");
@@ -50,5 +50,10 @@ namespace gloox
 		return t;
 	}
 
+	const std::string& GtalkCaps::filterString()const
+	{
+		static const std::string filter = "gtalk ext support ";
+		return filter;
+	}
 
 }

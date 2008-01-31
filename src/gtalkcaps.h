@@ -11,8 +11,8 @@
 */
 
 
-#ifndef FCAPS_H__
-#define FCAPS_H__
+#ifndef GtalkCaps_H__
+#define GtalkCaps_H__
 
 #include <gloox/stanzaextension.h>
 #include <gloox/macros.h>
@@ -22,19 +22,25 @@
 namespace gloox
 {
 
-const std::string XMLNS_C_CAPS = "http://jabber.org/protocol/caps";
+const std::string XMLNS_C_CAPS("http://jabber.org/protocol/caps");
 
   class Tag;
 
-  class GLOOX_API FCAPS : public StanzaExtension
+  class GLOOX_API GtalkCaps : public StanzaExtension
   {
     public:
-	FCAPS(const std::string& ver,const std::string& ext);
-	    FCAPS(Tag* tag);
-	    virtual ~FCAPS();
+	GtalkCaps(const std::string& ver,const std::string& ext);
+	    GtalkCaps(Tag* tag);
+	    virtual ~GtalkCaps();
 		
 	    const std::string& ext()const{ return m_ext;}
 	    const std::string& ver()const{ return m_ver;}
+	    virtual const std::string& filterString() const;
+	    virtual StanzaExtension* newInstance(const Tag* tag) const
+	    {
+		    return new GtalkCaps(tag);
+	    };
+		    
 
 	    Tag* tag()const;
     private:
