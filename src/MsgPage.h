@@ -87,11 +87,15 @@ class MsgPage:public Gtk::VPaned {
 		/**
 		 * @brief 显示信息函数的第一层处理
 		 * @param sender  发送者
-		 * @param msg	  发送的消息
-		 * @param self	  确认信息是不是自己发送的。
+		 * @param msg	  显示的消息
+		 * @param time	  消息的时间
+		 * @param self	  确认信息是不是自己发送的,为真则是自己发送的.
 		 */
 	void showMessage(const std::string & sender,
-			 const Glib::ustring & msg, bool self = 0);
+			 const Glib::ustring & msg,
+			 const std::string& time="" 
+			 ,bool self = 0);
+
 	/**
 	 * @brief 显示图片
 	 * @param picname 图片的文件名

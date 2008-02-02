@@ -42,7 +42,7 @@ public:
 	 * @brief 显示消息,比较上层,将分析其中的消息
 	 * @param msg_text 文本消息
 	 */
-	void showMessage(const Glib::ustring& msg_text);
+	void showMessage(const Glib::ustring& msg_text,const std::string& time_="");
 	void showMessage(Glib::ustring::const_iterator first,Glib::ustring::const_iterator last);
 	/**
 	 * @brief 显示简单的文本消息，最低层
@@ -55,7 +55,7 @@ public:
 	 * @param self   标识是否本人发的消息。为真则是本人发的消息
 	 */
 	void showTitle(const std::string& sender,bool self=0);
-	void showTime();
+	void showTime(const std::string& time_="");
 	/**
 	 * @brief 显示系统的消息
 	 * @param msg_ 系统消息文本

@@ -47,7 +47,15 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 		sender = target.username();
 	if(NULL==session)
 		return;
-	page_->showMessage(sender,msg);
+	//page_->showMessage(sender,msg);
+	const DelayedDelivery* dd = stanza.when();
+	if(dd)
+	{
+		printf("message time is %s\n",dd->stamp().c_str());
+		page_->showMessage(sender,msg,dd->stamp());
+	}
+	else
+		page_->showMessage(sender,msg);
 	Bodies::Get_Bodies().get_msg_window().add_page(*page_);
 
 	Bodies::Get_Bodies().get_msg_window().show();

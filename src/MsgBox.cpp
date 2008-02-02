@@ -39,7 +39,7 @@ void MsgBox::showMessage(Glib::ustring::const_iterator first,Glib::ustring::cons
 	Glib::ustring text(first,last);
 	showSimpleMessage(text);
 }
-void MsgBox::showMessage(const Glib::ustring& msg_)
+void MsgBox::showMessage(const Glib::ustring& msg_,const std::string& time_)
 {
 	Glib::ustring::const_iterator first  = msg_.begin();
 	Glib::ustring::const_iterator last   = msg_.end();
@@ -65,7 +65,7 @@ void MsgBox::showMessage(const Glib::ustring& msg_)
 			{
 			showMessage(first,last);
 			}
-			showTime();
+			showTime(time_);
 			return;
 		}
 		iter++;
@@ -123,15 +123,23 @@ void MsgBox::showGrayMsg(const std::string& msg_)
 
 	buffer->delete_mark(mark);
 }
-void MsgBox::showTime()
+void MsgBox::showTime(const std::string& time_)
 {
+	char timetext[255];
+	if(time_.empty())
+	{
+
 	/*设置时间戳*/
 	struct tm* tmw;
 	time_t now;
 	time(&now);
 	tmw = localtime(&now);
-	char timetext[255];
 	snprintf(timetext,32,"%02d:%02d:%02d ",tmw->tm_hour,tmw->tm_min,tmw->tm_sec);
+	}
+	else{
+		printf("Debug in time stamp\n");
+		snprintf(timetext,time_.size(),time_.c_str());
+	}
 	RefTag titlecolor = taglist.getTimeFont();
 	Glib::RefPtr < Gtk::TextBuffer > buffer = get_buffer();
 

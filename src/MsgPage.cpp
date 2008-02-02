@@ -27,6 +27,9 @@
 #include "pixmaps.h"
 #include "sounds.h"
 
+#define MSG_ME 1
+#define TIME_NULL ""
+
 MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	buddy(buddy_),
 	mucroom(NULL),
@@ -270,7 +273,7 @@ void MsgPage::showStatusBarMsg(const std::string& msg,unsigned int id)
 	statusbar->push(msg,id);
 }
 
-void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, bool self)
+void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_,bool self)
 {
 	if(!isRoom){	
 	Glib::RefPtr<Gdk::Pixbuf>pix_;
@@ -295,7 +298,7 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
 	setTitleColor(true);
 	msgBox->showTitle(sender_,self);
 	}
-	msgBox->showMessage(msg_);
+	msgBox->showMessage(msg_,time_);
 	msglog->write(sender_,msg_);
 }
 
@@ -352,7 +355,7 @@ void MsgPage::sendMessage()
 
 	 if(!isRoom){
 	std::string sender = Bodies::Get_Bodies().get_jid().username(); 
-	showMessage(sender,utext,1);
+	showMessage(sender,utext,TIME_NULL,MSG_ME);
 	sounds::play(sounds::SEND_SOUND);
 	 }
 	inputMsgBox->clear();
