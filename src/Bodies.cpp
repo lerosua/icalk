@@ -147,7 +147,7 @@ bool Bodies::callback(Glib::IOCondition condition)
 	if ( ce == ConnNoError)
 	{
 		ce=jclient->recv();
-		talkFT->streamLoopRecv();
+		//talkFT->loopRecv();
 		//IBBSHandler.sendIBBData("lerosua icalk testing");
 		
 	}

@@ -71,6 +71,7 @@ noinst_HEADERS = \
 		 SmileTree.h 	\
 		 SmileyWnd.h	\
 		 TreeItem.h 	\
+		 XPThread.h 	\
 	         Unit.h 	\
 		 sounds.h 	\
 		 about.h 	\

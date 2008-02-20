@@ -3,7 +3,8 @@
 #include <gtkmm/dialog.h>
 #include "TalkFT.h"
 
-TalkFT::TalkFT()
+TalkFT::TalkFT():
+	recvThread(this,&TalkFT::loopRecv)
 {
 }
 
@@ -32,8 +33,7 @@ void TalkFT::handleFTRequest(const JID & from,
 		{
 			ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
 			//ft->acceptFT( from, sid, SIProfileFT::FTTypeIBB );
-			//ft->declineFT(from, sid, SIManager::RequestRejected,
-		      //"just testing");
+			recvThread.start();
 			break;
 		}
 		case(Gtk::RESPONSE_CANCEL):

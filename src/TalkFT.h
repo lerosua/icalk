@@ -29,13 +29,14 @@ using namespace gloox;
 #include <unistd.h>
 #include <stdio.h>
 #include <string>
+#include "XPThread.h"
 
 #if defined( WIN32 ) || defined( _WIN32 )
 # include <windows.h>
 #endif
 
 /**
- * Receives one file and displayes it. Does not save anything.
+ * 文件传输的类，负责接收与发送文件
  */
 class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
       public:
@@ -45,10 +46,13 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
 		ft->addStreamHost( JID("proxy.jabber.org"),"208.245.212.98", 7777 );
 	}
 
-	void streamLoopRecv() {
+	//int start_recv(){ return pthread_create(&recv_id,NULL, (void*)loopRecv,NULL); }
+
+	void* loopRecv(void *) {
 		std::list<Bytestream*>::iterator it = m_bsslist.begin();
 		for(; it!=m_bsslist.end();++it)
 			(*it)->recv(100);
+		return NULL;
 	}
 
 	void handleFTRequest(const JID & from, 
@@ -89,6 +93,12 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
       private:
 	SIProfileFT * ft;
 	std::list<Bytestream*> m_bsslist;
+	XPThread<TalkFT>	recvThread;
+	//pthread_t recv_id  ;
+	
+      private:
+	TalkFT(const TalkFT& rhs);	//不用
+	TalkFT& operator = (const TalkFT& rh); // 不用
 };
 
 
