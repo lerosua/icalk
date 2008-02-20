@@ -7,7 +7,7 @@ TalkFT::TalkFT()
 {
 }
 
-void TalkFT::handleFTRequest(const JID & from, const std::string & id,
+void TalkFT::handleFTRequest(const JID & from,
 			const std::string& sid,
 			     const std::string & name, long size,
 			     const std::string & hash,
@@ -17,8 +17,8 @@ void TalkFT::handleFTRequest(const JID & from, const std::string & id,
 			     long /*offset */ , long /*length */ )
 {
 	printf
-	    ("received ft request from %s: %s (%ld bytes). hash: %s, date: %s, mime-type: %s\ndesc: %s\n",
-	     from.full().c_str(), name.c_str(), size, hash.c_str(),
+	    ("received ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n",
+	     from.full().c_str(), name.c_str(), size,sid.c_str(), hash.c_str(),
 	     date.c_str(), mimetype.c_str(), desc.c_str());
 
 
@@ -30,47 +30,48 @@ void TalkFT::handleFTRequest(const JID & from, const std::string & id,
 	{
 		case(Gtk::RESPONSE_OK):
 		{
-			ft->acceptFT( from, id, SIProfileFT::FTTypeS5B );
-			//ft->declineFT(from, id, SIManager::RequestRejected,
+			ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
+			//ft->acceptFT( from, sid, SIProfileFT::FTTypeIBB );
+			//ft->declineFT(from, sid, SIManager::RequestRejected,
 		      //"just testing");
 			break;
 		}
 		case(Gtk::RESPONSE_CANCEL):
 		{
-			ft->declineFT(from, id, SIManager::RequestRejected,
+			ft->declineFT(from, sid, SIManager::RequestRejected,
 		      "just testing");
 			break;
 		}
 		default:
 		{
-			ft->declineFT(from, id, SIManager::RequestRejected,
+			ft->declineFT(from, sid, SIManager::RequestRejected,
 		      "just testing");
 			break;
 		}
 	}
 
-	//ft->acceptFT( from, id, SIProfileFT::FTTypeS5B );
-	//ft->declineFT(from, id, SIManager::RequestRejected,		      "just testing");
+	//ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
+	//ft->declineFT(from, sid, SIManager::RequestRejected,		      "just testing");
 }
 
-void TalkFT::handleSOCKS5Open(SOCKS5Bytestream* s5b)
+void TalkFT::handleBytestreamOpen(Bytestream* s5b)
 {
 	printf("stream opened\n");
 }
 
-void TalkFT::handleSOCKS5Close(SOCKS5Bytestream* s5b)
+void TalkFT::handleBytestreamClose(Bytestream* s5b)
 {
 	printf("stream closed\n");
-	s5b->removeSOCKS5BytestreamDataHandler();
-	//m_s5bslist.remove(*s5b);
+	//s5b->removeBytestreamBytestreamDataHandler();
+	//m_bsslist.remove(*s5b);
 }
 
-void TalkFT::handleSOCKS5Error(SOCKS5Bytestream* s5b, Stanza* stanza)
+void TalkFT::handleBytestreamError(Bytestream* s5b, const IQ& stanza)
 {
 	printf("socks5 stream error\n");
 }
 
-void TalkFT::handleSOCKS5Data(SOCKS5Bytestream* s5b, const std::string& data)
+void TalkFT::handleBytestreamData(Bytestream* s5b, const std::string& data)
 {
 	printf("received %d bytes of data\n%s\n", data.length(),data.c_str() );
 }

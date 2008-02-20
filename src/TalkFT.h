@@ -22,7 +22,7 @@
 #include <gloox/disco.h>
 #include <gloox/client.h>
 #include <gloox/siprofileft.h>
-#include <gloox/socks5bytestreamdatahandler.h>
+#include <gloox/bytestreamdatahandler.h>
 #include <gloox/siprofilefthandler.h>
 using namespace gloox;
 
@@ -37,21 +37,21 @@ using namespace gloox;
 /**
  * Receives one file and displayes it. Does not save anything.
  */
-class TalkFT:public SIProfileFTHandler, public SOCKS5BytestreamDataHandler {
+class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
       public:
 	TalkFT();
 	void set_sipFT(Client * client_) {
 		ft = new SIProfileFT(client_, this);
-		ft->addStreamHost( JID("proxy.jabber.org"),"208.245.212.98", 777 );
+		ft->addStreamHost( JID("proxy.jabber.org"),"208.245.212.98", 7777 );
 	}
 
 	void streamLoopRecv() {
-		std::list<SOCKS5Bytestream*>::iterator it = m_s5bslist.begin();
-		for(; it!=m_s5bslist.end();++it)
+		std::list<Bytestream*>::iterator it = m_bsslist.begin();
+		for(; it!=m_bsslist.end();++it)
 			(*it)->recv(100);
 	}
 
-	void handleFTRequest(const JID & from, const std::string & id,
+	void handleFTRequest(const JID & from, 
 				const std::string& sid,
 			       const std::string & name, long size,
 			       const std::string & hash,
@@ -59,27 +59,36 @@ class TalkFT:public SIProfileFTHandler, public SOCKS5BytestreamDataHandler {
 			       const std::string & mimetype,
 			       const std::string & desc, int /*stypes */ ,
 			       long /*offset */ , long /*length */ );
-	void handleFTRequestError(Stanza * /*stanza */ ) {
+	void handleFTRequestError(const IQ& iq , const std::string& sid) {
 		printf("ft request error\n");
 	}
 
-	void handleFTSOCKS5Bytestream(SOCKS5Bytestream * s5b) {
-		printf("received socks5 bytestream\n");
-		m_s5bslist.push_back(s5b);
-		s5b->registerSOCKS5BytestreamDataHandler(this);
-		if (s5b->connect()) {
-			printf("ok! s5b connected to streamhost\n");
-		}
+	void handleFTBytestream(Bytestream * bs) {
+		printf("received bytestream type: %s\n",bs->type()==Bytestream::S5B? "sock5bytestream" : "ibbstream");
+		m_bsslist.push_back(bs);
+		bs->registerBytestreamDataHandler(this);
+		if (bs->connect()) {
+			if( bs->type() == Bytestream::S5B )
+				  printf( "ok! s5b connected to streamhost\n" );
+			else
+				  printf( "ok! ibb sent request to remote entity\n" );
+	      }
 	}
 
-	void handleSOCKS5Data(SOCKS5Bytestream* s5b, const std::string& data);
-	void handleSOCKS5Error(SOCKS5Bytestream* s5b, Stanza* stanza);
-	void handleSOCKS5Open(SOCKS5Bytestream* s5b);
-	void handleSOCKS5Close(SOCKS5Bytestream* s5b);
+	virtual const std::string handleOOBRequestResult(const JID& from,const std::string& sid)
+	{
+		return std::string();
+	};
+
+
+	void handleBytestreamData(Bytestream* bs, const std::string& data);
+	void handleBytestreamError(Bytestream* bs, const IQ& stanza);
+	void handleBytestreamOpen(Bytestream* bs);
+	void handleBytestreamClose(Bytestream* bs);
 
       private:
 	SIProfileFT * ft;
-	std::list<SOCKS5Bytestream*> m_s5bslist;
+	std::list<Bytestream*> m_bsslist;
 };
 
 

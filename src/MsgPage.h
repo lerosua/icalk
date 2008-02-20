@@ -113,9 +113,11 @@ class MsgPage:public Gtk::VPaned {
 		 * @brief 用于显示聊天室里的历史信息
 		 * @param sender 发送者
 		 * @param msg_   消息内容
+		 * @param time_  消息发送时的时间戳
 		 */
 	void showHistroy(const std::string & sender,
-			 const Glib::ustring & msg_);
+			 const Glib::ustring & msg_
+			 ,const std::string& time_="");
 		/**
 		 * @brief 显示其它一些消息，如用户关闭窗口
 		 * @param msg_ 消息内容

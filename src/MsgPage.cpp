@@ -259,7 +259,7 @@ MsgPage::~MsgPage()
 	delete msglog;
 }
 
-void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_)
+void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_,const std::string& time_)
 {
 	msgBox->showTitle(sender_,false);
 	msgBox->showGrayMsg(msg_);

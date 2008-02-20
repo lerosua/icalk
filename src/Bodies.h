@@ -36,7 +36,7 @@
 #include "TalkCard.h"
 #include "TalkRoomHandler.h"
 #include "TrayIcon.h"
-//#include "TalkFT.h"
+#include "TalkFT.h"
 #include "ConfXml.h"
 #include "TalkDiscoHandler.h"
 //#include "TalkIbbStreamHandler.h"
@@ -155,7 +155,7 @@ class Bodies
 		TalkRoomHandler   roomHandler;
 		//TalkDiscoHandler  discohandler;
 		TalkCard   cardManage;
-		//TalkFT*	   talkFT;
+		TalkFT*	   talkFT;
 		//TalkIbbStreamHandler IBBSHandler;
 		VCard*	   vcard;
 		//用于保存account结构的Tag

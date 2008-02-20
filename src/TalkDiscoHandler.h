@@ -31,8 +31,15 @@ class TalkDiscoHandler:public DiscoHandler {
 	~TalkDiscoHandler(){}
 
 	void handleDiscoInfoResult(Stanza * stanza, int context  ) ;
-	 void handleDiscoItemsResult(Stanza * stanza  ,    int context  ) ;
+	void handleDiscoItemsResult(Stanza * stanza  ,    int context  ) ;
 	void handleDiscoError(Stanza * stanza  ,int context  ) ;
+
+	/*
+	void handleDiscoInfo(const JID& from, const Disco::Info& info, int context);
+	void handleDiscoItems(const JID& from, const Disco::Items& items, int context);
+	void handleDiscoError(JID& from, const Error* error, int context);
+	bool handleDiscoSet(IQ* iq);
+	*/
 
 };
 

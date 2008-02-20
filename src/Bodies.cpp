@@ -34,7 +34,7 @@
 #include <libglademm/variablesmap.h>
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
-//#include "fcaps.h"
+//#include "gtalkcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
 #include "Unit.h"
@@ -57,7 +57,7 @@ Bodies::Bodies()
 Bodies::~Bodies()
 {
 	delete statusIcon;
-	//delete talkFT;
+	delete talkFT;
 	main_window=NULL;
 	statusIcon=NULL;
 	//logout();
@@ -147,7 +147,7 @@ bool Bodies::callback(Glib::IOCondition condition)
 	if ( ce == ConnNoError)
 	{
 		ce=jclient->recv();
-		//talkFT->streamLoopRecv();
+		talkFT->streamLoopRecv();
 		//IBBSHandler.sendIBBData("lerosua icalk testing");
 		
 	}
@@ -207,8 +207,8 @@ int Bodies::connect(const char *name, const char* passwd)
 	/** 初始化VCard管理类*/
 	cardManage.set_manage(jclient.get());
 	/** 初始化文件传输接收类*/
-	//talkFT=new TalkFT();
-	//talkFT->set_sipFT(jclient.get());
+	talkFT=new TalkFT();
+	talkFT->set_sipFT(jclient.get());
 	/** 初始化带内数据传输处理类*/
 	//IBBSHandler.init(jclient.get());
 	if(jclient->connect(false))

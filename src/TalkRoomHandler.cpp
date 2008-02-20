@@ -145,6 +145,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 	printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
 			msg.body().c_str(),history ?"yes":"no",
 			priv ? "yes":"no");
+	printf("ROOM Msg xml : %s \n",msg.tag()->xml().c_str());
 	RoomItem* item = findRoom(room);
 	MsgPage* page = item->getPage();
 	if(NULL==page)
