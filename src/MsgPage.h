@@ -53,7 +53,7 @@ class RoomItem;
  * @brief 构造聊天窗口中的某一页，与某一会话相对应，嵌入到聊天窗口的笔记本控件中
  * 
  */
-class MsgPage:public Gtk::VPaned {
+class MsgPage:public Gtk::HPaned {
       public:
 	typedef Glib::RefPtr < Gtk::TextBuffer::Tag > RefTag;
 

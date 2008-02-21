@@ -43,6 +43,21 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	const std::string& jid_ = buddy->get_jid();
 	msglog = new MsgLog(jid_);
 
+	Gtk::VPaned* vPaned=Gtk::manage(new class Gtk::VPaned());
+	pack1(*vPaned);
+
+	//设置右边的图片栏
+	Gtk::VBox* rightVbox = Gtk::manage(new Gtk::VBox());
+	pack2(*rightVbox);
+	Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
+	logo = Gtk::manage(new Gtk::Image(pix));
+	rightVbox->pack_start(*logo);
+
+	Glib::RefPtr<Gdk::Pixbuf> pix2 = Bodies::Get_Bodies().get_main_window().getLogo();
+	Gtk::Image* logo2 = Gtk::manage(new Gtk::Image(pix2));
+	rightVbox->pack_end(*logo2);
+
+
 	msgBox = Gtk::manage(new class MsgBox);
 	Gtk::ScrolledWindow* scroll_out = Gtk::manage(new class Gtk::ScrolledWindow());
 	scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -59,11 +74,11 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	frame1->add(*scroll_out);
 
 	hbox2->pack_start(*frame1);
-	pack1(*hbox2);
+	vPaned->pack1(*hbox2);
 	
 
 	Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox());
-	pack2(*vbox, Gtk::SHRINK);
+	vPaned->pack2(*vbox, Gtk::SHRINK);
 		
 	Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox());
 	vbox->pack_start(*hbox);
@@ -72,8 +87,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	vbox->pack_start(*hbbox, false, false);
 
 	/* 聊天窗口 输入框左边的那个好友图标*/
-	Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
-	logo = Gtk::manage(new Gtk::Image(pix));
+	//Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
+	//logo = Gtk::manage(new Gtk::Image(pix));
 
 	Gtk::VBox* vbox2 = Gtk::manage(new Gtk::VBox());
 	hbox->pack_start(*vbox2);
@@ -140,6 +155,9 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	const std::string& jid_ = mucroom->getRoomJID();
 	msglog = new MsgLog(jid_);
 
+	Gtk::VPaned* vPaned=Gtk::manage(new class Gtk::VPaned());
+	pack1(*vPaned);
+
 	msgBox = Gtk::manage(new class MsgBox);
 	Gtk::ScrolledWindow* scroll_out = Gtk::manage(new class Gtk::ScrolledWindow());
 	scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -164,7 +182,7 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	subbox->pack_start(*subject);
 	bigbox->pack_start(*subbox,0,0,1);
 	bigbox->pack_start(*hpaned2);
-	pack1(*bigbox);
+	vPaned->pack1(*bigbox);
 
 
 	//添加聊天室成员列表
@@ -180,13 +198,15 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	Gtk::Frame* frame3 = Gtk::manage(new class Gtk::Frame());
 	frame3->set_shadow_type(Gtk::SHADOW_IN);
 	frame3->add(*scrolledwindowmemberList);
-		hpaned2->pack2(*frame3,Gtk::SHRINK);
+		//hpaned2->pack2(*frame3,Gtk::SHRINK);
+	//将列表置于右边的架构中
+	pack2(*frame3,Gtk::SHRINK);
 		//memberList->signal_button_press_event().connect(sigc::mem_fun(*this,
 		//			&MsgPage::on_memberList_double_click_event),false);
 
 
 	Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox());
-	pack2(*vbox, Gtk::SHRINK);
+	vPaned->pack2(*vbox, Gtk::SHRINK);
 		
 	Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox());
 	vbox->pack_start(*hbox);

@@ -23,6 +23,7 @@ namespace gloox
 {
 
 const std::string XMLNS_C_CAPS("http://jabber.org/protocol/caps");
+const std::string XMLNS_GOOGLE_CAPS("http://www.google.com/xmpp/client/caps");
 
   class Tag;
 

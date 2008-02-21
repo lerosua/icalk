@@ -28,7 +28,7 @@ namespace gloox
 	{
 		if(tag&&(tag->name()=="c"&&tag->hasAttribute("xmlns",XMLNS_C_CAPS)))
 				{
-				tag->addAttribute("note","http://www.google.com/xmpp/client/caps");
+				tag->addAttribute("note",XMLNS_GOOGLE_CAPS);
 				tag->addAttribute("ver",m_ver);
 				tag->addAttribute("ext",m_ext);
 				}
@@ -42,7 +42,7 @@ namespace gloox
 	{
 		Tag* t=0;
 		t=new Tag("c");
-		t->addAttribute("note","http://www.google.com/xmpp/client/caps");
+		t->addAttribute("note",XMLNS_GOOGLE_CAPS);
 		t->addAttribute("ver",m_ver);
 		t->addAttribute("ext",m_ext);
 		t->addAttribute("xmlns",XMLNS_C_CAPS);

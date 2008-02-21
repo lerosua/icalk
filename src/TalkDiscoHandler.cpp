@@ -19,16 +19,31 @@
 #include "TalkDiscoHandler.h"
 
 
-void TalkDiscoHandler::handleDiscoInfoResult(Stanza * stanza, int context)
+void TalkDiscoHandler::handleDiscoInfoResult(IQ * stanza, int context)
 {
 	printf("handleDiscoInfoResult}\n");
-	//std::cout<<stanza->xml()<<std::endl;
 }
-void TalkDiscoHandler::handleDiscoItemsResult(Stanza * stanza, int context)
+void TalkDiscoHandler::handleDiscoItemsResult(IQ * stanza, int context)
 {
 	printf("handleDiscoItemsResult\n");
 }
-void TalkDiscoHandler::handleDiscoError(Stanza * stanza, int context)
+void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context)
 {
 	printf("handleDiscoError\n");
+}
+
+
+	void TalkDiscoHandler::handleDiscoInfo(const JID& from, const Disco::Info& info, int context)
+{
+	printf("handleDiscoInfo}\n");
+}
+	void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& items, int context)
+{
+	printf("handleDiscoItems}\n");
+}
+	void TalkDiscoHandler::handleDiscoError(JID& from, const Error* error, int context)
+{
+}
+	bool TalkDiscoHandler::handleDiscoSet(IQ* iq)
+{
 }
