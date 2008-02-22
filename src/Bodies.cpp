@@ -175,7 +175,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	}
 	jid=new JID(name);
 	jclient.reset(new Client(*jid,passwd));
-	jclient->disco()->setVersion("iCalk","0.03beta","Linux");
+	jclient->disco()->setVersion("iCalk",ICALK_VERSION,OS);
 	jclient->setResource("iCalk");
 	jclient->setPresence(Presence::Available,-1);
 	jclient->disco()->setIdentity("Client","iCalk");

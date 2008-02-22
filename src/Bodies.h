@@ -43,6 +43,8 @@
 using std::list;
 
 typedef list<std::string> USERLIST;
+#define ICALK_VERSION  "0.04"
+#define OS		"Linux"
 /**
  * @brief 用于集合各种功能的工厂
  */

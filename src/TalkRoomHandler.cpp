@@ -57,6 +57,8 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 	std::string name = participant.nick->resource();
 	std::string mid = participant.nick->bare()+"/"+participant.nick->resource();
 	
+	//std::cout<<"room member "<<name<<"say "<<participant.status<<std::endl;
+	//std::cout<<"flags = "<<participant.flags<<" reason = "<<participant.reason<<" newNick = "<<participant.newNick<<" Affiliation= "<<participant.affiliation<<" role = "<<participant.role<<std::endl;
 	StringMap memberlist = item->getMemberList();
 	StringMap::iterator iter;
 	iter = memberlist.find(name);
@@ -83,23 +85,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 
 	if(NULL!=page)
 		page->refreshMember();
-	/*
-	if (presence == PresenceAvailable)
-	{
 
-		printf("!!!!!!!!!!!!!!!! %s is in the room, too\n",
-		       participant.nick->resource().c_str());
-	}
-	else if (presence == Presence::Unavailable)
-	{
-
-		printf("!!!!!!!!!!!!!!!! %s left the room\n",
-		       participant.nick->resource().c_str());
-	}
-	else
-		printf("Presence::PresenceType is %d of %s\n", presence,
-		       participant.nick->resource().c_str());
-		       */
 }
 
 /*
@@ -145,7 +131,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 	printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
 			msg.body().c_str(),history ?"yes":"no",
 			priv ? "yes":"no");
-	printf("ROOM Msg xml : %s \n",msg.tag()->xml().c_str());
+	//printf("ROOM Msg xml : %s \n",msg.tag()->xml().c_str());
 	RoomItem* item = findRoom(room);
 	MsgPage* page = item->getPage();
 	if(NULL==page)
