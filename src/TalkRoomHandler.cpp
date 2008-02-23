@@ -55,10 +55,9 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 	RoomItem* item = findRoom(room);
 	MsgPage* page = item->getPage();
 	std::string name = participant.nick->resource();
-	//std::string mid = participant.nick->bare()+"/"+participant.nick->resource();
 	std::string mid = participant.nick->full();
 	
-	//std::cout<<"flags = "<<participant.flags<<" reason = "<<participant.reason<<" newNick = "<<participant.newNick<<" Affiliation= "<<participant.affiliation<<" role = "<<participant.role<<std::endl;
+	std::cout<<"flags = "<<participant.flags<<" reason = "<<participant.reason<<" newNick = "<<participant.newNick<<" Affiliation= "<<participant.affiliation<<" role = "<<participant.role<<std::endl;
 	MemberMap memberlist = item->getMemberList();
 	MemberMap::iterator iter;
 	iter = memberlist.find(name);
@@ -94,40 +93,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 
 }
 
-/*
-void TalkRoomHandler::handleMUCMessage(MUCRoom * room  ,
-				const std::string & nick,
-				const std::string & message,
-				bool history,
-				const std::string & when  , bool priv)
-{
-	printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
-	       message.c_str(), history ? "yes" : "no",
-	       priv ? "yes" : "no");
-	RoomItem* item = findRoom(room);
-	MsgPage* page = item->getPage();
-	if(NULL==page)
-	{
-			const std::string  label= room->name()+"@"+room->service();
-			MsgPage* page_=new MsgPage(label,item,1);
-			item->setPage(page_);
-			page = item->getPage();
-			page->refreshMember();
-			page->setSubject();
-			Bodies::Get_Bodies().get_msg_window().add_page(*page);
-	}
-		if(priv)
-		{
-			Glib::ustring msg_ =_("said to you: ") +message;
-			page->showMessage(nick,msg_);
-			return;
-		}
-		if(history)
-			page->showHistroy(nick,message);
-		else
-			page->showMessage(nick,message);
-}
-*/
+
 void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 		const Message& msg, bool priv)
 {

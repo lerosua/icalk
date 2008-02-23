@@ -65,7 +65,8 @@ void MsgBox::showMessage(const Glib::ustring& msg_,const std::string& time_)
 			{
 			showMessage(first,last);
 			}
-			showTime(time_);
+			//showTime(time_);
+			showSimpleMessage("\n");
 			return;
 		}
 		iter++;
@@ -191,7 +192,7 @@ void MsgBox::showTitle(const std::string & sender,bool self)
 
 	buffer->delete_mark(mark);
 
-	//showTime();
+	showTime();
 }
 
 void MsgBox::readline(int type)

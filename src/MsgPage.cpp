@@ -65,7 +65,7 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	msgBox->unset_flags(Gtk::CAN_FOCUS);
 	msgBox->set_accepts_tab(false);
 	msgBox->set_editable(false);
-	msgBox->set_border_width(2);
+	//msgBox->set_border_width(2);
 	Gtk::HBox* hbox2 = Gtk::manage(new Gtk::HBox());
 	
 	/* add frame*/
@@ -101,7 +101,7 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	scroll_in->add(*inputMsgBox);
 	inputMsgBox->set_flags(Gtk::HAS_FOCUS);
-	inputMsgBox->set_border_width(2);
+	//inputMsgBox->set_border_width(2);
 	inputMsgBox->signal_focus_in_event().connect(
 			sigc::mem_fun(*this,&MsgPage::on_inputMsgBox_focus_in_event));
 	inputMsgBox->signal_focus_out_event().connect(
@@ -142,6 +142,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	titlelable = Gtk::manage(new class Gtk::Label(Glib::Markup::escape_text(title),true));
 	titlelable->set_use_markup(true);
 	titlelable->set_single_line_mode(true);
+
+	set_border_width(5);
 }
 
 MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
@@ -165,8 +167,9 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	msgBox->unset_flags(Gtk::CAN_FOCUS);
 	msgBox->set_accepts_tab(false);
 	msgBox->set_editable(false);
-	msgBox->set_border_width(2);
+	//msgBox->set_border_width(2);
 	Gtk::HPaned* hpaned2 = Gtk::manage(new Gtk::HPaned());
+	hpaned2->set_border_width(5);
 	
 	/* add frame*/
 	Gtk::Frame* frame1 = Gtk::manage(new class Gtk::Frame());
@@ -228,7 +231,7 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	scroll_in->add(*inputMsgBox);
 	inputMsgBox->set_flags(Gtk::HAS_FOCUS);
-	inputMsgBox->set_border_width(2);
+	//inputMsgBox->set_border_width(2);
 	inputMsgBox->signal_focus_in_event().connect(
 			sigc::mem_fun(*this,&MsgPage::on_inputMsgBox_focus_in_event));
 	
@@ -267,6 +270,8 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	titlelable = Gtk::manage(new class Gtk::Label(Glib::Markup::escape_text(title),true));
 	titlelable->set_use_markup(true);
 	titlelable->set_single_line_mode(true);
+
+	set_border_width(5);
 }
 
 
@@ -305,10 +310,10 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
 	else{
 	sounds::play(sounds::RECEIVE_SOUND);
 	setTitleColor(true);
-	pix_ = buddy->getLogo()->scale_simple(30,30,Gdk::INTERP_NEAREST);
+	//pix_ = buddy->getLogo()->scale_simple(30,30,Gdk::INTERP_NEAREST);
 	}
-	Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
-	msgBox->insertImage(image);
+	//Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
+	//msgBox->insertImage(image);
 	if((TYPE_GROUPCHAT != buddy->getType())||self)
 		msgBox->showTitle(sender_,self);
 	}

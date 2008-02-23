@@ -143,7 +143,7 @@ void Bodies::loadAccountTag()
 bool Bodies::callback(Glib::IOCondition condition)
 {
 	ConnectionError ce=ConnNoError;
-	std::cout<<"talk connecting...: "<<ce<<std::endl;
+	//std::cout<<"talk connecting...: "<<ce<<std::endl;
 	if ( ce == ConnNoError)
 	{
 		ce=jclient->recv();
@@ -183,6 +183,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient->rosterManager()->registerRosterListener(&buddy_list);
 	jclient->registerMessageSessionHandler(&talkmsg,0);
 	jclient->registerConnectionListener(&talkconnect);
+	jclient->logInstance().registerLogHandler(LogLevelDebug,LogAreaAll,&talkconnect);
 
 	printf("login\n");
 	if(!server.empty())
