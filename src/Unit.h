@@ -52,17 +52,9 @@
  */
 #ifndef  UNIT_FILE_HEADER_INC
 #define  UNIT_FILE_HEADER_INC
-
 #include <gtkmm/main.h>
-/** 定义Buddy的一些类型*/
-enum BuddyType
-{ TYPE_FRIEND,TYPE_TRANPORT,TYPE_GROUPCHAT
-	, TYPE_BOT,TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
-	, TYPE_OTHER
-};
-/**定义Buddy的状态的类型，用于扩展组和聊天室*/
-#define STATUS_GROUP 9
-#define STATUS_ROOM 11
+#include "icalk.h"
+
 
 class GUnit
 {

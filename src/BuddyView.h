@@ -29,7 +29,7 @@
 #include <functional>
 #include <vector>
 #include <gloox/gloox.h>
-//#include <gloox/bookmarkhandler.h>
+#include <gloox/bookmarkhandler.h>
 #include <sigc++/connection.h>
 #include "RoomItem.h"
 #include "TalkRoomHandler.h"

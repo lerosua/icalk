@@ -24,6 +24,8 @@
 #include <gtkmm/liststore.h>
 #include "pixmaps.h"
 #include <functional>
+#include "icalk.h"
+//#include "RoomItem.h"
 using std::unary_function;
 
 
@@ -34,8 +36,7 @@ class MemberList : public Gtk::TreeView
 
 
 		Glib::ustring getSelectMemberid();
-		//const Glib::ustring& getSelectMemberid();
-		void addMember(const std::string& name,const std::string& mid);
+		void addMember(const std::string& name,const Member& member_);
 		void removeMember(const std::string& id);
 		void clearMember();
 		bool isMember(const std::string& mid);
@@ -48,21 +49,22 @@ class MemberList : public Gtk::TreeView
 				add(icon);
 				add(name);
 				add(mid);
-				add(type);
+				add(status);
+				add(presence);
 			}
 		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
 		Gtk::TreeModelColumn < Glib::ustring > name;
 		Gtk::TreeModelColumn < Glib::ustring > mid;
-		Gtk::TreeModelColumn < int >type;
+		Gtk::TreeModelColumn < Glib::ustring > status;
+		Gtk::TreeModelColumn < int >presence;
+
 		};
 
 	private:
 		//排序函数
 		int on_sort_compare(const Gtk::TreeModel::iterator& a,
 				const Gtk::TreeModel::iterator& b){
-			int result = (*a)[columns.type] - (*b)[columns.type];
-			//if(0==result)
-			//	return (*a)[columns.mid] - (*b)[columns.mid];
+			int result = (*a)[columns.presence] - (*b)[columns.presence];
 			return result;
 		}
 

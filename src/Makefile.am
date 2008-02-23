@@ -75,5 +75,6 @@ noinst_HEADERS = \
 	         Unit.h 	\
 		 sounds.h 	\
 		 about.h 	\
+		 icalk.h 	\
 	         pixmaps.h
 icalk_LDADD = @LIBS@ @PACKAGE_LIBS@

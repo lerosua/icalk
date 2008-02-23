@@ -9,7 +9,7 @@
  * @param status 代码Buddy成员的状态。普通的Buddy成员有六种状态。数字0-6,
  *	  下面将解说特殊Buddy的status值。
  *	  @li STATUS_GROUP: 表示列表中的组。
- *	  @li STATUS_ROOM: 表示房间列表成员。
+ *	  @li STATUS_ROOM: 表示房间。
  *
  * @note 这种方式表示似乎有些局限性。考虑另起一个变量来表示类型，以支持
  * 像网关，Gtalk类型的聊天群这样有状态的类型。

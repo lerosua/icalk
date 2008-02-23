@@ -446,11 +446,11 @@ void MsgPage::close()
 
 void MsgPage::refreshMember()
 {
-	const StringMap& items = mucroom->getMemberList();
+	const MemberMap& items = mucroom->getMemberList();
 	
 	memberList->clearMember();
 	//printf("已经清空列表？\n");
-	StringMap::const_iterator it = items.begin();
+	MemberMap::const_iterator it = items.begin();
 	for (; it != items.end(); ++it) 
 		memberList->addMember((*it).first, (*it).second);	
 	

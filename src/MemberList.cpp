@@ -20,6 +20,7 @@ MemberList::MemberList()
 	memberList->set_model(refListStore);
 	memberList->append_column("face",columns.icon);
 	memberList->append_column("nickname",columns.name);
+	memberList->append_column("status", columns.status);
 	memberList->show();
 
 }
@@ -39,14 +40,15 @@ bool MemberList::isMember(const std::string& mid)
 
 }
 
-void MemberList::addMember(const std::string& name,const std::string& mid)
+void MemberList::addMember(const std::string& name,const Member& member)
 {
 	Gtk::TreeModel::iterator iter = refListStore->append();
 	
 	(*iter)[columns.icon] = getPix("voice.png");
 	(*iter)[columns.name] = name;
-	(*iter)[columns.mid] = mid;
-	(*iter)[columns.type] = 0;
+	(*iter)[columns.mid] = member.id;
+	(*iter)[columns.status] = member.status;
+	(*iter)[columns.presence] = 0;
 	
 }
 void MemberList::clearMember()
@@ -61,7 +63,7 @@ void MemberList::clearMember()
 	}
 }
  
-void MemberList::removeMember(const std::string& id)
+void MemberList::removeMember(const std::string& name)
 {
 	/*
 	   Gtk::TreeModel::iterator iter =

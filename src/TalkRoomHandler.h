@@ -26,8 +26,8 @@
 #include "MsgPage.h"
 #include "RoomItem.h"
 
-using namespace gloox;
 //class Bodies;
+using namespace gloox;
 class RoomItem;
 
 /**
@@ -52,6 +52,7 @@ class TalkRoomHandler:public MUCRoomHandler {
 		void addRoomItem(const std::string& jid, RoomItem* item);
 		/** 查找列表中的房间,id的值为房间号: 如 linuxcn@conference.jabber.org*/
 		RoomItem* findRoom(const std::string& id) const;
+		/** 查找列表中的房间,room的值为房间*/
 		RoomItem* findRoom(const MUCRoom* room) const;
 		template <class Tfun>
 			void for_each(Tfun fun) const { std::for_each(roomList.begin(), roomList.end(), fun); }
@@ -68,24 +69,6 @@ class TalkRoomHandler:public MUCRoomHandler {
 				participant,
 				Presence::PresenceType presence);
 
-		/**
-		 * @brief 当聊天室有消息到达时会调用这个函数。
-		 * @note 这可能会是一个私有消息！如果是私有消息，并且你想回复它。你应该创建一个新
-		 * 的MessageSession来与对方(user's full room nick)通信，
-		 *
-		 * @param room 消息来源的房间
-		 * @param nick 房间里消息发送者的昵称(nickname)
-		 * @param message 消息
-		 * @param history 
-		 * @param when 
-		 * @param privateMessage 表明是否私有信息。
-		 * @note since 1.0 the code is deprecated.
-		void handleMUCMessage(MUCRoom * room ,
-				const std::string & nick,
-				const std::string & message,
-				bool history, const std::string & when  ,
-				bool privateMessage);
-		 */
 
 		/**
 		 * @brief 当聊天室有消息到达时会调用这个函数。
@@ -163,4 +146,5 @@ class TalkRoomHandler:public MUCRoomHandler {
 	private:
 		ROOMLIST roomList;
 };
+
 #endif

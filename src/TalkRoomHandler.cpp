@@ -55,20 +55,27 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 	RoomItem* item = findRoom(room);
 	MsgPage* page = item->getPage();
 	std::string name = participant.nick->resource();
-	std::string mid = participant.nick->bare()+"/"+participant.nick->resource();
+	//std::string mid = participant.nick->bare()+"/"+participant.nick->resource();
+	std::string mid = participant.nick->full();
 	
-	//std::cout<<"room member "<<name<<"say "<<participant.status<<std::endl;
 	//std::cout<<"flags = "<<participant.flags<<" reason = "<<participant.reason<<" newNick = "<<participant.newNick<<" Affiliation= "<<participant.affiliation<<" role = "<<participant.role<<std::endl;
-	StringMap memberlist = item->getMemberList();
-	StringMap::iterator iter;
+	MemberMap memberlist = item->getMemberList();
+	MemberMap::iterator iter;
 	iter = memberlist.find(name);
 	if(iter == memberlist.end())
 	{
-		item->addMember(name,mid);
+		Member member_;
+		member_.id=participant.nick->full();
+		member_.affiliation = participant.affiliation;
+		member_.role = participant.role;
+		member_.flags = participant.flags;
+		member_.status=participant.status;
+		member_.presence =presence;
+
+		item->addMember(name,member_);
 		if(NULL!=page)
 		{
-		std::string msg_ = participant.nick->resource()+_(" join in the room");
-		//page->showSystemMsg(msg_);
+		std::string msg_ = name + _(" join in the room");
 		page->showStatusBarMsg(msg_);
 		}
 	}
@@ -77,8 +84,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 		item->removeMember(name);
 	if(NULL!=page)
 		{
-			std::string msg_ = participant.nick->resource()+_(" leave the room");
-			//page->showSystemMsg(msg_);
+			std::string msg_ = name +_(" leave the room");
 			page->showStatusBarMsg(msg_);
 		}
 	}
@@ -199,7 +205,7 @@ void TalkRoomHandler::handleMUCItems(MUCRoom *  room  ,
 	item->setMemberList(items);
 
 	/*
-	StringMap::const_iterator it = items.begin();
+	MemberMap::const_iterator it = items.begin();
 	for (; it != items.end(); ++it) {
 		printf("==================%s -- %s is an item here\n", (*it).first.c_str(),
 		       (*it).second.c_str());
@@ -222,3 +228,5 @@ bool TalkRoomHandler::handleMUCRoomCreation(MUCRoom * room)
 	       room->name().c_str());
 	return true;
 }
+
+

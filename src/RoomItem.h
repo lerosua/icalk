@@ -23,28 +23,43 @@
 #include <gloox/bookmarkhandler.h>
 #include "MsgPage.h"
 #include "Bodies.h"
+#include "icalk.h"
 
 using namespace gloox;
-//class Bodies;
+
+
 class TalkRoomHandler;
 
+/**
+ * 聊天室类，一个RoomItem对应一个聊天室，聊天室包含聊天会话，成员列表等。
+ */
 class RoomItem{
 	public:
 		RoomItem(const ConferenceListItem& ci_);
 
+		/** 得到聊天室的JID号 */
 		const std::string& getRoomJID() const { return citem.jid;}
+		/** 进入聊天室 */
 		void join();
+		/** 离开聊天室 */
 		void leave();
 		MsgPage* getPage(){ return page; }
 		void setPage(MsgPage* page_){ page = page_; }
+		/** 关闭页面 */
 		void closePage(){page=NULL;}
+		/** 发送信息 */
 		void send(Glib::ustring& text){ mucroom->send(text); }
-		void setMemberList(const Disco::ItemList& listitem_);
-		//const StringMap& getMemberList() const { return listitem; }
-		StringMap& getMemberList() { return listitem; }
-		void addMember(const std::string& name , const std::string& mid);
+		/** 初始化聊天室成员列表 */
+		void setMemberList(const Disco::ItemList& m_list_);
+		/** 获取聊天室成员列表 */
+		MemberMap& getMemberList() { return m_list; }
+		/** 添加成员进聊天室列表 */
+		void addMember(const std::string& name , const Member& member);
+		/** 从聊天室成员列表里删除名为name的成员 */
 		void removeMember(const std::string& name);
+		/** 设置聊天室主题 */
 		void setSubject(const Glib::ustring& sub) { subject = sub;  }
+		/** 获取聊天室主题 */
 		Glib::ustring& getSubject() { return subject; }
 
 	private:
@@ -52,7 +67,7 @@ class RoomItem{
 		ConferenceListItem citem;
 		MsgPage* page;
 		Glib::ustring subject;
-		StringMap listitem;
+		MemberMap m_list;
 };
 
 
