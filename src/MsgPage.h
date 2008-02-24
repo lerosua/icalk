@@ -176,7 +176,7 @@ class MsgPage:public Gtk::HPaned {
 	Gtk::Image * logo;
 	Gtk::Label * titlelable;
 	Gtk::Entry * subject;
-	Gtk::Statusbar * statusbar;
+	//Gtk::Statusbar * statusbar;
 	bool hasColor;
 	bool isRoom;
 

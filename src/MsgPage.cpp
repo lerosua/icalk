@@ -48,6 +48,7 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
 	//设置右边的图片栏
 	Gtk::VBox* rightVbox = Gtk::manage(new Gtk::VBox());
+	rightVbox->set_size_request(40,-1);
 	pack2(*rightVbox);
 	Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
 	logo = Gtk::manage(new Gtk::Image(pix));
@@ -134,8 +135,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	btClose->set_flags(Gtk::CAN_FOCUS);
 	btClose->set_relief(Gtk::RELIEF_NORMAL);
 
-	statusbar = Gtk::manage(new class Gtk::Statusbar());
-	vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
+	//statusbar = Gtk::manage(new class Gtk::Statusbar());
+	//vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
 
 	show_all();
 
@@ -262,8 +263,8 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	btClose->set_flags(Gtk::CAN_FOCUS);
 	btClose->set_relief(Gtk::RELIEF_NORMAL);
 
-	statusbar = Gtk::manage(new class Gtk::Statusbar());
-	vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
+	//statusbar = Gtk::manage(new class Gtk::Statusbar());
+	//vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
 
 	show_all();
 
@@ -294,8 +295,9 @@ void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_,
 
 void MsgPage::showStatusBarMsg(const std::string& msg,unsigned int id)
 {
-	statusbar->pop(id);
-	statusbar->push(msg,id);
+	Bodies::Get_Bodies().get_msg_window().showStatusBarMsg(msg,id);
+//	statusbar->pop(id);
+//	statusbar->push(msg,id);
 }
 
 void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_,bool self)

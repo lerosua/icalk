@@ -247,6 +247,7 @@ void Bodies::set_vcard(VCard* vcard_)
 	if (vcard != vcard_) {
 		delete vcard;
 		vcard = vcard_;
+		//vcard = VCard(vcard_->tag());
 	}
 }
 void Bodies::logout()

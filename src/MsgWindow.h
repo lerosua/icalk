@@ -112,6 +112,7 @@ class MsgWindow:public Gtk::Window {
 	 * @param mode 为真则显示为有新消息，为假则显示为普通
 	 */
 	void setNewMsgTitle(bool mode);
+	void showStatusBarMsg(const std::string& msg,unsigned int id);
 	~MsgWindow();
       private:
 	MsgWindow(const MsgWindow & rhs);	//禁止拷贝
@@ -121,6 +122,7 @@ class MsgWindow:public Gtk::Window {
 	GlademmXML msg_xml;
 	Gtk::Notebook * notebook;
 	GlademmData *gmm_data;
+	Gtk::Statusbar * statusbar;
 };
 
 

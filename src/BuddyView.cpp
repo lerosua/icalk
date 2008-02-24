@@ -32,6 +32,7 @@ BuddyView::BuddyView(MainWindow & parent_):
 parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
 {
 	set_headers_visible(false);
+	set_border_width(5);
 	set_name("icalk_blist_treeview");
 
 	add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_MOTION_MASK |

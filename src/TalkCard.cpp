@@ -23,23 +23,23 @@ TalkCard::TalkCard()
 
 void TalkCard::set_manage(Client * jclient_)
 {
-	talk_vmanager = new VCardManager(jclient_);
+	vcardmanager_ = new VCardManager(jclient_);
 }
 
 void TalkCard::fetch_vcard(const JID & jid)
 {
-	talk_vmanager->fetchVCard(jid, this);
+	vcardmanager_->fetchVCard(jid, this);
 }
 
 void TalkCard::store_vcard(VCard * vcard_)
 {
-	talk_vmanager->storeVCard(vcard_, this);
+	vcardmanager_->storeVCard(vcard_, this);
 }
 
 void TalkCard::handleVCard(const JID & jid, VCard * vcard)
 {
 	JID myjid = Bodies::Get_Bodies().get_jid();
-	if (myjid == jid) {
+	if (myjid.bare() == jid.bare()) {
 		Bodies::Get_Bodies().set_vcard(vcard);
 		printf("geting %s vcard\n", jid.username().c_str());
 		if (!vcard) {

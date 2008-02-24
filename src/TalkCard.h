@@ -54,7 +54,7 @@ class TalkCard : public VCardHandler
 		
 
 	private:
-		VCardManager* talk_vmanager;	
+		VCardManager* vcardmanager_;	
 
 };
 #endif   /* ----- #ifndef TALKCARD_FILE_HEADER_INC  ----- */

@@ -45,6 +45,8 @@ MsgWindow::MsgWindow()
 	notebook->signal_switch_page().
 	    connect(sigc::mem_fun(*this, &MsgWindow::on_switch_page));
 
+	statusbar = dynamic_cast< Gtk::Statusbar* >
+		(msg_xml->get_widget("statusbar"));
 	add(*widget);
 
 	showTypeImage(false);
@@ -84,10 +86,10 @@ void MsgWindow::add_page(MsgPage & page)
 	button->signal_clicked().
 	    connect(sigc::mem_fun(*this, &MsgWindow::on_page_close_click));
 
-	Gtk::Image * logo =
-	    Gtk::manage(new Gtk::
-			Image(page.get_logo().get_pixbuf()->
-			      scale_simple(16, 16, Gdk::INTERP_NEAREST)));
+	Gtk::Image * logo =getImage("online.png");
+//	    Gtk::manage(new Gtk::
+//			Image(page.get_logo().get_pixbuf()->
+//			      scale_simple(16, 16, Gdk::INTERP_NEAREST)));
 
 	Gtk::HBox * box = Gtk::manage(new Gtk::HBox());
 	box->pack_start(*logo);
@@ -256,4 +258,11 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
 	}
 	return true;
 
+}
+
+
+void MsgWindow::showStatusBarMsg(const std::string& msg,unsigned int id)
+{
+	statusbar->pop(id);
+	statusbar->push(msg,id);
 }

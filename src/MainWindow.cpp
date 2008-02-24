@@ -317,7 +317,7 @@ void MainWindow::on_account_changed()
 }
 void MainWindow::set_logo(const std::string & iconpath)
 {
-	VCard *vcard = bodies.get_vcard();
+	//VCard *vcard = bodies.get_vcard();
 	//Glib::RefPtr<Gdk::Pixbuf> pix;
 	if (!iconpath.empty()) {
 		logo = Gdk::Pixbuf::create_from_file(iconpath, 36, 36);
@@ -332,7 +332,7 @@ void MainWindow::set_logo(const std::string & iconpath)
 		   fin.close();
 		   vcard->setPhoto(type,binval);
 		   bodies.get_cardManage().store_vcard(vcard);
-		 */
+		   */
 	} else
 		logo =
 		    Gdk::Pixbuf::
@@ -579,6 +579,18 @@ void MainWindow::on_btnLogo_clicked()
 			std::string filename = dialog.get_filename();	//注意：这里取回的并不是Glib::ustring, 而是std::string.
 			this->set_logo(filename);
 			bodies.setAccountTag("icon", filename);
+
+		VCard *vcard = bodies.get_vcard();
+		std::ifstream fin(filename.c_str(),ios::binary);
+		   const std::string type="image/png";
+		   std::string binval;
+		   std::copy((std::istreambuf_iterator<char>(fin)),
+		   std::istreambuf_iterator<char>(),
+		   std::inserter(binval,binval.begin()));
+		   fin.close();
+		   vcard->setPhoto(type,binval);
+		   bodies.get_cardManage().store_vcard(vcard);
+
 
 			break;
 		}
