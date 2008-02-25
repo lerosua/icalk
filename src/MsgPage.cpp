@@ -59,6 +59,7 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	rightVbox->pack_end(*logo2);
 
 
+	//设置消息显示TextView
 	msgBox = Gtk::manage(new class MsgBox);
 	Gtk::ScrolledWindow* scroll_out = Gtk::manage(new class Gtk::ScrolledWindow());
 	scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -66,18 +67,17 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	msgBox->unset_flags(Gtk::CAN_FOCUS);
 	msgBox->set_accepts_tab(false);
 	msgBox->set_editable(false);
-	//msgBox->set_border_width(2);
 	Gtk::HBox* hbox2 = Gtk::manage(new Gtk::HBox());
 	
 	/* add frame*/
 	Gtk::Frame* frame1 = Gtk::manage(new class Gtk::Frame());
 	frame1->set_shadow_type(Gtk::SHADOW_IN);
 	frame1->add(*scroll_out);
-
 	hbox2->pack_start(*frame1);
 	vPaned->pack1(*hbox2);
 	
 
+	//设置消息输入的TextView,它被包含在一个HBox里，右边还有一个textview用来装发送按钮
 	Gtk::VBox* vbox = Gtk::manage(new Gtk::VBox());
 	vPaned->pack2(*vbox, Gtk::SHRINK);
 		
@@ -87,9 +87,6 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	Gtk::HButtonBox* hbbox = Gtk::manage(new Gtk::HButtonBox(Gtk::BUTTONBOX_END));
 	vbox->pack_start(*hbbox, false, false);
 
-	/* 聊天窗口 输入框左边的那个好友图标*/
-	//Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
-	//logo = Gtk::manage(new Gtk::Image(pix));
 
 	Gtk::VBox* vbox2 = Gtk::manage(new Gtk::VBox());
 	hbox->pack_start(*vbox2);
@@ -102,19 +99,15 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	scroll_in->add(*inputMsgBox);
 	inputMsgBox->set_flags(Gtk::HAS_FOCUS);
-	//inputMsgBox->set_border_width(2);
 	inputMsgBox->signal_focus_in_event().connect(
 			sigc::mem_fun(*this,&MsgPage::on_inputMsgBox_focus_in_event));
 	inputMsgBox->signal_focus_out_event().connect(
 			sigc::mem_fun(*this,&MsgPage::on_inputMsgBox_focus_out_event));
 	
 	Gtk::HBox* hbox3 = Gtk::manage(new Gtk::HBox());
-	//vbox2->pack_start(*hbox3, true, true);
 
 	Gtk::Frame* frame2 = Gtk::manage(new class Gtk::Frame());
 	frame2->set_shadow_type(Gtk::SHADOW_IN);
-	//frame2->add(*scroll_in);
-	//hbox3->pack_start(*frame2);
 	frame2->add(*hbox3);
 	hbox3->pack_start(*scroll_in);
 	scroll_in->set_size_request(360,-1);
@@ -124,29 +117,17 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	send_textview->set_editable(false);
 	send_textview->set_size_request(80,-1);
 	hbox3->pack_end(*send_textview);
-	//hbox3->pack_end(*send_textview,Gtk::PACK_SHRINK,0);
-	//Gtk::VBox* vbox3 = Gtk::manage(new Gtk::VBox());
-	//hbox3->pack_start(*vbox3,Gtk::PACK_SHRINK,0);
 
-	//Gtk::Button* btClose = Gtk::manage(new Gtk::Button(Gtk::Stock::CLOSE));
-	//vbox3->pack_end(*btClose);
 
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
 	Gtk::Image* btSendImage = getImage("online.png");
 	btSend->set_image(*btSendImage);
-	//vbox3->pack_start(*btSend);
 	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,20,36);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
 
-	//btClose->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::close));
 	btSend->set_flags(Gtk::CAN_FOCUS);
 	btSend->set_relief(Gtk::RELIEF_NORMAL);
-	//btClose->set_flags(Gtk::CAN_FOCUS);
-	//btClose->set_relief(Gtk::RELIEF_NORMAL);
-
-	//statusbar = Gtk::manage(new class Gtk::Statusbar());
-	//vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
 
 	show_all();
 
@@ -171,6 +152,7 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	Gtk::VPaned* vPaned=Gtk::manage(new class Gtk::VPaned());
 	pack1(*vPaned);
 
+	//设置消息显示TextView
 	msgBox = Gtk::manage(new class MsgBox);
 	Gtk::ScrolledWindow* scroll_out = Gtk::manage(new class Gtk::ScrolledWindow());
 	scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -178,9 +160,8 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	msgBox->unset_flags(Gtk::CAN_FOCUS);
 	msgBox->set_accepts_tab(false);
 	msgBox->set_editable(false);
-	//msgBox->set_border_width(2);
 	Gtk::HPaned* hpaned2 = Gtk::manage(new Gtk::HPaned());
-	hpaned2->set_border_width(5);
+	//hpaned2->set_border_width(5);
 	
 	/* add frame*/
 	Gtk::Frame* frame1 = Gtk::manage(new class Gtk::Frame());
@@ -242,43 +223,34 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 	scroll_in->add(*inputMsgBox);
 	inputMsgBox->set_flags(Gtk::HAS_FOCUS);
-	//inputMsgBox->set_border_width(2);
 	inputMsgBox->signal_focus_in_event().connect(
 			sigc::mem_fun(*this,&MsgPage::on_inputMsgBox_focus_in_event));
 	
 	Gtk::HBox* hbox3 = Gtk::manage(new Gtk::HBox());
-	vbox2->pack_start(*hbox3, true, true);
 
 	Gtk::Frame* frame2 = Gtk::manage(new class Gtk::Frame());
 	frame2->set_shadow_type(Gtk::SHADOW_IN);
-	frame2->add(*scroll_in);
-	hbox3->pack_start(*frame2);
+	frame2->add(*hbox3);
+	hbox3->pack_start(*scroll_in);
+	scroll_in->set_size_request(360,-1);
+	vbox2->pack_start(*frame2,true,true);
 
 	Gtk::TextView* send_textview=Gtk::manage(new Gtk::TextView());
+	send_textview->set_editable(false);
+	send_textview->set_size_request(80,-1);
 	hbox3->pack_end(*send_textview,Gtk::PACK_SHRINK,0);
 
-	//Gtk::VBox* vbox3 = Gtk::manage(new Gtk::VBox());
-	//hbox3->pack_start(*vbox3,Gtk::PACK_SHRINK,0);
 
-	//Gtk::Button* btClose = Gtk::manage(new Gtk::Button(Gtk::Stock::CLOSE));
-	//vbox3->pack_end(*btClose);
 
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
 	Gtk::Image* btSendImage = getImage("online.png");
 	btSend->set_image(*btSendImage);
-	//vbox3->pack_start(*btSend);
-	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,1,20);
+	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,20,36);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
 
-	//btClose->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::close));
 	btSend->set_flags(Gtk::CAN_FOCUS);
 	btSend->set_relief(Gtk::RELIEF_NORMAL);
-	//btClose->set_flags(Gtk::CAN_FOCUS);
-	//btClose->set_relief(Gtk::RELIEF_NORMAL);
-
-	//statusbar = Gtk::manage(new class Gtk::Statusbar());
-	//vbox->pack_end(*statusbar,Gtk::PACK_SHRINK,0);
 
 	show_all();
 
