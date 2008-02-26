@@ -41,19 +41,15 @@ using namespace gloox;
 class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
       public:
 	TalkFT();
+	~TalkFT();
 	void set_sipFT(Client * client_) {
 		ft = new SIProfileFT(client_, this);
 		ft->addStreamHost( JID("proxy.jabber.org"),"208.245.212.98", 7777 );
 	}
 
-	//int start_recv(){ return pthread_create(&recv_id,NULL, (void*)loopRecv,NULL); }
-
-	void* loopRecv(void *) {
-		std::list<Bytestream*>::iterator it = m_bsslist.begin();
-		for(; it!=m_bsslist.end();++it)
-			(*it)->recv(100);
-		return NULL;
-	}
+	/** 循环接收流函数 */
+	void* loopRecv(void *) ;
+	
 
 	void handleFTRequest(const JID & from, 
 				const std::string& sid,
@@ -94,6 +90,7 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
 	SIProfileFT * ft;
 	std::list<Bytestream*> m_bsslist;
 	XPThread<TalkFT>	recvThread;
+	volatile int RUNNING ; //线程结束标志
 	//pthread_t recv_id  ;
 	
       private:

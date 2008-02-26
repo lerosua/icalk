@@ -3,10 +3,32 @@
 #include <gtkmm/dialog.h>
 #include "TalkFT.h"
 
+#define STOP_STATUS 0
+#define RUN_STATUS 1
+
 TalkFT::TalkFT():
 	recvThread(this,&TalkFT::loopRecv)
+	,RUNNING(STOP_STATUS)
 {
 }
+
+TalkFT::~TalkFT()
+{
+
+}
+void* TalkFT::loopRecv(void *) {
+			printf(" TalkFT thread starting\n");
+		while(RUNNING)
+			{
+		std::list<Bytestream*>::iterator it = m_bsslist.begin();
+		for(; it!=m_bsslist.end();++it)
+		{
+			//printf(" TalkFT thread runing\n");
+			(*it)->recv(100);
+		}
+			}
+		return NULL;
+	}
 
 void TalkFT::handleFTRequest(const JID & from,
 			const std::string& sid,
@@ -32,8 +54,9 @@ void TalkFT::handleFTRequest(const JID & from,
 		case(Gtk::RESPONSE_OK):
 		{
 			ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
-			//ft->acceptFT( from, sid, SIProfileFT::FTTypeIBB );
+			RUNNING = RUN_STATUS ;
 			recvThread.start();
+			//ft->acceptFT( from, sid, SIProfileFT::FTTypeIBB );
 			break;
 		}
 		case(Gtk::RESPONSE_CANCEL):
@@ -62,8 +85,12 @@ void TalkFT::handleBytestreamOpen(Bytestream* s5b)
 void TalkFT::handleBytestreamClose(Bytestream* s5b)
 {
 	printf("stream closed\n");
+	RUNNING = STOP_STATUS;
+	recvThread.join();
 	//s5b->removeBytestreamBytestreamDataHandler();
-	//m_bsslist.remove(*s5b);
+	//Bytestream* s5b_backup=s5b;
+	//m_bsslist.remove(s5b);
+	//ft->dispose(s5b);
 }
 
 void TalkFT::handleBytestreamError(Bytestream* s5b, const IQ& stanza)
