@@ -49,6 +49,7 @@ void TalkCard::handleVCard(const JID & jid, VCard * vcard)
 		std::cout << "nickname is " << vcard->
 		    nickname() << std::endl;
 		std::cout << "url is " << vcard->url() << std::endl;
+		std::cout << "photo is " << vcard->photo().binval << std::endl;
 	} else {
 		Buddy *buddy =
 		    Bodies::Get_Bodies().get_buddy_list().find_buddy(jid.
@@ -66,4 +67,5 @@ void TalkCard::handleVCard(const JID & jid, VCard * vcard)
 void TalkCard::handleVCardResult(VCardContext context, const JID & jid,
 				 StanzaError se)
 {
+	std::cout<<"jid vcard result error?"<<jid.bare()<<"StanzaError "<<se<<std::endl;
 }

@@ -174,8 +174,8 @@ void Buddy::close_session(bool closePage)
 {
 	if (NULL != session) {
 		/**发出关闭对话框的信号给对方*/
-		//this->setChatState( ChatStateGone );
-		//this->raiseMessageEvent(MessageEventCancel);
+		this->setChatState( ChatStateGone );
+		this->raiseMessageEvent(MessageEventCancel);
 		/** 关闭会话 */
 		session->disposeMessageFilter(message_event_filter);
 		session->disposeMessageFilter(chat_state_filter);
