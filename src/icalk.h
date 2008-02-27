@@ -40,6 +40,13 @@ enum BuddyType
 #define STATUS_GROUP 9
 #define STATUS_ROOM 11
 
+#ifndef DEBUG
+#define PBUG printf
+#else
+#define PBUG
+#endif
+
+
 using namespace gloox;
 
 /** 

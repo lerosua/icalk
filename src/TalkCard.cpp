@@ -20,6 +20,10 @@
 TalkCard::TalkCard()
 {
 }
+TalkCard::~TalkCard()
+{
+	delete vcardmanager_;
+}
 
 void TalkCard::set_manage(Client * jclient_)
 {

@@ -34,6 +34,7 @@ class TalkCard : public VCardHandler
 {
 	public:
 		TalkCard ();
+		~TalkCard ();
 		void fetch_vcard(const JID& jid);
 		void store_vcard(VCard* vcard_);
 		void set_manage(Client* jclient_);

@@ -2,36 +2,121 @@
 #include <gtkmm.h>
 #include <gtkmm/dialog.h>
 #include "TalkFT.h"
+#include "icalk.h"
 
 #define STOP_STATUS 0
 #define RUN_STATUS 1
+#define PORT 7777
+#define BLOCK_SIZE 200024
 
 TalkFT::TalkFT():
-	recvThread(this,&TalkFT::loopRecv)
-	,RUNNING(STOP_STATUS)
+	recvThread(this, &TalkFT::loopRecv)
+    , RUNNING(STOP_STATUS)
+	,m_bs_send(0)
 {
 }
 
 TalkFT::~TalkFT()
 {
+	delete m_server;
+	delete m_ft;
 
 }
-void* TalkFT::loopRecv(void *) {
-			printf(" TalkFT thread starting\n");
-		while(RUNNING)
-			{
-		std::list<Bytestream*>::iterator it = m_bsslist.begin();
-		for(; it!=m_bsslist.end();++it)
-		{
-			//printf(" TalkFT thread runing\n");
+
+void TalkFT::initFT(Client * client_)
+{
+	m_ft = new SIProfileFT(client_, this);
+	m_server =
+	    new SOCKS5BytestreamServer(client_->logInstance(), PORT);
+	ConnectionError le = ConnNoError;
+	if ((le = m_server->listen()) != ConnNoError)
+		PBUG("listen returned: %d\n", le);
+	m_ft->registerSOCKS5BytestreamServer(m_server);
+	m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
+			    PORT);
+}
+
+
+void *TalkFT::loopRecv(void *)
+{
+	PBUG(" TalkFT thread starting\n");
+	while (RUNNING) {
+		std::list < Bytestream * >::iterator it =
+		    m_bs_list.begin();
+		for (; it != m_bs_list.end(); ++it) {
+			//PBUG(" TalkFT thread runing\n");
 			(*it)->recv(100);
 		}
-			}
-		return NULL;
+	}
+	return NULL;
+}
+
+void* TalkFT::loopSend(void* )
+{
+	ConnectionError se=ConnNoError;
+	ConnectionError ce=ConnNoError;
+	char input[BLOCK_SIZE];
+	while(1)
+	{
+	if(m_server)
+	{
+		se = m_server->recv(1);
+		if(se != ConnNoError)
+		{
+			PBUG("SOCKS5BytestreamServer returned: %d\n",se);
+			//something error happen,please exit the send file
+		}
 	}
 
+	if(m_bs_send && ! sendfile.eof())
+	{
+		if(m_bs_send->isOpen())
+		{
+			sendfile.read(input,BLOCK_SIZE);
+			std::string content(input, sendfile.gcount());
+			if(!m_bs_send->send(content))
+				;	//do something end the file send thread
+		}
+		m_bs_send->recv(1);
+	}
+	else if(m_bs_send)
+		m_bs_send->close();
+	}
+
+
+
+}
+
+void TalkFT::handleFTSend(const JID& to, const std::string m_file)
+{
+	struct stat f_stat;
+	if(stat(m_file.c_str(), &f_stat))
+		return;
+	uint32_t m_size = f_stat.st_size;
+	sendfile.open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
+	if(!sendfile)
+		return;
+	m_ft->requestFT(to, m_file, m_size);
+}
+
+void TalkFT::handleFTBytestream(Bytestream * bs)
+{
+	PBUG("received bytestream type: %s\n",
+	     bs->type() ==
+	     Bytestream::S5B ? "sock5bytestream" : "ibbstream");
+	m_bs_list.push_back(bs);
+	bs->registerBytestreamDataHandler(this);
+	if (bs->connect()) {
+		if (bs->type() == Bytestream::S5B)
+			PBUG("ok! s5b connected to streamhost\n");
+		else
+			PBUG("ok! ibb sent request to remote entity\n");
+	}
+}
+
+
 void TalkFT::handleFTRequest(const JID & from,
-			const std::string& sid,
+			     const std::string & sid,
 			     const std::string & name, long size,
 			     const std::string & hash,
 			     const std::string & date,
@@ -39,66 +124,73 @@ void TalkFT::handleFTRequest(const JID & from,
 			     const std::string & desc, int /*stypes */ ,
 			     long /*offset */ , long /*length */ )
 {
-	printf
-	    ("received ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n",
-	     from.full().c_str(), name.c_str(), size,sid.c_str(), hash.c_str(),
-	     date.c_str(), mimetype.c_str(), desc.c_str());
+	PBUG("received m_ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n", from.full().c_str(), name.c_str(), size, sid.c_str(), hash.c_str(), date.c_str(), mimetype.c_str(), desc.c_str());
 
 
-	Gtk::MessageDialog askDialog("文件传输", false /*use markup*/,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_OK_CANCEL);
-	Glib::ustring msg_ = from.full()+"想要给你发送文件"+name;
+	Gtk::MessageDialog askDialog("文件传输",
+				     false /*use markup */ ,
+				     Gtk::MESSAGE_QUESTION,
+				     Gtk::BUTTONS_OK_CANCEL);
+	Glib::ustring msg_ =
+	    from.full() + "想要给你发送文件" + name;
 	askDialog.set_secondary_text(msg_);
 	int result = askDialog.run();
-	switch(result)
-	{
-		case(Gtk::RESPONSE_OK):
+	switch (result) {
+	case (Gtk::RESPONSE_OK):
 		{
-			ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
-			RUNNING = RUN_STATUS ;
+			m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
+			RUNNING = RUN_STATUS;
 			recvThread.start();
-			//ft->acceptFT( from, sid, SIProfileFT::FTTypeIBB );
 			break;
 		}
-		case(Gtk::RESPONSE_CANCEL):
+	case (Gtk::RESPONSE_CANCEL):
 		{
-			ft->declineFT(from, sid, SIManager::RequestRejected,
-		      "just testing");
+			m_ft->declineFT(from, sid,
+					SIManager::RequestRejected,
+					"just testing");
 			break;
 		}
-		default:
+	default:
 		{
-			ft->declineFT(from, sid, SIManager::RequestRejected,
-		      "just testing");
+			m_ft->declineFT(from, sid,
+					SIManager::RequestRejected,
+					"just testing");
 			break;
 		}
 	}
 
-	//ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
-	//ft->declineFT(from, sid, SIManager::RequestRejected,		      "just testing");
+	//m_ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
+	//m_ft->declineFT(from, sid, SIManager::RequestRejected,                      "just testing");
 }
 
-void TalkFT::handleBytestreamOpen(Bytestream* s5b)
+void TalkFT::handleBytestreamOpen(Bytestream * s5b)
 {
-	printf("stream opened\n");
+	PBUG("stream opened\n");
 }
 
-void TalkFT::handleBytestreamClose(Bytestream* s5b)
+void TalkFT::handleBytestreamClose(Bytestream * s5b)
 {
-	printf("stream closed\n");
+	PBUG("stream closed\n");
 	RUNNING = STOP_STATUS;
 	recvThread.join();
 	//s5b->removeBytestreamBytestreamDataHandler();
-	//Bytestream* s5b_backup=s5b;
-	//m_bsslist.remove(s5b);
-	//ft->dispose(s5b);
+	//m_bs_list.remove(s5b);
+	//m_ft->dispose(s5b);
 }
 
-void TalkFT::handleBytestreamError(Bytestream* s5b, const IQ& stanza)
+void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 {
-	printf("socks5 stream error\n");
+	PBUG("socks5 stream error\n");
 }
 
-void TalkFT::handleBytestreamData(Bytestream* s5b, const std::string& data)
+void TalkFT::handleBytestreamData(Bytestream * s5b,
+				  const std::string & data)
 {
-	printf("received %d bytes of data\n%s\n", data.length(),data.c_str() );
+	PBUG("received %d bytes of data\n%s\n", data.length(),
+	     data.c_str());
+}
+
+void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
+{
+	PBUG("m_ft request error\n");
 }

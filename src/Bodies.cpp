@@ -105,7 +105,7 @@ void Bodies::saveUserList(const std::string& jid)
 	USERLIST::iterator iter=userlist.begin();
 	for(; iter!=userlist.end();iter++)
 	{
-		printf("userlist %s\n", (*iter).c_str());
+		PBUG("userlist %s\n", (*iter).c_str());
 	}
 	*/
 	outfile<<jid<<std::endl;
@@ -185,7 +185,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient->registerConnectionListener(&talkconnect);
 	jclient->logInstance().registerLogHandler(LogLevelDebug,LogAreaAll,&talkconnect);
 
-	printf("login\n");
+	PBUG("login\n");
 	if(!server.empty())
 		jclient->setServer(server);
 	
@@ -209,16 +209,16 @@ int Bodies::connect(const char *name, const char* passwd)
 	cardManage.set_manage(jclient.get());
 	/** 初始化文件传输接收类*/
 	talkFT=new TalkFT();
-	talkFT->set_sipFT(jclient.get());
+	talkFT->initFT(jclient.get());
 	/** 初始化带内数据传输处理类*/
 	//IBBSHandler.init(jclient.get());
 	if(jclient->connect(false))
 	{
-		printf("connect call success\n");
+		PBUG("connect call success\n");
 		return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
 	}
 	else
-		printf("connect error\n");
+		PBUG("connect error\n");
 	return -1;
 }
 	
