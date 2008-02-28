@@ -6,12 +6,14 @@
 #include "Bodies.h"
 
 #define STOP_STATUS 0
-#define RUN_STATUS 1
+#define RUN_RECV  1
+#define RUN_SEND  2
 #define PORT 7777
 #define BLOCK_SIZE 200024
 
 TalkFT::TalkFT():
 	recvThread(this, &TalkFT::loopRecv)
+	,sendThread(this, &TalkFT::loopSend)
     , RUNNING(STOP_STATUS)
 	,m_bs_send(0)
 {
@@ -57,7 +59,7 @@ void* TalkFT::loopSend(void* )
 	ConnectionError se=ConnNoError;
 	ConnectionError ce=ConnNoError;
 	char input[BLOCK_SIZE];
-	while(1)
+	while(RUNNING)
 	{
 	if(m_server)
 	{
@@ -83,11 +85,11 @@ void* TalkFT::loopSend(void* )
 	else if(m_bs_send)
 	{
 		m_bs_send->close();
-		sendfile.close();
 	}
 	}
 
 
+	return NULL;
 
 }
 
@@ -101,6 +103,7 @@ void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 	if(!sendfile)
 		return;
 	m_ft->requestFT(to, m_file, m_size);
+	sendThread.start();
 }
 
 void TalkFT::handleFTBytestream(Bytestream * bs)
@@ -148,7 +151,7 @@ void TalkFT::handleFTRequest(const JID & from,
 	case (Gtk::RESPONSE_OK):
 		{
 			m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
-			RUNNING = RUN_STATUS;
+			RUNNING = RUN_RECV;
 			recvThread.start();
 			recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
 			break;
@@ -179,11 +182,20 @@ void TalkFT::handleBytestreamOpen(Bytestream * s5b)
 void TalkFT::handleBytestreamClose(Bytestream * s5b)
 {
 	PBUG("stream closed\n");
-	RUNNING = STOP_STATUS;
-	recvThread.join();
+	if(RUNNING == RUN_RECV)
+	{
+		RUNNING = STOP_STATUS;
+		recvThread.join();
+		recvfile.close();
+	}
+	else if(RUNNING == RUN_SEND)
+	{
+		RUNNING = STOP_STATUS;
+		sendThread.join();
+		sendfile.close();
+	}
 	if(s5b)
 		s5b->close();
-	recvfile.close();
 	//s5b->removeBytestreamBytestreamDataHandler();
 	//m_bs_list.remove(s5b);
 	//m_ft->dispose(s5b);
