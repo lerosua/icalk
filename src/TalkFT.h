@@ -40,6 +40,7 @@ using namespace gloox;
 # include <windows.h>
 #endif
 
+class Bodies;
 /**
  * 文件传输的类，负责接收与发送文件
  */
@@ -101,6 +102,7 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
 	std::list < Bytestream * >m_bs_list;
 	Bytestream* m_bs_send;
 	std::ifstream sendfile;
+	std::ofstream recvfile;
 	XPThread < TalkFT > recvThread;
 	volatile int RUNNING;	//线程结束标志
 

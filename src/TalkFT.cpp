@@ -3,6 +3,7 @@
 #include <gtkmm/dialog.h>
 #include "TalkFT.h"
 #include "icalk.h"
+#include "Bodies.h"
 
 #define STOP_STATUS 0
 #define RUN_STATUS 1
@@ -80,7 +81,10 @@ void* TalkFT::loopSend(void* )
 		m_bs_send->recv(1);
 	}
 	else if(m_bs_send)
+	{
 		m_bs_send->close();
+		sendfile.close();
+	}
 	}
 
 
@@ -104,7 +108,12 @@ void TalkFT::handleFTBytestream(Bytestream * bs)
 	PBUG("received bytestream type: %s\n",
 	     bs->type() ==
 	     Bytestream::S5B ? "sock5bytestream" : "ibbstream");
-	m_bs_list.push_back(bs);
+	// 如果发起者是本人的话，则表示这是发送的流
+	if(bs->initiator().bare() == Bodies::Get_Bodies().get_jid().bare() )
+		m_bs_send = bs;
+	else 
+		m_bs_list.push_back(bs);
+
 	bs->registerBytestreamDataHandler(this);
 	if (bs->connect()) {
 		if (bs->type() == Bytestream::S5B)
@@ -141,6 +150,7 @@ void TalkFT::handleFTRequest(const JID & from,
 			m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
 			RUNNING = RUN_STATUS;
 			recvThread.start();
+			recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
 			break;
 		}
 	case (Gtk::RESPONSE_CANCEL):
@@ -159,8 +169,6 @@ void TalkFT::handleFTRequest(const JID & from,
 		}
 	}
 
-	//m_ft->acceptFT( from, sid, SIProfileFT::FTTypeS5B );
-	//m_ft->declineFT(from, sid, SIManager::RequestRejected,                      "just testing");
 }
 
 void TalkFT::handleBytestreamOpen(Bytestream * s5b)
@@ -173,6 +181,9 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 	PBUG("stream closed\n");
 	RUNNING = STOP_STATUS;
 	recvThread.join();
+	if(s5b)
+		s5b->close();
+	recvfile.close();
 	//s5b->removeBytestreamBytestreamDataHandler();
 	//m_bs_list.remove(s5b);
 	//m_ft->dispose(s5b);
@@ -186,8 +197,9 @@ void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 void TalkFT::handleBytestreamData(Bytestream * s5b,
 				  const std::string & data)
 {
-	PBUG("received %d bytes of data\n%s\n", data.length(),
-	     data.c_str());
+	//PBUG("received %d bytes of data\n%s\n", data.length(),data.c_str());
+	PBUG("received %d bytes of data\n\n", data.length());
+	recvfile<<data;
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)

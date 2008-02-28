@@ -172,6 +172,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	{
 		//std::cout<<"重新连接中"<<std::endl;
 		connectIO.disconnect();
+		delete talkFT;
 	}
 	jid=new JID(name);
 	jclient.reset(new Client(*jid,passwd));

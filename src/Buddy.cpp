@@ -203,6 +203,7 @@ void Buddy::sendPicture(const std::string& filename)
 {
 	/**加载图片进数据*/
 
+	Bodies::Get_Bodies().getFThandler().handleFTSend(jid,filename);
 	/*
 	   std::ifstream fin(filename.c_str(),std::ios::binary);
 	   fin.seekg(0,std::ios::end);

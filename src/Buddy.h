@@ -158,7 +158,10 @@ class Buddy {
 
 		/** 返回Buddy的资源*/
 		const std::string& getResource(){return m_resource; }
-		void setResource(const std::string resource_) { m_resource=resource_ ;}
+		void setResource(const std::string resource_) { 
+			m_resource=resource_ ;
+			jid.setResource(m_resource);
+		}
 		/** 返回此用户的类型*/
 		BuddyType getType()const  { return type;}
 		/** 设置此用户的类型*/

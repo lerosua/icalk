@@ -468,7 +468,7 @@ void MsgPage::setSubject()
 
 void MsgPage::on_toolbar_fonts()
 {
-	//	buddy->sendPicture("/tmp/bot.png");
+	buddy->sendPicture("/tmp/bot.png");
 	printf(" buttons for fonts press\n");
 }
 void MsgPage::on_toolbar_link(){}

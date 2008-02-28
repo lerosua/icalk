@@ -114,6 +114,8 @@ class Bodies
 					//setAccountTag("status",status_);
 					setAccountTag("message",msg_);
 						}
+		/** 返回文件传输处理类 */
+		TalkFT& getFThandler() const { return *talkFT; }
 		/**得到书签处理类*/
 		//TalkBookMark&    get_bookmark()   { return *bookMark; }
 		/**得到VCard管理类*/
