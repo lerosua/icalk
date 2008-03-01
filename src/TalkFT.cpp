@@ -35,15 +35,17 @@ void TalkFT::initFT(Client * client_)
 	if ((le = m_server->listen()) != ConnNoError)
 		PBUG("listen returned: %d\n", le);
 	m_ft->registerSOCKS5BytestreamServer(m_server);
+	m_ft->addStreamHost(JID("reflector.amessage.eu"),"reflector.amessage.eu",6565);
 	m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
 			    PORT);
+	//m_ft->addStreamHost(client_->jid(),"192.168.1.103",PORT);
 }
 
 
 void *TalkFT::loopRecv(void *)
 {
 	PBUG(" TalkFT thread starting\n");
-	while (RUNNING) {
+	while (RUNNING==RUN_RECV) {
 		std::list < Bytestream * >::iterator it =
 		    m_bs_list.begin();
 		for (; it != m_bs_list.end(); ++it) {
@@ -59,7 +61,7 @@ void* TalkFT::loopSend(void* )
 	ConnectionError se=ConnNoError;
 	ConnectionError ce=ConnNoError;
 	char input[BLOCK_SIZE];
-	while(RUNNING)
+	while(RUNNING==RUN_SEND)
 	{
 	if(m_server)
 	{
@@ -78,7 +80,8 @@ void* TalkFT::loopSend(void* )
 			sendfile.read(input,BLOCK_SIZE);
 			std::string content(input, sendfile.gcount());
 			if(!m_bs_send->send(content))
-				;	//do something end the file send thread
+			PBUG("file send shuld be return\n");
+			;	//do something end the file send thread
 		}
 		m_bs_send->recv(1);
 	}
@@ -103,6 +106,7 @@ void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 	if(!sendfile)
 		return;
 	m_ft->requestFT(to, m_file, m_size);
+	RUNNING = RUN_SEND;
 	sendThread.start();
 }
 
