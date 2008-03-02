@@ -320,7 +320,7 @@ void MainWindow::set_logo(const std::string & iconpath)
 	//VCard *vcard = bodies.get_vcard();
 	//Glib::RefPtr<Gdk::Pixbuf> pix;
 	if (!iconpath.empty()) {
-		logo = Gdk::Pixbuf::create_from_file(iconpath, 36, 36);
+		logo = Gdk::Pixbuf::create_from_file(iconpath,96,96);
 
 		/*
 		   std::ifstream fin(iconpath.c_str(),ios::binary);
@@ -336,8 +336,7 @@ void MainWindow::set_logo(const std::string & iconpath)
 	} else
 		logo =
 		    Gdk::Pixbuf::
-		    create_from_file(DATA_DIR "/images/avatar.png", 36,
-				     36);
+		    create_from_file(DATA_DIR "/images/avatar.png");
 	//Glib::RefPtr < Gdk::Pixbuf > border =
 	//   getPix("border.png");
 	//border->composite(logo,1,1,36,36,0,0,1,1,Gdk::INTERP_BILINEAR,255);
@@ -346,7 +345,7 @@ void MainWindow::set_logo(const std::string & iconpath)
 	Gtk::Image * logo_ =
 	    dynamic_cast <
 	    Gtk::Image * >(main_xml->get_widget("image_logo"));
-	logo_->set(logo);
+	logo_->set(logo->scale_simple(36,36,Gdk::INTERP_BILINEAR));
 	//logo_->set(border);
 
 }

@@ -36,8 +36,8 @@ void TalkFT::initFT(Client * client_)
 		PBUG("listen returned: %d\n", le);
 	m_ft->registerSOCKS5BytestreamServer(m_server);
 	m_ft->addStreamHost(JID("reflector.amessage.eu"),"reflector.amessage.eu",6565);
-	m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
-			    PORT);
+	//m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
+	//		    PORT);
 	//m_ft->addStreamHost(client_->jid(),"192.168.1.103",PORT);
 }
 
