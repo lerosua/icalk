@@ -21,6 +21,7 @@
 #include "Bodies.h"
 #include <assert.h>
 #include <glib/gi18n.h>
+#include <gloox/xhtmlim.h>
 
 TalkMsg::TalkMsg(){}
 
@@ -48,6 +49,13 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 	if(NULL==session)
 		return;
 	//page_->showMessage(sender,msg);
+	/*
+	const XHtmlIM* x=stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
+	if(x)
+	{
+		PBUG("the msg has use XhtmlIM\n");
+	}
+	*/
 	const DelayedDelivery* dd = stanza.when();
 	if(dd)
 	{

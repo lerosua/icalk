@@ -34,6 +34,8 @@
 #include <libglademm/variablesmap.h>
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
+#include <gloox/delayeddelivery.h>
+#include <gloox/xhtmlim.h>
 //#include "gtalkcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
@@ -184,6 +186,8 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient->rosterManager()->registerRosterListener(&buddy_list);
 	jclient->registerMessageSessionHandler(&talkmsg,0);
 	jclient->registerConnectionListener(&talkconnect);
+	jclient->registerStanzaExtension(new DelayedDelivery(0));
+	//jclient->registerStanzaExtension(new XHtmlIM(0));
 	jclient->logInstance().registerLogHandler(LogLevelDebug,LogAreaAll,&talkconnect);
 
 	PBUG("login\n");
