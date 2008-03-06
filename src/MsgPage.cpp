@@ -52,10 +52,16 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	pack2(*rightVbox);
 	Glib::RefPtr<Gdk::Pixbuf> pix = buddy->getLogo();
 	logo = Gtk::manage(new Gtk::Image(pix));
-	rightVbox->pack_start(*logo);
+	Gtk::AspectFrame* aspectframe1=Gtk::manage(new Gtk::AspectFrame());
+	aspectframe1->add(*logo);
+	rightVbox->pack_start(*aspectframe1);
+	//rightVbox->pack_start(*logo);
 
 	Glib::RefPtr<Gdk::Pixbuf> pix2 = Bodies::Get_Bodies().get_main_window().getLogo();
 	Gtk::Image* logo2 = Gtk::manage(new Gtk::Image(pix2));
+	Gtk::AspectFrame* aspectframe2=Gtk::manage(new Gtk::AspectFrame());
+	aspectframe2->add(*logo);
+	rightVbox->pack_end(*aspectframe2);
 	rightVbox->pack_end(*logo2);
 
 
@@ -120,8 +126,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
 
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
-	Gtk::Image* btSendImage = getImage("online.png");
-	btSend->set_image(*btSendImage);
+	//Gtk::Image* btSendImage = getImage("online.png");
+	//btSend->set_image(*btSendImage);
 	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,15,25);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
@@ -244,8 +250,8 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 
 
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
-	Gtk::Image* btSendImage = getImage("online.png");
-	btSend->set_image(*btSendImage);
+	//Gtk::Image* btSendImage = getImage("online.png");
+	//btSend->set_image(*btSendImage);
 	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,15,25);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
