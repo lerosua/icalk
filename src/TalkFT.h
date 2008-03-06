@@ -105,7 +105,8 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
 	std::ofstream recvfile;
 	XPThread < TalkFT > recvThread;
 	XPThread < TalkFT > sendThread;
-	volatile int RUNNING;	//线程结束标志
+	volatile int R_RUNNING;	//接收线程标志
+	volatile int S_RUNNING;	//发送线程标志
 
       private:
 	TalkFT(const TalkFT & rhs);	//不用

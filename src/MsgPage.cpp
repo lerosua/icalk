@@ -60,9 +60,9 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 	Glib::RefPtr<Gdk::Pixbuf> pix2 = Bodies::Get_Bodies().get_main_window().getLogo();
 	Gtk::Image* logo2 = Gtk::manage(new Gtk::Image(pix2));
 	Gtk::AspectFrame* aspectframe2=Gtk::manage(new Gtk::AspectFrame());
-	aspectframe2->add(*logo);
+	aspectframe2->add(*logo2);
 	rightVbox->pack_end(*aspectframe2);
-	rightVbox->pack_end(*logo2);
+	//rightVbox->pack_end(*logo2);
 
 
 	//设置消息显示TextView

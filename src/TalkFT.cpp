@@ -14,7 +14,8 @@
 TalkFT::TalkFT():
 	recvThread(this, &TalkFT::loopRecv)
 	,sendThread(this, &TalkFT::loopSend)
-    , RUNNING(STOP_STATUS)
+    , R_RUNNING(STOP_STATUS)
+    , S_RUNNING(STOP_STATUS)
 	,m_bs_send(0)
 {
 }
@@ -45,7 +46,7 @@ void TalkFT::initFT(Client * client_)
 void *TalkFT::loopRecv(void *)
 {
 	PBUG(" TalkFT thread starting\n");
-	while (RUNNING==RUN_RECV) {
+	while (R_RUNNING==RUN_RECV) {
 		std::list < Bytestream * >::iterator it =
 		    m_bs_list.begin();
 		for (; it != m_bs_list.end(); ++it) {
@@ -61,7 +62,7 @@ void* TalkFT::loopSend(void* )
 	ConnectionError se=ConnNoError;
 	ConnectionError ce=ConnNoError;
 	char input[BLOCK_SIZE];
-	while(RUNNING==RUN_SEND)
+	while(S_RUNNING==RUN_SEND)
 	{
 	if(m_server)
 	{
@@ -105,8 +106,10 @@ void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 	sendfile.open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
 	if(!sendfile)
 		return;
+	if(S_RUNNING == RUN_SEND)
+		return;
 	m_ft->requestFT(to, m_file, m_size);
-	RUNNING = RUN_SEND;
+	S_RUNNING = RUN_SEND;
 	sendThread.start();
 }
 
@@ -143,6 +146,8 @@ void TalkFT::handleFTRequest(const JID & from,
 	PBUG("received m_ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n", from.full().c_str(), name.c_str(), size, sid.c_str(), hash.c_str(), date.c_str(), mimetype.c_str(), desc.c_str());
 
 
+	if(R_RUNNING == RUN_SEND)
+		return;
 	Gtk::MessageDialog askDialog("文件传输",
 				     false /*use markup */ ,
 				     Gtk::MESSAGE_QUESTION,
@@ -155,7 +160,7 @@ void TalkFT::handleFTRequest(const JID & from,
 	case (Gtk::RESPONSE_OK):
 		{
 			m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
-			RUNNING = RUN_RECV;
+			R_RUNNING = RUN_RECV;
 			recvThread.start();
 			recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
 			break;
@@ -186,15 +191,15 @@ void TalkFT::handleBytestreamOpen(Bytestream * s5b)
 void TalkFT::handleBytestreamClose(Bytestream * s5b)
 {
 	PBUG("stream closed\n");
-	if(RUNNING == RUN_RECV)
+	if(R_RUNNING == RUN_RECV)
 	{
-		RUNNING = STOP_STATUS;
+		R_RUNNING = STOP_STATUS;
 		recvThread.join();
 		recvfile.close();
 	}
-	else if(RUNNING == RUN_SEND)
+	if(S_RUNNING == RUN_SEND)
 	{
-		RUNNING = STOP_STATUS;
+		S_RUNNING = STOP_STATUS;
 		sendThread.join();
 		sendfile.close();
 	}
@@ -221,4 +226,16 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
 {
 	PBUG("m_ft request error\n");
+	if(R_RUNNING == RUN_RECV)
+	{
+		R_RUNNING = STOP_STATUS;
+		recvThread.join();
+		recvfile.close();
+	}
+	if(S_RUNNING == RUN_SEND)
+	{
+		S_RUNNING = STOP_STATUS;
+		sendThread.join();
+		sendfile.close();
+	}
 }
