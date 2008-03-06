@@ -187,7 +187,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	jclient->registerMessageSessionHandler(&talkmsg,0);
 	jclient->registerConnectionListener(&talkconnect);
 	jclient->registerStanzaExtension(new DelayedDelivery(0));
-	//jclient->registerStanzaExtension(new XHtmlIM(0));
+	jclient->registerStanzaExtension(new XHtmlIM(0));
 	jclient->logInstance().registerLogHandler(LogLevelDebug,LogAreaAll,&talkconnect);
 
 	PBUG("login\n");

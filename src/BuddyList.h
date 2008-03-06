@@ -110,8 +110,10 @@ class BuddyList:public RosterListener
 		 * @return 返回真则删除，返回假则忽略请求
 		 */
 		bool handleUnsubscriptionRequest(const JID& jid,const std::string& msg);
-		/** 当一个不在好友列表中的人发来Presence::PresenceType信息时回调,奇怪~*/
+		/** 在 gloox 1.0-beta2后，这个函数被废除*/
 		void handleNonrosterPresence(Presence* stanza);
+		/** 当一个不在好友列表中的人发来Presence::PresenceType信息时回调,奇怪~*/
+		void handleNonrosterPresence(const Presence& stanza);
 	private:
 		BUDDY_MAP buddy_map;
 };

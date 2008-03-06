@@ -115,19 +115,20 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
 	Gtk::TextView* send_textview=Gtk::manage(new Gtk::TextView());
 	send_textview->set_editable(false);
-	send_textview->set_size_request(80,-1);
-	hbox3->pack_end(*send_textview);
+	send_textview->set_size_request(90,-1);
+	hbox3->pack_end(*send_textview,false,false,0);
 
 
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
 	Gtk::Image* btSendImage = getImage("online.png");
 	btSend->set_image(*btSendImage);
-	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,20,36);
+	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,15,25);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
 
 	btSend->set_flags(Gtk::CAN_FOCUS);
 	btSend->set_relief(Gtk::RELIEF_NORMAL);
+	btSend->set_size_request(60,50);
 
 	show_all();
 
@@ -237,7 +238,7 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 
 	Gtk::TextView* send_textview=Gtk::manage(new Gtk::TextView());
 	send_textview->set_editable(false);
-	send_textview->set_size_request(80,-1);
+	send_textview->set_size_request(90,-1);
 	hbox3->pack_end(*send_textview,Gtk::PACK_SHRINK,0);
 
 
@@ -245,12 +246,13 @@ MsgPage::MsgPage(const std::string& title,RoomItem* room_,bool isRoom_):
 	Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
 	Gtk::Image* btSendImage = getImage("online.png");
 	btSend->set_image(*btSendImage);
-	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,20,36);
+	send_textview->add_child_in_window(*btSend,Gtk::TEXT_WINDOW_TEXT,15,25);
 
 	btSend->signal_clicked().connect(sigc::mem_fun(*this,&MsgPage::sendMessage));
 
 	btSend->set_flags(Gtk::CAN_FOCUS);
 	btSend->set_relief(Gtk::RELIEF_NORMAL);
+	btSend->set_size_request(60,50);
 
 	show_all();
 

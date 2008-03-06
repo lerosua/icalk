@@ -49,13 +49,11 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 	if(NULL==session)
 		return;
 	//page_->showMessage(sender,msg);
-	/*
 	const XHtmlIM* x=stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
 	if(x)
 	{
 		PBUG("the msg has use XhtmlIM\n");
 	}
-	*/
 	const DelayedDelivery* dd = stanza.when();
 	if(dd)
 	{
