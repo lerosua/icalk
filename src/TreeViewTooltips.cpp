@@ -20,8 +20,9 @@
 #include "pixmaps.h"
 
 TreeViewTooltips::TreeViewTooltips(BuddyView* view):buddyview(view)
+		,	Window(Gtk::WINDOW_POPUP)
 {
-	Gtk::Window::Window(WINDOW_POPUP);
+	//Gtk::Window::Window(WINDOW_POPUP);
 	this->set_decorated(false);
 	this->set_skip_pager_hint(true);
 	this->set_skip_taskbar_hint(true);
@@ -48,8 +49,10 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view):buddyview(view)
 	add_events(Gdk::POINTER_MOTION_MASK); 
 	this->signal_expose_event().connect(sigc::mem_fun(*this,
 				&TreeViewTooltips::on_expose_event));
-	//this->signal_motion_notify_event().connect(sigc::mem_fun(
-	//			*this,&TreeViewTooltips::on_motion_event),false);
+	this->signal_motion_notify_event().connect(sigc::mem_fun(
+				*this,&TreeViewTooltips::on_motion_event),false);
+	this->signal_leave_notify_event().connect(sigc::mem_fun(
+				*this,&TreeViewTooltips::on_leave_event),false);
 
 }
 bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev)
@@ -67,7 +70,21 @@ bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev)
 }
 bool TreeViewTooltips::on_motion_event(GdkEventMotion* ev)
 {
-	//hideTooltip();
+	Gtk::TreeModel::Path path;
+	Gtk::TreeViewColumn* column;
+	int cell_x, cell_y;
+	    if(  buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x,cell_y) )
+	    {
+		hideTooltip();
+		return 0;
+	    }
+}
+
+
+bool TreeViewTooltips::on_leave_event(GdkEventCrossing* ev)
+{
+	hideTooltip();
+	return 0;
 }
 void TreeViewTooltips::hideTooltip()
 {

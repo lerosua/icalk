@@ -46,6 +46,7 @@ class TreeViewTooltips:public Gtk::Window
 		/**显示Tooltips，ev用于得到当前所在的好友栏*/
 		void showTooltip(GdkEventMotion* ev);
 		bool on_motion_event(GdkEventMotion* ev);
+		bool on_leave_event(GdkEventCrossing* ev);
 
 
 	private:
