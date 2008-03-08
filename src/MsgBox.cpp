@@ -23,8 +23,10 @@
 
 MsgBox::MsgBox()
 {
-	set_pixels_below_lines(3);
-	set_left_margin(3);
+	set_pixels_below_lines(2);
+	set_pixels_above_lines(2);
+	set_left_margin(2);
+	set_right_margin(2);
       set_wrap_mode(Gtk::WRAP_WORD);
 
 	Glib::RefPtr < Gtk::TextBuffer > buffer =

@@ -164,11 +164,13 @@ systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
 	buttonSystem->signal_clicked().
 	    connect(sigc::
 		    mem_fun(*this, &MainWindow::on_btnSystem_clicked));
+	/*
 	Gtk::Button * btAudio = dynamic_cast <
 	    Gtk::Button * >(main_xml->get_widget("button_audio"));
 	btAudio->signal_clicked().
 	    connect(sigc::
 		    mem_fun(*this, &MainWindow::on_btnAudio_clicked));
+		    */
 
 	Gtk::Button * buttonLogo =
 	    dynamic_cast <
@@ -176,6 +178,12 @@ systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
 	buttonLogo->signal_clicked().
 	    connect(sigc::mem_fun(*this, &MainWindow::on_btnLogo_clicked));
 
+	Gtk::Button * btaddfriend = 
+		dynamic_cast<
+		Gtk::Button*>(main_xml->get_widget("button_add_friend"));
+	btaddfriend->signal_clicked().
+		connect(sigc::mem_fun(*this,
+					&MainWindow::on_addBuddy_activate));
 	Gtk::Button * btstatusmsgmanager =
 	    dynamic_cast <
 	    Gtk::Button * >(main_xml->get_widget("statusmsgbt"));

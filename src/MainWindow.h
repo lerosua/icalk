@@ -90,7 +90,7 @@ class MainWindow:public Gtk::Window
 		void on_btnSystem_clicked();
 		/** 主窗口下面按钮，签名消息管理按键*/
 		void on_btstatusmsgmanager_clicked();
-		/** 主窗口下面按钮第二个*/
+		/** 主窗口下面按钮第三个*/
 		void on_btnAudio_clicked();
 		/** 展开或折叠好友列表快捷按钮*/
 		void on_btlistexpand_clicked();

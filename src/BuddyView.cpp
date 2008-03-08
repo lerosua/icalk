@@ -51,6 +51,7 @@ parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
 	m_treemodelfilter->set_visible_func(sigc::mem_fun(*this,&BuddyView::
 				list_visible_func));
 
+	//set_model(m_treemodelfilter);
 
 	append_column("ICON", buddyColumns.icon);
 	//append_column("ID", buddyColumns.id);
@@ -313,7 +314,11 @@ void BuddyView::tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 bool BuddyView::list_visible_func(const Gtk::TreeIter& iter)
 {
 
-	PBUG(" testing for list_visible_func \n");
+	Glib::ustring email = (*iter)[buddyColumns.id];
+	//PBUG(" testing for list_visible_func ,now email =%s\n",email.c_str());
+	if(filterText.empty())
+		return true;
+	return false;
 
 }
 void BuddyView::setFilterText(const Glib::ustring& text)
