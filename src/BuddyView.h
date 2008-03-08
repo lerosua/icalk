@@ -123,6 +123,10 @@ class BuddyView:public Gtk::TreeView {
 	void cellrender_edited(bool mode);
 	void tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 				   const Gtk::TreeModel::iterator & iter);
+	/** 列表的TreeModelFilter 查找功能*/
+	bool list_visible_func(const Gtk::TreeIter& iter);
+	/** TreeModelFilter 查找开始*/
+	void setFilterText(const Glib::ustring& text);
 	/** 保存列表中的配置*/
 	void saveBlistTag();
 	/** 读取列表相关的配置*/
@@ -175,7 +179,9 @@ class BuddyView:public Gtk::TreeView {
 	RoomMenu  roomMenu;
 	/*列表中好友的本地配置的配置文件类 */
 	Tag *blistTag;
-	Glib::RefPtr <TreeModelDnd > tree_store;
+	Glib::RefPtr <TreeModelDnd > m_treestore;
+	Glib::RefPtr <Gtk::TreeModelFilter> m_treemodelfilter;
+	Glib::ustring filterText;
 	BuddyColumns buddyColumns;
 	Gtk::CellRendererText rendtext;
 	/*全局组列表*/

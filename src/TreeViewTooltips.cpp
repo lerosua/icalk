@@ -22,7 +22,6 @@
 TreeViewTooltips::TreeViewTooltips(BuddyView* view):buddyview(view)
 		,	Window(Gtk::WINDOW_POPUP)
 {
-	//Gtk::Window::Window(WINDOW_POPUP);
 	this->set_decorated(false);
 	this->set_skip_pager_hint(true);
 	this->set_skip_taskbar_hint(true);

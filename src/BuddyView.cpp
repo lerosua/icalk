@@ -30,6 +30,7 @@
 
 BuddyView::BuddyView(MainWindow & parent_):
 parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
+	,filterText("")
 {
 	set_headers_visible(false);
 	set_border_width(5);
@@ -41,8 +42,16 @@ parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
 		   LEAVE_NOTIFY_MASK);
 	tooltips = new TreeViewTooltips(this);
 
-	tree_store = TreeModelDnd::create(buddyColumns);
-	set_model(tree_store);
+	m_treestore = TreeModelDnd::create(buddyColumns);
+	set_model(m_treestore);
+
+	//i test for TreeModelFilter
+	Gtk::TreeModel::Path path("0");
+	m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore,path);
+	m_treemodelfilter->set_visible_func(sigc::mem_fun(*this,&BuddyView::
+				list_visible_func));
+
+
 	append_column("ICON", buddyColumns.icon);
 	//append_column("ID", buddyColumns.id);
 	//append_column("Name", buddyColumns.nickname);
@@ -90,11 +99,11 @@ parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
 	this->append_column(*col);
 	this->append_column("Voip", buddyColumns.audioicon);
 
-	tree_store->
+	m_treestore->
 	    set_default_sort_func(sigc::
 				  mem_fun(*this,
 					  &BuddyView::on_sort_compare));
-	tree_store->
+	m_treestore->
 	    set_sort_column_id(Gtk::TreeSortable::DEFAULT_SORT_COLUMN_ID,
 			       Gtk::SORT_ASCENDING);
 
@@ -301,6 +310,18 @@ void BuddyView::tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 	}
 }
 
+bool BuddyView::list_visible_func(const Gtk::TreeIter& iter)
+{
+
+	PBUG(" testing for list_visible_func \n");
+
+}
+void BuddyView::setFilterText(const Glib::ustring& text)
+{
+	filterText = text;
+	m_treemodelfilter->refilter();
+}
+
 void BuddyView::cellrender_edited(bool mode)
 {
 	if (mode) {
@@ -341,7 +362,7 @@ void BuddyView::cellrender_on_edited(const Glib::ustring & path_string,
 	if (new_text.empty())
 		return;
 	//Get the row from the path;
-	Gtk::TreeModel::iterator iter = tree_store->get_iter(path);
+	Gtk::TreeModel::iterator iter = m_treestore->get_iter(path);
 	if (iter) {
 		Glib::ustring jid = (*iter)[buddyColumns.id];
 		Buddy *buddy =
@@ -378,7 +399,7 @@ int BuddyView::iter_n_children(Gtk::TreeModel::iterator listiter)
 
 void BuddyView::expanded_list()
 {
-	Gtk::TreeModel::iterator iter = tree_store->children().begin();
+	Gtk::TreeModel::iterator iter = m_treestore->children().begin();
 	Gtk::TreeModel::Path path(iter);
 	if (this->row_expanded(path))
 		this->collapse_all();
@@ -390,7 +411,7 @@ bool BuddyView::remove(const std::string & id)
 {
 	/*查找要删除的好友在列表中是否已经显示 */
 
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 
 	Buddy *buddy =
@@ -414,7 +435,7 @@ bool BuddyView::remove(const std::string & id)
 		if (treeiter == grandson.end())
 			return false;
 		if (!SHOWALL)
-			tree_store->erase(treeiter);
+			m_treestore->erase(treeiter);
 
 
 		int num = iter_n_children(listiter);
@@ -427,7 +448,7 @@ bool BuddyView::remove(const std::string & id)
 
 		/**如果组为空，则也删除组*/
 		if (listiter->children().empty())
-			tree_store->erase(*listiter);
+			m_treestore->erase(*listiter);
 	}
 	return false;
 }
@@ -489,7 +510,7 @@ void BuddyView::initBuddy(Buddy * value)
 {
 	StringList g = value->getGroups();
 	StringList::const_iterator it_g;
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 
 	if (g.empty()) {
@@ -506,7 +527,7 @@ void BuddyView::initBuddy(Buddy * value)
 
 		/* 添加好友 */
 		Gtk::TreeModel::iterator treeiter =
-		    tree_store->append(listiter->children());
+		    m_treestore->append(listiter->children());
 
 		const std::string & buddyname = value->get_jid();
 
@@ -628,7 +649,7 @@ void BuddyView::initRoomList()
 Gtk::TreeModel::iterator BuddyView::addBuddyGroup(const std::
 						  string & groupName)
 {
-	Gtk::TreeModel::iterator listiter = tree_store->append();
+	Gtk::TreeModel::iterator listiter = m_treestore->append();
 	char *marktext;
 	(*listiter)[buddyColumns.icon] = getPix16("group.png");
 	(*listiter)[buddyColumns.id] = groupName;
@@ -641,7 +662,7 @@ Gtk::TreeModel::iterator BuddyView::addBuddyGroup(const std::
 }
 void BuddyView::addRoom(const ConferenceListItem & ci)
 {
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 	std::string roomgroup = "room";
 	listiter = getListIter(children, roomgroup);
@@ -649,7 +670,7 @@ void BuddyView::addRoom(const ConferenceListItem & ci)
 		listiter = addBuddyGroup(roomgroup);
 
 	Gtk::TreeModel::iterator treeiter =
-	    tree_store->append(listiter->children());
+	    m_treestore->append(listiter->children());
 
 	(*treeiter)[buddyColumns.id] = ci.jid;
 	(*treeiter)[buddyColumns.nickname] = ci.name;
@@ -678,7 +699,7 @@ void BuddyView::delRoom(const std::string & jid)
 {
 
 	std::cout << "del room " << jid << std::endl;
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 	std::string roomgroup = "room";
 	listiter = getListIter(children, roomgroup);
@@ -691,7 +712,7 @@ void BuddyView::delRoom(const std::string & jid)
 	if (treeiter == grandson.end())
 		return;
 
-	tree_store->erase(treeiter);
+	m_treestore->erase(treeiter);
 
 	/** delete room file in blist.xml*/
 	/** 删除掉blist.xml里的房间信息*/
@@ -714,7 +735,7 @@ void BuddyView::add(const std::string & jid_str)
 
 	StringList g = buddy->getGroups();
 	StringList::const_iterator it_g;
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 
 
@@ -731,7 +752,7 @@ void BuddyView::add(const std::string & jid_str)
 
 		/* 添加好友 */
 		Gtk::TreeModel::iterator treeiter =
-		    tree_store->append(listiter->children());
+		    m_treestore->append(listiter->children());
 		(*treeiter)[buddyColumns.icon] = getPix30("offline.png");
 		char *marktext;
 		const std::string & nickname = buddy->get_nickname();
@@ -774,13 +795,13 @@ void BuddyView::add(const std::string & jid_str)
 
 void BuddyView::showGroup(bool mode)
 {
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator it_g;
 	it_g = children.begin();
 	while (it_g != children.end()) {
 		Gtk::TreeModel::Children grandson = it_g->children();
 		if (grandson.empty())
-			it_g = tree_store->erase(it_g);
+			it_g = m_treestore->erase(it_g);
 		else
 			it_g++;
 	}
@@ -823,7 +844,7 @@ void BuddyView::refreshList()
 
 void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 {
-	Gtk::TreeModel::Children children = tree_store->children();
+	Gtk::TreeModel::Children children = m_treestore->children();
 	Gtk::TreeModel::iterator listiter;
 	Buddy *buddy =
 	    Bodies::Get_Bodies().get_buddy_list().find_buddy(jid_ctr);
@@ -854,7 +875,7 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 		/*在列表中找不到则添加,这种情况应该为刚上线时 */
 		if (treeiter == grandson.end()) {
 			treeiter =
-			    tree_store->append(listiter->children());
+			    m_treestore->append(listiter->children());
 
 			int delay = 9000;
 			Glib::RefPtr < Gdk::Pixbuf > signoff =
