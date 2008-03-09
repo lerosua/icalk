@@ -33,7 +33,7 @@
 #include <sigc++/connection.h>
 #include "RoomItem.h"
 #include "TalkRoomHandler.h"
-#include "TalkMenu.h"
+//#include "TalkMenu.h"
 #include "BuddyList.h"
 #include "ConfXml.h"
 #include "TreeModelDnd.h"
@@ -175,8 +175,10 @@ class BuddyView:public Gtk::TreeView {
       private:
 	MainWindow & parent;
 	TreeViewTooltips* tooltips;
-	BuddyMenu buddyMenu;
-	RoomMenu  roomMenu;
+	//BuddyMenu buddyMenu;
+	//RoomMenu  roomMenu;
+	//Gtk::Menu* buddyMenu;
+	//Gtk::Menu* roomMenu;
 	/*列表中好友的本地配置的配置文件类 */
 	Tag *blistTag;
 	Glib::RefPtr <TreeModelDnd > m_treestore;

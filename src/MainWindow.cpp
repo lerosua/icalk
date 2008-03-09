@@ -46,10 +46,55 @@
 #define SYSTEM_MENU 0
 #define TIMEOUT 5
 typedef std::map < std::string, Resource * >ResourceMap;
-MainWindow::MainWindow(Bodies & bodies_):
-bodies(bodies_),
-logo(NULL),
-systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
+
+
+/**构建菜单的xml信息*/
+Glib::ustring ui_menu_info =
+"<ui>"
+"<popup name='TrayMenu'>"
+"	<menuitem action='Info'/>"
+"	<menuitem action='Preferences'/>"
+"       <separator/>"
+"	<menuitem action='Quit'/>"
+"</popup>"
+"<popup name='BuddyMenu'>"
+"	<menuitem action='BuddyInfo'/>"
+"	<menuitem action='BuddyChat'/>"
+"	<menuitem action='BuddyLog'/>"
+"	<menuitem action='BuddyBlock'/>"
+"	<menuitem action='BuddyType'/>"
+"	<menuitem action='BuddyEdit'/>"
+"	<menuitem action='BuddyDelete'/>"
+"</popup>"
+"<popup name='RoomMenu'>"
+"	<menuitem action='RoomChat'/>"
+"	<menuitem action='RoomBlock'/>"
+"	<menuitem action='RoomLog'/>"
+"	<menuitem action='RoomDelete'/>"
+"</popup>"
+"<popup name='SysMenu'>"
+"	<menuitem action='SysAbout'/>"
+"	<menuitem action='SysAddBuddy'/>"
+"	<menuitem action='SysAddRoom'/>"
+"	<menuitem action='SysFind'/>"
+"	<menuitem action='SysDisco'/>"
+"       <separator/>"
+"	<menuitem action='ShowOffline'/>"
+"	<menuitem action='Mutt'/>"
+"	<menuitem action='Preferences'/>"
+"       <separator/>"
+"	<menuitem action='Quit'/>"
+"</popup>"
+"</ui>";
+
+
+
+
+MainWindow::MainWindow(Bodies & bodies_):bodies(bodies_)
+	,logo(NULL)
+	//systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
+	,statusCombo(NULL)
+	,statusEntry(NULL)
 {
 	groalSet.MUTE = false;
 	groalSet.SHOWALLFRIEND = false;
@@ -183,7 +228,7 @@ systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
 		Gtk::Button*>(main_xml->get_widget("button_add_friend"));
 	btaddfriend->signal_clicked().
 		connect(sigc::mem_fun(*this,
-					&MainWindow::on_addBuddy_activate));
+					&MainWindow::on_buddyAdd_activate));
 	Gtk::Button * btstatusmsgmanager =
 	    dynamic_cast <
 	    Gtk::Button * >(main_xml->get_widget("statusmsgbt"));
@@ -206,6 +251,15 @@ systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
 	    connect(sigc::
 		    mem_fun(*this,
 			    &MainWindow::on_btlistshowoffline_clicked));
+
+
+	init_ui_manager();
+	trayMenu=dynamic_cast<Gtk::Menu*>(ui_manager->get_widget("/TrayMenu"));
+	systemMenu=dynamic_cast<Gtk::Menu*>(ui_manager->get_widget("/SysMenu"));
+	buddyMenu =dynamic_cast<Gtk::Menu*>(ui_manager->get_widget("/BuddyMenu"));
+	roomMenu  =dynamic_cast<Gtk::Menu*>(ui_manager->get_widget("/RoomMenu"));
+
+
 	set_default_size(200, 600);
 	set_title(_("Friend list"));
 	Glib::RefPtr < Gdk::Pixbuf > pix = getPix("default.png");
@@ -587,7 +641,8 @@ void MainWindow::on_btnLogo_clicked()
 			this->set_logo(filename);
 			bodies.setAccountTag("icon", filename);
 
-		VCard *vcard = bodies.get_vcard();
+#if 0
+		const VCard *vcard = bodies.get_vcard();
 		std::ifstream fin(filename.c_str(),ios::binary);
 		   const std::string type="image/png";
 		   std::string binval;
@@ -599,6 +654,7 @@ void MainWindow::on_btnLogo_clicked()
 		   //vcard->setPhoto(type,binval);
 		   vcard->setNickname("cyclone blog");
 		   bodies.get_cardManage().store_vcard(vcard);
+#endif
 
 
 			break;
@@ -620,7 +676,7 @@ void MainWindow::on_btnLogo_clicked()
 
 void MainWindow::on_btnSystem_clicked()
 {
-	systemMenu.popup(sigc::bind <
+	systemMenu->popup(sigc::bind <
 			 int >(sigc::
 			       mem_fun(this,
 				       &MainWindow::on_popup_menu_pos),
@@ -739,7 +795,7 @@ void MainWindow::on_buddyType_activate()
 {
 
 }
-void MainWindow::on_addBuddy_activate()
+void MainWindow::on_buddyAdd_activate()
 {
 	Glib::RefPtr < Gnome::Glade::Xml >
 	    addDialog_xml =
@@ -828,7 +884,7 @@ void MainWindow::initRoom()
 	list_view->initRoomList();
 }
 
-void MainWindow::on_addRoom_activate()
+void MainWindow::on_roomAdd_activate()
 {
 	Glib::RefPtr < Gnome::Glade::Xml >
 	    addRoom_xml =
@@ -902,7 +958,11 @@ void MainWindow::on_addRoom_activate()
 	}
 
 }
-void MainWindow::on_findBuddy_activate()
+void MainWindow::on_roomLog_activate()
+{
+	
+}
+void MainWindow::on_buddyFind_activate()
 {
 	printf("on_findBuddy_activeate clicked\n");
 }
@@ -912,7 +972,7 @@ void MainWindow::on_serverDisco_activate()
 	//ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
 }
 
-void MainWindow::on_freshLIst_activate()
+void MainWindow::on_freshList_activate()
 {
 	list_view->refreshList();
 }
@@ -930,8 +990,10 @@ void MainWindow::on_setPrefer_activate()
 
 void MainWindow::on_sound_activate()
 {
-	Gtk::CheckMenuItem * melem =
-	    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
+	Glib::RefPtr<Gtk::ToggleAction>melem = 
+		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mutt"));
+	//Gtk::CheckMenuItem * melem =
+	//    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
 	if (melem->get_active()) {
 		sounds::mute(1);
 		groalSet.MUTE = true;
@@ -946,9 +1008,11 @@ void MainWindow::on_sound_activate()
 
 void MainWindow::on_show_all_friends()
 {
-	Gtk::CheckMenuItem * melem =
-	    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
+	//Gtk::CheckMenuItem * melem =
+	//    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
 
+	Glib::RefPtr<Gtk::ToggleAction>melem = 
+		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("ShowOffline"));
 
 	if (melem->get_active()) {
 		if (groalSet.SHOWALLFRIEND)
@@ -971,7 +1035,8 @@ void MainWindow::on_show_all_friends()
 
 void MainWindow::show_tray_menu(guint button, guint activate_time)
 {
-	trayMenu.popup(button, activate_time);
+	trayMenu->popup(button, activate_time);
+	//trayMenu.popup(button, activate_time);
 }
 void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 {
@@ -988,7 +1053,8 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 	GtkMenu *menu;
 	if (SYSTEM_MENU == id) {
 		widget = GTK_WIDGET(buttonSystem->gobj());
-		menu = systemMenu.gobj();
+		//menu = systemMenu.gobj();
+		menu = systemMenu->gobj();
 	} else {
 		//widget = GTK_WIDGET(buttonUser->gobj());
 		//menu= userMenu.gobj();
@@ -1029,7 +1095,11 @@ void MainWindow::toggle_visibility()
 	}
 }
 
-void MainWindow::on_block_room()
+void MainWindow::on_roomChat_activate()
+{
+
+}
+void MainWindow::on_roomBlock_activate()
 {
 	Glib::RefPtr < Gtk::TreeSelection > selection =
 	    list_view->get_selection();
@@ -1048,10 +1118,10 @@ void MainWindow::on_block_room()
 
 }
 
-void MainWindow::on_block_friend()
+void MainWindow::on_buddyBlock_activate()
 {
 }
-void MainWindow::on_delRoom_activate()
+void MainWindow::on_roomDelete_activate()
 {
 	Glib::RefPtr < Gtk::TreeSelection > selection =
 	    list_view->get_selection();
@@ -1063,4 +1133,136 @@ void MainWindow::on_delRoom_activate()
 	RoomItem *room = bodies.getRoomHandler().findRoom(jid);
 	room->leave();
 	list_view->delRoom(jid);
+}
+
+
+void MainWindow::register_stock_items()
+{
+	Glib::RefPtr<Gtk::IconFactory> factory= Gtk::IconFactory::create();
+	Gtk::IconSource source_chat;
+	Gtk::IconSource source_log;
+	Gtk::IconSource source_block;
+	Gtk::IconSource source_type;
+	Gtk::IconSource source_disco;
+
+	source_chat.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/menu_chat.png"));
+	source_chat.set_size_wildcarded(); //Icon may be scaled.
+
+	source_log.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/menu_log.png"));
+	source_log.set_size_wildcarded();
+
+	source_block.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/menu_block.png"));
+	source_block.set_size_wildcarded();
+
+	source_type.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/menu_type.png"));
+	source_type.set_size_wildcarded();
+
+	source_disco.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/disco.png"));
+	source_disco.set_size_wildcarded();
+	
+	Gtk::IconSet icon_set;
+	icon_set.add_source(source_chat);  //more than one source per set is allow.
+	icon_set.add_source(source_log);
+	icon_set.add_source(source_block);
+	icon_set.add_source(source_type);
+	icon_set.add_source(source_disco);
+	
+	const Gtk::StockID stock_id_chat("CHAT");
+	const Gtk::StockID stock_id_log("LOG");
+	const Gtk::StockID stock_id_block("BLOCK");
+	const Gtk::StockID stock_id_type("TYPE");
+	const Gtk::StockID stock_id_disco("DISCO");
+
+	factory->add(stock_id_chat,icon_set);
+	factory->add(stock_id_log,icon_set);
+	factory->add(stock_id_block,icon_set);
+	factory->add(stock_id_type,icon_set);
+	factory->add(stock_id_disco,icon_set);
+	Gtk::Stock::add(Gtk::StockItem( stock_id_chat,_("CHAT")));
+	Gtk::Stock::add(Gtk::StockItem( stock_id_log,_("LOG")));
+	Gtk::Stock::add(Gtk::StockItem( stock_id_block,_("BLOCK")));
+	Gtk::Stock::add(Gtk::StockItem( stock_id_type,_("TYPE")));
+	Gtk::Stock::add(Gtk::StockItem( stock_id_disco,_("Disco")));
+
+
+	factory->add_default();
+}
+
+
+void MainWindow::init_ui_manager()
+{
+	register_stock_items();
+	
+	if(!action_group)
+		action_group=Gtk::ActionGroup::create();
+	Glib::RefPtr<Gtk::Action> action;
+	//TrayMenu 
+	action_group->add(Gtk::Action::create("Info", Gtk::Stock::INFO,_("Info"),_("About iCalk something")),
+			sigc::mem_fun(*this, &MainWindow::on_about_activate));
+	action_group->add(Gtk::Action::create("Preferences",Gtk::Stock::PREFERENCES,_("Preferences")),
+				sigc::mem_fun(*this,&MainWindow::on_setPrefer_activate));
+	action_group->add(Gtk::Action::create("Quit",Gtk::Stock::QUIT,_("Quit")),
+		sigc::mem_fun(*this,&MainWindow::on_quit));
+
+	//BuddyMenu
+	action_group->add(Gtk::Action::create("BuddyInfo",Gtk::Stock::INFO,_("Information")),
+		sigc::mem_fun(*this,&MainWindow::on_buddyInfo_activate));
+	action_group->add(Gtk::Action::create("BuddyChat",Gtk::StockID("CHAT"),_("_Chat")),
+		sigc::mem_fun(*this,&MainWindow::on_buddyChat_activate));
+	action_group->add(Gtk::Action::create("BuddyLog",Gtk::StockID("LOG"),_("_Log")),
+		sigc::mem_fun(*this,&MainWindow::on_buddyLog_activate));
+	action_group->add(Gtk::Action::create("BuddyBlock",Gtk::StockID("BLOCK"),_("_Block")),
+		sigc::mem_fun(*this,&MainWindow::on_buddyBlock_activate));
+	action_group->add(Gtk::Action::create("BuddyType",Gtk::StockID("TYPE"),_("_Type")),
+			sigc::mem_fun(*this,&MainWindow::on_buddyType_activate));
+	action_group->add(Gtk::Action::create("BuddyEdit",Gtk::Stock::EDIT,_("_Alias")),
+			sigc::mem_fun(*this,&MainWindow::on_buddyNameEdit_activate));
+	action_group->add(Gtk::Action::create("BuddyDelete",Gtk::Stock::DELETE,_("_Delete")),
+			sigc::mem_fun(*this,&MainWindow::on_buddyRemove_activate));
+	
+	//RoomMenu
+	action_group->add(Gtk::Action::create("RoomChat",Gtk::StockID("CHAT"),_("_Chat")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_roomChat_activate));
+	action_group->add(Gtk::Action::create("RoomBlock",Gtk::StockID("BLOCK"),_("_Block")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_roomBlock_activate));
+	action_group->add(Gtk::Action::create("RoomLog",Gtk::StockID("LOG"),_("_Log")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_roomLog_activate));
+	action_group->add(Gtk::Action::create("RoomDelete",Gtk::Stock::DELETE,_("_Delete")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_roomDelete_activate));
+
+	//SysMenu
+	action_group->add(Gtk::Action::create("SysAbout",Gtk::Stock::INFO,_("_About")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_about_activate));
+	action_group->add(Gtk::Action::create("SysAddBuddy",Gtk::Stock::ADD,_("_Add Friend")),
+		sigc::mem_fun(*this,&MainWindow::
+			on_buddyAdd_activate));
+	action_group->add(Gtk::Action::create("SysAddRoom",Gtk::Stock::ADD,_("_Add Room")),
+		sigc::mem_fun(*this,&MainWindow::
+			on_roomAdd_activate));
+	action_group->add(Gtk::Action::create("SysFind", Gtk::Stock::FIND, _("_Find")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_buddyFind_activate));
+	action_group->add(Gtk::Action::create("SysDisco", Gtk::StockID("DISCO"),_("Server Discover")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_serverDisco_activate));
+	action_group->add(Gtk::ToggleAction::create("ShowOffline", _("Show offline")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_show_all_friends));
+
+	action_group->add(Gtk::ToggleAction::create("Mutt",_("Mutt")),
+			sigc::mem_fun(*this,&MainWindow::
+				on_sound_activate));
+
+
+	if(!ui_manager)
+		ui_manager=Gtk::UIManager::create();
+	ui_manager->insert_action_group(action_group);
+	add_accel_group(ui_manager->get_accel_group());
+	ui_manager->add_ui_from_string(ui_menu_info);
+
 }

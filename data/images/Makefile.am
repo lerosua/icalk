@@ -16,6 +16,8 @@ icalkimages_DATA = 	\
 	       menu_chat.png 	\
 	       menu_log.png 	\
 	       menu_add.png 	\
+	       menu_type.png 	\
+	       menu_block.png 	\
 	       insert-fonts.png \
 	       insert-link.png  \
 	       insert-image.png \

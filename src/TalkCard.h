@@ -43,7 +43,7 @@ class TalkCard : public VCardHandler
 		 * @param jid 用户id
 		 * @param vcard 用户的VCard
 		 */
-		void handleVCard(const JID& jid, VCard *vcard);
+		void handleVCard(const JID& jid, const VCard *vcard);
 
 		/**
 		 * @brief 函数在存贮VCard操作后或发生错误后调用

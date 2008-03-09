@@ -37,10 +37,10 @@ void TalkCard::fetch_vcard(const JID & jid)
 
 void TalkCard::store_vcard(VCard * vcard_)
 {
-	vcardmanager_->storeVCard(vcard_, this);
+	//vcardmanager_->storeVCard(vcard_, this);
 }
 
-void TalkCard::handleVCard(const JID & jid, VCard * vcard)
+void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 {
 	JID myjid = Bodies::Get_Bodies().get_jid();
 	if (myjid.bare() == jid.bare()) {

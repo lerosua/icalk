@@ -121,9 +121,9 @@ class Bodies
 		/**得到VCard管理类*/
 		TalkCard&	get_cardManage()  { return cardManage; }
 		/**设置本人的VCard信息*/
-		void		set_vcard(VCard*);
+		void		set_vcard(const VCard*);
 		/**得到本人的VCard*/
-		VCard*	get_vcard() const { return vcard; }
+		const VCard*	get_vcard() const { return vcard; }
 		/**发出获取本人VCard信息的命令*/
 		void		fetch_self_vcard()  { cardManage.fetch_vcard(*jid); }
 		void disco_test();
@@ -159,7 +159,7 @@ class Bodies
 		TalkCard   cardManage;
 		TalkFT*	   talkFT;
 		//TalkIbbStreamHandler IBBSHandler;
-		VCard*	   vcard;
+		const VCard*	   vcard;
 		//用于保存account结构的Tag
 		Tag*	   accountTag;
 		USERLIST   userlist;

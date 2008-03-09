@@ -71,11 +71,12 @@ void Buddy::set_nickname(const std::string& name_)
 	/*还需要设置相应rosteritem的set_name()*/
 	Bodies::Get_Bodies().get_client().rosterManager()->getRosterItem(id)->setName(name_);
 }
-void Buddy::set_vcard(VCard* vcard_)
+void Buddy::set_vcard(const VCard* vcard_)
 {
 	if (vcard != vcard_) {
 		delete vcard;
 		vcard = vcard_;
+		//vcard =new  VCard(vcard_->tag());
 	}
 }
 

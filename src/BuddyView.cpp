@@ -29,12 +29,17 @@
 
 
 BuddyView::BuddyView(MainWindow & parent_):
-parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
+//parent(parent_), buddyMenu(parent_), roomMenu(parent_), SHOWALL(false)
+  parent(parent_)
+	,SHOWALL(false)
 	,filterText("")
 {
 	set_headers_visible(false);
 	set_border_width(5);
 	set_name("icalk_blist_treeview");
+
+	//buddyMenu=parent.getBuddyMenu();
+	//roomMenu =parent.getRoomMenu();
 
 	add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_MOTION_MASK |
 		   Gdk::BUTTON_PRESS_MASK | Gdk::
@@ -1207,9 +1212,19 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
 	} else if ((ev->type == GDK_BUTTON_PRESS)
 		   && (ev->button == 3)) {
 		if ((type != STATUS_GROUP) && (type != STATUS_ROOM))
-			buddyMenu.popup(1, ev->time);
+		{
+			Gtk::Menu* buddyMenu=parent.getBuddyMenu();
+			if(buddyMenu)
+				buddyMenu->popup(1, ev->time);
+			//buddyMenu.popup(1, ev->time);
+		}
 		else if (STATUS_ROOM == type)
-			roomMenu.popup(1, ev->time);
+		{
+			Gtk::Menu* roomMenu=parent.getRoomMenu();
+			if(roomMenu)
+				roomMenu->popup(1, ev->time);
+			//roomMenu.popup(1, ev->time);
+		}
 		}
 
 	return result;

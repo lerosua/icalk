@@ -55,7 +55,7 @@ class Buddy {
 		/** 设置昵称*/
 		void set_nickname(const std::string& name_);
 		/** 将VCard信息填充进Buddy里*/
-		void set_vcard(VCard*);
+		void set_vcard(const VCard*);
 		/** 返回Buddy里的VCard信息*/
 		const VCard* get_vcard() const { return vcard; }
 		/** 启动更新VCard流程*/
@@ -189,7 +189,7 @@ class Buddy {
 		SubscriptionType subscription;
 		StringList groups;
 		std::string m_resource;
-		VCard* vcard;
+		const VCard* vcard;
 		MessageSession* session;
 		MessageEventFilter* message_event_filter;
 		ChatStateFilter* chat_state_filter;

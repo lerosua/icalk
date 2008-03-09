@@ -67,7 +67,7 @@ BuddyMenu::BuddyMenu(MainWindow& wnd)
     Gtk::ImageMenuItem* itemLog = (Gtk::ImageMenuItem*)&this->items().back();
 
     /*菜单-屏蔽*/
-    this->items().push_back(Gtk::Menu_Helpers::CheckMenuElem(_("block(_B)"),sigc::mem_fun(wnd,&MainWindow::on_block_friend)));
+    this->items().push_back(Gtk::Menu_Helpers::CheckMenuElem(_("block(_B)"),sigc::mem_fun(wnd,&MainWindow::on_buddyBlock_activate)));
 
     /*分隔符*/
     this->items().push_back(Gtk::Menu_Helpers::SeparatorElem());
@@ -108,13 +108,13 @@ RoomMenu::RoomMenu(MainWindow& wnd)
     this->items().push_back(Gtk::Menu_Helpers::ImageMenuElem(_(_("join in(_C)")), *image));
     Gtk::ImageMenuItem* itemJoin = (Gtk::ImageMenuItem *)&this->items().back();
     /*菜单-屏蔽*/
-    this->items().push_back(Gtk::Menu_Helpers::CheckMenuElem(_("block(_B)"),sigc::mem_fun(wnd,&MainWindow::on_block_room)));
+    this->items().push_back(Gtk::Menu_Helpers::CheckMenuElem(_("block(_B)"),sigc::mem_fun(wnd,&MainWindow::on_roomBlock_activate)));
     /*菜单-日志*/
     image = getImage("menu_log.png");
     this->items().push_back(Gtk::Menu_Helpers::ImageMenuElem(_("Log(_L)"), *image));
     Gtk::ImageMenuItem* itemLog = (Gtk::ImageMenuItem*)&this->items().back();
     /*菜单-删除好友*/
-    this->items().push_back(Gtk::Menu_Helpers::StockMenuElem(Gtk::StockID("gtk-delete"),sigc::mem_fun(wnd, &MainWindow::on_delRoom_activate)));
+    this->items().push_back(Gtk::Menu_Helpers::StockMenuElem(Gtk::StockID("gtk-delete"),sigc::mem_fun(wnd, &MainWindow::on_roomDelete_activate)));
     //Gtk::ImageMenuItem* itemRemove = (Gtk::ImageMenuItem*)&this->items().back();
 }
 
@@ -169,15 +169,15 @@ SystemMenu::SystemMenu(MainWindow& wnd)
 
 
     itemAdd->signal_activate().connect(
-	    sigc::mem_fun(wnd, &MainWindow::on_addBuddy_activate));
+	    sigc::mem_fun(wnd, &MainWindow::on_buddyAdd_activate));
     itemRoomAdd->signal_activate().connect(
-		    sigc::mem_fun(wnd,&MainWindow::on_addRoom_activate));
+		    sigc::mem_fun(wnd,&MainWindow::on_roomAdd_activate));
     itemFind->signal_activate().connect(
-	    sigc::mem_fun(wnd, &MainWindow::on_findBuddy_activate));
+	    sigc::mem_fun(wnd, &MainWindow::on_buddyFind_activate));
     itemDisco->signal_activate().connect(
 	    sigc::mem_fun(wnd, &MainWindow::on_serverDisco_activate));
     itemFreshList->signal_activate().connect(
-	    sigc::mem_fun(wnd, &MainWindow::on_freshLIst_activate));
+	    sigc::mem_fun(wnd, &MainWindow::on_freshList_activate));
     itemAbout->signal_activate().connect(
 	    sigc::mem_fun(wnd, &MainWindow::on_about_activate));
     itemPrefer->signal_activate().connect(

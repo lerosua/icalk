@@ -25,7 +25,7 @@
 #include <libglademm/xml.h>
 #include <iostream>
 #include <sigc++/connection.h>
-#include "TalkMenu.h"
+//#include "TalkMenu.h"
 #include "StatusMsgWidget.h"
 #include "BuddyInfoWindow.h"
 #include "ServerDiscoWindow.h"
@@ -83,6 +83,15 @@ class MainWindow:public Gtk::Window
 		bool on_key_press_event(GdkEventKey* ev);
 		virtual ~MainWindow();
 
+
+	public:
+		//构建菜单
+		/** 注册本地stock图标*/
+		void register_stock_items();
+		/** 从xml的UI信息里构建菜单*/
+		void init_ui_manager();
+		Gtk::Menu* getBuddyMenu(){ return buddyMenu;}
+		Gtk::Menu* getRoomMenu(){ return roomMenu; }
 	public:
 		/** 右上角logo的按钮点击时跳出选择文件窗口*/
 		void on_btnLogo_clicked();
@@ -113,15 +122,15 @@ class MainWindow:public Gtk::Window
 		/** 更改好友类型窗口*/
 		void on_buddyType_activate();
 		/** 添加好友对话窗口*/
-		void on_addBuddy_activate();
+		void on_buddyAdd_activate();
 		/** 添加聊天室的窗口*/
-		void on_addRoom_activate();
+		void on_roomAdd_activate();
 		/** 查找好友的窗口回调*/
-		void on_findBuddy_activate();
+		void on_buddyFind_activate();
 		/** 查找服务的窗口回调*/
 		void on_serverDisco_activate();
 		/** 刷新好友列表*/
-		void on_freshLIst_activate();
+		void on_freshList_activate();
 		/** 显示关于窗口，关于窗口有作者信息，版权等*/
 		void on_about_activate();
 		/** 显示首选项窗口*/
@@ -132,12 +141,16 @@ class MainWindow:public Gtk::Window
 		void on_sound_activate();
 		/** 是否显示离线好友*/
 		void on_show_all_friends();
+		/** 打开房间聊天窗口*/
+		void on_roomChat_activate();
 		/** 屏蔽房间，等于不自动加入聊天室*/
-		void on_block_room();
+		void on_roomBlock_activate();
 		/** 删除房间的回调*/
-		void on_delRoom_activate();
+		void on_roomDelete_activate();
+		/** 房间的聊天记录*/
+		void on_roomLog_activate();
 		/** 屏蔽好友，将收不到好友信息*/
-		void on_block_friend();
+		void on_buddyBlock_activate();
 
 		/**登录成功后显示列表页*/
 		void on_login_finial();
@@ -200,8 +213,15 @@ class MainWindow:public Gtk::Window
 
 		int win_x, win_y;
 
-		SystemMenu	systemMenu;
-		TrayMenu	trayMenu;
+		Glib::RefPtr<Gtk::UIManager> ui_manager;
+		Glib::RefPtr<Gtk::ActionGroup> action_group;
+
+		Gtk::Menu*	systemMenu;
+		Gtk::Menu*	trayMenu;
+		Gtk::Menu*	buddyMenu;
+		Gtk::Menu*	roomMenu;
+		//SystemMenu	systemMenu;
+		//TrayMenu	trayMenu;
 
 };
 
