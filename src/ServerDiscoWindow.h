@@ -28,6 +28,7 @@
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
+class Bodies;
 
 class ServerDiscoWindow:public Gtk::Window
 {
@@ -37,10 +38,12 @@ class ServerDiscoWindow:public Gtk::Window
 
 	private:
 		bool on_key_press_event(GdkEventKey* ev);
+		void on_btGo_clicked();
 		void on_btclose_clicked();
 	private:
 		GlademmXML server_discovery_xml;
 		MainWindow* parent;
+		Gtk::ComboBoxEntry* nodeEntry;
 
 };
 

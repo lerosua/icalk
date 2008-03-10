@@ -16,6 +16,8 @@ icalk_ui = main_window.glade \
 	   show.png 	\
 	   default.png	\
 	   file-send.png \
+	   mail.png 	\
+	   icon.png 	\
 	   typed.png 
 
 

@@ -36,7 +36,7 @@ class TalkDiscoHandler:public DiscoHandler {
 
 	void handleDiscoInfo(const JID& from, const Disco::Info& info, int context);
 	void handleDiscoItems(const JID& from, const Disco::Items& items, int context);
-	void handleDiscoError(JID& from, const Error* error, int context);
+	void handleDiscoError(const JID& from, const Error* error, int context);
 	bool handleDiscoSet(IQ* iq);
 
 };

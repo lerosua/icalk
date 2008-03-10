@@ -41,7 +41,7 @@ void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context)
 {
 	printf("handleDiscoItems}\n");
 }
-	void TalkDiscoHandler::handleDiscoError(JID& from, const Error* error, int context)
+	void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int context)
 {
 }
 	bool TalkDiscoHandler::handleDiscoSet(IQ* iq)

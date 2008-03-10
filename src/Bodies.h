@@ -126,7 +126,7 @@ class Bodies
 		const VCard*	get_vcard() const { return vcard; }
 		/**发出获取本人VCard信息的命令*/
 		void		fetch_self_vcard()  { cardManage.fetch_vcard(*jid); }
-		void disco_test();
+		void disco_node(const std::string& node);
 		void disconnect(){ connectIO.disconnect();}
 
 	private:
@@ -155,7 +155,7 @@ class Bodies
 		TalkConnect talkconnect;
 		TalkMsg       talkmsg;
 		TalkRoomHandler   roomHandler;
-		//TalkDiscoHandler  discohandler;
+		TalkDiscoHandler  discohandler;
 		TalkCard   cardManage;
 		TalkFT*	   talkFT;
 		//TalkIbbStreamHandler IBBSHandler;

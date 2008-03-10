@@ -207,7 +207,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	*/
 	
 
-	//jclient->disco()->registerDiscoHandler(&discohandler);
+	jclient->disco()->registerDiscoHandler(&discohandler);
 	//bookMark= new TalkBookMark(jclient.get());
 
 	/** 初始化VCard管理类*/
@@ -260,9 +260,9 @@ void Bodies::logout()
 	jclient->disconnect();
 }
 
-void Bodies::disco_test()
+void Bodies::disco_node(const std::string& node)
 {
-	//jclient->disco()->getDiscoInfo( JID("jabber.org"),"",&discohandler,0,"");
+	jclient->disco()->getDiscoInfo( JID(node),"",&discohandler,0,"");
 }
 int main(int argc,char *argv[])
 {

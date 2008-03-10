@@ -686,7 +686,6 @@ void MainWindow::on_btnSystem_clicked()
 
 void MainWindow::on_btnAudio_clicked()
 {
-	bodies.disco_test();
 }
 
 void MainWindow::on_buddyChat_activate()
@@ -969,7 +968,7 @@ void MainWindow::on_buddyFind_activate()
 
 void MainWindow::on_serverDisco_activate()
 {
-	//ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
+	ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
 }
 
 void MainWindow::on_freshList_activate()

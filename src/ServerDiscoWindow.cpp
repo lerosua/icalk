@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 #include "ServerDiscoWindow.h"
+#include "Bodies.h"
 
 
 ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
@@ -24,6 +25,11 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
 	Gtk::VBox* vBox=dynamic_cast<Gtk::VBox*>(server_discovery_xml->get_widget("vBox"));
 	add(*vBox);
 	set_transient_for(*parent);
+
+	nodeEntry = dynamic_cast<Gtk::ComboBoxEntry*>(server_discovery_xml->get_widget("address_comboboxentry"));
+	Gtk::Button* btGo    = dynamic_cast<Gtk::Button*>(server_discovery_xml->get_widget("browse_button"));
+	btGo->signal_clicked().
+		connect(sigc::mem_fun(*this,&ServerDiscoWindow::on_btGo_clicked));
 
 	Gtk::Button* btClose = dynamic_cast<Gtk::Button*>(server_discovery_xml->get_widget("close_button"));
 	btClose->signal_clicked().
@@ -34,6 +40,14 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
 
 ServerDiscoWindow::~ServerDiscoWindow()
 {}
+
+void ServerDiscoWindow::on_btGo_clicked()
+{
+
+	std::string node=nodeEntry->get_entry()->get_text();
+	Bodies::Get_Bodies().disco_node(node);
+
+}
 
 void ServerDiscoWindow::on_btclose_clicked()
 {
