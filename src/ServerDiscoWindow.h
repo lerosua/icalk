@@ -23,12 +23,12 @@
 #include <libglademm/xml.h>
 #include <iostream>
 //#include <sigc++/compatibility.h>
-#include "MainWindow.h"
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 class Bodies;
+class MainWindow;
 
 class ServerDiscoWindow:public Gtk::Window
 {

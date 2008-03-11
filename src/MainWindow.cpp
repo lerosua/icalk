@@ -92,9 +92,9 @@ Glib::ustring ui_menu_info =
 
 MainWindow::MainWindow(Bodies & bodies_):bodies(bodies_)
 	,logo(NULL)
-	//systemMenu(*this), statusCombo(NULL), statusEntry(NULL), trayMenu(*this)
 	,statusCombo(NULL)
 	,statusEntry(NULL)
+	,discowindow(NULL)
 {
 	groalSet.MUTE = false;
 	groalSet.SHOWALLFRIEND = false;
@@ -978,7 +978,11 @@ void MainWindow::on_buddyFind_activate()
 
 void MainWindow::on_serverDisco_activate()
 {
-	ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
+	//ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
+	if(discowindow)
+		return discowindow->show();
+	else
+		discowindow = new ServerDiscoWindow(this);
 }
 
 void MainWindow::on_freshList_activate()
@@ -1001,8 +1005,6 @@ void MainWindow::on_sound_activate()
 {
 	Glib::RefPtr<Gtk::ToggleAction>melem = 
 		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mutt"));
-	//Gtk::CheckMenuItem * melem =
-	//    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
 	if (melem->get_active()) {
 		sounds::mute(1);
 		groalSet.MUTE = true;
@@ -1017,9 +1019,6 @@ void MainWindow::on_sound_activate()
 
 void MainWindow::on_show_all_friends()
 {
-	//Gtk::CheckMenuItem * melem =
-	//    dynamic_cast < Gtk::CheckMenuItem * >(systemMenu.get_active());
-
 	Glib::RefPtr<Gtk::ToggleAction>melem = 
 		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("ShowOffline"));
 

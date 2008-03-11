@@ -79,8 +79,6 @@ class Bodies
 		Client&		get_client()	  { return *jclient; }
 		/**得到聊天室处理类*/
 		TalkRoomHandler& getRoomHandler() { return roomHandler; }
-		/**得到带内数据传输处理类*/
-		//TalkIbbStreamHandler& getIbbStreamHandler() { return IBBSHandler; }
 		/**得到本人jid*/
 		JID&		get_jid()	  { return *jid; }
 		/** 从配置文件中得到相应的项目*/
@@ -158,7 +156,6 @@ class Bodies
 		TalkDiscoHandler  discohandler;
 		TalkCard   cardManage;
 		TalkFT*	   talkFT;
-		//TalkIbbStreamHandler IBBSHandler;
 		const VCard*	   vcard;
 		//用于保存account结构的Tag
 		Tag*	   accountTag;

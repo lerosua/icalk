@@ -211,6 +211,7 @@ class MainWindow:public Gtk::Window
 		Gtk::Entry* entryServer;
 		Gtk::Entry* entryPort;
 		Gtk::Entry* entryFilter;
+		ServerDiscoWindow* discowindow;
 		sigc::connection msgTimeout;
 		GroalSet groalSet;
 
@@ -223,8 +224,6 @@ class MainWindow:public Gtk::Window
 		Gtk::Menu*	trayMenu;
 		Gtk::Menu*	buddyMenu;
 		Gtk::Menu*	roomMenu;
-		//SystemMenu	systemMenu;
-		//TrayMenu	trayMenu;
 
 };
 

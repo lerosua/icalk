@@ -17,6 +17,7 @@
  */
 #include "ServerDiscoWindow.h"
 #include "Bodies.h"
+#include "MainWindow.h"
 
 
 ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
@@ -40,7 +41,8 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
 }
 
 ServerDiscoWindow::~ServerDiscoWindow()
-{}
+{
+}
 
 void ServerDiscoWindow::on_btGo_clicked()
 {
