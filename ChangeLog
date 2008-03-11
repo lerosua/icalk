@@ -1,3 +1,8 @@
+
+2008年 03月 11日 星期二 15:39:14 CST lerosua
+	实现了TreeView的TreeModelFilter功能。在主界面上加了一个输入框，
+	用于过滤关键字，以显示匹配的好友成员。
+
 2008年 03月 09日 星期日 14:56:42 CST lerosua
 	改写了菜单的生成方式，在Maindow类里，直接用xml的方式生成，菜单全在action_group里
 	方便调用。去除了TalkMenu类。
@@ -5,6 +10,8 @@
 	在TalkCard类中，handleVCard函数的VCard参数设置成了const,
 	主要是为了适应svn的gloox的3664版本。
 
+2008年 02月 28日 星期四 16:13:55 CST lerosua
+	文件传输中的接收初步测试成功。下一步是测试发送。
 2008年 02月 23日 星期六 09:50:47 CST lerosua
 	更新聊天室中成员的数据结构组成
 	gloox 1.0alpha2 里对于聊天室里成员的presence信息有BUG。迟点实现这个吧

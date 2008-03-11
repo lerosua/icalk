@@ -189,11 +189,10 @@ class Buddy {
 		SubscriptionType subscription;
 		StringList groups;
 		std::string m_resource;
-		const VCard* vcard;
+		VCard* vcard;
 		MessageSession* session;
 		MessageEventFilter* message_event_filter;
 		ChatStateFilter* chat_state_filter;
-		//InBandBytestream* m_ibb;
 		MsgPage*   page;
 		Presence::PresenceType status;
 		std::string sign_msg;

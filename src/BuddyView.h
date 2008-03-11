@@ -123,7 +123,7 @@ class BuddyView:public Gtk::TreeView {
 	void cellrender_edited(bool mode);
 	void tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 				   const Gtk::TreeModel::iterator & iter);
-	/** 列表的TreeModelFilter 查找功能*/
+	/** 列表的TreeModelFilter 查找功能 基其功能是对treeview里的每个成员递归调用，并判断其是否匹配显示，返回真则显示，返回假则隐藏*/
 	bool list_visible_func(const Gtk::TreeIter& iter);
 	/** TreeModelFilter 查找开始*/
 	void setFilterText(const Glib::ustring& text);

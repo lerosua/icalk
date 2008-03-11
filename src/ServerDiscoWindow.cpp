@@ -35,6 +35,7 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
 	btClose->signal_clicked().
 	    connect(sigc::mem_fun(*this, &ServerDiscoWindow::on_btclose_clicked));
 
+	set_default_size(450, 320);
 	show_all();
 }
 

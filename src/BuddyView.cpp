@@ -48,15 +48,16 @@ BuddyView::BuddyView(MainWindow & parent_):
 	tooltips = new TreeViewTooltips(this);
 
 	m_treestore = TreeModelDnd::create(buddyColumns);
-	set_model(m_treestore);
+	//set_model(m_treestore);
 
 	//i test for TreeModelFilter
 	Gtk::TreeModel::Path path("0");
-	m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore,path);
+	//m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore,path);
+	m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore);
 	m_treemodelfilter->set_visible_func(sigc::mem_fun(*this,&BuddyView::
 				list_visible_func));
 
-	//set_model(m_treemodelfilter);
+	set_model(m_treemodelfilter);
 
 	append_column("ICON", buddyColumns.icon);
 	//append_column("ID", buddyColumns.id);
@@ -320,9 +321,17 @@ bool BuddyView::list_visible_func(const Gtk::TreeIter& iter)
 {
 
 	Glib::ustring email = (*iter)[buddyColumns.id];
-	//PBUG(" testing for list_visible_func ,now email =%s\n",email.c_str());
+	Glib::ustring name  = (*iter)[buddyColumns.nickname];
+	int type = (*iter)[buddyColumns.status];
 	if(filterText.empty())
 		return true;
+	else if(email.lowercase().find(filterText.lowercase())!=Glib::ustring::npos)
+		return true;
+	else if(name.lowercase().find(filterText.lowercase())!=Glib::ustring::npos)
+		return true;
+	else if(type == STATUS_GROUP )
+		return true;
+
 	return false;
 
 }
@@ -1166,7 +1175,7 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
 			Bodies::Get_Bodies().get_msg_window().
 			    setCurrentPage(page_);
 		} else if (STATUS_GROUP == type) {
-			//群的双击
+			//组的双击
 			if (this->row_expanded(path)) {
 				this->collapse_row(path);
 				//Glib::ustring group_ = (*iter)[buddyColumns.id];

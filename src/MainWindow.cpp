@@ -170,6 +170,10 @@ MainWindow::MainWindow(Bodies & bodies_):bodies(bodies_)
 
 	/** 第三页标签*/
 	Gtk::Widget * widget = Gtk::manage(main_xml->get_widget("vbMain"));
+	entryFilter = dynamic_cast<Gtk::Entry*>
+		(main_xml->get_widget("entryFilter"));
+	entryFilter->signal_changed().connect(sigc::mem_fun(*this, &MainWindow::on_entryFilter_changed));
+
 	list_view = Gtk::manage(new BuddyView(*this));
 	Gtk::Container * list_window =
 	    dynamic_cast <
@@ -673,6 +677,12 @@ void MainWindow::on_btnLogo_clicked()
 	}
 }
 
+void MainWindow::on_entryFilter_changed()
+{
+	Glib::ustring filter=entryFilter->get_text();
+	list_view->setFilterText(filter);
+
+}
 
 void MainWindow::on_btnSystem_clicked()
 {

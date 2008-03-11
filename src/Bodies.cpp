@@ -263,6 +263,7 @@ void Bodies::logout()
 void Bodies::disco_node(const std::string& node)
 {
 	jclient->disco()->getDiscoInfo( JID(node),"",&discohandler,0,"");
+	jclient->disco()->getDiscoItems( JID(node),"",&discohandler,0,"");
 }
 int main(int argc,char *argv[])
 {

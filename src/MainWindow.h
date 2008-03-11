@@ -105,6 +105,8 @@ class MainWindow:public Gtk::Window
 		void on_btlistexpand_clicked();
 		/** 显示或隐藏离线好友快捷按钮*/
 		void on_btlistshowoffline_clicked();
+		/** entryFilter的输入响应 */
+		void on_entryFilter_changed();
 		void on_popup_menu_pos(int& x, int& y, bool& push_in, int id);
 		/** 显示TrayIcon图标的右键菜单*/
 		void show_tray_menu(guint button,guint activate_time);
@@ -208,6 +210,7 @@ class MainWindow:public Gtk::Window
 		Gtk::CheckButton* keepMe;
 		Gtk::Entry* entryServer;
 		Gtk::Entry* entryPort;
+		Gtk::Entry* entryFilter;
 		sigc::connection msgTimeout;
 		GroalSet groalSet;
 

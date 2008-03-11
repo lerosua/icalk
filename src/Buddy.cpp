@@ -74,8 +74,8 @@ void Buddy::set_nickname(const std::string& name_)
 void Buddy::set_vcard(const VCard* vcard_)
 {
 	if (vcard != vcard_) {
-		delete vcard;
-		vcard = vcard_;
+			//delete vcard;
+		vcard = const_cast<VCard*>(vcard_);
 		//vcard =new  VCard(vcard_->tag());
 	}
 }
