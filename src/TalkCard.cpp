@@ -52,15 +52,32 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 		}
 		std::cout << "nickname is " << vcard->
 		    nickname() << std::endl;
-		std::cout << "url is " << vcard->url() << std::endl;
-		std::cout << "photo is " << vcard->photo().binval << std::endl;
+		//std::cout << "photo is " << vcard->photo().binval << std::endl;
+		if (!vcard->photo().type.empty()) {
+			char *random =
+			    g_strdup_printf("%x", g_random_int());
+			const char *dirname = GUnit::getIconPath();
+			char *filename =
+			    g_build_filename(dirname, random, NULL);
+
+					std::ofstream fout(filename);
+					fout.write((const char *) vcard->
+						   photo().binval.c_str(),
+						   vcard->photo().binval.
+						   size());
+					fout.close();
+					
+			Bodies::Get_Bodies().setAccountTag("icon", filename);
+			Bodies::Get_Bodies().get_main_window().set_logo(filename);
+		}
+
 	} else {
 		Buddy *buddy =
 		    Bodies::Get_Bodies().get_buddy_list().find_buddy(jid.
 								     bare
 								     ());
 		if (!vcard) {
-			printf("empty vcard!\n");
+			//printf("empty vcard!\n");
 			return;
 		}
 		buddy->set_vcard(vcard);
@@ -71,5 +88,5 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 void TalkCard::handleVCardResult(VCardContext context, const JID & jid,
 				 StanzaError se)
 {
-	std::cout<<"jid vcard result error?"<<jid.bare()<<"StanzaError "<<se<<std::endl;
+	std::cout<<"jid vcard result error? "<<jid.bare()<<" StanzaError "<<se<<std::endl;
 }

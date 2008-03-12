@@ -77,6 +77,7 @@ void BuddyList::handleRoster(const Roster & roster)
 		/**获取vcard*/
 		Bodies::Get_Bodies().get_cardManage().fetch_vcard((*it).second->jid());
 
+		/*
 		StringList g = (*it).second->groups();
 		StringList::const_iterator it_g = g.begin();
 		for (; it_g != g.end(); ++it_g)
@@ -85,6 +86,7 @@ void BuddyList::handleRoster(const Roster & roster)
 			(*it).second->resources().begin();
 		for (; rit != (*it).second->resources().end(); ++rit)
 			PBUG("resource: %s\n", (*rit).first.c_str());
+			*/
 	}
 
 	//Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshList();
@@ -103,7 +105,10 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 			buddy->set_sign_msg(_("offline"));
 	}
 	else
+	{
 		buddy->set_sign_msg(msg);
+		//Bodies::Get_Bodies().get_cardManage().fetch_vcard(item.jid());
+	}
 	buddy->set_status(presence);
 	buddy->setResource(resource);
 	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(item.jid());
@@ -121,7 +126,7 @@ void BuddyList::handleSelfPresence(const RosterItem & item,
 bool BuddyList::handleSubscriptionRequest(const JID & jid,
 		const std::string& msg  )
 {
-	//PBUG(" %s subscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
+	PBUG(" %s subscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
 	Gtk::MessageDialog dialog(_("Information from stranger"),false /*use markup*/,Gtk::MESSAGE_QUESTION,Gtk::BUTTONS_OK_CANCEL);
 	Glib::ustring msg_text = jid.bare() + _("Ask for a friend , press OK to add");
 	dialog.set_secondary_text(msg_text);
@@ -153,7 +158,7 @@ bool BuddyList::handleSubscriptionRequest(const JID & jid,
 bool  BuddyList::handleUnsubscriptionRequest(const JID & jid,
 		const std::string& msg  )
 {
-	//PBUG(" %s UnsubscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
+	PBUG(" %s UnsubscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
 	Gtk::MessageDialog dialog(_("The message from friend"));
 	Glib::ustring msg_text = jid.bare() + _("Delete you from his buddy list");
 	dialog.set_secondary_text(msg_text);

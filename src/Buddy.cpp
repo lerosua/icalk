@@ -38,13 +38,13 @@ Buddy::Buddy(const RosterItem& item):
 	session(NULL),
 	message_event_filter(NULL),
 	chat_state_filter(NULL),
-	//m_ibb(NULL),
 	page(NULL)
 {
 	status = Presence::Unavailable;
 	type = TYPE_FRIEND;
 	logo = Gdk::Pixbuf::create_from_file(DATA_DIR"/images/default.png");
 
+	/*
 	std::cout 
 		<< "username = " << jid.username() << std::endl
 		<< "server = " << jid.server() << std::endl
@@ -52,6 +52,7 @@ Buddy::Buddy(const RosterItem& item):
 		<< "serverRaw = " << jid.serverRaw() << std::endl
 		<< "full = "<< jid.full() << std::endl
 		<< "subscription = " << subscription << std::endl;
+		*/
 
 }
 
@@ -75,7 +76,8 @@ void Buddy::set_vcard(const VCard* vcard_)
 {
 	if (vcard != vcard_) {
 			//delete vcard;
-		vcard = const_cast<VCard*>(vcard_);
+		//vcard = const_cast<VCard*>(vcard_);
+		vcard=vcard_;
 		//vcard =new  VCard(vcard_->tag());
 	}
 }
@@ -138,11 +140,7 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 
 		chat_state_filter =new ChatStateFilter(session);
 		chat_state_filter->registerChatStateHandler(handler);
-		/*
-		if(m_ibb)
-			m_ibb->attachTo(session);
-			*/
-
+		
 		/* 这里还需要生成标签页*/
 		if (NULL == page) {
 			if(!nickname.empty())
@@ -155,33 +153,20 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 	}
 
 }
-#if 0
-void Buddy::cleanIBBstream()
-{
-		if(m_ibb)
-		{
-			printf("关闭IBB的Filter\n");
-			session->removeMessageFilter(m_ibb);
-			//session->disposeMessageFilter(m_ibb);
-		}
-		std::string id = jid.full()+ "/" +getResource();
-		JID jid_(id);
-		Bodies::Get_Bodies().getIbbStreamHandler().closeIBBStream(jid_.full());
-		m_ibb=0;
-}
-#endif
-
 void Buddy::close_session(bool closePage)
 {
 	if (NULL != session) {
 		/**发出关闭对话框的信号给对方*/
-		this->setChatState( ChatStateGone );
-		this->raiseMessageEvent(MessageEventCancel);
+		if(closePage)
+		{
+			this->setChatState( ChatStateGone );
+			this->raiseMessageEvent(MessageEventCancel);
+		}
 		/** 关闭会话 */
 		session->disposeMessageFilter(message_event_filter);
 		session->disposeMessageFilter(chat_state_filter);
 
-		printf(" 真正地disposeMessagesession\n");
+		//printf(" 真正地disposeMessagesession\n");
 		Bodies::Get_Bodies().get_client().disposeMessageSession(session);
 		if(NULL != session){
 			session = NULL;
@@ -198,7 +183,6 @@ void Buddy::sendPicture()
 {
 	std::string id = jid.full()+ "/" +getResource();
 	JID jid_(id);
-	//Bodies::Get_Bodies().getIbbStreamHandler().newIBBrequest(jid_);
 }
 void Buddy::sendPicture(const std::string& filename)
 {
@@ -230,9 +214,6 @@ void Buddy::sendPicture(const std::string& filename)
 	   }
 	   fin.close();
 
-	std::string id = jid.full()+ "/" +getResource();
-	JID jid_(id);
-	Bodies::Get_Bodies().getIbbStreamHandler().newIBBrequest(jid_);
 	*/
 }
 

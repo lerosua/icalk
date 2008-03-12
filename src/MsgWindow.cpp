@@ -174,7 +174,6 @@ void MsgWindow::showEncryptImage(bool isShow)
 		encryptImage->clear();
 }
 
-
 bool MsgWindow::on_key_press_event(GdkEventKey * ev)
 {
 	MsgPage *page;
@@ -257,6 +256,7 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
 		}
 	}
 	return true;
+	//return Gtk::Window::on_key_press_event(ev);
 
 }
 

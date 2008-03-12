@@ -250,7 +250,7 @@ bool Bodies::login(const std::string name,const std::string passwd)
 void Bodies::set_vcard(const VCard* vcard_)
 {
 	if (vcard != vcard_) {
-		delete vcard;
+		//delete vcard;
 		vcard = vcard_;
 		//vcard =new  VCard(vcard_->tag());
 	}

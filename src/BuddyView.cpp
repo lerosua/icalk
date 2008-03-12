@@ -892,7 +892,8 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 
 
 		/*在列表中找不到则添加,这种情况应该为刚上线时 */
-		if (treeiter == grandson.end()) {
+		if ((Presence::Unavailable != status_)&&(treeiter==grandson.end())) 
+		{
 			treeiter =
 			    m_treestore->append(listiter->children());
 
@@ -916,6 +917,11 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 							   delay);
 
 			sounds::play(sounds::ARRIVE_SOUND);
+			return;
+		}
+		else if ((Presence::Unavailable == status_)&&(treeiter==grandson.end())) 
+		{
+			/**好友状态为离线，并且不在列表中的状况*/
 			return;
 		}
 
@@ -1037,8 +1043,9 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 		}
 
 		const VCard *vcard = buddy->get_vcard();
-		if (!vcard || (Presence::Unavailable == status_)) {
-			printf("empty vcard!\n");
+		if (vcard==NULL) {
+			printf("empty vcard-in refreshBuddyStatus\n");
+			printf(" buddy is %s\n",buddy->get_jid().c_str());
 			//return;
 		}
 
@@ -1062,12 +1069,11 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 				    faceicon_orgin =
 				    Gdk::Pixbuf::
 				    create_from_file(filename_.c_str());
-				//faceicon = Gdk::Pixbuf::create_from_file(filename_.c_str(),30,30);
 				faceicon =
 				    faceicon_orgin->scale_simple(30, 30,
 								 Gdk::
 								 INTERP_NEAREST);
-				if (faceicon == 0) {
+				if (faceicon_orgin == 0) {
 					faceicon = getPix30("default.png");
 					printf
 					    ("pixbuf load file %s error\n",
@@ -1076,6 +1082,16 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
 				} else
 					buddy->setLogo(faceicon_orgin);
 			} else {
+				if(vcard){
+				printf("#检测 %s 中\n",buddy->get_jid().c_str());
+				std::string photobin=vcard->photo().binval;
+				if(photobin.empty())
+				{
+					printf("# %s 图像为空的\n",buddy->get_jid().c_str());
+				}
+				else
+					printf("# %s 图像不为空的\n",buddy->get_jid().c_str());
+				}
 
 				if (vcard && !vcard->photo().type.empty()) {
 					std::ofstream fout(filename);

@@ -35,7 +35,7 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
 	assert(buddy != NULL);
 	/* 发送消息已经显示的事件*/
-	//buddy->raiseMessageEvent(MessageEventDisplayed);
+	buddy->raiseMessageEvent(MessageEventDisplayed);
 
 	/*取消打字事件*/
 	Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
@@ -57,7 +57,7 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 	const DelayedDelivery* dd = stanza.when();
 	if(dd)
 	{
-		printf("message time is %s\n",dd->stamp().c_str());
+		PBUG("message time is %s\n",dd->stamp().c_str());
 		page_->showMessage(sender,msg,dd->stamp());
 	}
 	else
@@ -65,12 +65,11 @@ void TalkMsg::handleMessage(const Message & stanza,MessageSession *session) {
 	Bodies::Get_Bodies().get_msg_window().add_page(*page_);
 
 	Bodies::Get_Bodies().get_msg_window().show();
-	//Bodies::Get_Bodies().get_msg_window().setCurrentPage(page_);
 }
 
 void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 {
-	printf( "received event: %d from: %s\n", event, from.full().c_str() );
+	PBUG( "received event: %d from: %s\n", event, from.full().c_str() );
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 	switch(event){
 		case 0:
@@ -99,7 +98,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
 void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 {
-	//printf( "received state: %d from: %s\n", state, from.full().c_str() );
+	//PBUG( "received state: %d from: %s\n", state, from.full().c_str() );
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 	switch(state){
 		case 1:
@@ -134,8 +133,7 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 	 */
 void TalkMsg::handleMessageSession( MessageSession *session )
 {
-	//printf("got new session\n");
-	// this example can handle only one session. so we get rid of the old session
+	//PBUG("got new session\n");
 	JID receipient=session->target();
 	std::string id=receipient.bare();
 	std::cout<<"session id is "<<id<<std::endl;

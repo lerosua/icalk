@@ -27,7 +27,7 @@ MsgBox::MsgBox()
 	set_pixels_above_lines(2);
 	set_left_margin(2);
 	set_right_margin(2);
-      set_wrap_mode(Gtk::WRAP_WORD);
+      set_wrap_mode(Gtk::WRAP_WORD_CHAR);
 
 	Glib::RefPtr < Gtk::TextBuffer > buffer =
 	    Gtk::TextBuffer::create(taglist.getTagTable());
@@ -267,5 +267,8 @@ void MsgBox::insertSmiley(const Glib::ustring& code)
 void MsgBox::clear()
 {
 	Glib::RefPtr < Gtk::TextBuffer > buffer = get_buffer();
-	buffer->set_text("");
+	Gtk::TextBuffer::iterator start,end;
+	buffer->get_bounds(start,end);
+	buffer->erase(start,end);
+	//buffer->set_text("");
 }

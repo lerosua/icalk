@@ -405,10 +405,11 @@ bool MsgPage::on_inputMsgBox_focus_out_event(GdkEventFocus* ev)
 {
 	/** 发送取消打字的事件*/
 	if(!isRoom&&buddy)
-	//buddy->raiseMessageEvent(MessageEventCancel);
+		buddy->raiseMessageEvent(MessageEventCancel);
 	return false;
 
 }
+
 void MsgPage::setTitleColor(bool hascolor)
 {
 	Bodies::Get_Bodies().get_msg_window().setNewMsgTitle(hascolor);
