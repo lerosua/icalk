@@ -12,7 +12,7 @@
  *       Compiler:  gcc
  *
  *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  
+ *        Company:
  *
  * =====================================================================================
  */
@@ -43,7 +43,7 @@
 #include "sounds.h"
 using namespace std;
 
-Bodies& Bodies::Get_Bodies() 
+Bodies& Bodies::Get_Bodies()
 {
 	static Bodies bodies;
 	return bodies;
@@ -54,6 +54,8 @@ Bodies::Bodies()
 	main_window = new MainWindow(*this);
 	msg_window = new MsgWindow();
 	statusIcon = new TrayIcon(main_window);
+
+	accountTag = NULL;
 }
 
 Bodies::~Bodies()
@@ -136,6 +138,13 @@ void Bodies::loadAccountTag()
 	try{
 		ConfXml accoutxml;
 		accountTag = accoutxml.xml_from_file(buf);
+		if (!accountTag) {
+		    // TODO
+		    // 1. remove try..catch
+		    // 2. use macro define fpr..(err.., .., __FILE__, __LINE__)
+		    fprintf(stderr, "!!! %s:%d\n", __FILE__, __LINE__);
+		    throw;
+		}
 	}
 	catch (exception& e)
 	{
@@ -151,7 +160,7 @@ bool Bodies::callback(Glib::IOCondition condition)
 		ce=jclient->recv();
 		//talkFT->loopRecv();
 		//IBBSHandler.sendIBBData("lerosua icalk testing");
-		
+
 	}
 	return true;
 }
@@ -193,7 +202,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	PBUG("login\n");
 	if(!server.empty())
 		jclient->setServer(server);
-	
+
 	if(!portstring.empty())
 	{
 		int port = atoi(portstring.c_str());
@@ -205,7 +214,7 @@ int Bodies::connect(const char *name, const char* passwd)
 	FCAPS* se=new FCAPS(t) ;
 	jclient->addPresenceExtension(se);
 	*/
-	
+
 
 	jclient->disco()->registerDiscoHandler(&discohandler);
 	//bookMark= new TalkBookMark(jclient.get());
@@ -226,7 +235,7 @@ int Bodies::connect(const char *name, const char* passwd)
 		PBUG("connect error\n");
 	return -1;
 }
-	
+
 bool Bodies::login(const std::string name,const std::string passwd)
 {
 	int mysock = -1;
