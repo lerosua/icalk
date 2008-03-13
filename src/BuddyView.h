@@ -55,6 +55,7 @@ class TreeViewTooltips;
 class BuddyView:public Gtk::TreeView {
       public:
 	BuddyView(MainWindow & parent_);
+	~BuddyView();
 
 	/**初始化好友列表，将调用initBuddy*/
 	void initial();
@@ -175,10 +176,6 @@ class BuddyView:public Gtk::TreeView {
       private:
 	MainWindow & parent;
 	TreeViewTooltips* tooltips;
-	//BuddyMenu buddyMenu;
-	//RoomMenu  roomMenu;
-	//Gtk::Menu* buddyMenu;
-	//Gtk::Menu* roomMenu;
 	/*列表中好友的本地配置的配置文件类 */
 	Tag *blistTag;
 	Glib::RefPtr <TreeModelDnd > m_treestore;

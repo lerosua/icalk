@@ -36,6 +36,7 @@ class TalkRoomHandler;
 class RoomItem{
 	public:
 		RoomItem(const ConferenceListItem& ci_);
+		~RoomItem();
 
 		/** 得到聊天室的JID号 */
 		const std::string& getRoomJID() const { return citem.jid;}

@@ -12,9 +12,15 @@ RoomItem::RoomItem(const ConferenceListItem& ci_):page(NULL)
 	std::string fulljid= citem.jid+"/"+citem.name;
 
 	const JID nick_(fulljid);
-	//std::cout<<"room jid is "<<citem.jid<<std::endl;
 	Client& jclient=Bodies::Get_Bodies().get_client();
 	mucroom = new MUCRoom(&jclient,nick_,0,0);
+
+}
+
+RoomItem::~RoomItem()
+{
+	delete mucroom;
+
 
 }
 

@@ -37,8 +37,6 @@ BuddyView::BuddyView(MainWindow & parent_):
         set_border_width(5);
         set_name("icalk_blist_treeview");
 
-        //buddyMenu=parent.getBuddyMenu();
-        //roomMenu =parent.getRoomMenu();
 
         add_events(Gdk::POINTER_MOTION_MASK | Gdk::BUTTON_MOTION_MASK |
                    Gdk::BUTTON_PRESS_MASK | Gdk::
@@ -49,9 +47,6 @@ BuddyView::BuddyView(MainWindow & parent_):
         m_treestore = TreeModelDnd::create(buddyColumns);
         //set_model(m_treestore);
 
-        //i test for TreeModelFilter
-        Gtk::TreeModel::Path path("0");
-        //m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore,path);
         m_treemodelfilter = Gtk::TreeModelFilter::create(m_treestore);
         m_treemodelfilter->set_visible_func(sigc::mem_fun(*this,&BuddyView::
                                             list_visible_func));
@@ -129,6 +124,12 @@ BuddyView::BuddyView(MainWindow & parent_):
            this->signal_enter_notify_event().connect(sigc::mem_fun(
            *this,&BuddyView::on_enter_event));
          */
+}
+
+BuddyView::~BuddyView()
+{
+	delete tooltips;
+
 }
 
 bool BuddyView::on_motion_event(GdkEventMotion * ev)

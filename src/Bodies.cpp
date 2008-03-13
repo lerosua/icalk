@@ -60,8 +60,11 @@ Bodies::Bodies()
 
 Bodies::~Bodies()
 {
-	delete statusIcon;
 	delete talkFT;
+	delete main_window;
+	delete msg_window;
+	delete statusIcon;
+	delete jid;
 	main_window=NULL;
 	statusIcon=NULL;
 	//logout();
