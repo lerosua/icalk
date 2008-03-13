@@ -1,6 +1,7 @@
 INCLUDES = 								\
 	   -I$(top_srcdir)                                              \
 	   -I$(srcdir)                                                  \
+	   -g								\
 	   -DDATA_DIR=\""${datadir}/icalk"\" 				\
 	   -DITALK_LOCALEDIR=\""$(prefix)/$(DATADIRNAME)/locale"\"	\
 	   @PACKAGE_CFLAGS@

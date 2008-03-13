@@ -111,7 +111,7 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 	}
 	buddy->set_status(presence);
 	buddy->setResource(resource);
-	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(item.jid());
+	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(item.jid().c_str());
 
 }
 
