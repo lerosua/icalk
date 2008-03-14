@@ -26,7 +26,6 @@
 #include <gtkmm/treeselection.h>
 #include <functional>
 #include <vector> 
-//#include "MainWindow.h"
 #define statusmsg_ui     DATA_DIR"/ui/statusMsg.glade"
 
 using namespace std;
