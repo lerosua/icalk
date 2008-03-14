@@ -129,6 +129,8 @@ BuddyType Buddy::guessType()const
         /** 资源开头为conference，则可能为Gtalk群机器人*/
         if (0 == m_resource.find("conference"))
                 return TYPE_GROUPCHAT;
+        if (0 == m_resource.find("bot"))
+                return TYPE_BOT;
 
         return TYPE_FRIEND;
 

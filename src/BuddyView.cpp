@@ -578,19 +578,6 @@ void BuddyView::initBuddyType(Buddy* value)
         /** 根据服务器名猜测好友类型*/
         BuddyType buddyType = value->guessType();
         value->setType(buddyType);
-        /*
-        switch (buddyType) {
-        case TYPE_TRANPORT:
-         value->setType(TYPE_TRANPORT);
-         break;
-        case TYPE_MSN:
-         value->setType(TYPE_MSN);
-         break;
-        default:
-         //value->setType(TYPE_FRIEND);
-         break;
-        }
-        */
 
         /** 根据配置设置Buddy的类型*/
         const std::string & type_ =
@@ -1260,13 +1247,6 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
                 const VCard *vcard = buddy->get_vcard();
 
-                if (vcard == NULL)
-                {
-                        printf("empty vcard-in refreshBuddyStatus\n");
-                        printf(" buddy is %s\n", buddy->get_jid().c_str());
-                        //return;
-                }
-
                 {
 
 
@@ -1277,6 +1257,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                 g_build_filename(dirname, random, NULL);
 
                         Glib::RefPtr < Gdk::Pixbuf > faceicon;
+			Glib::RefPtr < Gdk::Pixbuf > faceicon_orgin;
 
                         const std::string & filename_ =
                                 getBlistTag("buddy", buddyname, "icon");
@@ -1285,14 +1266,19 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                         if ((!filename_.empty())
                                         && (!access(filename_.c_str(), F_OK)))
                         {
-                                Glib::RefPtr < Gdk::Pixbuf >
+				try{
                                 faceicon_orgin =
                                         Gdk::Pixbuf::
                                         create_from_file(filename_.c_str());
-                                faceicon =
-                                        faceicon_orgin->scale_simple(30, 30,
-                                                                     Gdk::
-                                                                     INTERP_NEAREST);
+				}
+                                        catch (Glib::FileError e)
+                                        {
+                                                g_message("caught Glib::FileError in refreshBuddyStatus create from file");
+                                        }
+                                        catch (Gdk::PixbufError e)
+                                        {
+                                                g_message("Gdk::PixbufError in create_from_file");
+                                        }
 
                                 if (faceicon_orgin == 0)
                                 {
@@ -1303,27 +1289,18 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                         buddy->setLogo(faceicon);
                                 }
                                 else
+				{
+                                faceicon =
+                                        faceicon_orgin->scale_simple(30, 30,
+                                                                     Gdk::
+                                                                     INTERP_NEAREST);
                                         buddy->setLogo(faceicon_orgin);
+				}
                         }
                         else
                         {
-                                std::string photobin("");
 
-                                if (vcard)
-                                {
-                                        printf("#检测 %s 中\n", buddy->get_jid().c_str());
-                                        photobin.assign(vcard->photo().binval);
-
-                                        if (photobin.empty())
-                                        {
-                                                printf("# %s 图像为空的\n", buddy->get_jid().c_str());
-                                        }
-                                        else
-                                                printf("# %s 图像不为空的\n", buddy->get_jid().c_str());
-                                }
-
-                                //if (vcard && !vcard->photo().type.empty())
-                                if (vcard && !photobin.empty())
+                                if (vcard && !vcard->photo().binval.empty())
                                 {
                                         std::ofstream fout(filename);
                                         fout.write((const char *) vcard->
@@ -1334,7 +1311,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
                                         try
                                         {
-                                                faceicon =
+                                                faceicon_orgin =
                                                         Gdk::Pixbuf::
                                                         create_from_file(filename, 30,
                                                                          30);
@@ -1348,7 +1325,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                 g_message("Gdk::PixbufError in create_from_file");
                                         }
 
-                                        if (faceicon == 0)
+                                        if (faceicon_orgin == 0)
                                         {
                                                 faceicon =
                                                         getPix30
@@ -1356,17 +1333,26 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                 printf
                                                 ("pixbuf load file %s error\n",
                                                  filename);
+						buddy->setLogo(faceicon);
                                         }
                                         else
+					{
+                                faceicon =
+                                        faceicon_orgin->scale_simple(30, 30,
+                                                                     Gdk::
+                                                                     INTERP_NEAREST);
                                                 setBlistTag("buddy",
                                                             buddyname,
                                                             "icon",
                                                             filename);
+						buddy->setLogo(faceicon_orgin);
+					}
                                 }
                                 else
+				{
                                         faceicon = getPix30("default.png");
-
-                                buddy->setLogo(faceicon);
+					buddy->setLogo(faceicon);
+				}
                         }
 
 
