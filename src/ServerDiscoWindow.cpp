@@ -21,6 +21,7 @@
 
 
 ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_):parent(parent_)
+				       ,Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
 	server_discovery_xml = Gnome::Glade::Xml::create(server_discovery_ui,"vBox");
 	Gtk::VBox* vBox=dynamic_cast<Gtk::VBox*>(server_discovery_xml->get_widget("vBox"));
@@ -54,7 +55,8 @@ void ServerDiscoWindow::on_btGo_clicked()
 
 void ServerDiscoWindow::on_btclose_clicked()
 {
-	delete this;
+	//delete this;
+	parent->on_serverDisco_close(this);
 }
 bool ServerDiscoWindow::on_key_press_event(GdkEventKey* ev)
 {

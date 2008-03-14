@@ -95,11 +95,12 @@ MainWindow::MainWindow(Bodies & bodies_):bodies(bodies_)
 	,statusCombo(NULL)
 	,statusEntry(NULL)
 	,discowindow(NULL)
+	,statusMsgWidget(NULL)
 {
-	groalSet.MUTE = false;
-	groalSet.SHOWALLFRIEND = false;
-	groalSet.STATUS = LOGIN_INIT;
-	groalSet.TIMECOUNT = 1;
+	config.MUTE = false;
+	config.SHOWALLFRIEND = false;
+	config.STATUS = LOGIN_INIT;
+	config.TIMECOUNT = 1;
 
 	main_xml = Gnome::Glade::Xml::create(main_ui, "main_notebook");
 	main_notebook =
@@ -339,7 +340,7 @@ void MainWindow::on_initalize()
 void MainWindow::on_login_finial()
 {
 	main_notebook->set_current_page(LOGIN_FINIAL);
-	groalSet.STATUS = LOGIN_FINIAL;
+	config.STATUS = LOGIN_FINIAL;
 	const std::string & msgtimeout =
 	    bodies.getAccountTag("MsgTimeout");
 	if ("on" == msgtimeout)
@@ -466,10 +467,10 @@ bool MainWindow::on_key_press_event(GdkEventKey * ev)
 	switch (ev->keyval) {
 	case GDK_Return:
 	case GDK_KP_Enter:
-		if (LOGIN_FINIAL == groalSet.STATUS)
+		if (LOGIN_FINIAL == config.STATUS)
 			on_entryStatus_change();
 
-		else if (LOGIN_INIT == groalSet.STATUS)
+		else if (LOGIN_INIT == config.STATUS)
 			on_login();
 		break;
 	default:
@@ -508,7 +509,7 @@ void MainWindow::addStatusMsgTimeout()
 	int delay = 60000;
 	msgTimeout = Glib::signal_timeout().connect(sigc::mem_fun(*this,
 								  &MainWindow::
-								  statusMsgTimeout),
+								  statusMsgWidgetTimeout),
 						    delay);
 	bodies.setAccountTag("MsgTimeout", "on");
 }
@@ -520,17 +521,17 @@ void MainWindow::delStatusMsgTimeout()
 	bodies.setAccountTag("MsgTimeout", "off");
 }
 
-bool MainWindow::statusMsgTimeout()
+bool MainWindow::statusMsgWidgetTimeout()
 {
 
 	/** 用于计算是否达到TIMEOUT所指的分钟时间，因为超时是每分钟
 	 * 调用，所以这里只有用检测的办法达到第N分钟才设置状态*/
-	if (groalSet.TIMECOUNT != TIMEOUT) {
-		groalSet.TIMECOUNT = groalSet.TIMECOUNT + 1;
-		//printf(" timecout is %d\n",groalSet.TIMECOUNT);
+	if (config.TIMECOUNT != TIMEOUT) {
+		config.TIMECOUNT = config.TIMECOUNT + 1;
+		//printf(" timecout is %d\n",config.TIMECOUNT);
 		return true;
 	}
-	groalSet.TIMECOUNT = 1;
+	config.TIMECOUNT = 1;
 
 	char buf[512];
 	guint number = 0;
@@ -592,8 +593,19 @@ void MainWindow::setStatusMsg(const std::string & msg)
 
 void MainWindow::on_btstatusmsgmanager_clicked()
 {
-	StatusMsgWidget *statusMsg = new StatusMsgWidget(this);
+	if(NULL == statusMsgWidget){
+		statusMsgWidget = new StatusMsgWidget(this);
+	}
+	else{
+		statusMsgWidget->raise();
+	}
 
+}
+void MainWindow::on_btstatusmsgmanager_close( StatusMsgWidget* dlg)
+{
+	g_assert(dlg == statusMsgWidget);
+	delete dlg;
+	statusMsgWidget=NULL;
 }
 
 void MainWindow::on_btlistexpand_clicked()
@@ -603,12 +615,12 @@ void MainWindow::on_btlistexpand_clicked()
 
 void MainWindow::on_btlistshowoffline_clicked()
 {
-	if (groalSet.SHOWALLFRIEND) {
+	if (config.SHOWALLFRIEND) {
 		list_view->showOffline(false);
-		groalSet.SHOWALLFRIEND = false;
+		config.SHOWALLFRIEND = false;
 	} else {
 		list_view->showOffline(true);
-		groalSet.SHOWALLFRIEND = true;
+		config.SHOWALLFRIEND = true;
 	}
 }
 
@@ -978,11 +990,16 @@ void MainWindow::on_buddyFind_activate()
 
 void MainWindow::on_serverDisco_activate()
 {
-	//ServerDiscoWindow* discowindow = new ServerDiscoWindow(this);
-	if(discowindow)
-		return discowindow->show();
-	else
+	if(NULL==discowindow)
 		discowindow = new ServerDiscoWindow(this);
+	else
+		return discowindow->raise();
+}
+void MainWindow::on_serverDisco_close( ServerDiscoWindow* dlg)
+{
+	g_assert(dlg== discowindow);
+	delete dlg;
+	discowindow = NULL;
 }
 
 void MainWindow::on_freshList_activate()
@@ -1007,11 +1024,11 @@ void MainWindow::on_sound_activate()
 		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mutt"));
 	if (melem->get_active()) {
 		sounds::mute(1);
-		groalSet.MUTE = true;
+		config.MUTE = true;
 		bodies.setAccountTag("sound", "MUTE");
 	} else {
 		sounds::mute(0);
-		groalSet.MUTE = false;
+		config.MUTE = false;
 		bodies.setAccountTag("sound", "ON");
 	}
 
@@ -1023,17 +1040,17 @@ void MainWindow::on_show_all_friends()
 		Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("ShowOffline"));
 
 	if (melem->get_active()) {
-		if (groalSet.SHOWALLFRIEND)
+		if (config.SHOWALLFRIEND)
 			return;
 		else {
 			list_view->showOffline(true);
-			groalSet.SHOWALLFRIEND = true;
+			config.SHOWALLFRIEND = true;
 		}
 	} else {
-		if (groalSet.SHOWALLFRIEND) {
+		if (config.SHOWALLFRIEND) {
 			list_view->showOffline(false);
 			list_view->showGroup(false);
-			groalSet.SHOWALLFRIEND = false;
+			config.SHOWALLFRIEND = false;
 		} else
 			return;
 

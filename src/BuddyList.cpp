@@ -96,7 +96,9 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 		Presence::PresenceType presence,
 		const std::string & msg)
 {
-	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(item.jid().c_str());
+	std::string jid = item.jid();
+	//Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(item.jid().c_str());
+	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
 	if(Presence::Unavailable == presence)
 	{
 		if(buddy->get_status() == Presence::Unavailable)
@@ -111,7 +113,7 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 	}
 	buddy->set_status(presence);
 	buddy->setResource(resource);
-	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(item.jid().c_str());
+	Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(jid);
 
 }
 

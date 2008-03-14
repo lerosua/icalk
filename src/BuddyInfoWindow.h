@@ -33,6 +33,7 @@ class BuddyInfoWindow:public Gtk::Window
 		void on_btclose_clicked();
 	private:
 		Buddy* buddy;
+		MsgBox *infoBox;
 };
 
 

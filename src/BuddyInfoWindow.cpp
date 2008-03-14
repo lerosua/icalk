@@ -31,7 +31,7 @@ name.c_str());
 
 	Gtk::VBox * vbox =
 	    dynamic_cast < Gtk::VBox * >(info_xml->get_widget("vBox"));
-	MsgBox *infoBox = new MsgBox();
+	infoBox = new MsgBox();
 	vbox->pack_end(*infoBox);
 
 	Gtk::Button* btclose = dynamic_cast<Gtk::Button*>(info_xml->
@@ -102,6 +102,7 @@ name.c_str());
 
 BuddyInfoWindow::~BuddyInfoWindow()
 {
+	delete infoBox;
 }
 
 void BuddyInfoWindow::on_btclose_clicked()

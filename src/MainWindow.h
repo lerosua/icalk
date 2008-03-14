@@ -99,6 +99,8 @@ class MainWindow:public Gtk::Window
 		void on_btnSystem_clicked();
 		/** 主窗口下面按钮，签名消息管理按键*/
 		void on_btstatusmsgmanager_clicked();
+		/** 当签名消息管理窗口关闭时的回调*/
+		void on_btstatusmsgmanager_close(StatusMsgWidget* dlg);
 		/** 主窗口下面按钮第三个*/
 		void on_btnAudio_clicked();
 		/** 展开或折叠好友列表快捷按钮*/
@@ -131,6 +133,8 @@ class MainWindow:public Gtk::Window
 		void on_buddyFind_activate();
 		/** 查找服务的窗口回调*/
 		void on_serverDisco_activate();
+		/** 查找服务的窗口的关闭的回调*/
+		void on_serverDisco_close(ServerDiscoWindow* dlg);
 		/** 刷新好友列表*/
 		void on_freshList_activate();
 		/** 显示关于窗口，关于窗口有作者信息，版权等*/
@@ -158,11 +162,11 @@ class MainWindow:public Gtk::Window
 		void on_login_finial();
 		/** 登录中，显示正在登录的标签页*/
 		void on_logining()    { main_notebook->set_current_page(LOGIN_LOADING);
-					groalSet.STATUS=LOGIN_LOADING;
+					config.STATUS=LOGIN_LOADING;
 		}
 		/** 重新登录，显示登录框的页*/
 		void on_relogin()	{ main_notebook->set_current_page(LOGIN_INIT);
-					groalSet.STATUS=LOGIN_INIT;
+					config.STATUS=LOGIN_INIT;
 					}
 		/** 在登录中取消登录*/
 		void on_logining_cancel();
@@ -182,18 +186,18 @@ class MainWindow:public Gtk::Window
 		/** 删除状态签名超时*/
 		void delStatusMsgTimeout();
 		/** 状态签名超时函数*/
-		bool statusMsgTimeout();
+		bool statusMsgWidgetTimeout();
 		/** 返回是否设置了状态签名超时*/
 		bool isMsgTimeout(){ return msgTimeout.connected(); }
 
 	private:
 		/** 全局变量集合*/
-		typedef struct GroalSet{
+		typedef struct Config{
 			bool SHOWALLFRIEND; /**显示离线好友*/
 			bool MUTE;		/** 静音*/
 			int STATUS;		/**登录状态*/
 			int TIMECOUNT;		/**消息超时的计时器*/
-		}GroalSet;
+		}Config;
 
 	private:
 		Bodies& bodies;
@@ -212,8 +216,9 @@ class MainWindow:public Gtk::Window
 		Gtk::Entry* entryPort;
 		Gtk::Entry* entryFilter;
 		ServerDiscoWindow* discowindow;
+		StatusMsgWidget *statusMsgWidget;
 		sigc::connection msgTimeout;
-		GroalSet groalSet;
+		Config config;
 
 		int win_x, win_y;
 

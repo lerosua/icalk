@@ -7,6 +7,7 @@
 
 
 StatusMsgWidget::StatusMsgWidget(MainWindow * parent_):parent(parent_)
+				       ,Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
 	GlademmXML vbox_xml =
 	    Gnome::Glade::Xml::create(statusmsg_ui, "statusMsgBox");
@@ -81,12 +82,14 @@ StatusMsgWidget::~StatusMsgWidget()
 void StatusMsgWidget::on_button_ok()
 {
 	msgline->Save();
-	delete this;
+	parent->on_btstatusmsgmanager_close(this);
+	//delete this;
 }
 
 void StatusMsgWidget::on_button_cancel()
 {
-	delete this;
+	parent->on_btstatusmsgmanager_close(this);
+	//delete this;
 }
 void StatusMsgWidget::on_button_add()
 {
