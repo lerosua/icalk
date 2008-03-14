@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  MainWindow.h
- * 
- *    Description:  
- * 
- *        Version:  1.0
- *        Created:  2007年05月24日 19时46分23秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  MainWindow.h
+* 
+*    Description:  
+* 
+*        Version:  1.0
+*        Created:  2007年05月24日 19时46分23秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef _MAINWINDOW_HH
 #define _MAINWINDOW_HH
@@ -24,7 +24,7 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 #include <iostream>
-#include <sigc++/connection.h>
+#include <sigc++/connection.h> 
 //#include "TalkMenu.h"
 #include "StatusMsgWidget.h"
 #include "BuddyInfoWindow.h"
@@ -37,16 +37,17 @@ class Bodies;
 
 class BuddyView;
 /** 标识当前窗口为已连接后的页*/
-#define LOGIN_FINIAL 2
+#define LOGIN_FINIAL 2 
 /** 标识当前窗口为正在连接的页*/
-#define LOGIN_LOADING   1
+#define LOGIN_LOADING   1 
 /** 标识当前窗口为未连接的页*/
-#define LOGIN_INIT 0
+#define LOGIN_INIT 0 
 /**
  * @brief 好友列表窗口，主窗口
  */
 
-class MainWindow: public Gtk::Window {
+class MainWindow: public Gtk::Window
+{
 
 public:
         MainWindow(Bodies& bodies_);
@@ -55,17 +56,21 @@ public:
         void on_initalize();
 
         /**返回好友列表UI类*/
-        BuddyView& get_buddy_view() {
+        BuddyView& get_buddy_view()
+        {
                 return *list_view;
         }
 
         /**构造状态栏的列表需要的类*/
 
-class ModelColumns: public Gtk::TreeModel::ColumnRecord {
+class ModelColumns: public Gtk::TreeModel::ColumnRecord
+        {
 
         public:
-                ModelColumns() {
-                        add(col_status);
+                ModelColumns()
+                {
+                        add
+                                (col_status);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> col_status;
@@ -78,7 +83,8 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord {
         /** 当签名改变时回调*/
         void on_entryStatus_change();
         /** 返回主窗口右上角的Logo*/
-        Glib::RefPtr<Gdk::Pixbuf> getLogo() {
+        Glib::RefPtr<Gdk::Pixbuf> getLogo()
+        {
                 return logo;
         }
 
@@ -103,11 +109,13 @@ public:
         void register_stock_items();
         /** 从xml的UI信息里构建菜单*/
         void init_ui_manager();
-        Gtk::Menu* getBuddyMenu() {
+        Gtk::Menu* getBuddyMenu()
+        {
                 return buddyMenu;
         }
 
-        Gtk::Menu* getRoomMenu() {
+        Gtk::Menu* getRoomMenu()
+        {
                 return roomMenu;
         }
 
@@ -180,13 +188,15 @@ public:
         /**登录成功后显示列表页*/
         void on_login_finial();
         /** 登录中，显示正在登录的标签页*/
-        void on_logining()    {
+        void on_logining()
+        {
                 main_notebook->set_current_page(LOGIN_LOADING);
                 config.STATUS = LOGIN_LOADING;
         }
 
         /** 重新登录，显示登录框的页*/
-        void on_relogin() {
+        void on_relogin()
+        {
                 main_notebook->set_current_page(LOGIN_INIT);
                 config.STATUS = LOGIN_INIT;
         }
@@ -202,7 +212,8 @@ public:
 
 public:
         /** 获取当前的签名消息*/
-        Glib::ustring getStatusMsg() const {
+        Glib::ustring getStatusMsg() const
+        {
                 return statusEntry->get_text();
         }
 
@@ -215,14 +226,16 @@ public:
         /** 状态签名超时函数*/
         bool statusMsgWidgetTimeout();
         /** 返回是否设置了状态签名超时*/
-        bool isMsgTimeout() {
+        bool isMsgTimeout()
+        {
                 return msgTimeout.connected();
         }
 
 private:
         /** 全局变量集合*/
 
-        typedef struct Config {
+        typedef struct Config
+        {
                 bool SHOWALLFRIEND; /**显示离线好友*/
                 bool MUTE;  /** 静音*/
                 int STATUS;  /**登录状态*/
@@ -236,8 +249,8 @@ private:
         BuddyView* list_view;
         GlademmXML main_xml;
         Gtk::ComboBox* statusCombo;
-        Gtk::Entry*    statusEntry;
-        Gtk::Button*   buttonSystem;
+        Gtk::Entry* statusEntry;
+        Gtk::Button* buttonSystem;
         Glib::RefPtr<Gdk::Pixbuf> logo;
         Gtk::Notebook* main_notebook;
         Gtk::ComboBoxEntryText* comboAccount;

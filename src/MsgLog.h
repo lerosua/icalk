@@ -5,7 +5,8 @@
 #include <fstream>
 
 
-class MsgLog {
+class MsgLog
+{
 
 public:
         MsgLog(const std::string& jid_);

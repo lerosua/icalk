@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  JingleSessionManager.h
- *
- *    Description:  jinglesession manager
- *
- *        Version:  1.0
- *        Created:  2008年01月23日 11时43分52秒
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  JingleSessionManager.h
+*
+*    Description:  jinglesession manager
+*
+*        Version:  1.0
+*        Created:  2008年01月23日 11时43分52秒
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 #ifndef JINGLESESSIONMANAGER_H_
 #define JINGLESESSIONMANAGER_H_
@@ -23,7 +23,8 @@
 
 using namespace gloox;
 
-namespace cricket {
+namespace cricket
+{
 
 class SessionManager;
 }
@@ -32,9 +33,11 @@ class JingleSession;
 
 class Client;
 
-namespace jingle {
+namespace jingle
+{
 
-class JingleSessionManager {
+class JingleSessionManager
+{
 
 public:
         typedef std::list<buzz::Jid> JidList;

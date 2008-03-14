@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  TalkMsg.h
- *
- *    Description:  TalkMsg类，管理消息处理.
- *
- *        Version:  1.0
- *        Created:  2007年05月24日 19时41分25秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  TalkMsg.h
+*
+*    Description:  TalkMsg类，管理消息处理.
+*
+*        Version:  1.0
+*        Created:  2007年05月24日 19时41分25秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 #ifndef _TALK_H_
 #define _TALK_H_
@@ -36,7 +36,8 @@ class TalkRoom;
  *  @author lerosua <lerosua@gmail.com> wind <xihels@gmail.com>
  */
 
-class TalkMsg: public MessageHandler, public MessageEventHandler, public ChatStateHandler, public MessageSessionHandler {
+class TalkMsg: public MessageHandler, public MessageEventHandler, public ChatStateHandler, public MessageSessionHandler
+{
 
 public:
         TalkMsg();

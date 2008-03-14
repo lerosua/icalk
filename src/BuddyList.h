@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  BuddyList.h
- * 
- *    Description:  好友列表
- * 
- *        Version:  1.0
- *        Created:  2007年06月14日 22时42分09秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  BuddyList.h
+* 
+*    Description:  好友列表
+* 
+*        Version:  1.0
+*        Created:  2007年06月14日 22时42分09秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  BUDDYLIST_FILE_HEADER_INC
 #define  BUDDYLIST_FILE_HEADER_INC
@@ -33,18 +33,22 @@ class Buddy;
  *
  */
 
-class BuddyList: public RosterListener {
+class BuddyList: public RosterListener
+{
 
 public:
-        BuddyList() {}
+        BuddyList()
+        {}
 
         /** 保存好友数据的结构，以好友id为关键字*/
         typedef std::map<Glib::ustring, Buddy*> BUDDY_MAP;
 
-        ~BuddyList() {}
+        ~BuddyList()
+        {}
 
         /** 获取好友数据，好友都保存在此MAP中*/
-        const BUDDY_MAP& get_buddy_map() const {
+        const BUDDY_MAP& get_buddy_map() const
+        {
                 return buddy_map;
         }
 
@@ -61,7 +65,8 @@ public:
          */
 
         template <class Tfun>
-        void for_each(Tfun fun) const {
+        void for_each(Tfun fun) const
+        {
                 std::for_each(buddy_map.begin(), buddy_map.end(), fun);
         }
 

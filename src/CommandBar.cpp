@@ -2,9 +2,9 @@
 //
 
 #if defined __GNUC__ && __GNUC__ < 3
-#error This program will crash if compiled with g++ 2.x
+#error This program will crash if compiled with g++ 2.x 
 // see the dynamic_cast bug in the gtkmm FAQ
-#endif //
+#endif // 
 //#include "config.h"
 #include <gtkmmconfig.h>
 #if GTKMM_MAJOR_VERSION==2 && GTKMM_MINOR_VERSION>2
@@ -30,7 +30,8 @@
 
 CommandBar::CommandBar(MsgPage* _parent) :
                 parent(reinterpret_cast<MsgPage*>(_parent)),
-smileyWnd(NULL) {
+                smileyWnd(NULL)
+{
         CommandBar* commandBar = this;
 
         Gtk::Image* image_ = getImage("insert-fonts.png");
@@ -77,24 +78,29 @@ smileyWnd(NULL) {
 
 
 
-CommandBar::~CommandBar() {
+CommandBar::~CommandBar()
+{
         delete smileyWnd;
 }
 
-void CommandBar::on_fonts_clicked() {
+void CommandBar::on_fonts_clicked()
+{
         parent->on_toolbar_fonts();
 }
 
-void CommandBar::on_link_clicked() {
+void CommandBar::on_link_clicked()
+{
         parent->on_toolbar_link();
 }
 
-void CommandBar::on_image_clicked() {
+void CommandBar::on_image_clicked()
+{
         parent->on_toolbar_image();
 }
 
-void CommandBar::on_smiley_clicked() {
-        if(NULL == smileyWnd)
+void CommandBar::on_smiley_clicked()
+{
+        if (NULL == smileyWnd)
                 smileyWnd = new SmileyWnd(parent);
 
         smileyWnd->showWindow();

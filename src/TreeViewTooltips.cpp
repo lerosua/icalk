@@ -1,26 +1,27 @@
 /*
- * =====================================================================================
- *
- *       Filename:  TreeViewTooltips.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  2007年10月09日 20时07分21秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  TreeViewTooltips.cpp
+*
+*    Description:  
+*
+*        Version:  1.0
+*        Created:  2007年10月09日 20时07分21秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 #include "TreeViewTooltips.h"
 #include "pixmaps.h"
 
 TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
-, Window(Gtk::WINDOW_POPUP) {
+                , Window(Gtk::WINDOW_POPUP)
+{
         this->set_decorated(false);
         this->set_skip_pager_hint(true);
         this->set_skip_taskbar_hint(true);
@@ -44,7 +45,8 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
         hbox->pack_start(*avatar);
         hbox->show_all();
 
-        add(*hbox);
+        add
+                (*hbox);
 
         add_events(Gdk::POINTER_MOTION_MASK);
 
@@ -59,7 +61,8 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
 
 }
 
-bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev) {
+bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev)
+{
         int width, height;
         this->get_size(width, height);
         //Gtk::Requisition req = this->size_request();
@@ -72,28 +75,33 @@ bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev) {
         return Gtk::Window::on_expose_event(ev);
 }
 
-bool TreeViewTooltips::on_motion_event(GdkEventMotion* ev) {
+bool TreeViewTooltips::on_motion_event(GdkEventMotion* ev)
+{
         Gtk::TreeModel::Path path;
         Gtk::TreeViewColumn* column;
         int cell_x, cell_y;
 
-        if(  buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) ) {
+        if ( buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) )
+        {
                 hideTooltip();
                 return 0;
         }
 }
 
 
-bool TreeViewTooltips::on_leave_event(GdkEventCrossing* ev) {
+bool TreeViewTooltips::on_leave_event(GdkEventCrossing* ev)
+{
         hideTooltip();
         return 0;
 }
 
-void TreeViewTooltips::hideTooltip() {
+void TreeViewTooltips::hideTooltip()
+{
         this->hide();
 }
 
-void TreeViewTooltips::showTooltip(GdkEventMotion* ev) {
+void TreeViewTooltips::showTooltip(GdkEventMotion* ev)
+{
         int x_root, y_root, origY;
         int width, height;
         int x, y;
@@ -110,20 +118,20 @@ void TreeViewTooltips::showTooltip(GdkEventMotion* ev) {
 
         x = x_root - width / 2;
 
-        if(currentY >= origY)
+        if (currentY >= origY)
                 y = y_root + 24;
         else
                 y = y_root + 6;
 
         //check if over the screen
-        if(x + width > s_width)
+        if (x + width > s_width)
                 x = s_width - width;
-        else if(x < 0)
+        else if (x < 0)
                 x = 0;
 
-        if(y + height > s_height)
+        if (y + height > s_height)
                 y = y - height - 24;
-        else if(y < 0)
+        else if (y < 0)
                 y = 0;
 
         this->move(x, y);

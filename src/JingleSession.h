@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  jinglesession.h
- * 
- *    Description:  Define a Jingle Session.
- * 
- *        Version:  1.0
- *        Created:  2008年01月20日 22时09分05秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  jinglesession.h
+* 
+*    Description:  Define a Jingle Session.
+* 
+*        Version:  1.0
+*        Created:  2008年01月20日 22时09分05秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  JINGLESESSION_FILE_HEADER_INC
 #define  JINGLESESSION_FILE_HEADER_INC
@@ -23,14 +23,16 @@ using namespace gloox;
 
 class Client;
 
-namespace jingle {
+namespace jingle
+{
 /**
  * @brief Base class for peer-to-peer session that use Jingle signaling.
  * @cn P2P会话的模板类，使用Jingle信号
  * @author lerosua <lerosua@gmail.com>
  */
 
-class JingleSession {
+class JingleSession
+{
 
 public:
         typedef std::list<buzz::Jid> JidList;

@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  MemberList.h
- * 
- *    Description:  聊天室里的成员列表
- * 
- *        Version:  1.0
- *        Created:  2007年08月25日 11时13分33秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  MemberList.h
+* 
+*    Description:  聊天室里的成员列表
+* 
+*        Version:  1.0
+*        Created:  2007年08月25日 11时13分33秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  MEMBERLIST_FILE_HEADER_INC
 #define  MEMBERLIST_FILE_HEADER_INC
@@ -24,12 +24,13 @@
 #include <gtkmm/liststore.h>
 #include "pixmaps.h"
 #include <functional>
-#include "icalk.h"
+#include "icalk.h" 
 //#include "RoomItem.h"
 using std::unary_function;
 
 
-class MemberList : public Gtk::TreeView {
+class MemberList : public Gtk::TreeView
+{
 
 public:
         MemberList();
@@ -46,17 +47,24 @@ protected:
 
 private:
 
-struct MemberColumns : public Gtk::TreeModel::ColumnRecord {
-                MemberColumns() {
-                        add(icon);
+struct MemberColumns : public Gtk::TreeModel::ColumnRecord
+        {
+                MemberColumns()
+                {
+                        add
+                                (icon);
 
-                        add(name);
+                        add
+                                (name);
 
-                        add(mid);
+                        add
+                                (mid);
 
-                        add(status);
+                        add
+                                (status);
 
-                        add(presence);
+                        add
+                                (presence);
                 }
 
                 Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
@@ -70,7 +78,8 @@ struct MemberColumns : public Gtk::TreeModel::ColumnRecord {
 private:
         //排序函数
         int on_sort_compare(const Gtk::TreeModel::iterator& a,
-                            const Gtk::TreeModel::iterator& b) {
+                            const Gtk::TreeModel::iterator& b)
+        {
                 int result = (*a)[columns.presence] - (*b)[columns.presence];
                 return result;
         }

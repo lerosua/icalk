@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  TalkConnect.cpp
- * 
- *    Description:  连接处理类
- * 
- *        Version:  1.0
- *        Created:  2007年07月1日 16时52分02秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  TalkConnect.cpp
+* 
+*    Description:  连接处理类
+* 
+*        Version:  1.0
+*        Created:  2007年07月1日 16时52分02秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #include "TalkConnect.h"
 #include <gtkmm.h>
@@ -23,25 +23,29 @@
 #include "Bodies.h"
 
 
-TalkConnect::TalkConnect() {}
+TalkConnect::TalkConnect()
+{}
 
-TalkConnect::~TalkConnect() {}
+TalkConnect::~TalkConnect()
+{}
 
 
-void TalkConnect::onConnect() {
+void TalkConnect::onConnect()
+{
         std::cout << "Talk had connected ..." << std::endl;
 
         Bodies::Get_Bodies().get_main_window().on_login_finial();
         Bodies::Get_Bodies().get_main_window().on_combo_change();
         Bodies::Get_Bodies().get_main_window().initRoom();
         Bodies::Get_Bodies().fetch_self_vcard();
-//      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
-//      bookmark.requestBookmarks();
+        //      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
+        //      bookmark.requestBookmarks();
 }
 
-void TalkConnect::onDisconnect(ConnectionError er) {
+void TalkConnect::onDisconnect(ConnectionError er)
+{
         if (ConnNoError == er)
-                return;
+                return ;
 
         std::cout << "Talk onDisconnect error in " << er << std::endl;
 
@@ -52,7 +56,8 @@ void TalkConnect::onDisconnect(ConnectionError er) {
 
         int result;
 
-        switch (er) {
+        switch (er)
+        {
                 /*
                    case 0:
                    std::cout<<"ConnNoError "<< er << std::endl;
@@ -167,8 +172,10 @@ void TalkConnect::onDisconnect(ConnectionError er) {
 
         result = askDialog.run();
 
-        switch (result) {
-        case (Gtk::RESPONSE_OK): {
+        switch (result)
+        {
+        case (Gtk::RESPONSE_OK):
+                {
                         std::cout << "OK clicked" << std::endl;
                         Bodies::Get_Bodies().logout();
                         Bodies::Get_Bodies().get_main_window().
@@ -176,18 +183,20 @@ void TalkConnect::onDisconnect(ConnectionError er) {
                         break;
                 }
 
-        case (Gtk::RESPONSE_CANCEL): {
+        case (Gtk::RESPONSE_CANCEL):
+                {
                         std::cout << "Cancel clicked" << std::endl;
                         //Bodies::Get_Bodies().logout();
                         Bodies::Get_Bodies().get_main_window().on_quit();
                         break;
                 }
 
-        default: {
-                std::cout << "nothing clicked" << std::endl;
-                Bodies::Get_Bodies().logout();
-                break;
-        }
+        default:
+                {
+                        std::cout << "nothing clicked" << std::endl;
+                        Bodies::Get_Bodies().logout();
+                        break;
+                }
         }
 
 
@@ -197,15 +206,18 @@ void TalkConnect::onDisconnect(ConnectionError er) {
                 std::cout << "ConnNotConnected " << er << std::endl;
 }
 
-void TalkConnect::onResourceBindError(ResourceBindError error) {
+void TalkConnect::onResourceBindError(ResourceBindError error)
+{
         std::cout << "Talk onResourceBindError ..." << std::endl;
 }
 
-void TalkConnect::onSessionCreateError(SessionCreateError error) {
+void TalkConnect::onSessionCreateError(SessionCreateError error)
+{
         std::cout << "Talk onSessionCreateError ..." << std::endl;
 }
 
-bool TalkConnect::onTLSConnect(const CertInfo & info) {
+bool TalkConnect::onTLSConnect(const CertInfo & info)
+{
         std::cout << "Talk had TLS connected ..." << std::endl;
 
         printf
@@ -220,11 +232,13 @@ bool TalkConnect::onTLSConnect(const CertInfo & info) {
 
 }
 
-void TalkConnect::onStreamEvent(StreamEvent event) {
+void TalkConnect::onStreamEvent(StreamEvent event)
+{
         std::cout << "Talk onStreamEvent.." << std::endl;
 }
 
-void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& message) {
+void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& message)
+{
         //printf("log: level: %d, area %d, %s\n",level, area,message.c_str());
 
 }

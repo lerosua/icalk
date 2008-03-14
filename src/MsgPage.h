@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  MsgPage.h
- * 
- *    Description:  显示聊天窗口的标签页
- * 
- *        Version:  1.0
- *        Created:  2007年06月29日 21时21分32秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  MsgPage.h
+* 
+*    Description:  显示聊天窗口的标签页
+* 
+*        Version:  1.0
+*        Created:  2007年06月29日 21时21分32秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:  cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef _MSG_PAGE_H_
 #define _MSG_PAGE_H_
@@ -24,15 +24,18 @@
 #include <gtkmm/accelgroup.h>
 
 
-class GlademmData {
+class GlademmData
+{
 
         Glib::RefPtr < Gtk::AccelGroup > accgrp;
 
 public:
 
-        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag) {}
+        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag)
+        {}
 
-        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup() {
+        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup()
+        {
                 return accgrp;
         }
 };
@@ -46,7 +49,7 @@ public:
 #include "MsgBox.h"
 #include "CommandBar.h"
 #include "MemberList.h"
-#include "MsgLog.h"
+#include "MsgLog.h" 
 //#include "RoomItem.h"
 
 using namespace gloox;
@@ -59,7 +62,8 @@ class RoomItem;
  * 
  */
 
-class MsgPage: public Gtk::HPaned {
+class MsgPage: public Gtk::HPaned
+{
 
 public:
         typedef Glib::RefPtr < Gtk::TextBuffer::Tag > RefTag;
@@ -80,23 +84,28 @@ public:
 
         virtual ~ MsgPage();
 
-        Gtk::Image & get_logo() {
+        Gtk::Image & get_logo()
+        {
                 return *logo;
         }
 
-        Gtk::Label & get_lable() {
+        Gtk::Label & get_lable()
+        {
                 return *titlelable;
         }
 
-        Gtk::Widget * getFocusWidge() {
+        Gtk::Widget * getFocusWidge()
+        {
                 return inputMsgBox;
         }
 
-        SMILELIST& getSmileMap() {
+        SMILELIST& getSmileMap()
+        {
                 return inputMsgBox->getSmileMap();
         }
 
-        void insertSmiley(const Glib::ustring& code) {
+        void insertSmiley(const Glib::ustring& code)
+        {
                 inputMsgBox->insertSmiley(code);
         }
 
@@ -138,7 +147,8 @@ public:
          * @brief 显示其它一些消息，如用户关闭窗口
          * @param msg_ 消息内容
          */
-        void showSystemMsg(const std::string & msg) {
+        void showSystemMsg(const std::string & msg)
+        {
                 msgBox->showSystemMsg(msg);
         }
 
@@ -172,7 +182,8 @@ public:
         /** 更新聊天室内成员列表*/
         void refreshMember();
         /** 获取聊天室内的成员列表*/
-        MemberList *getMemberList() {
+        MemberList *getMemberList()
+        {
                 return memberList;
         }
 

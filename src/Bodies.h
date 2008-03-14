@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  Bodies.h
- * 
- *    Description:  主类,负责创建其它各个功能类.
- * 
- *        Version:  1.0
- *        Created:  2007年06月22日 20时59分48秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  Bodies.h
+* 
+*    Description:  主类,负责创建其它各个功能类.
+* 
+*        Version:  1.0
+*        Created:  2007年06月22日 20时59分48秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:  cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef _BODIES_H_
 #define _BODIES_H_
@@ -47,7 +47,8 @@ using std::list;
  * @brief 用于集合各种功能的工厂
  */
 
-class Bodies {
+class Bodies
+{
 
 private:
         Bodies();
@@ -70,45 +71,54 @@ public:
         void saveUserList(const std::string& jid);
 
         /**得到好友列表的窗口*/
-        MainWindow&  get_main_window() {
+        MainWindow& get_main_window()
+        {
                 return *main_window;
         }
 
         /**得到聊天窗口*/
-        MsgWindow& get_msg_window()  {
+        MsgWindow& get_msg_window()
+        {
                 return *msg_window;
         }
 
         /**得到好友列表类*/
-        BuddyList&  get_buddy_list()  {
+        BuddyList& get_buddy_list()
+        {
                 return buddy_list;
         }
 
         /**得到消息处理类*/
-        TalkMsg&  get_talkmsg()    {
+        TalkMsg& get_talkmsg()
+        {
                 return talkmsg;
         }
 
         /**得到client类*/
-        Client&  get_client()   {
+        Client& get_client()
+        {
                 return *jclient;
         }
 
         /**得到聊天室处理类*/
-        TalkRoomHandler& getRoomHandler() {
+        TalkRoomHandler& getRoomHandler()
+        {
                 return roomHandler;
         }
 
         /**得到本人jid*/
-        JID&  get_jid()   {
+        JID& get_jid()
+        {
                 return *jid;
         }
 
         /** 从配置文件中得到相应的项目*/
-        const std::string  getAccountTag(const std::string& name) {
+        const std::string getAccountTag(const std::string& name)
+        {
                 Tag* tmpTag = accountTag->findChild(name);
 
-                if(tmpTag == NULL) {
+                if (tmpTag == NULL)
+                {
                         //printf("findChild error\n");
                         return std::string();
                 }
@@ -117,13 +127,17 @@ public:
         }
 
         /**设置配置文件中相应的项目*/
-        void setAccountTag(const std::string& name, const std::string& value) {
+        void setAccountTag(const std::string& name, const std::string& value)
+        {
                 Tag* tmpTag = accountTag->findChild(name);
 
-                if(tmpTag == NULL) {
+                if (tmpTag == NULL)
+                {
                         tmpTag = new Tag(name, value);
                         accountTag->addChild(tmpTag);
-                } else {
+                }
+                else
+                {
                         tmpTag->setCData(value);
                 }
 
@@ -131,7 +145,8 @@ public:
         }
 
         /**设置本人的状态与签名档,并且保存到配置文件中*/
-        void  set_status(Presence::PresenceType status_, Glib::ustring msg_ = "") {
+        void set_status(Presence::PresenceType status_, Glib::ustring msg_ = "")
+        {
                 jclient->setPresence(status_, 1, msg_);
                 statusIcon->on_status_change(status_, jid->username(), msg_);
                 //setAccountTag("status",status_);
@@ -139,31 +154,36 @@ public:
         }
 
         /** 返回文件传输处理类 */
-        TalkFT& getFThandler() const {
+        TalkFT& getFThandler() const
+        {
                 return *talkFT;
         }
 
         /**得到书签处理类*/
         //TalkBookMark&    get_bookmark()   { return *bookMark; }
         /**得到VCard管理类*/
-        TalkCard& get_cardManage()  {
+        TalkCard& get_cardManage()
+        {
                 return *cardManage;
         }
 
         /**设置本人的VCard信息*/
-        void  set_vcard(const VCard*);
+        void set_vcard(const VCard*);
         /**得到本人的VCard*/
-        const VCard* get_vcard() const {
+        const VCard* get_vcard() const
+        {
                 return vcard;
         }
 
         /**发出获取本人VCard信息的命令*/
-        void  fetch_self_vcard()  {
+        void fetch_self_vcard()
+        {
                 cardManage->fetch_vcard(*jid);
         }
 
         void disco_node(const std::string& node);
-        void disconnect() {
+        void disconnect()
+        {
                 connectIO.disconnect();
         }
 
@@ -183,23 +203,23 @@ private:
 
 private:
         JID* jid;
-        std::auto_ptr<Client>     jclient;
-        MainWindow*  main_window;
-        MsgWindow*  msg_window;
-        TrayIcon*  statusIcon;
+        std::auto_ptr<Client> jclient;
+        MainWindow* main_window;
+        MsgWindow* msg_window;
+        TrayIcon* statusIcon;
 
-        BuddyList  buddy_list;
+        BuddyList buddy_list;
 
         TalkConnect talkconnect;
-        TalkMsg       talkmsg;
-        TalkRoomHandler   roomHandler;
-        TalkDiscoHandler  discohandler;
-        TalkCard*   cardManage;
-        TalkFT*    talkFT;
-        VCard*    vcard;
+        TalkMsg talkmsg;
+        TalkRoomHandler roomHandler;
+        TalkDiscoHandler discohandler;
+        TalkCard* cardManage;
+        TalkFT* talkFT;
+        VCard* vcard;
         //用于保存account结构的Tag
-        Tag*    accountTag;
-        USERLIST   userlist;
+        Tag* accountTag;
+        USERLIST userlist;
         sigc::connection connectIO;
 
 };

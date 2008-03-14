@@ -5,7 +5,8 @@
 #include "Unit.h"
 
 
-MsgLog::MsgLog(const std::string& jid_): jid(jid_) {
+MsgLog::MsgLog(const std::string& jid_): jid(jid_)
+{
 
         struct tm* tmw;
         time_t now;
@@ -20,17 +21,19 @@ MsgLog::MsgLog(const std::string& jid_): jid(jid_) {
 
         logfile.open(filename, std::ios::binary | std::ios::app);
 
-        if(!logfile)
+        if (!logfile)
                 std::cerr << "open logfile error in " << jid << std::endl;
 
 }
 
-MsgLog::~MsgLog() {
+MsgLog::~MsgLog()
+{
         logfile.close();
         printf("saveing file\n");
 }
 
-void MsgLog::write(const std::string& sender, const std::string& msg) {
+void MsgLog::write(const std::string& sender, const std::string& msg)
+{
 
         struct tm* tmw;
         time_t now;

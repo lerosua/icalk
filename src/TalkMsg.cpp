@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  TalkMsg.cpp
- *
- *    Description:  a jabber soft
- *
- *        Version:  1.0
- *        Created:  2007年05月24日 19时41分25秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  TalkMsg.cpp
+*
+*    Description:  a jabber soft
+*
+*        Version:  1.0
+*        Created:  2007年05月24日 19时41分25秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 
 #include "TalkMsg.h"
@@ -23,13 +23,15 @@
 #include <glib/gi18n.h>
 #include <gloox/xhtmlim.h>
 
-TalkMsg::TalkMsg() {}
+TalkMsg::TalkMsg()
+{}
 
 
-void TalkMsg::handleMessage(Message * stanza, MessageSession *session) {
-}
+void TalkMsg::handleMessage(Message * stanza, MessageSession *session)
+{}
 
-void TalkMsg::handleMessage(const Message & stanza, MessageSession *session) {
+void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
+{
         const JID target = session->target();
         //Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(stanza.from().bare());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
@@ -41,29 +43,32 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session) {
         Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
 
         Glib::ustring sender;
-        Glib::ustring msg =  stanza.body();
+        Glib::ustring msg = stanza.body();
         MsgPage* page_ = buddy->get_page();
         sender = buddy->get_nickname();
 
-        if(sender.empty())
+        if (sender.empty())
                 sender = target.username();
 
-        if(NULL == session)
-                return;
+        if (NULL == session)
+                return ;
 
         //page_->showMessage(sender,msg);
         const XHtmlIM* x = stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
 
-        if(x) {
+        if (x)
+        {
                 PBUG("the msg has use XhtmlIM\n");
         }
 
         const DelayedDelivery* dd = stanza.when();
 
-        if(dd) {
+        if (dd)
+        {
                 PBUG("message time is %s\n", dd->stamp().c_str());
                 page_->showMessage(sender, msg, dd->stamp());
-        } else
+        }
+        else
                 page_->showMessage(sender, msg);
 
         Bodies::Get_Bodies().get_msg_window().add_page(*page_);
@@ -71,11 +76,13 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session) {
         Bodies::Get_Bodies().get_msg_window().show();
 }
 
-void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event) {
+void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
+{
         PBUG( "received event: %d from: %s\n", event, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
-        switch(event) {
+        switch (event)
+        {
 
         case 0:
                 /*取消打字事件*/
@@ -106,11 +113,13 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event) {
 
 }
 
-void TalkMsg::handleChatState( const JID& from, ChatStateType state ) {
+void TalkMsg::handleChatState( const JID& from, ChatStateType state )
+{
         //PBUG( "received state: %d from: %s\n", state, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
-        switch(state) {
+        switch (state)
+        {
 
         case 1:
                 /*用户积极参与对话*/
@@ -147,15 +156,16 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state ) {
  * session里的消息处理（不然不会出消息了），和对话中的一些事件。
  * 调出对话框。大概是这个思路了
  */
-void TalkMsg::handleMessageSession( MessageSession *session ) {
+void TalkMsg::handleMessageSession( MessageSession *session )
+{
         //PBUG("got new session\n");
         JID receipient = session->target();
         std::string id = receipient.bare();
         std::cout << "session id is " << id << std::endl;
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(id);
-// assert(buddy != NULL);
+        // assert(buddy != NULL);
 
-        if(buddy != NULL)
+        if (buddy != NULL)
                 buddy->set_session(session, this);
 
 }

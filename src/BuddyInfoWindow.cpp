@@ -2,14 +2,16 @@
 #include <sigc++/connection.h>
 #include "BuddyInfoWindow.h"
 
-BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_) {
+BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_)
+{
         Glib::RefPtr<Gnome::Glade::Xml> info_xml =
                 Gnome::Glade::Xml::create(main_ui, "vbox_info");
         Gtk::Window* infowin = this;
         infowin->set_default_size(530, 400);
         Gtk::VBox* vBox = dynamic_cast<Gtk::VBox*>(info_xml->get_widget("vbox_info"));
 
-        infowin->add(*vBox);
+        infowin->add
+        (*vBox);
 
         Gtk::Label * label =
                 dynamic_cast <
@@ -63,7 +65,8 @@ BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_) {
 
         int type_ = buddy->getType();
 
-        switch(type_) {
+        switch (type_)
+        {
 
         case TYPE_FRIEND:
                 msg_ = resources_ + "\n" + _("server: ") + server_ +
@@ -121,19 +124,23 @@ BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_) {
 
 }
 
-BuddyInfoWindow::~BuddyInfoWindow() {
+BuddyInfoWindow::~BuddyInfoWindow()
+{
         delete infoBox;
 }
 
-void BuddyInfoWindow::on_btclose_clicked() {
+void BuddyInfoWindow::on_btclose_clicked()
+{
         delete this;
 }
 
-bool BuddyInfoWindow::on_key_press_event(GdkEventKey* ev) {
+bool BuddyInfoWindow::on_key_press_event(GdkEventKey* ev)
+{
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch(ev->keyval) {
+        switch (ev->keyval)
+        {
 
         case GDK_Escape:
                 on_btclose_clicked();

@@ -1,21 +1,21 @@
 /*
- * =====================================================================================
- *
- *       Filename:  Bodies.cpp
- *
- *    Description:  主类,负责创建其它各个功能类.
- 
- *
- *        Version:  1.0
- *        Created:  2007年06月22日 21时08分56秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  Bodies.cpp
+*
+*    Description:  主类,负责创建其它各个功能类.
+
+*
+*        Version:  1.0
+*        Created:  2007年06月22日 21时08分56秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:
+*
+* =====================================================================================
+*/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>
@@ -35,7 +35,7 @@
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
 #include <gloox/delayeddelivery.h>
-#include <gloox/xhtmlim.h>
+#include <gloox/xhtmlim.h> 
 //#include "gtalkcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
@@ -44,7 +44,8 @@
 
 using namespace std;
 
-Bodies& Bodies::Get_Bodies() {
+Bodies& Bodies::Get_Bodies()
+{
         static Bodies bodies;
         return bodies;
 }
@@ -54,7 +55,8 @@ Bodies::Bodies():
                 , cardManage(NULL)
                 , jid(NULL)
                 , vcard(NULL)
-, accountTag(NULL) {
+                , accountTag(NULL)
+{
         main_window = new MainWindow(*this);
         msg_window = new MsgWindow();
         statusIcon = new TrayIcon(main_window);
@@ -62,7 +64,8 @@ Bodies::Bodies():
         //accountTag = NULL;
 }
 
-Bodies::~Bodies() {
+Bodies::~Bodies()
+{
         delete talkFT;
         delete cardManage;
         delete main_window;
@@ -75,7 +78,8 @@ Bodies::~Bodies() {
         //logout();
 }
 
-USERLIST& Bodies::getUserList() {
+USERLIST& Bodies::getUserList()
+{
         char buf[512];
         char* homedir = getenv("HOME");
         char homepath[512];
@@ -84,7 +88,8 @@ USERLIST& Bodies::getUserList() {
         snprintf(buf, 512, "%s/userlist.xml", homepath);
         std::ifstream infile(buf);
 
-        if(!infile) {
+        if (!infile)
+        {
                 std::cout << "erro in load userlist\n";
                 std::ofstream outfile(buf);
                 outfile.close();
@@ -93,8 +98,10 @@ USERLIST& Bodies::getUserList() {
 
         std::string line;
 
-        if(infile) {
-                while(getline(infile, line)) {
+        if (infile)
+        {
+                while (getline(infile, line))
+                {
                         userlist.push_back(line);
                 }
         }
@@ -103,7 +110,8 @@ USERLIST& Bodies::getUserList() {
         return userlist;
 }
 
-void Bodies::saveUserList(const std::string& jid) {
+void Bodies::saveUserList(const std::string& jid)
+{
         //userlist.push_back(jid);
         char buf[512];
 
@@ -124,44 +132,55 @@ void Bodies::saveUserList(const std::string& jid) {
         outfile.close();
 }
 
-void Bodies::saveAccountTag() {
+void Bodies::saveAccountTag()
+{
         char buf[512];
         snprintf(buf, 512, "%s/account.xml", GUnit::getUserPath());
 
-        try {
+        try
+        {
                 ConfXml accoutxml;
                 accoutxml.setTagXml(accountTag);
                 accoutxml.xml_saveto_file(buf);
-        } catch (exception& e) {
+        }
+        catch (exception& e)
+        {
                 fprintf(stderr, "%s\n", e.what());
         }
 }
 
-void Bodies::loadAccountTag() {
+void Bodies::loadAccountTag()
+{
         char buf[512];
         snprintf(buf, 512, "%s/account.xml", GUnit::getUserPath());
 
-        try {
+        try
+        {
                 ConfXml accoutxml;
                 accountTag = accoutxml.xml_from_file(buf);
 
-                if (!accountTag) {
+                if (!accountTag)
+                {
                         // TODO
                         // 1. remove try..catch
                         // 2. use macro define fpr..(err.., .., __FILE__, __LINE__)
                         fprintf(stderr, "!!! %s:%d\n", __FILE__, __LINE__);
                         throw;
                 }
-        } catch (exception& e) {
+        }
+        catch (exception& e)
+        {
                 fprintf(stderr, "%s\n", e.what());
         }
 }
 
-bool Bodies::callback(Glib::IOCondition condition) {
+bool Bodies::callback(Glib::IOCondition condition)
+{
         ConnectionError ce = ConnNoError;
         //std::cout<<"talk connecting...: "<<ce<<std::endl;
 
-        if ( ce == ConnNoError) {
+        if ( ce == ConnNoError)
+        {
                 ce = jclient->recv();
                 //talkFT->loopRecv();
                 //IBBSHandler.sendIBBData("lerosua icalk testing");
@@ -171,7 +190,8 @@ bool Bodies::callback(Glib::IOCondition condition) {
         return true;
 }
 
-int Bodies::connect(const char *name, const char* passwd) {
+int Bodies::connect(const char *name, const char* passwd)
+{
         //GUnit::init(name);
         /*读取AccountTag类*/
         //loadAccountTag();
@@ -185,7 +205,8 @@ int Bodies::connect(const char *name, const char* passwd) {
         /*设置client，进行登录*/
         //assert(NULL == jclient.get());
 
-        if(NULL != jclient.get()) {
+        if (NULL != jclient.get())
+        {
                 //std::cout<<"重新连接中"<<std::endl;
                 connectIO.disconnect();
                 delete talkFT;
@@ -210,10 +231,11 @@ int Bodies::connect(const char *name, const char* passwd) {
 
         PBUG("login\n");
 
-        if(!server.empty())
+        if (!server.empty())
                 jclient->setServer(server);
 
-        if(!portstring.empty()) {
+        if (!portstring.empty())
+        {
                 int port = atoi(portstring.c_str());
                 jclient->setPort(port);
         }
@@ -239,19 +261,23 @@ int Bodies::connect(const char *name, const char* passwd) {
 
         talkFT->initFT();
 
-        if(jclient->connect(false)) {
+        if (jclient->connect(false))
+        {
                 PBUG("connect call success\n");
                 return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
-        } else
+        }
+        else
                 PBUG("connect error\n");
 
         return -1;
 }
 
-bool Bodies::login(const std::string name, const std::string passwd) {
+bool Bodies::login(const std::string name, const std::string passwd)
+{
         int mysock = -1;
 
-        if ((mysock = connect(name.c_str(), passwd.c_str())) != -1) {
+        if ((mysock = connect(name.c_str(), passwd.c_str())) != -1)
+        {
                 connectIO = Glib::signal_io().connect(
                                     sigc::mem_fun(*this, &Bodies::callback),
                                     mysock,
@@ -268,23 +294,27 @@ bool Bodies::login(const std::string name, const std::string passwd) {
         return true;
 }
 
-void Bodies::set_vcard(const VCard* vcard_) {
-        if(NULL != vcard)
+void Bodies::set_vcard(const VCard* vcard_)
+{
+        if (NULL != vcard)
                 delete vcard;
 
         vcard = new VCard(*vcard_);
 }
 
-void Bodies::logout() {
+void Bodies::logout()
+{
         jclient->disconnect();
 }
 
-void Bodies::disco_node(const std::string& node) {
+void Bodies::disco_node(const std::string& node)
+{
         jclient->disco()->getDiscoInfo( JID(node), "", &discohandler, 0, "");
         jclient->disco()->getDiscoItems( JID(node), "", &discohandler, 0, "");
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 
         bindtextdomain (GETTEXT_PACKAGE, ITALK_LOCALEDIR);
         bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
@@ -295,7 +325,8 @@ int main(int argc, char *argv[]) {
         sigemptyset(&act.sa_mask);
         act.sa_flags = 0;
 
-        if(sigaction(SIGCHLD, &act, &oact) < 0) {
+        if (sigaction(SIGCHLD, &act, &oact) < 0)
+        {
                 perror("Sigaction failed");
                 exit(1);
         }

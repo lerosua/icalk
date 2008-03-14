@@ -8,15 +8,18 @@
 #define GLADEMM_DATA
 #include <gtkmm/accelgroup.h>
 
-class GlademmData {
+class GlademmData
+{
 
         Glib::RefPtr<Gtk::AccelGroup> accgrp;
 
 public:
 
-        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag) {}
+        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag)
+        {}
 
-        Glib::RefPtr<Gtk::AccelGroup>  getAccelGroup() {
+        Glib::RefPtr<Gtk::AccelGroup> getAccelGroup()
+        {
                 return accgrp;
         }
 };
@@ -33,7 +36,8 @@ class MsgPage;
  * @brief 聊天窗口中的工具栏
  */
 
-class CommandBar : public Gtk::HBox {
+class CommandBar : public Gtk::HBox
+{
 
 public:
         CommandBar(MsgPage* _parent);

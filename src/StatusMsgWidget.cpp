@@ -7,14 +7,16 @@
 
 
 StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
-, Gtk::Window(Gtk::WINDOW_TOPLEVEL) {
+                , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
+{
         GlademmXML vbox_xml =
                 Gnome::Glade::Xml::create(statusmsg_ui, "statusMsgBox");
         Gtk::VBox * vBox =
                 dynamic_cast <
                 Gtk::VBox * > (vbox_xml->get_widget("statusMsgBox"));
 
-        add(*vBox);
+        add
+                (*vBox);
 
         set_transient_for(*parent);
 
@@ -31,7 +33,8 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
         scrolledwin->set_policy(Gtk::POLICY_AUTOMATIC,
                                 Gtk::POLICY_AUTOMATIC);
 
-        scrolledwin->add(*msgline);
+        scrolledwin->add
+        (*msgline);
 
         //scrolledwin->set_size_request(120,-1);
 
@@ -39,7 +42,8 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
 
         frameline->set_shadow_type(Gtk::SHADOW_IN);
 
-        frameline->add(*scrolledwin);
+        frameline->add
+        (*scrolledwin);
 
         vBox->pack_start(*frameline);
 
@@ -86,7 +90,7 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
         timeoutButton->signal_clicked().
         connect(sigc::mem_fun(*this, &StatusMsgWidget::on_checkbutton_clicked));
 
-        if(parent->isMsgTimeout())
+        if (parent->isMsgTimeout())
                 timeoutButton->set_active(true);
 
         set_default_size(530, 400);
@@ -96,20 +100,24 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
         show_all();
 }
 
-StatusMsgWidget::~StatusMsgWidget() {}
+StatusMsgWidget::~StatusMsgWidget()
+{}
 
-void StatusMsgWidget::on_button_ok() {
+void StatusMsgWidget::on_button_ok()
+{
         msgline->Save();
         parent->on_btstatusmsgmanager_close(this);
         //delete this;
 }
 
-void StatusMsgWidget::on_button_cancel() {
+void StatusMsgWidget::on_button_cancel()
+{
         parent->on_btstatusmsgmanager_close(this);
         //delete this;
 }
 
-void StatusMsgWidget::on_button_add() {
+void StatusMsgWidget::on_button_add()
+{
 
         Glib::RefPtr < Gnome::Glade::Xml >
         addDialog_xml =
@@ -123,15 +131,17 @@ void StatusMsgWidget::on_button_add() {
         addMsgDialog->raise();
         int result = addMsgDialog->run();
 
-        switch (result) {
-        case (Gtk::RESPONSE_OK): {
+        switch (result)
+        {
+        case (Gtk::RESPONSE_OK):
+                {
                         Gtk::TextView* textview = dynamic_cast <
                                                   Gtk::TextView* > (addDialog_xml->
                                                                     get_widget("textview_add"));
                         Glib::ustring text = textview->get_buffer()->get_text();
 
-                        if(text.empty())
-                                return;
+                        if (text.empty())
+                                return ;
 
                         msgline->addLine(text);
 
@@ -152,12 +162,13 @@ void StatusMsgWidget::on_button_add() {
 
 
 
-void StatusMsgWidget::on_button_del() {
+void StatusMsgWidget::on_button_del()
+{
         Glib::RefPtr < Gtk::TreeSelection > selection =
                 msgline->get_selection();
 
         if (!selection->count_selected_rows())
-                return;
+                return ;
 
         Gtk::TreeModel::iterator iter = selection->get_selected();
 
@@ -165,12 +176,13 @@ void StatusMsgWidget::on_button_del() {
 
 }
 
-void StatusMsgWidget::on_button_edit() {
+void StatusMsgWidget::on_button_edit()
+{
         Glib::RefPtr < Gtk::TreeSelection > selection =
                 msgline->get_selection();
 
         if (!selection->count_selected_rows())
-                return;
+                return ;
 
         Gtk::TreeModel::iterator iter = selection->get_selected();
 
@@ -206,8 +218,10 @@ void StatusMsgWidget::on_button_edit() {
 
         int result = addMsgDialog->run();
 
-        switch (result) {
-        case (Gtk::RESPONSE_OK): {
+        switch (result)
+        {
+        case (Gtk::RESPONSE_OK):
+                {
 
                         text = textview->get_buffer()->get_text();
                         int num = msgline->getLineNumber(iter);
@@ -226,18 +240,21 @@ void StatusMsgWidget::on_button_edit() {
 
 }
 
-void StatusMsgWidget::on_checkbutton_clicked() {
-        if(timeoutButton->get_active())
+void StatusMsgWidget::on_checkbutton_clicked()
+{
+        if (timeoutButton->get_active())
                 parent->addStatusMsgTimeout();
         else
                 parent->delStatusMsgTimeout();
 }
 
-bool StatusMsgWidget::on_key_press_event(GdkEventKey * ev) {
+bool StatusMsgWidget::on_key_press_event(GdkEventKey * ev)
+{
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval) {
+        switch (ev->keyval)
+        {
 
         case GDK_Escape:
                 on_button_cancel();
@@ -250,7 +267,8 @@ bool StatusMsgWidget::on_key_press_event(GdkEventKey * ev) {
         return true;
 }
 
-MsgLine::MsgLine(): number(0) {
+MsgLine::MsgLine(): number(0)
+{
         MsgLine *msgline = this;
         msgline->set_name("icalk_statusmsg_listview");
         msgline->set_flags(Gtk::CAN_FOCUS);
@@ -259,17 +277,19 @@ MsgLine::MsgLine(): number(0) {
 
         m_liststore = Gtk::ListStore::create(columns);
         msgline->set_model(m_liststore);
-        msgline->append_column("number",  columns.num);
+        msgline->append_column("number", columns.num);
         msgline->append_column("message", columns.message);
         msgline->show();
 }
 
-void MsgLine::init() {
+void MsgLine::init()
+{
         char buf[512];
         snprintf(buf, 512, "%s/StatusMsgFile", GUnit::getUserPath());
         std::ifstream msgfile(buf);
 
-        if (!msgfile) {
+        if (!msgfile)
+        {
                 std::ofstream outfile(buf);
                 outfile.close();
                 msgfile.open(buf);
@@ -277,8 +297,10 @@ void MsgLine::init() {
 
         std::string line;
 
-        if (msgfile) {
-                while (getline(msgfile, line)) {
+        if (msgfile)
+        {
+                while (getline(msgfile, line))
+                {
                         number++;
                         addLine(number, line);
                 }
@@ -287,12 +309,14 @@ void MsgLine::init() {
         msgfile.close();
 }
 
-void MsgLine::Save() {
+void MsgLine::Save()
+{
         char buf[512];
         snprintf(buf, 512, "%s/StatusMsgFile", GUnit::getUserPath());
         std::ofstream msgfile(buf);
 
-        if (!msgfile) {
+        if (!msgfile)
+        {
                 std::ofstream outfile(buf);
                 outfile.close();
                 msgfile.open(buf);
@@ -300,11 +324,13 @@ void MsgLine::Save() {
 
         Glib::ustring strline;
 
-        if (msgfile) {
+        if (msgfile)
+        {
                 Gtk::TreeModel::Children children = m_liststore->children();
                 Gtk::TreeModel::iterator iter = children.begin();
 
-                for(; iter != children.end(); iter++) {
+                for (; iter != children.end(); iter++)
+                {
                         strline = (*iter)[columns.message];
                         msgfile << strline;
                         msgfile << std::endl;
@@ -318,61 +344,70 @@ void MsgLine::Save() {
 
 Gtk::TreeModel::iterator MsgLine::getListIter(Gtk::TreeModel::
                 Children children,
-                const int  id) {
+                const int id)
+{
         /*查找好友列表项 */
         return find_if(children.begin(),
                        children.end(),
                        bind2nd(CompareMsg(columns), id));
 }
 
-Glib::ustring MsgLine::getLineMsg(Gtk::TreeModel::iterator iter) {
+Glib::ustring MsgLine::getLineMsg(Gtk::TreeModel::iterator iter)
+{
         return (*iter)[columns.message];
 }
 
-int  MsgLine::getLineNumber(Gtk::TreeModel::iterator iter) {
+int MsgLine::getLineNumber(Gtk::TreeModel::iterator iter)
+{
         return (*iter)[columns.num];
 }
 
-void MsgLine::addLine(int num, const Glib::ustring & msg) {
+void MsgLine::addLine(int num, const Glib::ustring & msg)
+{
         Gtk::TreeModel::iterator iter = m_liststore->append();
         (*iter)[columns.num] = num;
         (*iter)[columns.message] = msg;
 }
 
-void MsgLine::addLine(const Glib::ustring & msg) {
+void MsgLine::addLine(const Glib::ustring & msg)
+{
         int num = number + 1;
         Gtk::TreeModel::iterator iter = m_liststore->append();
         (*iter)[columns.num] = num;
         (*iter)[columns.message] = msg;
 }
 
-void MsgLine::editLine(const int num, const Glib::ustring& msg) {
+void MsgLine::editLine(const int num, const Glib::ustring& msg)
+{
         Gtk::TreeModel::Children children = m_liststore->children();
         Gtk::TreeModel::iterator listiter;
         listiter = getListIter(children, num);
 
         if (listiter == children.end())
-                return;
+                return ;
 
         (*listiter)[columns.message] = msg;
 }
 
-void MsgLine::delLine(const int num) {
+void MsgLine::delLine(const int num)
+{
         Gtk::TreeModel::Children children = m_liststore->children();
         Gtk::TreeModel::iterator listiter;
         listiter = getListIter(children, num);
 
         if (listiter == children.end())
-                return;
+                return ;
 
         m_liststore->erase(listiter);
 }
 
-void MsgLine::delLine(Gtk::TreeModel::iterator iter) {
+void MsgLine::delLine(Gtk::TreeModel::iterator iter)
+{
         m_liststore->erase(iter);
 }
 
-bool MsgLine::on_button_press_event(GdkEventButton * ev) {
+bool MsgLine::on_button_press_event(GdkEventButton * ev)
+{
         bool result = Gtk::TreeView::on_button_press_event(ev);
 
         Glib::RefPtr < Gtk::TreeSelection > selection =
@@ -395,11 +430,14 @@ bool MsgLine::on_button_press_event(GdkEventButton * ev) {
                 return FALSE;
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS)) {
+                        ev->type == GDK_3BUTTON_PRESS))
+        {
                 Glib::ustring msg = (*iter)[columns.message];
                 Bodies::Get_Bodies().get_main_window().setStatusMsg(msg);
 
-        } else if ((ev->type == GDK_BUTTON_PRESS)
-                && (ev->button == 3)) {}
+        }
+        else if ((ev->type == GDK_BUTTON_PRESS)
+                        && (ev->button == 3))
+        {}
 
 }

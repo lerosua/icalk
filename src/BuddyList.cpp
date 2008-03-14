@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  BuddyList.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  2007年06月18日 星期一 10时28分37秒 
- *       Revision:  none
- *       Compiler:  g++
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  BuddyList.cpp
+*
+*    Description:  
+*
+*        Version:  1.0
+*        Created:  2007年06月18日 星期一 10时28分37秒 
+*       Revision:  none
+*       Compiler:  g++
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 #include <glib/gi18n.h>
 #include <gtkmm/dialog.h>
 #include "BuddyList.h"
@@ -23,7 +23,8 @@
 #include "TalkCard.h"
 #include "icalk.h"
 
-Buddy* BuddyList::find_buddy(const Glib::ustring& id) const {
+Buddy* BuddyList::find_buddy(const Glib::ustring& id) const
+{
         BUDDY_MAP::const_iterator iter = buddy_map.find(id);
 
         if ( iter == buddy_map.end())
@@ -33,14 +34,17 @@ Buddy* BuddyList::find_buddy(const Glib::ustring& id) const {
 
 }
 
-void BuddyList::handleItemSubscribed(const JID & jid) {
+void BuddyList::handleItemSubscribed(const JID & jid)
+{
         PBUG( "subscribed %s\n", jid.bare().c_str() );
 }
 
-void BuddyList::handleItemAdded(const JID & jid) {
+void BuddyList::handleItemAdded(const JID & jid)
+{
         std::string jid_str = jid.bare().c_str();
 
-        if( NULL == find_buddy(jid_str) ) {
+        if ( NULL == find_buddy(jid_str) )
+        {
                 /** 将新的好友加入到BuddyMap里。*/
                 RosterItem* item = Bodies::Get_Bodies().get_client().rosterManager()->getRosterItem(jid_str);
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
@@ -49,29 +53,34 @@ void BuddyList::handleItemAdded(const JID & jid) {
         }
 }
 
-void BuddyList::handleItemUnsubscribed(const JID & jid) {
+void BuddyList::handleItemUnsubscribed(const JID & jid)
+{
         PBUG( "ItemUnsubscribed  %s\n", jid.bare().c_str() );
 }
 
-void BuddyList::handleItemRemoved(const JID & jid) {
+void BuddyList::handleItemRemoved(const JID & jid)
+{
         PBUG( "ItemRemoved   %s\n", jid.bare().c_str() );
         std::string jid_str = jid.bare();
         Bodies::Get_Bodies().get_main_window().get_buddy_view().remove(jid_str);
         BUDDY_MAP::iterator iter = buddy_map.find(jid_str);
 
-        if( iter != buddy_map.end() )
+        if ( iter != buddy_map.end() )
                 buddy_map.erase(iter);
 
 }
 
-void BuddyList::handleItemUpdated(const JID & jid) {
+void BuddyList::handleItemUpdated(const JID & jid)
+{
         PBUG( "ItemUnpdated %s\n", jid.bare().c_str() );
 }
 
-void BuddyList::handleRoster(const Roster & roster) {
+void BuddyList::handleRoster(const Roster & roster)
+{
         Roster::const_iterator it = roster.begin();
 
-        for (; it != roster.end(); ++it) {
+        for (; it != roster.end(); ++it)
+        {
 
                 const RosterItem* item = (*it).second;
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
@@ -97,17 +106,21 @@ void BuddyList::handleRoster(const Roster & roster) {
 void BuddyList::handleRosterPresence(const RosterItem & item,
                                      const std::string & resource,
                                      Presence::PresenceType presence,
-                                     const std::string & msg) {
+                                     const std::string & msg)
+{
         //std::string jid = item.jid();
         Glib::ustring jid(item.jid());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
 
-        if(Presence::Unavailable == presence) {
-                if(buddy->get_status() == Presence::Unavailable)
-                        return;
+        if (Presence::Unavailable == presence)
+        {
+                if (buddy->get_status() == Presence::Unavailable)
+                        return ;
                 else
                         buddy->set_sign_msg(_("offline"));
-        } else {
+        }
+        else
+        {
                 buddy->set_sign_msg(msg);
                 //Bodies::Get_Bodies().get_cardManage().fetch_vcard(item.jid());
         }
@@ -121,21 +134,25 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 void BuddyList::handleSelfPresence(const RosterItem & item,
                                    const std::string & resource,
                                    Presence::PresenceType presence,
-                                   const std::string & msg ) {
+                                   const std::string & msg )
+{
         PBUG( "self presence received: %s/%s -- %d\n", item.jid().c_str(), resource.c_str(), presence );
 
 }
 
 bool BuddyList::handleSubscriptionRequest(const JID & jid,
-                const std::string& msg  ) {
+                const std::string& msg )
+{
         PBUG(" %s subscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
         Gtk::MessageDialog dialog(_("Information from stranger"), false /*use markup*/, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         Glib::ustring msg_text = jid.bare() + _("Ask for a friend , press OK to add");
         dialog.set_secondary_text(msg_text);
         int result = dialog.run();
 
-        switch(result) {
-        case(Gtk::RESPONSE_OK): {
+        switch (result)
+        {
+        case(Gtk::RESPONSE_OK):
+                {
                         //对方请求加为好友。
                         StringList groups;
                         JID id(jid);
@@ -144,22 +161,25 @@ bool BuddyList::handleSubscriptionRequest(const JID & jid,
                         break;
                 }
 
-        case(Gtk::RESPONSE_CANCEL): {
+        case(Gtk::RESPONSE_CANCEL):
+                {
                         return false;
                         break;
                 }
 
-        default: {
-                return false;
-                break;
-        }
+        default:
+                {
+                        return false;
+                        break;
+                }
         }
 
         return false;
 }
 
-bool  BuddyList::handleUnsubscriptionRequest(const JID & jid,
-                const std::string& msg  ) {
+bool BuddyList::handleUnsubscriptionRequest(const JID & jid,
+                const std::string& msg )
+{
         PBUG(" %s UnsubscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
         Gtk::MessageDialog dialog(_("The message from friend"));
         Glib::ustring msg_text = jid.bare() + _("Delete you from his buddy list");
@@ -168,16 +188,19 @@ bool  BuddyList::handleUnsubscriptionRequest(const JID & jid,
         return true;
 }
 
-void BuddyList::handleNonrosterPresence(const Presence& stanza) {
+void BuddyList::handleNonrosterPresence(const Presence& stanza)
+{
         PBUG("接收到状态并不在列表中的人 %s \n", stanza.from().full().c_str());
 }
 
-void BuddyList::handleNonrosterPresence(Presence * stanza) {
+void BuddyList::handleNonrosterPresence(Presence * stanza)
+{
         PBUG("接收到状态并不在列表中的人 %s \n", stanza->from().full().c_str());
 }
 
 
-void BuddyList::handleRosterError(const IQ& iq) {
+void BuddyList::handleRosterError(const IQ& iq)
+{
 
         std::cout << "handleRosterError " << iq.tag()->xml() << std::endl;
 

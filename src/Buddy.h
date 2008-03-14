@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  Buddy.h
- * 
- *    Description:  好友的数据结构
- * 
- *        Version:  1.0
- *        Created:  2007年06月24日 22时12分00秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  Buddy.h
+* 
+*    Description:  好友的数据结构
+* 
+*        Version:  1.0
+*        Created:  2007年06月24日 22时12分00秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:  cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef _BUDDY_H_
 #define _BUDDY_H_
@@ -26,7 +26,7 @@
 #include <gloox/vcard.h>
 #include <gloox/messagesession.h>
 #include <gloox/messageeventfilter.h>
-#include <gloox/chatstatefilter.h>
+#include <gloox/chatstatefilter.h> 
 //#include <gloox/inbandbytestream.h>
 #include "MsgPage.h"
 #include "Unit.h"
@@ -40,7 +40,8 @@ using namespace gloox;
 
 class TalkMsg;
 
-class Buddy {
+class Buddy
+{
 
 public:
         Buddy();
@@ -48,22 +49,26 @@ public:
         virtual ~Buddy();
         typedef std::map<std::string, Resource*> ResourceMap;
 
-        void set_jid(const JID& jid_) {
+        void set_jid(const JID& jid_)
+        {
                 jid = jid_;
         }
 
         /**返回JID的bare（）值*/
-        const std::string& get_jid() const {
+        const std::string& get_jid() const
+        {
                 return jid.bare();
         }
 
         /** 返回JID*/
-        const JID& getJID() const {
+        const JID& getJID() const
+        {
                 return jid;
         }
 
         /**得到constact/roster里的用户名，此nickname与rosteritem里name对应*/
-        const std::string& get_nickname() const  {
+        const std::string& get_nickname() const
+        {
                 return nickname;
         }
 
@@ -72,7 +77,8 @@ public:
         /** 将VCard信息填充进Buddy里*/
         void set_vcard(const VCard*);
         /** 返回Buddy里的VCard信息*/
-        const VCard* get_vcard() const {
+        const VCard* get_vcard() const
+        {
                 return vcard;
         }
 
@@ -82,14 +88,16 @@ public:
         void refreshinfo();
 
         /** 返回好友的定阅状态*/
-        SubscriptionType getSubscription() {
+        SubscriptionType getSubscription()
+        {
                 return subscription;
         }
 
         /**
          * @brief 得到好友状态
          */
-        Presence::PresenceType get_status()const {
+        Presence::PresenceType get_status()const
+        {
                 return status;
         }
 
@@ -97,14 +105,16 @@ public:
          * @brief 根据得到的好友状态更新列表中好友的状态
          * @param presence_ 状态变量
          */
-        void set_status(Presence::PresenceType presence_) {
+        void set_status(Presence::PresenceType presence_)
+        {
                 status = presence_;
         }
 
         /**
          * @brief 获取当前的签名
          */
-        const std::string& get_sign_msg() {
+        const std::string& get_sign_msg()
+        {
                 return sign_msg;
         }
 
@@ -112,22 +122,25 @@ public:
          * @brief 设置签名信息
          * @param msg_ 需要设置的签名信息
          */
-        void set_sign_msg(std::string msg_) {
+        void set_sign_msg(std::string msg_)
+        {
                 sign_msg = msg_;
         }
 
         /**
          * @brief 获取所属的组
          */
-        StringList getGroups() {
+        StringList getGroups()
+        {
                 return groups;
         }
 
         /**
          * @brief 返回当前标签页
          */
-        MsgPage* get_page() {
-                if(NULL != page)
+        MsgPage* get_page()
+        {
+                if (NULL != page)
                         return page;
 
                 const std::string label = jid.bare();
@@ -161,29 +174,34 @@ public:
          * @brief 获取当前的session
          * @return 返回此Buddy的会话
          */
-        MessageSession* get_session() {
+        MessageSession* get_session()
+        {
                 return session;
         }
 
         /**
          * @brief 获取消息事件处理(message_event_filter)
          */
-        MessageEventFilter* get_message_event_filter( ) const {
+        MessageEventFilter* get_message_event_filter( ) const
+        {
                 return message_event_filter;
         }
 
         /**
          * @brief 获取用户状态处理(chat_state_filter)
          */
-        ChatStateFilter* get_chat_state_filter() const {
+        ChatStateFilter* get_chat_state_filter() const
+        {
                 return chat_state_filter;
         }
 
-        Glib::RefPtr<Gdk::Pixbuf> getLogo() {
+        Glib::RefPtr<Gdk::Pixbuf> getLogo()
+        {
                 return logo;
         }
 
-        void setLogo(Glib::RefPtr<Gdk::Pixbuf >logo_) {
+        void setLogo(Glib::RefPtr<Gdk::Pixbuf >logo_)
+        {
                 logo = logo_ ;
         }
 
@@ -191,8 +209,9 @@ public:
          * @brief 设置用户事件,如打字，停止打字
          * @param type 事件类型
          * */
-        void setChatState(ChatStateType type) {
-                if(chat_state_filter)
+        void setChatState(ChatStateType type)
+        {
+                if (chat_state_filter)
                         chat_state_filter->setChatState(type);
         }
 
@@ -200,28 +219,33 @@ public:
          * @brief 激活某消息事件
          * @param event 事件类型
          */
-        void raiseMessageEvent(MessageEventType event) {
-                if(message_event_filter)
+        void raiseMessageEvent(MessageEventType event)
+        {
+                if (message_event_filter)
                         message_event_filter->raiseMessageEvent(event);
         }
 
         /** 返回Buddy的资源*/
-        const std::string& getResource() {
+        const std::string& getResource()
+        {
                 return m_resource;
         }
 
-        void setResource(const std::string resource_) {
+        void setResource(const std::string resource_)
+        {
                 m_resource = resource_ ;
                 jid.setResource(m_resource);
         }
 
         /** 返回此用户的类型*/
-        BuddyType getType()const  {
+        BuddyType getType()const
+        {
                 return type;
         }
 
         /** 设置此用户的类型*/
-        void setType(BuddyType type_) {
+        void setType(BuddyType type_)
+        {
                 type = type_ ;
         }
 
@@ -232,7 +256,8 @@ public:
         void sendPicture();
         /** 带内数据传输地发送图片--filename为文件名*/
         void sendPicture(const std::string& filename);
-        const std::string& getCustomData() {
+        const std::string& getCustomData()
+        {
                 return customSmile;
         }
 
@@ -259,7 +284,7 @@ protected:
         MessageSession* session;
         MessageEventFilter* message_event_filter;
         ChatStateFilter* chat_state_filter;
-        MsgPage*   page;
+        MsgPage* page;
         Presence::PresenceType status;
         std::string sign_msg;
         Glib::RefPtr<Gdk::Pixbuf> logo;

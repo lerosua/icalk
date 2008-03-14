@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  IbbStreamHandler.h
- * 
- *    Description:  
- * 
- *        Version:  1.0
- *        Created:  2007年10月21日 15时39分04秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  IbbStreamHandler.h
+* 
+*    Description:  
+* 
+*        Version:  1.0
+*        Created:  2007年10月21日 15时39分04秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  IBBSTREAMHANDLER_FILE_HEADER_INC
 #define  IBBSTREAMHANDLER_FILE_HEADER_INC
@@ -36,7 +36,8 @@ using namespace gloox;
  * @author lerosua <lerosua@gmail.com>
  */
 
-class TalkIbbStreamHandler: public InBandBytestreamHandler, public InBandBytestreamDataHandler {
+class TalkIbbStreamHandler: public InBandBytestreamHandler, public InBandBytestreamDataHandler
+{
 
 public:
         typedef std::map<std::string, InBandBytestream*> IBBSList;
@@ -72,7 +73,7 @@ public:
          * @note 您不应该在这个函数中使用这个字节流(bytestream)来发送任何数据。字节流将
          * 会被接收只有当这个函数返回后。
          */
-        bool  handleIncomingInBandBytestream(const JID& from, InBandBytestream* ibb);
+        bool handleIncomingInBandBytestream(const JID& from, InBandBytestream* ibb);
 
         /**
          * @brief 当发布一个外送的IBB请求成功时调用此函数。使用InBandBytestream::attachTo()

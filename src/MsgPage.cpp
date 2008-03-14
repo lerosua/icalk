@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  MsgPage.cpp
- *
- *    Description:  显示聊天窗口的标签页
- *
- *        Version:  1.0
- *        Created:  2007年06月29日 21时28分08秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  MsgPage.cpp
+*
+*    Description:  显示聊天窗口的标签页
+*
+*        Version:  1.0
+*        Created:  2007年06月29日 21时28分08秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:  cyclone
+*
+* =====================================================================================
+*/
 
 #include <glib/gi18n.h>
 #include <gdk/gdkkeysyms.h>
@@ -53,7 +53,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
         logo = Gtk::manage(new Gtk::Image(pix));
         Gtk::AspectFrame* aspectframe1 = Gtk::manage(new Gtk::AspectFrame());
 
-        aspectframe1->add(*logo);
+        aspectframe1->add
+        (*logo);
 
         rightVbox->pack_start(*aspectframe1);
 
@@ -65,7 +66,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
         Gtk::AspectFrame* aspectframe2 = Gtk::manage(new Gtk::AspectFrame());
 
-        aspectframe2->add(*logo2);
+        aspectframe2->add
+        (*logo2);
 
         rightVbox->pack_end(*aspectframe2);
 
@@ -80,7 +82,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
         scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        scroll_out->add(*msgBox);
+        scroll_out->add
+        (*msgBox);
 
         msgBox->unset_flags(Gtk::CAN_FOCUS);
 
@@ -96,7 +99,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
         frame1->set_shadow_type(Gtk::SHADOW_IN);
 
-        frame1->add(*scroll_out);
+        frame1->add
+        (*scroll_out);
 
         hbox2->pack_start(*frame1);
 
@@ -127,11 +131,12 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
         inputMsgBox = Gtk::manage(new class MsgBox);
 
-        Gtk::ScrolledWindow* scroll_in = Gtk::manage(new class  Gtk::ScrolledWindow());
+        Gtk::ScrolledWindow* scroll_in = Gtk::manage(new class Gtk::ScrolledWindow());
 
         scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        scroll_in->add(*inputMsgBox);
+        scroll_in->add
+        (*inputMsgBox);
 
         inputMsgBox->set_flags(Gtk::HAS_FOCUS);
 
@@ -147,7 +152,8 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
 
         frame2->set_shadow_type(Gtk::SHADOW_IN);
 
-        frame2->add(*hbox3);
+        frame2->add
+        (*hbox3);
 
         hbox3->pack_start(*scroll_in);
 
@@ -209,7 +215,8 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
         Gtk::ScrolledWindow* scroll_out = Gtk::manage(new class Gtk::ScrolledWindow());
         scroll_out->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        scroll_out->add(*msgBox);
+        scroll_out->add
+        (*msgBox);
 
         msgBox->unset_flags(Gtk::CAN_FOCUS);
 
@@ -227,7 +234,8 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 
         frame1->set_shadow_type(Gtk::SHADOW_IN);
 
-        frame1->add(*scroll_out);
+        frame1->add
+        (*scroll_out);
 
         hpaned2->pack1(*frame1, Gtk::EXPAND);
 
@@ -262,7 +270,8 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 
         scrolledwindowmemberList->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        scrolledwindowmemberList->add(*memberList);
+        scrolledwindowmemberList->add
+        (*memberList);
 
         scrolledwindowmemberList->set_size_request(120, -1);
 
@@ -270,7 +279,8 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 
         frame3->set_shadow_type(Gtk::SHADOW_IN);
 
-        frame3->add(*scrolledwindowmemberList);
+        frame3->add
+        (*scrolledwindowmemberList);
 
         //hpaned2->pack2(*frame3,Gtk::SHRINK);
         //将列表置于右边的架构中
@@ -306,11 +316,12 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 
         inputMsgBox = Gtk::manage(new class MsgBox);
 
-        Gtk::ScrolledWindow* scroll_in = Gtk::manage(new class  Gtk::ScrolledWindow());
+        Gtk::ScrolledWindow* scroll_in = Gtk::manage(new class Gtk::ScrolledWindow());
 
         scroll_in->set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        scroll_in->add(*inputMsgBox);
+        scroll_in->add
+        (*inputMsgBox);
 
         inputMsgBox->set_flags(Gtk::HAS_FOCUS);
 
@@ -323,7 +334,8 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 
         frame2->set_shadow_type(Gtk::SHADOW_IN);
 
-        frame2->add(*hbox3);
+        frame2->add
+        (*hbox3);
 
         hbox3->pack_start(*scroll_in);
 
@@ -367,35 +379,43 @@ MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
 }
 
 
-MsgPage::~MsgPage() {
+MsgPage::~MsgPage()
+{
         delete titlelable;
         delete logo;
-        delete  msgBox;
-        delete  inputMsgBox;
+        delete msgBox;
+        delete inputMsgBox;
         delete msglog;
 }
 
-void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_) {
+void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_)
+{
         msgBox->showTitle(sender_, false);
         msgBox->showGrayMsg(msg_);
         msgBox->showGrayMsg("\n");
 
 }
 
-void MsgPage::showStatusBarMsg(const std::string& msg, unsigned int id) {
+void MsgPage::showStatusBarMsg(const std::string& msg, unsigned int id)
+{
         Bodies::Get_Bodies().get_msg_window().showStatusBarMsg(msg, id);
-// statusbar->pop(id);
-// statusbar->push(msg,id);
+        // statusbar->pop(id);
+        // statusbar->push(msg,id);
 }
 
-void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_, bool self) {
-        if(!isRoom) {
+void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_, bool self)
+{
+        if (!isRoom)
+        {
                 Glib::RefPtr<Gdk::Pixbuf>pix_;
 
-                if(self) {
+                if (self)
+                {
                         setTitleColor(false);
-                        pix_  = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
-                } else {
+                        pix_ = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
+                }
+                else
+                {
                         sounds::play(sounds::RECEIVE_SOUND);
                         setTitleColor(true);
                         //pix_ = buddy->getLogo()->scale_simple(30,30,Gdk::INTERP_NEAREST);
@@ -403,9 +423,11 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
 
                 //Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
                 //msgBox->insertImage(image);
-                if((TYPE_GROUPCHAT != buddy->getType()) || self)
+                if ((TYPE_GROUPCHAT != buddy->getType()) || self)
                         msgBox->showTitle(sender_, self);
-        } else {
+        }
+        else
+        {
                 sounds::play(sounds::RECEIVE_SOUND);
                 setTitleColor(true);
                 msgBox->showTitle(sender_, self);
@@ -415,7 +437,8 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
         msglog->write(sender_, msg_);
 }
 
-void MsgPage::showPicture(const char* picname, bool self) {
+void MsgPage::showPicture(const char* picname, bool self)
+{
 
         Glib::RefPtr < Gdk::Pixbuf > pic = Gdk::Pixbuf::create_from_file(picname);
         Gtk::Image* picimage = Gtk::manage(new Gtk::Image(pic));
@@ -423,17 +446,20 @@ void MsgPage::showPicture(const char* picname, bool self) {
 
         Glib::RefPtr<Gdk::Pixbuf>pix_;
 
-        if(self) {
+        if (self)
+        {
                 setTitleColor(false);
-                pix_  = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
+                pix_ = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
                 sender = Bodies::Get_Bodies().get_jid().username();
-        } else {
+        }
+        else
+        {
                 sounds::play(sounds::RECEIVE_SOUND);
                 setTitleColor(true);
                 pix_ = buddy->getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
                 sender = buddy->get_nickname();
 
-                if(sender.empty())
+                if (sender.empty())
                         sender = buddy->getJID().username();
         }
 
@@ -445,27 +471,33 @@ void MsgPage::showPicture(const char* picname, bool self) {
 
 }
 
-void MsgPage::sendMessage() {
+void MsgPage::sendMessage()
+{
         Glib::ustring utext;
         inputMsgBox->getText(utext);
 
-        if(utext.empty())
-                return;
+        if (utext.empty())
+                return ;
 
-        if(!isRoom) {
+        if (!isRoom)
+        {
                 /*然后发送utext*/
 
-                if(buddy->get_session()) {
+                if (buddy->get_session())
+                {
                         buddy->get_session()->send(utext);
                         /**发出停止打字信号*/
                         buddy->setChatState( ChatStatePaused );
                 }
-        } else {
+        }
+        else
+        {
                 mucroom->send(utext);
         }
 
 
-        if(!isRoom) {
+        if (!isRoom)
+        {
                 std::string sender = Bodies::Get_Bodies().get_jid().username();
                 showMessage(sender, utext, TIME_NULL, MSG_ME);
                 sounds::play(sounds::SEND_SOUND);
@@ -474,60 +506,73 @@ void MsgPage::sendMessage() {
         inputMsgBox->clear();
 }
 
-void MsgPage::deleteWord(int type) {
+void MsgPage::deleteWord(int type)
+{
         inputMsgBox->readline(type);
 }
 
-void MsgPage::clear() {
+void MsgPage::clear()
+{
         msgBox->clear();
 }
 
-bool MsgPage::on_inputMsgBox_focus_in_event(GdkEventFocus* ev) {
+bool MsgPage::on_inputMsgBox_focus_in_event(GdkEventFocus* ev)
+{
         setTitleColor(false);
         /** 发送正在打字的事件*/
 
-        if(!isRoom && buddy)
+        if (!isRoom && buddy)
                 //buddy->raiseMessageEvent(MessageEventComposing);
                 return false;
 }
 
-bool MsgPage::on_inputMsgBox_focus_out_event(GdkEventFocus* ev) {
+bool MsgPage::on_inputMsgBox_focus_out_event(GdkEventFocus* ev)
+{
         /** 发送取消打字的事件*/
 
-        if(!isRoom && buddy)
+        if (!isRoom && buddy)
                 buddy->raiseMessageEvent(MessageEventCancel);
 
         return false;
 
 }
 
-void MsgPage::setTitleColor(bool hascolor) {
+void MsgPage::setTitleColor(bool hascolor)
+{
         Bodies::Get_Bodies().get_msg_window().setNewMsgTitle(hascolor);
 
-        if((NULL != titlelable) && (hascolor != hasColor)) {
-                if(hascolor && !(inputMsgBox->is_focus())) {
+        if ((NULL != titlelable) && (hascolor != hasColor))
+        {
+                if (hascolor && !(inputMsgBox->is_focus()))
+                {
                         char* marktext = g_markup_printf_escaped("<span color='red'>%s</span>",
                                          titlelable->get_text().c_str());
                         titlelable->set_label(marktext);
                         hasColor = true;
                         g_free(marktext); // C free
-                } else {
+                }
+                else
+                {
                         titlelable->set_label(titlelable->get_text());
                         hasColor = false;
                 }
         }
 }
 
-void MsgPage::close() {
+void MsgPage::close()
+{
         msgBox->clear();
         inputMsgBox->clear();
 
-        if(!isRoom) {
+        if (!isRoom)
+        {
                 /**发出关闭对话框的信号给对方*/
                 //buddy->setChatState( ChatStateGone );
                 buddy->close_session();
                 buddy = NULL;
-        } else {
+        }
+        else
+        {
                 mucroom->closePage();
         }
 
@@ -535,7 +580,8 @@ void MsgPage::close() {
 }
 
 
-void MsgPage::refreshMember() {
+void MsgPage::refreshMember()
+{
         const MemberMap& items = mucroom->getMemberList();
 
         memberList->clearMember();
@@ -547,34 +593,41 @@ void MsgPage::refreshMember() {
 
 }
 
-bool MsgPage::on_memberList_double_click_event(GdkEventButton* ev) {
+bool MsgPage::on_memberList_double_click_event(GdkEventButton* ev)
+{
         const std::string mid = memberList->getSelectMemberid();
 
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS)) {
+                        ev->type == GDK_3BUTTON_PRESS))
+        {
                 std::cout << "点击成员" << mid << std::endl;
         }
 
 }
 
-void MsgPage::setSubject() {
+void MsgPage::setSubject()
+{
         Glib::ustring sub_ = mucroom->getSubject();
         subject->set_text(sub_);
 }
 
-void MsgPage::on_toolbar_fonts() {
+void MsgPage::on_toolbar_fonts()
+{
         buddy->sendPicture("/tmp/bot.png");
         printf(" buttons for fonts press\n");
 }
 
-void MsgPage::on_toolbar_link() {}
+void MsgPage::on_toolbar_link()
+{}
 
-void MsgPage::on_toolbar_smiley() {}
+void MsgPage::on_toolbar_smiley()
+{}
 
-void MsgPage::on_toolbar_image() {
-        if(NULL == buddy)
-                return;
+void MsgPage::on_toolbar_image()
+{
+        if (NULL == buddy)
+                return ;
 
         Gtk::FileChooserDialog dialog(_("Please select a file"),
                                       Gtk::FILE_CHOOSER_ACTION_OPEN);
@@ -621,25 +674,29 @@ void MsgPage::on_toolbar_image() {
         //dialog.set_current_folder("~/Desktop");
         int result = dialog.run();
 
-        switch (result) {
-        case (Gtk::RESPONSE_OK): {
+        switch (result)
+        {
+        case (Gtk::RESPONSE_OK):
+                {
                         filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
 
                         break;
                 }
 
-        case (Gtk::RESPONSE_CANCEL): {
+        case (Gtk::RESPONSE_CANCEL):
+                {
                         std::cout << "Cannel choose icon" << std::endl;
-                        return;
+                        return ;
                         //break;
                 }
 
-        default: {
+        default:
+                {
 
-                std::cout << "Cannel choose icon" << std::endl;
-                return;
-                //break;
-        }
+                        std::cout << "Cannel choose icon" << std::endl;
+                        return ;
+                        //break;
+                }
         }
 
         std::cout << "选择文件： " << filename << std::endl;

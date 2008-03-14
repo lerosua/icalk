@@ -1,30 +1,32 @@
 /*
- * =====================================================================================
- *
- *       Filename:  JingleShareSession.h
- *
- *    Description:  Jingle File share Session
- *
- *        Version:  1.0
- *        Created:  2008年01月25日 14时31分59秒
- *       Revision:  none
- *       Compiler:  g++
- *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  JingleShareSession.h
+*
+*    Description:  Jingle File share Session
+*
+*        Version:  1.0
+*        Created:  2008年01月25日 14时31分59秒
+*       Revision:  none
+*       Compiler:  g++
+*
+*         Author:  first_name last_name (fl), fl@my-company.com
+*        Company:  my-company
+*
+* =====================================================================================
+*/
 
 class JingleSession;
 
-namespace jingle {
+namespace jingle
+{
 /**
  * Implement a Jingle file share peer-to-peer session that is compatible with Google Talk share offering.
  * @cn 提供兼容Gtalk文件传输的会话
  */
 
-class JingleShareSession: public JingleSession {
+class JingleShareSession: public JingleSession
+{
 
 public:
         typedef std::list<XMPP::Jid> JidList;

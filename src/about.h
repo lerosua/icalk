@@ -8,7 +8,8 @@
 
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
-class createAboutDialog {
+class createAboutDialog
+{
 
 public:
         createAboutDialog();

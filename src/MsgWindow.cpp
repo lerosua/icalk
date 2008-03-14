@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  MsgWindow.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  2007年05月24日 19时43分28秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  MsgWindow.cpp
+*
+*    Description:  
+*
+*        Version:  1.0
+*        Created:  2007年05月24日 19时43分28秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 
 
@@ -34,7 +34,8 @@
 
 
 
-MsgWindow::MsgWindow() {
+MsgWindow::MsgWindow()
+{
         gmm_data = new GlademmData(get_accel_group());
         msg_xml = Gnome::Glade::Xml::create(msg_ui, "vbMain");
         Gtk::Widget * widget = msg_xml->get_widget("vbMain");
@@ -47,7 +48,8 @@ MsgWindow::MsgWindow() {
         statusbar = dynamic_cast< Gtk::Statusbar* >
                     (msg_xml->get_widget("statusbar"));
 
-        add(*widget);
+        add
+                (*widget);
 
         showTypeImage(false);
 
@@ -63,7 +65,8 @@ MsgWindow::MsgWindow() {
 
 }
 
-void MsgWindow::setNewMsgTitle(bool mode) {
+void MsgWindow::setNewMsgTitle(bool mode)
+{
         char *marktext;
 
         if (mode)
@@ -75,11 +78,12 @@ void MsgWindow::setNewMsgTitle(bool mode) {
 }
 
 
-void MsgWindow::add_page(MsgPage & page) {
+void MsgWindow::add_page(MsgPage & page)
+{
         /*如果标签页已经在NoteBook中，返回 */
 
-        if (-1 != notebook->page_num(page))
-                return;
+        if ( -1 != notebook->page_num(page))
+                return ;
 
         //关闭按钮
         Gtk::Button * button = Gtk::manage(new Gtk::Button());
@@ -97,9 +101,9 @@ void MsgWindow::add_page(MsgPage & page) {
 
         Gtk::Image * logo = getImage("online.png");
 
-//     Gtk::manage(new Gtk::
-//   Image(page.get_logo().get_pixbuf()->
-//         scale_simple(16, 16, Gdk::INTERP_NEAREST)));
+        //     Gtk::manage(new Gtk::
+        //   Image(page.get_logo().get_pixbuf()->
+        //         scale_simple(16, 16, Gdk::INTERP_NEAREST)));
 
         Gtk::HBox * box = Gtk::manage(new Gtk::HBox());
 
@@ -109,7 +113,7 @@ void MsgWindow::add_page(MsgPage & page) {
 
         box->pack_start(*button);
 
-        box->set_size_request(-1, 20);
+        box->set_size_request( -1, 20);
 
         notebook->append_page(page, *box);
 
@@ -125,25 +129,30 @@ void MsgWindow::add_page(MsgPage & page) {
 }
 
 
-MsgWindow::~MsgWindow() {
+MsgWindow::~MsgWindow()
+{
         delete gmm_data;
 }
 
-bool MsgWindow::on_delete_event(GdkEventAny *) {
+bool MsgWindow::on_delete_event(GdkEventAny *)
+{
         int num;
 
-        do {
+        do
+        {
                 num = notebook->get_current_page();
                 MsgPage *page =
                         dynamic_cast <
                         MsgPage * > (notebook->get_nth_page(num));
                 page->close();
-        } while (num > 0);
+        }
+        while (num > 0);
 
         hide();
 }
 
-void MsgWindow::del_page(MsgPage & page) {
+void MsgWindow::del_page(MsgPage & page)
+{
         int num;
         num = notebook->page_num(page);
         notebook->remove_page(num);
@@ -157,7 +166,8 @@ void MsgWindow::del_page(MsgPage & page) {
         //page=NULL;
 }
 
-void MsgWindow::on_page_close_click() {
+void MsgWindow::on_page_close_click()
+{
         int num = notebook->get_current_page();
         MsgPage *page =
                 dynamic_cast < MsgPage * >(notebook->get_nth_page(num));
@@ -165,44 +175,56 @@ void MsgWindow::on_page_close_click() {
         page->close();
 }
 
-void MsgWindow::on_switch_page(GtkNotebookPage * page, guint index) {
+void MsgWindow::on_switch_page(GtkNotebookPage * page, guint index)
+{
         showTypeImage(false);
 }
 
-void MsgWindow::showTypeImage(bool isShow) {
+void MsgWindow::showTypeImage(bool isShow)
+{
         Gtk::Image * typeImage =
                 dynamic_cast <
                 Gtk::Image * > (msg_xml->get_widget("image_type"));
 
-        if (isShow) {
+        if (isShow)
+        {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("typed.png");
 
-                typeImage->set(pix);
-        } else
+                typeImage->set
+                (pix);
+        }
+        else
                 typeImage->clear();
 }
 
-void MsgWindow::showEncryptImage(bool isShow) {
+void MsgWindow::showEncryptImage(bool isShow)
+{
         Gtk::Image * encryptImage =
                 dynamic_cast <
                 Gtk::Image * > (msg_xml->get_widget("image_encrypt"));
 
-        if (isShow) {
+        if (isShow)
+        {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("crypto.png");
 
-                encryptImage->set(pix);
-        } else
+                encryptImage->set
+                (pix);
+        }
+        else
                 encryptImage->clear();
 }
 
-bool MsgWindow::on_key_press_event(GdkEventKey * ev) {
+bool MsgWindow::on_key_press_event(GdkEventKey * ev)
+{
         MsgPage *page;
 
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        if (ev->state & (GDK_MOD1_MASK)) {
-                switch (ev->keyval) {
+        if (ev->state & (GDK_MOD1_MASK))
+        {
+                switch (ev->keyval)
+                {
 
                 case GDK_1:
 
@@ -229,8 +251,10 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev) {
                 }
         }
 
-        if (ev->state & (GDK_CONTROL_MASK)) {
-                switch (ev->keyval) {
+        if (ev->state & (GDK_CONTROL_MASK))
+        {
+                switch (ev->keyval)
+                {
 
                 case GDK_Tab:
 
@@ -291,12 +315,16 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev) {
                 }
 
                 return true;
-        } else {
-                switch (ev->keyval) {
+        }
+        else
+        {
+                switch (ev->keyval)
+                {
 
                 case GDK_Escape:
 
-                        if (!Gtk::Window::on_key_press_event(ev)) {
+                        if (!Gtk::Window::on_key_press_event(ev))
+                        {
                                 on_page_close_click();
                         }
 
@@ -323,7 +351,8 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev) {
 }
 
 
-void MsgWindow::showStatusBarMsg(const std::string& msg, unsigned int id) {
+void MsgWindow::showStatusBarMsg(const std::string& msg, unsigned int id)
+{
         statusbar->pop(id);
         statusbar->push(msg, id);
 }

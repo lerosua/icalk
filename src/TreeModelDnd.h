@@ -1,7 +1,7 @@
 #ifndef TREEMODELDND_H_
 #define TREEMODELDND_H_
 
-#include <gtkmm.h>
+#include <gtkmm.h> 
 /**@brief 解释一下BuddyColumns里行的组成结构
  * @param icon Buddy成员的图标，一般由对方上传的头像，默认会设置一个头像。
  * 离线时会是离线时的头像。
@@ -16,10 +16,11 @@
  *
  * @param audioicon 本意是用以表示用户能否支持呼叫功能。但现在未实现，暂时表
  * 示上线的状态而已。
- */
+ */ 
 /** 列表行的数据结构*/
 
-class BuddyColumns: public Gtk::TreeModel::ColumnRecord {
+class BuddyColumns: public Gtk::TreeModel::ColumnRecord
+{
 
 public:
         BuddyColumns();
@@ -31,7 +32,8 @@ public:
         Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >audioicon;
 };
 
-class TreeModelDnd: public Gtk::TreeStore {
+class TreeModelDnd: public Gtk::TreeStore
+{
 
 protected:
         TreeModelDnd(const Gtk::TreeModelColumnRecord & columns);

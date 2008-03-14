@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  Unit.cpp
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  2007年07月12日 22时21分43秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  Unit.cpp
+*
+*    Description:  
+*
+*        Version:  1.0
+*        Created:  2007年07月12日 22时21分43秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 #include <libgen.h>
 #include <sys/stat.h>
@@ -34,7 +34,8 @@ char GUnit::logPath[MAX_NUM];
 char GUnit::iconPath[MAX_NUM];
 char GUnit::tempPath[MAX_NUM];
 
-void GUnit::init(const char* user) {
+void GUnit::init(const char* user)
+{
         char* homedir = getenv("HOME");
         snprintf(homePath, MAX_NUM, "%s/.icalk", homedir);
         mkdir(homePath, S_IRUSR | S_IWUSR | S_IXUSR);

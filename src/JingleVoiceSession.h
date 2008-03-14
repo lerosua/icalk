@@ -1,34 +1,36 @@
 /*
- * =====================================================================================
- *
- *       Filename:  JingleVoiceSession.h
- *
- *    Description:  Jingle 语音会话
- *
- *        Version:  1.0
- *        Created:  2008年01月23日 12时04分43秒
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua@gmail.com
- *        Company:  cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  JingleVoiceSession.h
+*
+*    Description:  Jingle 语音会话
+*
+*        Version:  1.0
+*        Created:  2008年01月23日 12时04分43秒
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua@gmail.com
+*        Company:  cyclone
+*
+* =====================================================================================
+*/
 
 #ifndef JINGLEVOICESESSION_H_
 #define JINGLEVOICESESSION_H_
 
 #include <xmpp.h> //XMPP::Jid
 
-namespace cricket {
+namespace cricket
+{
 
 class Call;
 }
 
 class JingleSession;
 
-namespace jingle {
+namespace jingle
+{
 
 /**
  * Implement a Jingle voice peer-to-peer session that is compatible with Google Talk voice offering.
@@ -37,7 +39,8 @@ namespace jingle {
  * @author lerosua
  */
 
-class JingleVoiceSession: public JingleSession {
+class JingleVoiceSession: public JingleSession
+{
 
 public:
         JingleVoiceSession(Client* client_, const JidList& peers_);

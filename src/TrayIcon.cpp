@@ -4,7 +4,8 @@
 
 
 TrayIcon::TrayIcon(MainWindow* wnd)
-                : _gwin(wnd) {
+                : _gwin(wnd)
+{
         pixUser[0] = getPix("status_ofline.png");
         pixUser[1] = getPix("status_online.png");
         pixUser[2] = getPix("status_online.png");
@@ -33,30 +34,37 @@ TrayIcon::TrayIcon(MainWindow* wnd)
         g_signal_connect(G_OBJECT(gobj_StatusIcon), "activate", G_CALLBACK(on_statusicon_activated), _gwin);
         g_signal_connect(G_OBJECT(gobj_StatusIcon), "popup-menu", G_CALLBACK(on_statusicon_popup), _gwin);
 
-        this->set(pixUser[6]);
+        this->set
+        (pixUser[6]);
 }
 
-TrayIcon::~TrayIcon() {}
+TrayIcon::~TrayIcon()
+{}
 
-void TrayIcon::setBlinking(bool blinking) {
+void TrayIcon::setBlinking(bool blinking)
+{
         this->set_blinking(blinking);
 }
 
-void TrayIcon::on_status_change(int status, Glib::ustring nickname, Glib::ustring msg_) {
+void TrayIcon::on_status_change(int status, Glib::ustring nickname, Glib::ustring msg_)
+{
 
-        this->set(pixUser[status]);
+        this->set
+        (pixUser[status]);
 
         // Set the tooltip
         this->set_tooltip(nickname + tooltip[status] + msg_);
 
 }
 
-void on_statusicon_activated(GtkWidget* widget, gpointer object) {
+void on_statusicon_activated(GtkWidget* widget, gpointer object)
+{
         MainWindow* wnd = static_cast<MainWindow*>(object);
         wnd->toggle_visibility();
 }
 
 void on_statusicon_popup(GtkStatusIcon* status_icon, guint button,
-                         guint activate_time, gpointer object) {
+                         guint activate_time, gpointer object)
+{
         return static_cast<MainWindow*>(object)->show_tray_menu(button, activate_time);
 }

@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  TalkFT.h
- * 
- *    Description:  gloox的文件传输模块
- * 
- *        Version:  1.0
- *        Created:  2007年08月10日 19时01分46秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  TalkFT.h
+* 
+*    Description:  gloox的文件传输模块
+* 
+*        Version:  1.0
+*        Created:  2007年08月10日 19时01分46秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  TALKFT_FILE_HEADER_INC
 #define  TALKFT_FILE_HEADER_INC
@@ -46,7 +46,8 @@ class Bodies;
  * 文件传输的类，负责接收与发送文件
  */
 
-class TalkFT: public SIProfileFTHandler, public BytestreamDataHandler {
+class TalkFT: public SIProfileFTHandler, public BytestreamDataHandler
+{
 
 public:
         TalkFT(Client * client_);
@@ -78,7 +79,8 @@ public:
         /** 如果协商好用OOB策略传输则调用此函数*/
         virtual const std::string handleOOBRequestResult(const JID & from,
                         const std::
-                        string & sid) {
+                        string & sid)
+        {
                 return std::string();
         };
 

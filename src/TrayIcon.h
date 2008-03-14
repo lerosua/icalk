@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  TrayIcon.h
- * 
- *    Description:  系统托盘的实现
- * 
- *        Version:  1.0
- *        Created:  2007年08月31日 20时46分47秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  TrayIcon.h
+* 
+*    Description:  系统托盘的实现
+* 
+*        Version:  1.0
+*        Created:  2007年08月31日 20时46分47秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  TRAYICON_FILE_HEADER_INC
 #define  TRAYICON_FILE_HEADER_INC
@@ -33,7 +33,8 @@ void on_statusicon_popup(GtkStatusIcon*, guint button, guint activate_time, gpoi
  * @brief 通知栏图标类
  */
 
-class TrayIcon: public Gtk::StatusIcon {
+class TrayIcon: public Gtk::StatusIcon
+{
 
 public:
         TrayIcon(MainWindow* wnd);
@@ -43,9 +44,9 @@ public:
         void setBlinking(bool blinking = true);
 
 private:
-        MainWindow*      _gwin;
+        MainWindow* _gwin;
         Glib::RefPtr<Gdk::Pixbuf> pixUser[7];
-        Glib::ustring   tooltip[7];
+        Glib::ustring tooltip[7];
 
 protected:
         // Methods:

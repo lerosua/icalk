@@ -2,7 +2,8 @@
 #include "MemberList.h"
 #include <iostream>
 
-MemberList::MemberList() {
+MemberList::MemberList()
+{
         MemberList* memberList = this;
         memberList->set_flags(Gtk::CAN_FOCUS);
         memberList->set_headers_visible(false);
@@ -24,7 +25,8 @@ MemberList::MemberList() {
 
 }
 
-bool MemberList::isMember(const std::string& mid) {
+bool MemberList::isMember(const std::string& mid)
+{
         /*
         Gtk::TreeModel::Children children = tree_store->children();
         Gtk::TreeModel::iterator listiter;
@@ -33,12 +35,13 @@ bool MemberList::isMember(const std::string& mid) {
                 bind2nd(CompareBuddy(MemberColumns), mid));
         if(listiter == children.end())
          return false;
-        */
+        */ 
         return true;
 
 }
 
-void MemberList::addMember(const std::string& name, const Member& member) {
+void MemberList::addMember(const std::string& name, const Member& member)
+{
         Gtk::TreeModel::iterator iter = refListStore->append();
 
         (*iter)[columns.icon] = getPix("voice.png");
@@ -49,18 +52,21 @@ void MemberList::addMember(const std::string& name, const Member& member) {
 
 }
 
-void MemberList::clearMember() {
+void MemberList::clearMember()
+{
         Gtk::TreeModel::Children children = refListStore->children();
         Gtk::TreeModel::iterator iter = children.begin();
 
-        while( iter != children.end()) {
+        while ( iter != children.end())
+        {
                 //Glib::ustring name = (*iter)[columns.name];
                 //std::cout<<"erase ============"<<name<<std::endl;
                 iter = refListStore->erase(iter);
         }
 }
 
-void MemberList::removeMember(const std::string& name) {
+void MemberList::removeMember(const std::string& name)
+{
         /*
            Gtk::TreeModel::iterator iter =
            getListIter(refListstore->children(), id);
@@ -70,7 +76,8 @@ void MemberList::removeMember(const std::string& name) {
 
 }
 
-Glib::ustring MemberList::getSelectMemberid() {
+Glib::ustring MemberList::getSelectMemberid()
+{
 
         Glib::RefPtr<Gtk::TreeSelection> selection = get_selection();
 
@@ -82,7 +89,8 @@ Glib::ustring MemberList::getSelectMemberid() {
         return (*iter)[columns.mid];
 }
 
-bool MemberList::on_button_press_event(GdkEventButton * ev) {
+bool MemberList::on_button_press_event(GdkEventButton * ev)
+{
 
         bool result = Gtk::TreeView::on_button_press_event(ev);
 
@@ -107,12 +115,15 @@ bool MemberList::on_button_press_event(GdkEventButton * ev) {
                 return FALSE;
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS)) {
+                        ev->type == GDK_3BUTTON_PRESS))
+        {
                 std::cout << "双击" << name << std::endl;
 
 
-        } else if ((ev->type == GDK_BUTTON_PRESS)
-                        && (ev->button == 3)) {
+        }
+        else if ((ev->type == GDK_BUTTON_PRESS)
+                        && (ev->button == 3))
+        {
                 std::cout << "右击" << name << std::endl;
         }
 

@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  MsgBox.h
- * 
- *    Description:  专门的TextView，专心处理输入输出的类
- * 
- *        Version:  1.0
- *        Created:  2007年07月17日 22时44分11秒 CST
- *       Revision:  none
- *       Compiler:  g++
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  MsgBox.h
+* 
+*    Description:  专门的TextView，专心处理输入输出的类
+* 
+*        Version:  1.0
+*        Created:  2007年07月17日 22时44分11秒 CST
+*       Revision:  none
+*       Compiler:  g++
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  MSGBOX_FILE_HEADER_INC
 #define  MSGBOX_FILE_HEADER_INC
@@ -26,12 +26,13 @@
 
 #define DELETE_CHAR 0
 #define DELETE_WORD 1
-#define DELETE_LINE 2
+#define DELETE_LINE 2 
 /**
  * @brief 继承自TextView，处理消息输出的格式
  */
 
-class MsgBox: public Gtk::TextView {
+class MsgBox: public Gtk::TextView
+{
 
 public:
         /** 颜色表*/
@@ -90,7 +91,8 @@ public:
          */
         void clear();
 
-        SMILELIST& getSmileMap() {
+        SMILELIST& getSmileMap()
+        {
                 return smileTree.getSmileList();
         }
 

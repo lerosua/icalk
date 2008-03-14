@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  StatusMsgWidget.h
- * 
- *    Description:  状态签名管理
- * 
- *        Version:  1.0
- *        Created:  2007年09月27日 20时11分23秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  StatusMsgWidget.h
+* 
+*    Description:  状态签名管理
+* 
+*        Version:  1.0
+*        Created:  2007年09月27日 20时11分23秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  STATUSMSGWIDGET_FILE_HEADER_INC
 #define  STATUSMSGWIDGET_FILE_HEADER_INC
@@ -25,7 +25,7 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>
 #include <functional>
-#include <vector>
+#include <vector> 
 //#include "MainWindow.h"
 #define statusmsg_ui     DATA_DIR"/ui/statusMsg.glade"
 
@@ -37,7 +37,8 @@ class MainWindow;
 
 class MsgLine;
 
-class StatusMsgWidget: public Gtk::Window {
+class StatusMsgWidget: public Gtk::Window
+{
 
 public:
         StatusMsgWidget(MainWindow* parent_);
@@ -57,13 +58,14 @@ private:
 
 };
 
-class MsgLine : public Gtk::TreeView {
+class MsgLine : public Gtk::TreeView
+{
 
 public:
         MsgLine();
         void init();
         Glib::ustring getLineMsg(Gtk::TreeModel::iterator iter);
-        int  getLineNumber(Gtk::TreeModel::iterator iter);
+        int getLineNumber(Gtk::TreeModel::iterator iter);
         void addLine(int num, const Glib::ustring& msg);
         void addLine(const Glib::ustring& msg);
         void editLine(const int num, const Glib::ustring& msg);
@@ -71,18 +73,22 @@ public:
         void delLine(Gtk::TreeModel::iterator iter);
         void Save();
         Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::Children children,
-                                             const int  id);
+                                             const int id);
 
 protected:
         bool on_button_press_event(GdkEventButton *);
 
 private:
 
-struct MsgColumns: public Gtk::TreeModel::ColumnRecord {
-                MsgColumns() {
-                        add(num);
+struct MsgColumns: public Gtk::TreeModel::ColumnRecord
+        {
+                MsgColumns()
+                {
+                        add
+                                (num);
 
-                        add(message);
+                        add
+                                (message);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> message;
@@ -99,12 +105,15 @@ private:
         /** 比较Message*/
 
 struct CompareMsg: public binary_function < Gtk::TreeModel::Row,
-                const int, bool > {
+                                const int, bool >
+        {
                 explicit CompareMsg(const MsgColumns &
-                                    column_): column(column_) {}
+                                    column_): column(column_)
+                {}
 
                 bool operator () (const Gtk::TreeRow & lhs,
-                                  const int num) const {
+                                  const int num) const
+                {
                         return lhs[column.num] == num;
                 }
 

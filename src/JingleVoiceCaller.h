@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- *
- *       Filename:  JingleVoiceCaller.h
- *
- *    Description:  
- *
- *        Version:  1.0
- *        Created:  2008年01月23日 12时40分30秒
- *       Revision:  none
- *       Compiler:  gcc
- *
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- *
- * =====================================================================================
- */
+* =====================================================================================
+*
+*       Filename:  JingleVoiceCaller.h
+*
+*    Description:  
+*
+*        Version:  1.0
+*        Created:  2008年01月23日 12时40分30秒
+*       Revision:  none
+*       Compiler:  gcc
+*
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+*
+* =====================================================================================
+*/
 
 #ifndef JINGLEVOICECALLER_H_
 #define JINGLEVOICECALLER_H_
@@ -22,7 +22,8 @@
 
 using namespace XMPP;
 
-namespace cricket {
+namespace cricket
+{
 
 class SocketServer;
 
@@ -41,9 +42,11 @@ class Call;
 class SocketAddress;
 }
 
-namespace jingle {
+namespace jingle
+{
 
-class JingleVoiceCaller {
+class JingleVoiceCaller
+{
 
 public:
         JingleVoiceCaller();

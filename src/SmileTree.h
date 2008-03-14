@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  SmileTree.h
- * 
- *    Description:  表情符号查找树
- * 
- *        Version:  1.0
- *        Created:  2007年10月02日 14时05分58秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  wind (xihe), xihels@gmail.com
- *        Company:  cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  SmileTree.h
+* 
+*    Description:  表情符号查找树
+* 
+*        Version:  1.0
+*        Created:  2007年10月02日 14时05分58秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  wind (xihe), xihels@gmail.com
+*        Company:  cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef _SMILE_TREE_H_
 #define _SMILE_TREE_H_
@@ -27,22 +27,26 @@
 #include "pixmaps.h"
 
 using namespace std;
-typedef std::map<Glib::ustring, Smile*>  SMILELIST;
+typedef std::map<Glib::ustring, Smile*> SMILELIST;
 
-class Smile {
+class Smile
+{
 
 public:
-        Smile(const string& filename): val(filename) {}
+        Smile(const string& filename): val(filename)
+        {}
 
         string val;
-        Gtk::Image* getSmileImage() {
+        Gtk::Image* getSmileImage()
+        {
                 return getSmil(val.c_str());
         }
 };
 
 template < typename T >
 
-class SmileTree {
+class SmileTree
+{
         typedef TreeItem<T> ITEM;
 
 public:
@@ -50,9 +54,10 @@ public:
         ~SmileTree();
 
         template <typename posT>
-        Smile*   find_smile(posT iter, posT end, int& key_len);
+        Smile* find_smile(posT iter, posT end, int& key_len);
 
-        SMILELIST& getSmileList() {
+        SMILELIST& getSmileList()
+        {
                 return smilelist;
         }
 
@@ -68,19 +73,23 @@ private:
         SMILELIST smilelist;
 };
 
-inline Smile* get_smile(const string& filename) {
+inline Smile* get_smile(const string& filename)
+{
         return new Smile(filename);
 }
 
 template <typename T>
-TreeItem < T >* insert_item(TreeItem < T >* head, TreeItem< T >* item) {
+TreeItem < T >* insert_item(TreeItem < T >* head, TreeItem< T >* item)
+{
         item->right = head;
         return item;
 }
 
 template < typename T >
-TreeItem< T >* find_item(TreeItem<T>* head, T k) {
-        for (; head && *head != k; head = head->right)NULL;
+TreeItem< T >* find_item(TreeItem<T>* head, T k)
+{
+        for (; head && *head != k; head = head->right)
+                NULL;
 
         return head;
 }
@@ -88,12 +97,14 @@ TreeItem< T >* find_item(TreeItem<T>* head, T k) {
 
 template <typename T>
 template <typename posT>
-Smile* SmileTree<T>::find_smile(posT iter, posT end, int& key_len) {
+Smile* SmileTree<T>::find_smile(posT iter, posT end, int& key_len)
+{
         posT key = iter;
         posT tmp = key;
         ITEM* item = &head;
 
-        for (key_len = 0; tmp != end ; ++tmp, key_len++) {
+        for (key_len = 0; tmp != end ; ++tmp, key_len++)
+        {
                 item = find_item(item->left, *tmp);
 
                 if (NULL == item)
@@ -107,27 +118,31 @@ Smile* SmileTree<T>::find_smile(posT iter, posT end, int& key_len) {
 
 template <typename T>
 SmileTree<T>::SmileTree(const std::string& theme):
-head('\0') {
+                head('\0')
+{
         char buf[512];
         snprintf(buf, 512, DATA_DIR"/smiley/%s/theme", theme.c_str());
         std::ifstream file(buf);
         std::string line;
 
-        while (getline(file, line)) {
+        while (getline(file, line))
+        {
                 parser(line);
         }
 }
 
 template <typename T>
-SmileTree<T>::~SmileTree() {
+SmileTree<T>::~SmileTree()
+{
         destroy_item(head.left);
         destroy_item(head.right);
 }
 
 template <typename T>
-void SmileTree<T>::destroy_item(ITEM* item) {
+void SmileTree<T>::destroy_item(ITEM* item)
+{
         if (NULL == item)
-                return;
+                return ;
 
         destroy_item(item->left);
 
@@ -137,18 +152,19 @@ void SmileTree<T>::destroy_item(ITEM* item) {
 }
 
 template <typename T>
-void SmileTree<T>::parser(const string& line) {
+void SmileTree<T>::parser(const string& line)
+{
         size_t pos = line.find_first_of("\t ");
 
         if ( pos == string::npos)
-                return;
+                return ;
 
         string filename = line.substr(0, pos);
 
         pos = line.find_first_not_of("\t ", pos);
 
         if (pos == string::npos)
-                return;
+                return ;
 
         Glib::ustring action = line.substr(pos);
 
@@ -158,15 +174,18 @@ void SmileTree<T>::parser(const string& line) {
 }
 
 template <typename T>
-void SmileTree<T>::insert(const Glib::ustring& action, Smile* smile) {
+void SmileTree<T>::insert(const Glib::ustring& action, Smile* smile)
+{
         Glib::ustring::const_iterator text = action.begin();
         ITEM* last = NULL;
         ITEM* first = &head;
 
-        for(; text != action.end(); ++text) {
+        for (; text != action.end(); ++text)
+        {
                 last = find_item(first->left, *text);
 
-                if (NULL == last) {
+                if (NULL == last)
+                {
                         last = new ITEM(*text);
                         last->right = first->left;
                         first->left = last;

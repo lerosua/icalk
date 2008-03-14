@@ -1,20 +1,20 @@
 /*
- * =====================================================================================
- * 
- *       Filename:  icalk.h
- * 
- *    Description:  各种常量定义
- * 
- *        Version:  1.0
- *        Created:  2008年02月22日 20时05分59秒 CST
- *       Revision:  none
- *       Compiler:  gcc
- * 
- *         Author:  lerosua (), lerosua@gmail.com
- *        Company:  Cyclone
- * 
- * =====================================================================================
- */
+* =====================================================================================
+* 
+*       Filename:  icalk.h
+* 
+*    Description:  各种常量定义
+* 
+*        Version:  1.0
+*        Created:  2008年02月22日 20时05分59秒 CST
+*       Revision:  none
+*       Compiler:  gcc
+* 
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
+* 
+* =====================================================================================
+*/
 
 #ifndef  ICALK_FILE_HEADER_INC
 #define  ICALK_FILE_HEADER_INC
@@ -59,7 +59,8 @@ using namespace gloox;
  * @param presence 成员的状态
  */
 
-typedef struct Member {
+typedef struct Member
+{
         std::string id;
         MUCRoomAffiliation affiliation;
         MUCRoomRole role;
