@@ -27,82 +27,93 @@
 #include "Unit.h"
 
 namespace sounds {
-    const char* command = "aplay";
-    int PLAY = 0;
-    int MUTE=0 ;
+const char* command = "aplay";
+int PLAY = 0;
+int MUTE = 0 ;
 }
+
 /**@brief 设置静音或者返回状态。
  * @param mute_ 为0不静音
- *		为1静音
- *		为3返回现在的状态
+ *  为1静音
+ *  为3返回现在的状态
  * @return 返回MUTE的值
  */
-int sounds::mute(int mute_)
-{
-	if(mute_ ==3)
-		return MUTE;
-	else if(mute_==1)
-		MUTE=1;
-	else
-		MUTE=0;
-	return MUTE;
-}
-void sounds::play(int code)
-{
-	//if (MUTE)
-	//	return;
-    if (PLAY) 
-	return ;
-    PLAY = 1;
+int sounds::mute(int mute_) {
+        if(mute_ == 3)
+                return MUTE;
+        else if(mute_ == 1)
+                MUTE = 1;
+        else
+                MUTE = 0;
 
-    char filename[255];
-    switch (code) {
-	case ARRIVE_SOUND:
-	    snprintf(filename, 255, "%sarrive.wav", GUnit::getSoundPath());
-	    break;
-	case LEAVE_SOUND:
-	    snprintf(filename, 255, "%sleave.wav", GUnit::getSoundPath());
-	    break;
-	case RECEIVE_SOUND:
-	    snprintf(filename, 255, "%sreceive.wav", GUnit::getSoundPath());
-	    break;
-	case REDALERT_SOUND:
-	    snprintf(filename, 255, "%sredalert.wav", GUnit::getSoundPath());
-	    break;
-	case SEND_SOUND:
-	    snprintf(filename, 255, "%ssend.wav", GUnit::getSoundPath());
-	    break;
-    }
-    do_play(filename);
+        return MUTE;
 }
 
+void sounds::play(int code) {
+        //if (MUTE)
+        // return;
 
-void sounds::do_play(const char* filename)
-{
-    pid_t pid;
-    int status;
-    pid = fork();
-    if (-1 == pid) {
-        perror("Fork falid to creat a process");
-    } else if (0 == pid) {
-        close(0);
-        close(1);
-        close(2);
-        if (execlp(command, command, filename, NULL) < 0) {
-            perror("Execl failed");
-            exit (1);
+        if (PLAY)
+                return ;
+
+        PLAY = 1;
+
+        char filename[255];
+
+        switch (code) {
+
+        case ARRIVE_SOUND:
+                snprintf(filename, 255, "%sarrive.wav", GUnit::getSoundPath());
+                break;
+
+        case LEAVE_SOUND:
+                snprintf(filename, 255, "%sleave.wav", GUnit::getSoundPath());
+                break;
+
+        case RECEIVE_SOUND:
+                snprintf(filename, 255, "%sreceive.wav", GUnit::getSoundPath());
+                break;
+
+        case REDALERT_SOUND:
+                snprintf(filename, 255, "%sredalert.wav", GUnit::getSoundPath());
+                break;
+
+        case SEND_SOUND:
+                snprintf(filename, 255, "%ssend.wav", GUnit::getSoundPath());
+                break;
         }
-    }
+
+        do_play(filename);
 }
 
 
-void sounds::on_play_exit(int s)
-{
-    pid_t pid;
-    int	  stat;
+void sounds::do_play(const char* filename) {
+        pid_t pid;
+        int status;
+        pid = fork();
 
-    while (waitpid(-1, &stat, WNOHANG) > 0)
-	NULL;
-    PLAY = 0;
+        if (-1 == pid) {
+                perror("Fork falid to creat a process");
+        } else if (0 == pid) {
+                close(0);
+                close(1);
+                close(2);
+
+                if (execlp(command, command, filename, NULL) < 0) {
+                        perror("Execl failed");
+                        exit (1);
+                }
+        }
+}
+
+
+void sounds::on_play_exit(int s) {
+        pid_t pid;
+        int   stat;
+
+        while (waitpid(-1, &stat, WNOHANG) > 0)
+                NULL;
+
+        PLAY = 0;
 }
 

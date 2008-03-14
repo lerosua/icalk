@@ -19,34 +19,45 @@
 #define _TREE_ITEM_H
 
 class Smile;
+
 template < typename T >
+
 struct TreeItem {
-	explicit TreeItem(T _val) : 
-		val(_val)
-	{
-		left = 0;
-		right = 0;
-		smile = 0;
-	}
+        explicit TreeItem(T _val) :
+        val(_val) {
+                left = 0;
+                right = 0;
+                smile = 0;
+        }
 
-	void set_smile(Smile* _smile)
-       	{
-	       	smile = _smile;
-       	}
+        void set_smile(Smile* _smile) {
+                smile = _smile;
+        }
 
-	bool is_smile() const { return smile != 0; }
-	operator T () const { return val; }
-	operator Smile* () const { return smile; }
-	bool operator == (const TreeItem& other) const
-	{ return val == other.val && smile == other.smile; }
+        bool is_smile() const {
+                return smile != 0;
+        }
 
-	TreeItem(const TreeItem&);
-	TreeItem& operator = (const TreeItem&);
+        operator T () const {
+                return val;
+        }
 
-	TreeItem* left;
-	TreeItem* right;
-	Smile* smile;
-	T  val;
-};	
+        operator Smile* () const {
+                return smile;
+        }
+
+        bool operator == (const TreeItem& other) const {
+                return val == other.val && smile == other.smile;
+        }
+
+        TreeItem(const TreeItem&);
+        TreeItem& operator = (const TreeItem&);
+
+        TreeItem* left;
+        TreeItem* right;
+        Smile* smile;
+        T  val;
+};
+
 #endif // _TREE_ITEM_H_
 

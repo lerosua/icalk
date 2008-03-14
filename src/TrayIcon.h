@@ -32,22 +32,24 @@ void on_statusicon_popup(GtkStatusIcon*, guint button, guint activate_time, gpoi
 /**
  * @brief 通知栏图标类
  */
-class TrayIcon: public Gtk::StatusIcon
-{
+
+class TrayIcon: public Gtk::StatusIcon {
+
 public:
-	TrayIcon(MainWindow* wnd);
-	~TrayIcon();
-	/** 状态改变时的相应更改函数*/
-     void on_status_change(int status,Glib::ustring nickname, Glib::ustring msg_);
-     void setBlinking(bool blinking=true);
+        TrayIcon(MainWindow* wnd);
+        ~TrayIcon();
+        /** 状态改变时的相应更改函数*/
+        void on_status_change(int status, Glib::ustring nickname, Glib::ustring msg_);
+        void setBlinking(bool blinking = true);
 
 private:
-     MainWindow*      _gwin;
-     Glib::RefPtr<Gdk::Pixbuf> pixUser[7];
-     Glib::ustring   tooltip[7];
+        MainWindow*      _gwin;
+        Glib::RefPtr<Gdk::Pixbuf> pixUser[7];
+        Glib::ustring   tooltip[7];
+
 protected:
-  // Methods:
-     friend void on_statusicon_popup(GtkStatusIcon*, guint button, guint activate_time, gpointer object);
+        // Methods:
+        friend void on_statusicon_popup(GtkStatusIcon*, guint button, guint activate_time, gpointer object);
 
 };
 

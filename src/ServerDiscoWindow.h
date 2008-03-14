@@ -28,22 +28,24 @@
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 class Bodies;
+
 class MainWindow;
 
-class ServerDiscoWindow:public Gtk::Window
-{
-	public:
-		ServerDiscoWindow(MainWindow* parent_);
-		~ServerDiscoWindow();
+class ServerDiscoWindow: public Gtk::Window {
 
-	private:
-		bool on_key_press_event(GdkEventKey* ev);
-		void on_btGo_clicked();
-		void on_btclose_clicked();
-	private:
-		GlademmXML server_discovery_xml;
-		MainWindow* parent;
-		Gtk::ComboBoxEntry* nodeEntry;
+public:
+        ServerDiscoWindow(MainWindow* parent_);
+        ~ServerDiscoWindow();
+
+private:
+        bool on_key_press_event(GdkEventKey* ev);
+        void on_btGo_clicked();
+        void on_btclose_clicked();
+
+private:
+        GlademmXML server_discovery_xml;
+        MainWindow* parent;
+        Gtk::ComboBoxEntry* nodeEntry;
 
 };
 

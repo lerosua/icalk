@@ -29,75 +29,74 @@
 
 
 CommandBar::CommandBar(MsgPage* _parent) :
-    parent(reinterpret_cast<MsgPage*>(_parent)),
-	smileyWnd(NULL)
-{
-    CommandBar* commandBar = this;
+                parent(reinterpret_cast<MsgPage*>(_parent)),
+smileyWnd(NULL) {
+        CommandBar* commandBar = this;
 
-	Gtk::Image* image_ = getImage("insert-fonts.png");
-	Gtk::ToolButton* item = Gtk::manage(new Gtk::ToolButton(*image_));
-	item->signal_clicked().connect(sigc::mem_fun(*this,&CommandBar::on_fonts_clicked));
-	item->set_visible_horizontal(true);
-	item->set_visible_vertical(true);
-	item->set_is_important(true);
-	item->set_homogeneous(true);
-	item->set_expand(false);
-	this->pack_start(*item,Gtk::PACK_SHRINK);
+        Gtk::Image* image_ = getImage("insert-fonts.png");
+        Gtk::ToolButton* item = Gtk::manage(new Gtk::ToolButton(*image_));
+        item->signal_clicked().connect(sigc::mem_fun(*this, &CommandBar::on_fonts_clicked));
+        item->set_visible_horizontal(true);
+        item->set_visible_vertical(true);
+        item->set_is_important(true);
+        item->set_homogeneous(true);
+        item->set_expand(false);
+        this->pack_start(*item, Gtk::PACK_SHRINK);
 
-	image_ = getImage("insert-link.png");	
-	item = Gtk::manage(new Gtk::ToolButton(*image_));
-	item->signal_clicked().connect(sigc::mem_fun(*this,&CommandBar::on_link_clicked));
-	item->set_visible_horizontal(true);
-	item->set_visible_vertical(true);
-	item->set_is_important(true);
-	item->set_homogeneous(true);
-	item->set_expand(false);
-	this->pack_start(*item,Gtk::PACK_SHRINK);
+        image_ = getImage("insert-link.png");
+        item = Gtk::manage(new Gtk::ToolButton(*image_));
+        item->signal_clicked().connect(sigc::mem_fun(*this, &CommandBar::on_link_clicked));
+        item->set_visible_horizontal(true);
+        item->set_visible_vertical(true);
+        item->set_is_important(true);
+        item->set_homogeneous(true);
+        item->set_expand(false);
+        this->pack_start(*item, Gtk::PACK_SHRINK);
 
-	image_ = getImage("insert-image.png");	
-	 item = Gtk::manage(new Gtk::ToolButton(*image_));
-	item->signal_clicked().connect(sigc::mem_fun(*this,&CommandBar::on_image_clicked));
-	item->set_visible_horizontal(true);
-	item->set_visible_vertical(true);
-	item->set_is_important(true);
-	item->set_homogeneous(true);
-	item->set_expand(false);
-	this->pack_start(*item,Gtk::PACK_SHRINK);
+        image_ = getImage("insert-image.png");
+        item = Gtk::manage(new Gtk::ToolButton(*image_));
+        item->signal_clicked().connect(sigc::mem_fun(*this, &CommandBar::on_image_clicked));
+        item->set_visible_horizontal(true);
+        item->set_visible_vertical(true);
+        item->set_is_important(true);
+        item->set_homogeneous(true);
+        item->set_expand(false);
+        this->pack_start(*item, Gtk::PACK_SHRINK);
 
-	image_ = getImage("insert-smiley.png");	
-	 item = Gtk::manage(new Gtk::ToolButton(*image_));
-	item->signal_clicked().connect(sigc::mem_fun(*this,&CommandBar::on_smiley_clicked));
-	item->set_visible_horizontal(true);
-	item->set_visible_vertical(true);
-	item->set_is_important(true);
-	item->set_homogeneous(true);
-	item->set_expand(false);
-	this->pack_start(*item,Gtk::PACK_SHRINK);
+        image_ = getImage("insert-smiley.png");
+        item = Gtk::manage(new Gtk::ToolButton(*image_));
+        item->signal_clicked().connect(sigc::mem_fun(*this, &CommandBar::on_smiley_clicked));
+        item->set_visible_horizontal(true);
+        item->set_visible_vertical(true);
+        item->set_is_important(true);
+        item->set_homogeneous(true);
+        item->set_expand(false);
+        this->pack_start(*item, Gtk::PACK_SHRINK);
 
 }
 
 
 
-CommandBar::~CommandBar()
-{
-    delete smileyWnd;
+CommandBar::~CommandBar() {
+        delete smileyWnd;
 }
-void CommandBar::on_fonts_clicked()
-{
-	parent->on_toolbar_fonts();
+
+void CommandBar::on_fonts_clicked() {
+        parent->on_toolbar_fonts();
 }
-void CommandBar::on_link_clicked()
-{
-	parent->on_toolbar_link();
+
+void CommandBar::on_link_clicked() {
+        parent->on_toolbar_link();
 }
-void CommandBar::on_image_clicked()
-{
-	parent->on_toolbar_image();
+
+void CommandBar::on_image_clicked() {
+        parent->on_toolbar_image();
 }
-void CommandBar::on_smiley_clicked()
-{
-   if(NULL == smileyWnd)
-	   smileyWnd = new SmileyWnd(parent);
-    smileyWnd->showWindow();
+
+void CommandBar::on_smiley_clicked() {
+        if(NULL == smileyWnd)
+                smileyWnd = new SmileyWnd(parent);
+
+        smileyWnd->showWindow();
 }
 

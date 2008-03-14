@@ -21,15 +21,14 @@
 
 #include <xmpp.h> //XMPP::Jid
 
-namespace cricket
-{
-	class Call;
+namespace cricket {
+
+class Call;
 }
 
 class JingleSession;
 
-namespace jingle
-{
+namespace jingle {
 
 /**
  * Implement a Jingle voice peer-to-peer session that is compatible with Google Talk voice offering.
@@ -37,25 +36,27 @@ namespace jingle
  *
  * @author lerosua
  */
-class JingleVoiceSession: public JingleSession
-{
-	public:
-		JingleVoiceSession(Client* client_,const JidList& peers_);
-		~JingleVoiceSession();
 
-	public:
-		virtual void accept();
-		virtual void decline();
-		virtual void start();
-		virtual void terminate();
-		void OnCallCreated(cricket::Call* call);
+class JingleVoiceSession: public JingleSession {
 
-	private:
-		void setCall(cricket::Call* call);
-		cricket::PhoneSessionClient* phoneSessionClient;
-		cricket::Call* currentCall;
+public:
+        JingleVoiceSession(Client* client_, const JidList& peers_);
+        ~JingleVoiceSession();
+
+public:
+        virtual void accept();
+        virtual void decline();
+        virtual void start();
+        virtual void terminate();
+        void OnCallCreated(cricket::Call* call);
+
+private:
+        void setCall(cricket::Call* call);
+        cricket::PhoneSessionClient* phoneSessionClient;
+        cricket::Call* currentCall;
 
 };
 
 }
+
 #endif

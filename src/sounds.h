@@ -23,22 +23,23 @@
  * @brief 声音库的名字空间
  * @since 1.0
  */
-namespace sounds{
-	/** 到达时的声音*/
-    const int ARRIVE_SOUND    = 1;
-    /** 离开时的声音*/
-    const int LEAVE_SOUND     = 2;
-    /** 接收到信息时的声音*/
-    const int RECEIVE_SOUND   = 3;
-    const int REDALERT_SOUND  = 4;
-    /** 发送后的声音*/
-    const int SEND_SOUND      = 5;
 
-    /** 设置静音的函数*/
-    int mute(int mute_);
-    void play(int code);
-    void do_play(const char* filename);
-    void on_play_exit(int s);
+namespace sounds {
+/** 到达时的声音*/
+const int ARRIVE_SOUND    = 1;
+/** 离开时的声音*/
+const int LEAVE_SOUND     = 2;
+/** 接收到信息时的声音*/
+const int RECEIVE_SOUND   = 3;
+const int REDALERT_SOUND  = 4;
+/** 发送后的声音*/
+const int SEND_SOUND      = 5;
+
+/** 设置静音的函数*/
+int mute(int mute_);
+void play(int code);
+void do_play(const char* filename);
+void on_play_exit(int s);
 }
 
 

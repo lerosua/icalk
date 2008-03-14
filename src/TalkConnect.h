@@ -30,19 +30,20 @@ class Bodies;
  * @brief 监听网络连接的类
  *
  */
-class TalkConnect:public ConnectionListener,public LogHandler
-{
-	public:
-		TalkConnect();
-		~TalkConnect();
-		void onConnect();
-		void onDisconnect(ConnectionError er);
-		void onResourceBindError(ResourceBindError error);
-		void onSessionCreateError(SessionCreateError error);
-		bool onTLSConnect(const CertInfo& info);
-		void onStreamEvent(StreamEvent event);
 
-		void handleLog(LogLevel level,LogArea area, const std::string& message);
+class TalkConnect: public ConnectionListener, public LogHandler {
+
+public:
+        TalkConnect();
+        ~TalkConnect();
+        void onConnect();
+        void onDisconnect(ConnectionError er);
+        void onResourceBindError(ResourceBindError error);
+        void onSessionCreateError(SessionCreateError error);
+        bool onTLSConnect(const CertInfo& info);
+        void onStreamEvent(StreamEvent event);
+
+        void handleLog(LogLevel level, LogArea area, const std::string& message);
 
 };
 

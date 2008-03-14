@@ -18,20 +18,17 @@
 
 #include "JingleSession.h"
 
-namespace jingle{
+namespace jingle {
 
-JingleSession::JingleSession(gloox::Client* client_,const JidList& t_peers)
-	:peers(t_peers), client(client_)
-{
-	myself = client->jid();
+JingleSession::JingleSession(gloox::Client* client_, const JidList& t_peers)
+                : peers(t_peers), client(client_) {
+        myself = client->jid();
 }
 
-JingleSession::~JingleSession()
-{}
+JingleSession::~JingleSession() {}
 
-JingleSession::JidList& JingleSession::peers()
-{
-	return peers;
+JingleSession::JidList& JingleSession::peers() {
+        return peers;
 }
 
 

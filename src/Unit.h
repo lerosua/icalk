@@ -38,10 +38,10 @@
  * class Bodies
  * {
  *
- *	public:
- *		static Bodies& Get_Bodies();
+ * public:
+ *  static Bodies& Get_Bodies();
  *
- *	[...]
+ * [...]
  * }
  * @endcode
  * class @link Bodies @endlink 是一个用于集合各部件的工厂类，现在来说还兼职了登录处理
@@ -56,26 +56,46 @@
 #include "icalk.h"
 
 
-class GUnit
-{
-	public:
-		static void init(const char* user);
-		static const char* getImagePath() { return imagePath; }
-		static const char* getSoundPath() { return soundPath; }
-		static const char* getHomePath()  { return homePath;  }
-		static const char* getUserPath()  { return userPath;  }
-		static const char* getLogPath()   { return logPath;   }
-		static const char* getIconPath()  { return iconPath;  }
-		static const char* getTempPath()  { return tempPath;  }
+class GUnit {
 
-	private:
-		static char imagePath[512];
-		static char soundPath[512];
-		static char homePath[512];
-		static char userPath[512];
-		static char logPath[512];
-		static char iconPath[512];
-		static char tempPath[512];
+public:
+        static void init(const char* user);
+        static const char* getImagePath() {
+                return imagePath;
+        }
+
+        static const char* getSoundPath() {
+                return soundPath;
+        }
+
+        static const char* getHomePath()  {
+                return homePath;
+        }
+
+        static const char* getUserPath()  {
+                return userPath;
+        }
+
+        static const char* getLogPath()   {
+                return logPath;
+        }
+
+        static const char* getIconPath()  {
+                return iconPath;
+        }
+
+        static const char* getTempPath()  {
+                return tempPath;
+        }
+
+private:
+        static char imagePath[512];
+        static char soundPath[512];
+        static char homePath[512];
+        static char userPath[512];
+        static char logPath[512];
+        static char iconPath[512];
+        static char tempPath[512];
 };
 
 #endif   /* ----- #ifndef UNIT_FILE_HEADER_INC  ----- */

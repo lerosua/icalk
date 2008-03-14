@@ -21,24 +21,25 @@
 
 #include <xmpp_tasks.h>
 
-namespace jingle
-{
+namespace jingle {
 
 /**
  * This task watch for incoming Jingle session and notify manager.
  * @cn 用于监视进入的Jingle会话并通知会话管理
  */
-class JingleWatchSessionTask: public XMPP::Task
-{
-	public:
-		JingleWatchSessionTask();
-		~JingleWatchSessionTask();
-		
-		bool take(const);
 
-		void watchSession(const std::string& sessionType,const std::string& initiator);
+class JingleWatchSessionTask: public XMPP::Task {
+
+public:
+        JingleWatchSessionTask();
+        ~JingleWatchSessionTask();
+
+        bool take(const);
+
+        void watchSession(const std::string& sessionType, const std::string& initiator);
 };
 
 }
+
 #endif
 

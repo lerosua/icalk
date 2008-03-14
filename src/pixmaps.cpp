@@ -1,6 +1,6 @@
 /***************************************************************************
- *   Copyright (C) 2005 by xihe						   *
- *   xihels@163.com							   *
+ *   Copyright (C) 2005 by xihe         *
+ *   xihels@163.com          *
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -21,39 +21,34 @@
 #include "Unit.h"
 
 
-Gtk::Image* getSmil(const char* filename)
-{
-    char buf[512];
-    snprintf(buf, 512, DATA_DIR"/smiley/default/%s",filename);
-    return Gtk::manage(new Gtk::Image(buf));
+Gtk::Image* getSmil(const char* filename) {
+        char buf[512];
+        snprintf(buf, 512, DATA_DIR"/smiley/default/%s", filename);
+        return Gtk::manage(new Gtk::Image(buf));
 }
 
-Gtk::Image* getImage(const char* filename)
-{
-    char buf[512];
-    snprintf(buf, 512, DATA_DIR"/images/%s",filename);
-    return Gtk::manage(new Gtk::Image(buf));
+Gtk::Image* getImage(const char* filename) {
+        char buf[512];
+        snprintf(buf, 512, DATA_DIR"/images/%s", filename);
+        return Gtk::manage(new Gtk::Image(buf));
 }
 
 
-Glib::RefPtr<Gdk::Pixbuf> getPix(const char* filename)
-{
-    char buf[512];
-    snprintf(buf, 512, DATA_DIR"/images/%s",filename);
-    return Gdk::Pixbuf::create_from_file(buf);
+Glib::RefPtr<Gdk::Pixbuf> getPix(const char* filename) {
+        char buf[512];
+        snprintf(buf, 512, DATA_DIR"/images/%s", filename);
+        return Gdk::Pixbuf::create_from_file(buf);
 }
 
-Glib::RefPtr<Gdk::Pixbuf> getPix30(const char* filename)
-{
-	char buf[512];
-	snprintf(buf, 512, DATA_DIR"/images/%s", filename);
-	return Gdk::Pixbuf::create_from_file(buf,30,30);
+Glib::RefPtr<Gdk::Pixbuf> getPix30(const char* filename) {
+        char buf[512];
+        snprintf(buf, 512, DATA_DIR"/images/%s", filename);
+        return Gdk::Pixbuf::create_from_file(buf, 30, 30);
 }
 
-Glib::RefPtr<Gdk::Pixbuf> getPix16(const char* filename)
-{
-	char buf[512];
-	snprintf(buf, 512, DATA_DIR"/images/%s", filename);
-	return Gdk::Pixbuf::create_from_file(buf,16,16);
+Glib::RefPtr<Gdk::Pixbuf> getPix16(const char* filename) {
+        char buf[512];
+        snprintf(buf, 512, DATA_DIR"/images/%s", filename);
+        return Gdk::Pixbuf::create_from_file(buf, 16, 16);
 }
 

@@ -20,40 +20,36 @@
 #include "icalk.h"
 
 
-void TalkDiscoHandler::handleDiscoInfoResult(IQ * stanza, int context)
-{
-	printf("handleDiscoInfoResult}\n");
+void TalkDiscoHandler::handleDiscoInfoResult(IQ * stanza, int context) {
+        printf("handleDiscoInfoResult}\n");
 }
-void TalkDiscoHandler::handleDiscoItemsResult(IQ * stanza, int context)
-{
-	printf("handleDiscoItemsResult\n");
+
+void TalkDiscoHandler::handleDiscoItemsResult(IQ * stanza, int context) {
+        printf("handleDiscoItemsResult\n");
 }
-void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context)
-{
-	printf("handleDiscoError\n");
+
+void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context) {
+        printf("handleDiscoError\n");
 }
 
 
-	void TalkDiscoHandler::handleDiscoInfo(const JID& from, const Disco::Info& info, int context)
-{
-	printf("handleDiscoInfo}\n");
+void TalkDiscoHandler::handleDiscoInfo(const JID& from, const Disco::Info& info, int context) {
+        printf("handleDiscoInfo}\n");
 }
-	void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& items, int context)
-{
-	printf("handleDiscoItems}\n");
-	const Disco::ItemList& list = items.items();
-	Disco::ItemList::const_iterator iter=list.begin();
-	for(; iter !=list.end(); ++iter)
-	{
-		PBUG("jid = %s\n",(*iter)->jid().full().c_str());
-	
-		//do something
 
-	}
+void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& items, int context) {
+        printf("handleDiscoItems}\n");
+        const Disco::ItemList& list = items.items();
+        Disco::ItemList::const_iterator iter = list.begin();
+
+        for(; iter != list.end(); ++iter) {
+                PBUG("jid = %s\n", (*iter)->jid().full().c_str());
+
+                //do something
+
+        }
 }
-	void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int context)
-{
-}
-	bool TalkDiscoHandler::handleDiscoSet(IQ* iq)
-{
-}
+
+void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int context) {}
+
+bool TalkDiscoHandler::handleDiscoSet(IQ* iq) {}

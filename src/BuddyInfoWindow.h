@@ -23,17 +23,20 @@
 #include <libglademm/xml.h>
 #include "MainWindow.h"
 #include "Buddy.h"
-class BuddyInfoWindow:public Gtk::Window
-{
-	public:
-		BuddyInfoWindow(Buddy* buddy_);
-		~BuddyInfoWindow();
-	private:
-		bool on_key_press_event(GdkEventKey* ev);
-		void on_btclose_clicked();
-	private:
-		Buddy* buddy;
-		MsgBox *infoBox;
+
+class BuddyInfoWindow: public Gtk::Window {
+
+public:
+        BuddyInfoWindow(Buddy* buddy_);
+        ~BuddyInfoWindow();
+
+private:
+        bool on_key_press_event(GdkEventKey* ev);
+        void on_btclose_clicked();
+
+private:
+        Buddy* buddy;
+        MsgBox *infoBox;
 };
 
 

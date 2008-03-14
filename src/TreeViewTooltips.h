@@ -27,32 +27,37 @@
  * 加上超时函数以显示一个窗口的方法显示Tooltips，而这个窗口则重画成Tooltips
  * 模样。
  */
-class TreeViewTooltips:public Gtk::Window
-{
-	public:
-		TreeViewTooltips(BuddyView* view);
-		~TreeViewTooltips(){}
-		/** 此函数用于绘制界面*/
-		virtual bool on_expose_event(GdkEventExpose* event);
 
-		void setLabel(const Glib::ustring& msg){
-			label->set_markup(msg);
-		}
-		void setImage(const Glib::RefPtr<Gdk::Pixbuf> pixbuf){
-			avatar->set(pixbuf);	
-		}
-		/** 隐藏Tooltips*/
-		void hideTooltip();
-		/**显示Tooltips，ev用于得到当前所在的好友栏*/
-		void showTooltip(GdkEventMotion* ev);
-		bool on_motion_event(GdkEventMotion* ev);
-		bool on_leave_event(GdkEventCrossing* ev);
+class TreeViewTooltips: public Gtk::Window {
+
+public:
+        TreeViewTooltips(BuddyView* view);
+        ~TreeViewTooltips() {}
+
+        /** 此函数用于绘制界面*/
+        virtual bool on_expose_event(GdkEventExpose* event);
+
+        void setLabel(const Glib::ustring& msg) {
+                label->set_markup(msg);
+        }
+
+        void setImage(const Glib::RefPtr<Gdk::Pixbuf> pixbuf) {
+
+                avatar->set(pixbuf);
+        }
+
+        /** 隐藏Tooltips*/
+        void hideTooltip();
+        /**显示Tooltips，ev用于得到当前所在的好友栏*/
+        void showTooltip(GdkEventMotion* ev);
+        bool on_motion_event(GdkEventMotion* ev);
+        bool on_leave_event(GdkEventCrossing* ev);
 
 
-	private:
-		BuddyView* buddyview; 
-		Gtk::Label* label;
-		Gtk::Image* avatar;
+private:
+        BuddyView* buddyview;
+        Gtk::Label* label;
+        Gtk::Image* avatar;
 
 
 };

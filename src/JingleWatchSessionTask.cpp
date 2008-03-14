@@ -18,14 +18,11 @@
 
 #include "JingleWatchSessionTask.h"
 
-namespace jingle{
+namespace jingle {
 
-JingleWatchSessionTask::JingleWatchSessionTask()
-{
-}
-JingleWatchSessionTask::~JingleWatchSessionTask()
-{
-}
+JingleWatchSessionTask::JingleWatchSessionTask() {}
+
+JingleWatchSessionTask::~JingleWatchSessionTask() {}
 
 
 }

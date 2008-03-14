@@ -5,17 +5,18 @@
 #include <fstream>
 
 
-class MsgLog
-{
+class MsgLog {
+
 public:
-	MsgLog(const std::string& jid_);
+        MsgLog(const std::string& jid_);
 
-	~MsgLog();
+        ~MsgLog();
 
-	void write(const std::string& sender,const std::string& msg);
+        void write(const std::string& sender, const std::string& msg);
+
 private:
-	std::ofstream logfile;
-	std::string jid;
+        std::ofstream logfile;
+        std::string jid;
 
 
 

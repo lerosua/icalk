@@ -34,28 +34,27 @@ char GUnit::logPath[MAX_NUM];
 char GUnit::iconPath[MAX_NUM];
 char GUnit::tempPath[MAX_NUM];
 
-void GUnit::init(const char* user)
-{
-	char* homedir = getenv("HOME");
-	snprintf(homePath,MAX_NUM,"%s/.icalk",homedir);
-	mkdir(homePath, S_IRUSR | S_IWUSR | S_IXUSR);
+void GUnit::init(const char* user) {
+        char* homedir = getenv("HOME");
+        snprintf(homePath, MAX_NUM, "%s/.icalk", homedir);
+        mkdir(homePath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	char* userdir;
-	snprintf(userPath,MAX_NUM,"%s/%s",homePath,user);
-	mkdir(userPath, S_IRUSR | S_IWUSR | S_IXUSR);
+        char* userdir;
+        snprintf(userPath, MAX_NUM, "%s/%s", homePath, user);
+        mkdir(userPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	char* icondir;
-	snprintf(iconPath, MAX_NUM, "%s/icons",homePath);
-	mkdir(iconPath,S_IRUSR | S_IWUSR | S_IXUSR);
+        char* icondir;
+        snprintf(iconPath, MAX_NUM, "%s/icons", homePath);
+        mkdir(iconPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	snprintf(logPath,MAX_NUM,"%s/logs/", userPath);
-	mkdir(logPath, S_IRUSR | S_IWUSR | S_IXUSR);
+        snprintf(logPath, MAX_NUM, "%s/logs/", userPath);
+        mkdir(logPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	snprintf(tempPath,MAX_NUM,"%s/temp/", userPath);
-	mkdir(tempPath, S_IRUSR | S_IWUSR | S_IXUSR);
+        snprintf(tempPath, MAX_NUM, "%s/temp/", userPath);
+        mkdir(tempPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-	snprintf(imagePath, MAX_NUM, "%s/images/", DATA_DIR);
-	snprintf(soundPath, MAX_NUM, "%s/sounds/", DATA_DIR);
+        snprintf(imagePath, MAX_NUM, "%s/images/", DATA_DIR);
+        snprintf(soundPath, MAX_NUM, "%s/sounds/", DATA_DIR);
 }
 
 
