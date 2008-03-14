@@ -23,7 +23,7 @@
 #include "TalkCard.h"
 #include "icalk.h"
 
-Buddy* BuddyList::find_buddy(const std::string& id) const
+Buddy* BuddyList::find_buddy(const Glib::ustring& id) const
 {
 	BUDDY_MAP::const_iterator iter = buddy_map.find(id); 
 	if ( iter == buddy_map.end())
@@ -96,8 +96,8 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
 		Presence::PresenceType presence,
 		const std::string & msg)
 {
-	std::string jid = item.jid();
-	//Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(item.jid().c_str());
+	//std::string jid = item.jid();
+	Glib::ustring jid(item.jid());
 	Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
 	if(Presence::Unavailable == presence)
 	{

@@ -60,12 +60,12 @@ class BuddyView:public Gtk::TreeView {
 	/**初始化好友列表，将调用initBuddy*/
 	void initial();
 	/**添加好友进列表*/
-	void add(const std::string & jid);
+	void add(const Glib::ustring & jid);
 	/**删除列表中的好友显示*/
-	bool remove(const std::string & id);
-	bool on_buddy_login(const std::string& id);
+	bool remove(const Glib::ustring & id);
+	bool on_buddy_login(const Glib::ustring& id);
 	/**更新好友状态*/
-	void refreshBuddyStatus(const std::string & jid_ctr);
+	void refreshBuddyStatus(const Glib::ustring & jid_ctr);
 	/** 刷新列表*/
 	void refreshList();
 	/**初始化时添加好友进列表*/
@@ -79,7 +79,7 @@ class BuddyView:public Gtk::TreeView {
 	/** 添加聊天室项*/
 	void addRoom(const ConferenceListItem& ci);
 	/** 删除聊天室项*/
-	void delRoom(const std::string& jid);
+	void delRoom(const Glib::ustring& jid);
 	/**
 	 * @brief 隐藏或显示离线好友
 	 * @param mode 真为显示，假为隐藏
@@ -102,12 +102,12 @@ class BuddyView:public Gtk::TreeView {
 	/** 以ID号获取到TreeView里的某行指针*/
 	Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::
 					       Children children,
-					       const std::string & id);
+					       const Glib::ustring & id);
 	/** 返回组现有成员数*/
 	int iter_n_children(Gtk::TreeModel::iterator listiter);
 	/** 在列表上添加组*/
-	Gtk::TreeModel::iterator addBuddyGroup(const std::
-					       string & groupName);
+	Gtk::TreeModel::iterator addBuddyGroup(const Glib::
+					       ustring & groupName);
 
 
 	/** 当行开始编辑时*/
@@ -191,11 +191,11 @@ class BuddyView:public Gtk::TreeView {
 
 	/** 比较好友*/
 	struct CompareBuddy:public binary_function < Gtk::TreeModel::Row,
-	    const std::string, bool > {
+	    const Glib::ustring, bool > {
 		explicit CompareBuddy(const BuddyColumns &
 				      column_):column(column_) {
 		} bool operator () (const Gtk::TreeRow & lhs,
-				    const std::string & var) const {
+				    const Glib::ustring & var) const {
 			return lhs[column.id] == var;
 		} const BuddyColumns & column;
 	};

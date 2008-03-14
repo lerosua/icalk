@@ -46,10 +46,10 @@ class Bodies;
  */
 class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
       public:
-	TalkFT();
+	TalkFT(Client * client_);
 	~TalkFT();
 	/** 初始化SIProfileFT类和接收/发送所需要的proxy服务器*/
-	void initFT(Client * client_);
+	void initFT();
 	/** 循环接收流函数 */
 	void *loopRecv(void *);
 
@@ -97,6 +97,7 @@ class TalkFT:public SIProfileFTHandler, public BytestreamDataHandler {
 	void handleBytestreamClose(Bytestream * bs);
 
       private:
+	Client* m_client;
 	SIProfileFT * m_ft;
 	SOCKS5BytestreamServer *m_server;
 	std::list < Bytestream * >m_bs_list;

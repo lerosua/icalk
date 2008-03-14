@@ -37,7 +37,7 @@ class BuddyList:public RosterListener
 	public:
 		BuddyList(){}
 		/** 保存好友数据的结构，以好友id为关键字*/
-		typedef std::map<std::string, Buddy*> BUDDY_MAP;
+		typedef std::map<Glib::ustring, Buddy*> BUDDY_MAP;
 
 		~BuddyList(){}
 		/** 获取好友数据，好友都保存在此MAP中*/
@@ -49,7 +49,7 @@ class BuddyList:public RosterListener
 		 * @param id 好友的名字.
 		 * @return 好友的Buddy类指针.
 		 */
-		Buddy* find_buddy(const std::string& id) const;
+		Buddy* find_buddy(const Glib::ustring& id) const;
 
 		/** @brief 遍历好友列表
 		 * @param fun 一个函数对象.实现 operator()(BUDDY_MAP::value_type).

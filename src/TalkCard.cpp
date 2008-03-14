@@ -17,27 +17,24 @@
  */
 #include "Bodies.h"
 #include "TalkCard.h"
-TalkCard::TalkCard()
+TalkCard::TalkCard(Client * jclient_):m_client(jclient_)
 {
+	m_vcardmanage = new VCardManager(jclient_);
 }
 TalkCard::~TalkCard()
 {
-	delete vcardmanager_;
+	delete m_vcardmanage;
 }
 
-void TalkCard::set_manage(Client * jclient_)
-{
-	vcardmanager_ = new VCardManager(jclient_);
-}
 
 void TalkCard::fetch_vcard(const JID & jid)
 {
-	vcardmanager_->fetchVCard(jid, this);
+	m_vcardmanage->fetchVCard(jid, this);
 }
 
 void TalkCard::store_vcard(VCard * vcard_)
 {
-	//vcardmanager_->storeVCard(vcard_, this);
+	//m_vcardmanage->storeVCard(vcard_, this);
 }
 
 void TalkCard::handleVCard(const JID & jid, const VCard * vcard)

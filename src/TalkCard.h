@@ -33,11 +33,10 @@ class Bodies;
 class TalkCard : public VCardHandler
 {
 	public:
-		TalkCard ();
+		TalkCard (Client * jclient_);
 		~TalkCard ();
 		void fetch_vcard(const JID& jid);
 		void store_vcard(VCard* vcard_);
-		void set_manage(Client* jclient_);
 		/**
 		 * @brief 当VCard成功取回时调用此函数。
 		 * @param jid 用户id
@@ -55,7 +54,8 @@ class TalkCard : public VCardHandler
 		
 
 	private:
-		VCardManager* vcardmanager_;	
+		VCardManager* m_vcardmanage;	
+		Client* m_client;
 
 };
 #endif   /* ----- #ifndef TALKCARD_FILE_HEADER_INC  ----- */

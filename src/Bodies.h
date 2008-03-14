@@ -117,13 +117,13 @@ class Bodies
 		/**得到书签处理类*/
 		//TalkBookMark&    get_bookmark()   { return *bookMark; }
 		/**得到VCard管理类*/
-		TalkCard&	get_cardManage()  { return cardManage; }
+		TalkCard&	get_cardManage()  { return *cardManage; }
 		/**设置本人的VCard信息*/
 		void		set_vcard(const VCard*);
 		/**得到本人的VCard*/
 		const VCard*	get_vcard() const { return vcard; }
 		/**发出获取本人VCard信息的命令*/
-		void		fetch_self_vcard()  { cardManage.fetch_vcard(*jid); }
+		void		fetch_self_vcard()  { cardManage->fetch_vcard(*jid); }
 		void disco_node(const std::string& node);
 		void disconnect(){ connectIO.disconnect();}
 
@@ -154,9 +154,9 @@ class Bodies
 		TalkMsg       talkmsg;
 		TalkRoomHandler   roomHandler;
 		TalkDiscoHandler  discohandler;
-		TalkCard   cardManage;
+		TalkCard*   cardManage;
 		TalkFT*	   talkFT;
-		const VCard*	   vcard;
+		VCard*	   vcard;
 		//用于保存account结构的Tag
 		Tag*	   accountTag;
 		USERLIST   userlist;

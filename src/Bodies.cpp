@@ -49,22 +49,29 @@ Bodies& Bodies::Get_Bodies()
 	return bodies;
 }
 
-Bodies::Bodies()
+Bodies::Bodies():
+	talkFT(NULL)
+	,cardManage(NULL)
+	,jid(NULL)
+	,vcard(NULL)
+	,accountTag(NULL)
 {
 	main_window = new MainWindow(*this);
 	msg_window = new MsgWindow();
 	statusIcon = new TrayIcon(main_window);
 
-	accountTag = NULL;
+	//accountTag = NULL;
 }
 
 Bodies::~Bodies()
 {
 	delete talkFT;
+	delete cardManage;
 	delete main_window;
 	delete msg_window;
 	delete statusIcon;
 	delete jid;
+	delete vcard;
 	main_window=NULL;
 	statusIcon=NULL;
 	//logout();
@@ -187,6 +194,9 @@ int Bodies::connect(const char *name, const char* passwd)
 		//std::cout<<"重新连接中"<<std::endl;
 		connectIO.disconnect();
 		delete talkFT;
+		delete cardManage;
+		talkFT=NULL;
+		cardManage=NULL;
 	}
 	jid=new JID(name);
 	jclient.reset(new Client(*jid,passwd));
@@ -223,12 +233,11 @@ int Bodies::connect(const char *name, const char* passwd)
 	//bookMark= new TalkBookMark(jclient.get());
 
 	/** 初始化VCard管理类*/
-	cardManage.set_manage(jclient.get());
+	//cardManage.set_manage(jclient.get());
+	cardManage=new TalkCard(jclient.get());
 	/** 初始化文件传输接收类*/
-	talkFT=new TalkFT();
-	talkFT->initFT(jclient.get());
-	/** 初始化带内数据传输处理类*/
-	//IBBSHandler.init(jclient.get());
+	talkFT=new TalkFT(jclient.get());
+	talkFT->initFT();
 	if(jclient->connect(false))
 	{
 		PBUG("connect call success\n");
@@ -261,11 +270,9 @@ bool Bodies::login(const std::string name,const std::string passwd)
 }
 void Bodies::set_vcard(const VCard* vcard_)
 {
-	if (vcard != vcard_) {
-		//delete vcard;
-		vcard = vcard_;
-		//vcard =new  VCard(vcard_->tag());
-	}
+	if(NULL!=vcard)
+		delete vcard;
+	vcard=new VCard(*vcard_);
 }
 void Bodies::logout()
 {

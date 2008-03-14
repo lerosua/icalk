@@ -400,7 +400,7 @@ void BuddyView::cellrender_on_edited(const Glib::ustring & path_string,
 }
 Gtk::TreeModel::iterator BuddyView::getListIter(Gtk::TreeModel::
                 Children children,
-                const std::string & id)
+                const Glib::ustring & id)
 {
         /*查找好友列表项 */
         return find_if(children.begin(),
@@ -431,7 +431,7 @@ void BuddyView::expanded_list()
 
 }
 bool BuddyView::remove
-        (const std::string & id)
+        (const Glib::ustring & id)
 {
         /*查找要删除的好友在列表中是否已经显示 */
 
@@ -670,8 +670,8 @@ void BuddyView::initRoomList()
 }
 
 
-Gtk::TreeModel::iterator BuddyView::addBuddyGroup(const std::
-                string & groupName)
+Gtk::TreeModel::iterator BuddyView::addBuddyGroup(const Glib::
+                ustring & groupName)
 {
         Gtk::TreeModel::iterator listiter = m_treestore->append();
         char *marktext;
@@ -719,7 +719,7 @@ void BuddyView::addRoom(const ConferenceListItem & ci)
 }
 
 
-void BuddyView::delRoom(const std::string & jid)
+void BuddyView::delRoom(const Glib::ustring & jid)
 {
 
         std::cout << "del room " << jid << std::endl;
@@ -752,7 +752,7 @@ void BuddyView::delRoom(const std::string & jid)
         g_free(marktext);
 }
 void BuddyView::add
-        (const std::string & jid_str)
+        (const Glib::ustring & jid_str)
 {
 
         Buddy *buddy =
@@ -853,7 +853,7 @@ void BuddyView::showOffline(bool mode)
         }
 }
 
-bool BuddyView::on_buddy_login(const std::string & jid_ctr)
+bool BuddyView::on_buddy_login(const Glib::ustring & jid_ctr)
 {
         refreshBuddyStatus(jid_ctr);
         return false;
@@ -869,7 +869,7 @@ void BuddyView::refreshList()
         }
 }
 
-void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
+void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 {
         Gtk::TreeModel::Children children = m_treestore->children();
         Gtk::TreeModel::iterator listiter;
@@ -1088,10 +1088,10 @@ void BuddyView::refreshBuddyStatus(const std::string & jid_ctr)
                                 } else
                                         buddy->setLogo(faceicon_orgin);
                         } else {
-                                        std::string photobin;
+                                        std::string photobin("");
                                 if(vcard) {
                                         printf("#检测 %s 中\n",buddy->get_jid().c_str());
-                                         photobin=vcard->photo().binval;
+                                         photobin.assign(vcard->photo().binval);
                                         if(photobin.empty()) {
                                                 printf("# %s 图像为空的\n",buddy->get_jid().c_str());
                                         } else
