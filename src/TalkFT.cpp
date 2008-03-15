@@ -1,6 +1,7 @@
 
 #include <gtkmm.h>
 #include <gtkmm/dialog.h>
+#include <glib/gi18n.h>
 #include "TalkFT.h"
 #include "icalk.h"
 #include "Bodies.h"
@@ -58,9 +59,9 @@ void *TalkFT::loopRecv(void *)
         while (R_RUNNING == RUN_RECV)
         {
                 std::list < Bytestream * >::iterator it =
-                        m_bs_list.begin();
+                        bs_recvList.begin();
 
-                for (; it != m_bs_list.end(); ++it)
+                for (; it != bs_recvList.end(); ++it)
                 {
                         //PBUG(" TalkFT thread runing\n");
                         (*it)->recv(100);
@@ -115,6 +116,12 @@ void* TalkFT::loopSend(void* )
 
 }
 
+bool TalkFT::isSend(Bytestream* bs)
+{
+	/** 比较流的发起人，如果是自己则返回真。*/
+        return bs->initiator().bare() == Bodies::Get_Bodies().get_jid().bare(); 
+
+}
 void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 {
 
@@ -142,15 +149,14 @@ void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 
 void TalkFT::handleFTBytestream(Bytestream * bs)
 {
-        PBUG("received bytestream type: %s\n",
+        PBUG("received bytestream type: %s from %s \n",
              bs->type() ==
-             Bytestream::S5B ? "sock5bytestream" : "ibbstream");
+             Bytestream::S5B ? "sock5bytestream" : "ibbstream",bs->sid().c_str());
         // 如果发起者是本人的话，则表示这是发送的流
-
-        if (bs->initiator().bare() == Bodies::Get_Bodies().get_jid().bare() )
+	if(isSend(bs))
                 m_bs_send = bs;
         else
-                m_bs_list.push_back(bs);
+                bs_recvList.push_back(bs);
 
         bs->registerBytestreamDataHandler(this);
 
@@ -179,13 +185,13 @@ void TalkFT::handleFTRequest(const JID & from,
         if (R_RUNNING == RUN_SEND)
                 return ;
 
-        Gtk::MessageDialog askDialog("文件传输",
+        Gtk::MessageDialog askDialog(_("File Transport"),
                                      false /*use markup */ ,
                                      Gtk::MESSAGE_QUESTION,
                                      Gtk::BUTTONS_OK_CANCEL);
 
         Glib::ustring msg_ =
-                from.full() + "想要给你发送文件" + name;
+                from.full() + _(" want to send you a file: ") + name;
 
         askDialog.set_secondary_text(msg_);
 
@@ -196,8 +202,11 @@ void TalkFT::handleFTRequest(const JID & from,
         case (Gtk::RESPONSE_OK):
                 {
                         m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
-                        R_RUNNING = RUN_RECV;
-                        recvThread.start();
+                        if(R_RUNNING != RUN_RECV)
+			{
+				R_RUNNING=RUN_RECV;
+				recvThread.start();
+			}
                         recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
                         break;
                 }
@@ -230,38 +239,57 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 {
         PBUG("stream closed\n");
 
-        if (R_RUNNING == RUN_RECV)
+	//区别对待发送流与接收流
+	if(isSend(s5b))
         {
-                R_RUNNING = STOP_STATUS;
-                recvThread.join();
-                recvfile.close();
-        }
-
-        if (S_RUNNING == RUN_SEND)
-        {
+		/**如果发送列表为空，则关闭发送线程*/
+#if 0
+		bs_sendList.remove(s5b);
+		if(bs_sendList.empty())
+		{
+			S_RUNNING = STOP_STATUS;
+			sendThread.join();
+		}
+#endif
                 S_RUNNING = STOP_STATUS;
-                sendThread.join();
+		sendThread.join();
                 sendfile.close();
+		m_bs_send=NULL;
+		PBUG(" close send bs sid %s\n",s5b->sid().c_str());
+        }
+	else
+        {
+		bs_recvList.remove(s5b);
+
+		/**如果接收列表为空，则关闭接收线程*/
+		if(bs_recvList.empty())
+		{
+			R_RUNNING = STOP_STATUS;
+			recvThread.join();
+		}
+                recvfile.close();
+		PBUG(" close bs sid %s\n",s5b->sid().c_str());
+		//m_ft->dispose(s5b);
+		s5b->removeBytestreamDataHandler();
+		if (s5b)
+			s5b->close();
         }
 
-        if (s5b)
-                s5b->close();
-
-        //s5b->removeBytestreamBytestreamDataHandler();
-        //m_bs_list.remove(s5b);
-        //m_ft->dispose(s5b);
+        //if (s5b)
+        //        s5b->close();
+        //s5b->removeBytestreamDataHandler();
 }
 
 void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 {
         PBUG("socks5 stream error\n");
+	handleBytestreamClose(s5b);
 }
 
 void TalkFT::handleBytestreamData(Bytestream * s5b,
                                   const std::string & data)
 {
-        //PBUG("received %d bytes of data\n%s\n", data.length(),data.c_str());
-        PBUG("received %d bytes of data\n\n", data.length());
+        //PBUG("received %d bytes of data\n\n", data.length());
         recvfile << data;
 }
 
@@ -269,17 +297,5 @@ void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
 {
         PBUG("m_ft request error\n");
 
-        if (R_RUNNING == RUN_RECV)
-        {
-                R_RUNNING = STOP_STATUS;
-                recvThread.join();
-                recvfile.close();
-        }
 
-        if (S_RUNNING == RUN_SEND)
-        {
-                S_RUNNING = STOP_STATUS;
-                sendThread.join();
-                sendfile.close();
-        }
 }

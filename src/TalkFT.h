@@ -60,6 +60,8 @@ public:
         /** 发送循环发送流 */
         void* loopSend(void* );
 
+	/** 是否发送的流*/
+	bool isSend(Bytestream* bs);
 
         /** 自定义的发送文件的处理*/
         void handleFTSend(const JID& to, const std::string m_file);
@@ -105,7 +107,8 @@ private:
         Client* m_client;
         SIProfileFT * m_ft;
         SOCKS5BytestreamServer *m_server;
-        std::list < Bytestream * >m_bs_list;
+        std::list < Bytestream * >bs_recvList;
+	//std::list < Bytestream * >bs_sendList;
         Bytestream* m_bs_send;
         std::ifstream sendfile;
         std::ofstream recvfile;
