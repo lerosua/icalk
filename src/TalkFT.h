@@ -35,6 +35,7 @@ using namespace gloox;
 #include <string>
 #include <fstream>
 #include <ios>
+#include <map>
 #include "XPThread.h"
 
 #if defined( WIN32 ) || defined( _WIN32 )
@@ -52,6 +53,8 @@ class TalkFT: public SIProfileFTHandler, public BytestreamDataHandler
 public:
         TalkFT(Client * client_);
         ~TalkFT();
+
+	typedef std::map<std::string ,std::ofstream*> RECVLIST;
         /** 初始化SIProfileFT类和接收/发送所需要的proxy服务器*/
         void initFT();
         /** 循环接收流函数 */
@@ -111,9 +114,12 @@ private:
 	//std::list < Bytestream * >bs_sendList;
         Bytestream* m_bs_send;
         std::ifstream sendfile;
-        std::ofstream recvfile;
+        //std::ofstream recvfile;
+	RECVLIST rfilelist;
         XPThread < TalkFT > recvThread;
         XPThread < TalkFT > sendThread;
+	volatile int recvCount; //接收文件计数
+	//XPthreadMutex mutex;
         volatile int R_RUNNING; //接收线程标志
         volatile int S_RUNNING; //发送线程标志
 

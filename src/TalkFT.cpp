@@ -20,7 +20,9 @@ TalkFT::TalkFT(Client* client_): m_client(client_)
                 , m_bs_send(0)
                 , m_ft(NULL)
                 , m_server(NULL)
-{}
+		,recvCount(0)
+{
+}
 
 TalkFT::~TalkFT()
 {
@@ -58,12 +60,17 @@ void *TalkFT::loopRecv(void *)
 
         while (R_RUNNING == RUN_RECV)
         {
+		if(recvCount==0)
+		{
+			bs_recvList.clear();
+			PBUG("all bytestream clear \n");
+			break;
+		}
                 std::list < Bytestream * >::iterator it =
                         bs_recvList.begin();
 
                 for (; it != bs_recvList.end(); ++it)
                 {
-                        //PBUG(" TalkFT thread runing\n");
                         (*it)->recv(100);
                 }
         }
@@ -181,7 +188,6 @@ void TalkFT::handleFTRequest(const JID & from,
 {
         PBUG("received m_ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n", from.full().c_str(), name.c_str(), size, sid.c_str(), hash.c_str(), date.c_str(), mimetype.c_str(), desc.c_str());
 
-
         if (R_RUNNING == RUN_SEND)
                 return ;
 
@@ -202,12 +208,16 @@ void TalkFT::handleFTRequest(const JID & from,
         case (Gtk::RESPONSE_OK):
                 {
                         m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
+			recvCount++;
                         if(R_RUNNING != RUN_RECV)
 			{
 				R_RUNNING=RUN_RECV;
 				recvThread.start();
 			}
-                        recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+			std::ofstream* recvfile=new std::ofstream();
+                        //recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+                        recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+			rfilelist.insert(rfilelist.end(),RECVLIST::value_type(sid,recvfile));
                         break;
                 }
 
@@ -259,17 +269,26 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
         }
 	else
         {
-		bs_recvList.remove(s5b);
+		recvCount=recvCount-1;
 
-		/**如果接收列表为空，则关闭接收线程*/
-		if(bs_recvList.empty())
+		/**如果接收文件数为0，则关闭接收线程*/
+		if(recvCount<=0)
 		{
 			R_RUNNING = STOP_STATUS;
 			recvThread.join();
 		}
-                recvfile.close();
-		PBUG(" close bs sid %s\n",s5b->sid().c_str());
-		//m_ft->dispose(s5b);
+
+		RECVLIST::iterator iter=rfilelist.find(s5b->sid());
+		if(iter!=rfilelist.end())
+		{
+			(*iter).second->close();
+			rfilelist.erase(iter);
+			PBUG(" close bs sid %s\n",s5b->sid().c_str());
+
+		}
+			PBUG(" close bs2 sid %s\n",s5b->sid().c_str());
+
+                //recvfile.close();
 		s5b->removeBytestreamDataHandler();
 		if (s5b)
 			s5b->close();
@@ -290,12 +309,31 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
                                   const std::string & data)
 {
         //PBUG("received %d bytes of data\n\n", data.length());
-        recvfile << data;
+	RECVLIST::iterator iter=rfilelist.find(s5b->sid());
+        (*iter).second->write(data.c_str(),data.length());
+        //(*iter).second << data;
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
 {
         PBUG("m_ft request error\n");
 
+        Gtk::MessageDialog askDialog(_("File Transport"),
+                                     false /*use markup */ ,
+                                     Gtk::MESSAGE_QUESTION,
+                                     Gtk::BUTTONS_OK_CANCEL);
+
+        Glib::ustring msg_(_("File Send Error"));
+
+        askDialog.set_secondary_text(msg_);
+
+        int result = askDialog.run();
+
+        switch (result)
+        {
+        case (Gtk::RESPONSE_OK):
+	case(Gtk::RESPONSE_CANCEL):
+		break;
+	}
 
 }
