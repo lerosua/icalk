@@ -3,7 +3,7 @@
 *
 *       Filename:  TalkRoomHandler.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年05月24日 19时43分28秒 CST
@@ -66,8 +66,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
         MemberMap::iterator iter;
         iter = memberlist.find(name);
 
-        if (iter == memberlist.end())
-        {
+        if (iter == memberlist.end()) {
                 Member member_;
                 member_.id = participant.nick->full();
                 member_.affiliation = participant.affiliation;
@@ -78,19 +77,16 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
 
                 item->addMember(name, member_);
 
-                if (NULL != page)
-                {
+                if (NULL != page) {
                         std::string msg_ = name + _(" join in the room");
                         page->showStatusBarMsg(msg_);
                 }
         }
 
-        if (presence == Presence::Unavailable)
-        {
+        if (presence == Presence::Unavailable) {
                 item->removeMember(name);
 
-                if (NULL != page)
-                {
+                if (NULL != page) {
                         std::string msg_ = name + _(" leave the room");
                         page->showStatusBarMsg(msg_);
                 }
@@ -115,8 +111,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
         RoomItem* item = findRoom(room);
         MsgPage* page = item->getPage();
 
-        if (NULL == page)
-        {
+        if (NULL == page) {
                 const std::string label = room->name() + "@" + room->service();
                 MsgPage* page_ = new MsgPage(label, item, 1);
                 item->setPage(page_);
@@ -126,23 +121,20 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
                 Bodies::Get_Bodies().get_msg_window().add_page(*page);
         }
 
-        if (priv)
-        {
+        if (priv) {
                 Glib::ustring msg_ = _("said to you: ") + msg.body();
                 page->showMessage(nick, msg_);
                 return ;
         }
 
-        if (history)
-        {
+        if (history) {
                 const DelayedDelivery* dd = msg.when();
 
                 if (dd)
                         printf("message was sent at %s\n", dd->stamp().c_str());
 
                 page->showHistroy(nick, msg.body());
-        }
-        else
+        } else
                 page->showMessage(nick, msg.body());
 
 
@@ -158,8 +150,7 @@ void TalkRoomHandler::handleMUCSubject(MUCRoom * room ,
         Glib::ustring msg = nick + _(" has set the Subject: ") + subject;
         item->setSubject(subject);
 
-        if (page != NULL)
-        {
+        if (page != NULL) {
                 page->setSubject();
                 page->showSystemMsg(msg);
 

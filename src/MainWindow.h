@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  MainWindow.h
-* 
-*    Description:  
-* 
+*
+*    Description:
+*
 *        Version:  1.0
 *        Created:  2007年05月24日 19时46分23秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -25,7 +25,8 @@
 #include <libglademm/xml.h>
 #include <libsexymm/icon-entry.h>
 #include <iostream>
-#include <sigc++/connection.h> 
+#include <sigc++/connection.h>
+#include "Unit.h"
 #include "StatusMsgWidget.h"
 #include "BuddyInfoWindow.h"
 #include "ServerDiscoWindow.h"
@@ -37,14 +38,16 @@ class Bodies;
 
 class BuddyView;
 /** 标识当前窗口为已连接后的页*/
-#define LOGIN_FINIAL 2 
+#define LOGIN_FINIAL 2
 /** 标识当前窗口为正在连接的页*/
-#define LOGIN_LOADING   1 
+#define LOGIN_LOADING   1
 /** 标识当前窗口为未连接的页*/
-#define LOGIN_INIT 0 
+#define LOGIN_INIT 0
 /**
  * @brief 好友列表窗口，主窗口
  */
+
+using namespace Gtk;
 
 class MainWindow: public Gtk::Window
 {
@@ -53,11 +56,10 @@ public:
         MainWindow(Bodies& bodies_);
 
         /** 用于初始化一些菜单的动作。*/
-        void on_initalize();
+        void on_initialize();
 
         /**返回好友列表UI类*/
-        BuddyView& get_buddy_view()
-        {
+        BuddyView& get_buddy_view() {
                 return *list_view;
         }
 
@@ -67,10 +69,9 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
         {
 
         public:
-                ModelColumns()
-                {
+                ModelColumns() {
                         add
-                                (col_status);
+                        (col_status);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> col_status;
@@ -83,8 +84,7 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
         /** 当签名改变时回调*/
         void on_entryStatus_change();
         /** 返回主窗口右上角的Logo*/
-        Glib::RefPtr<Gdk::Pixbuf> getLogo()
-        {
+        Glib::RefPtr<Gdk::Pixbuf> getLogo() {
                 return logo;
         }
 
@@ -102,6 +102,7 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
         bool on_key_press_event(GdkEventKey* ev);
         virtual ~MainWindow();
 
+        void on_entry_port_insert_text(const Glib::ustring& f_str, int* f_pos, Entry* f_entry);
 
 public:
         //构建菜单
@@ -109,13 +110,11 @@ public:
         void register_stock_items();
         /** 从xml的UI信息里构建菜单*/
         void init_ui_manager();
-        Gtk::Menu* getBuddyMenu()
-        {
+        Gtk::Menu* getBuddyMenu() {
                 return buddyMenu;
         }
 
-        Gtk::Menu* getRoomMenu()
-        {
+        Gtk::Menu* getRoomMenu() {
                 return roomMenu;
         }
 
@@ -188,15 +187,14 @@ public:
         /**登录成功后显示列表页*/
         void on_login_finial();
         /** 登录中，显示正在登录的标签页*/
-        void on_logining()
-        {
+        void on_logining() {
+                DLOG("in logining\n");
                 main_notebook->set_current_page(LOGIN_LOADING);
                 config.STATUS = LOGIN_LOADING;
         }
 
         /** 重新登录，显示登录框的页*/
-        void on_relogin()
-        {
+        void on_relogin() {
                 main_notebook->set_current_page(LOGIN_INIT);
                 config.STATUS = LOGIN_INIT;
         }
@@ -212,8 +210,7 @@ public:
 
 public:
         /** 获取当前的签名消息*/
-        Glib::ustring getStatusMsg() const
-        {
+        Glib::ustring getStatusMsg() const {
                 return statusEntry->get_text();
         }
 
@@ -226,16 +223,14 @@ public:
         /** 状态签名超时函数*/
         bool statusMsgWidgetTimeout();
         /** 返回是否设置了状态签名超时*/
-        bool isMsgTimeout()
-        {
+        bool isMsgTimeout() {
                 return msgTimeout.connected();
         }
 
 private:
         /** 全局变量集合*/
 
-        typedef struct Config
-        {
+        typedef struct Config {
                 bool SHOWALLFRIEND; /**显示离线好友*/
                 bool MUTE;  /** 静音*/
                 int STATUS;  /**登录状态*/
@@ -255,13 +250,13 @@ private:
         Gtk::Notebook* main_notebook;
         Gtk::ComboBoxEntryText* comboAccount;
         //Gtk::Entry* entryPasswd;
-	Sexy::IconEntry* entryPasswd;
+        Sexy::IconEntry* entryPasswd;
         Gtk::CheckButton* keeppasswd;
         Gtk::CheckButton* keepMe;
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
         //Gtk::Entry* entryFilter;
-	Sexy::IconEntry* entryFilter;
+        Sexy::IconEntry* entryFilter;
         ServerDiscoWindow* discowindow;
         StatusMsgWidget *statusMsgWidget;
         sigc::connection msgTimeout;

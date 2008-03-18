@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleSessionManager.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月24日 16时49分46秒
@@ -61,12 +61,9 @@ JingleSession* JingleSessionManager::createSession(const std::string& sessionTyp
 {
         JingleSession* newSession = 0L;
 
-        if ( sessionType_ == JINGLE_VOICE_SESSION_NS)
-        {
+        if ( sessionType_ == JINGLE_VOICE_SESSION_NS) {
                 newSession = new JingleVoiceSession(client, peers_);
-        }
-        else if (sessionType_ == JINGLE_SHARE_SESSION_NS)
-        {
+        } else if (sessionType_ == JINGLE_SHARE_SESSION_NS) {
                 newSession = new JingleShareSession(client, peers_);
         }
 

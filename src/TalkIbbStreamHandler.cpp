@@ -3,7 +3,7 @@
 *
 *       Filename:  IbbStreamHandler.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年10月21日 16时35分02秒 CST
@@ -52,8 +52,7 @@ void TalkIbbStreamHandler::sendIBBData(const std::string & data)
 {
         IBBSList::iterator iter = ibbsendList.begin();
 
-        for (; iter != ibbsendList.end(); ++iter)
-        {
+        for (; iter != ibbsendList.end(); ++iter) {
                 JID to((*iter).first);
                 Buddy *buddy =
                         Bodies::Get_Bodies().get_buddy_list().find_buddy(to.
@@ -61,11 +60,9 @@ void TalkIbbStreamHandler::sendIBBData(const std::string & data)
                                         ());
                 const std::string & customData = buddy->getCustomData();
 
-                if ((*iter).second->sendBlock(customData))
-                {
+                if ((*iter).second->sendBlock(customData)) {
                         buddy->cleanIBBstream();
-                }
-                else
+                } else
                         printf("sendBlock error happen\n");
         }
 }
@@ -139,10 +136,8 @@ void TalkIbbStreamHandler::handleInBandData(const std::string & data,
 
         IBBSList::iterator iter = ibbrecvList.begin();
 
-        for (; iter != ibbrecvList.end(); ++iter)
-        {
-                if (sid == (*iter).second->sid())
-                {
+        for (; iter != ibbrecvList.end(); ++iter) {
+                if (sid == (*iter).second->sid()) {
                         JID from((*iter).first);
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
@@ -192,10 +187,8 @@ void TalkIbbStreamHandler::closeIBBStream(const std::string & jid)
 {
         IBBSList::iterator iter = ibbsendList.begin();
 
-        for (; iter != ibbsendList.end(); ++iter)
-        {
-                if (jid == (*iter).first)
-                {
+        for (; iter != ibbsendList.end(); ++iter) {
+                if (jid == (*iter).first) {
                         std::
                         cout << "close send ibbstream for " << (*iter).
                         first << std::endl;
@@ -207,10 +200,8 @@ void TalkIbbStreamHandler::closeIBBStream(const std::string & jid)
 
         iter = ibbrecvList.begin();
 
-        for (; iter != ibbrecvList.end(); ++iter)
-        {
-                if (jid == (*iter).first)
-                {
+        for (; iter != ibbrecvList.end(); ++iter) {
+                if (jid == (*iter).first) {
                         std::
                         cout << "close recvice ibbstream for " <<
                         (*iter).first << std::endl;
@@ -225,10 +216,8 @@ void TalkIbbStreamHandler::closeRecvIBB(const std::string & sid)
 {
         IBBSList::iterator iter = ibbrecvList.begin();
 
-        for (; iter != ibbrecvList.end(); ++iter)
-        {
-                if (sid == (*iter).second->sid())
-                {
+        for (; iter != ibbrecvList.end(); ++iter) {
+                if (sid == (*iter).second->sid()) {
                         std::
                         cout << "关闭已接收的流 for " <<
                         (*iter).first << std::endl;

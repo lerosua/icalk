@@ -35,7 +35,7 @@
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
 #include <gloox/delayeddelivery.h>
-#include <gloox/xhtmlim.h> 
+#include <gloox/xhtmlim.h>
 //#include "gtalkcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
@@ -52,8 +52,8 @@ Bodies& Bodies::Get_Bodies()
 
 Bodies::Bodies():
                 talkFT(NULL)
-                , cardManage(NULL)
                 , jid(NULL)
+                , cardManage(NULL)
                 , vcard(NULL)
                 , accountTag(NULL)
 {
@@ -66,17 +66,84 @@ Bodies::Bodies():
 
 Bodies::~Bodies()
 {
-        delete talkFT;
-        delete cardManage;
-        delete main_window;
-        delete msg_window;
-        delete statusIcon;
-        delete jid;
-        delete vcard;
-        main_window = NULL;
-        statusIcon = NULL;
+        disconnect();
+        // has been done in disconnect()
+        // if (talkFT) {
+        //     delete talkFT;
+        //     talkFT = NULL;
+        // }
+        // if (cardManage) {
+        //     delete cardManage;
+        //     cardManage = NULL;
+        // }
+
+        if (main_window) {
+                delete main_window;
+                main_window = NULL;
+        }
+
+        if (msg_window) {
+                delete msg_window;
+                msg_window = NULL;
+        }
+
+        if (statusIcon) {
+                delete statusIcon;
+                statusIcon = NULL;
+        }
+
+        if (jid) {
+                delete jid;
+                jid = NULL;
+        }
+
+        if (vcard) {
+                delete vcard;
+                vcard = NULL;
+        }
+
         //logout();
 }
+
+const std::string Bodies::getAccountTag(const std::string& name)
+{
+        Tag* tmpTag = accountTag->findChild(name);
+
+        if (tmpTag == NULL) {
+                return std::string();
+        }
+
+        return tmpTag->cdata();
+}
+
+void Bodies::setAccountTag(const std::string& name, const std::string& value)
+{
+        Tag* tmpTag = accountTag->findChild(name);
+
+        if (tmpTag == NULL) {
+                tmpTag = new Tag(name, value);
+                accountTag->addChild(tmpTag);
+        } else {
+                tmpTag->setCData(value);
+        }
+
+        saveAccountTag();
+}
+
+void Bodies::fetch_self_vcard()
+{
+        cardManage->fetch_vcard(*jid);
+}
+
+void Bodies::set_status(Presence::PresenceType f_status, Glib::ustring f_msg)
+{
+        jclient->setPresence(f_status, 1, f_msg);
+        statusIcon->on_status_change(f_status, jid->username(), f_msg);
+        //setAccountTag("status",f_status);
+        setAccountTag("message", f_msg);
+}
+
+
 
 USERLIST& Bodies::getUserList()
 {
@@ -88,8 +155,7 @@ USERLIST& Bodies::getUserList()
         snprintf(buf, 512, "%s/userlist.xml", homepath);
         std::ifstream infile(buf);
 
-        if (!infile)
-        {
+        if (!infile) {
                 std::cout << "erro in load userlist\n";
                 std::ofstream outfile(buf);
                 outfile.close();
@@ -98,15 +164,14 @@ USERLIST& Bodies::getUserList()
 
         std::string line;
 
-        if (infile)
-        {
-                while (getline(infile, line))
-                {
+        if (infile) {
+                while (getline(infile, line)) {
                         userlist.push_back(line);
                 }
         }
 
         infile.close();
+
         return userlist;
 }
 
@@ -125,7 +190,7 @@ void Bodies::saveUserList(const std::string& jid)
         USERLIST::iterator iter=userlist.begin();
         for(; iter!=userlist.end();iter++)
         {
-         PBUG("userlist %s\n", (*iter).c_str());
+         DLOG("userlist %s\n", (*iter).c_str());
         }
         */
         outfile << jid << std::endl;
@@ -137,14 +202,11 @@ void Bodies::saveAccountTag()
         char buf[512];
         snprintf(buf, 512, "%s/account.xml", GUnit::getUserPath());
 
-        try
-        {
+        try {
                 ConfXml accoutxml;
                 accoutxml.setTagXml(accountTag);
                 accoutxml.xml_saveto_file(buf);
-        }
-        catch (exception& e)
-        {
+        } catch (exception& e) {
                 fprintf(stderr, "%s\n", e.what());
         }
 }
@@ -154,22 +216,18 @@ void Bodies::loadAccountTag()
         char buf[512];
         snprintf(buf, 512, "%s/account.xml", GUnit::getUserPath());
 
-        try
-        {
+        try {
                 ConfXml accoutxml;
                 accountTag = accoutxml.xml_from_file(buf);
 
-                if (!accountTag)
-                {
+                if (!accountTag) {
                         // TODO
                         // 1. remove try..catch
                         // 2. use macro define fpr..(err.., .., __FILE__, __LINE__)
                         fprintf(stderr, "!!! %s:%d\n", __FILE__, __LINE__);
                         throw;
                 }
-        }
-        catch (exception& e)
-        {
+        } catch (exception& e) {
                 fprintf(stderr, "%s\n", e.what());
         }
 }
@@ -179,66 +237,56 @@ bool Bodies::callback(Glib::IOCondition condition)
         ConnectionError ce = ConnNoError;
         //std::cout<<"talk connecting...: "<<ce<<std::endl;
 
-        if ( ce == ConnNoError)
-        {
-                ce = jclient->recv();
+        if ( ce == ConnNoError) {
+                ce = jclient->recv(1000); // microseconds, not milliseconds
                 //talkFT->loopRecv();
                 //IBBSHandler.sendIBBData("lerosua icalk testing");
-
         }
 
         return true;
 }
 
-int Bodies::connect(const char *name, const char* passwd)
+// XXX
+// 应该把 talkFT 和 cardManage 的处理放到
+//   - 连接建立成功
+//   - 登录成功
+//   - 好友列表初始化成功
+// 之后
+void Bodies::disconnect()
 {
-        //GUnit::init(name);
-        /*读取AccountTag类*/
-        //loadAccountTag();
-        /*设置AccountTag类的name*/
-        std::string name_value(name);
-        setAccountTag("name", name_value);
+        connectIO.disconnect();
 
-        std::string server = getAccountTag("server");
-        std::string portstring = getAccountTag("port");
-
-        /*设置client，进行登录*/
-        //assert(NULL == jclient.get());
-
-        if (NULL != jclient.get())
-        {
-                //std::cout<<"重新连接中"<<std::endl;
-                connectIO.disconnect();
+        if (talkFT) {
                 delete talkFT;
-                delete cardManage;
                 talkFT = NULL;
-                cardManage = NULL;
         }
 
+        if (cardManage) {
+                delete cardManage;
+                cardManage = NULL;
+        }
+}
+
+int Bodies::connect(const string& name, const string& passwd, const string& server, const int port = 5222)
+{
+        DLOG("%s is connecting %s:%d\n", name.c_str(), server.c_str(), port);
         jid = new JID(name);
-        jclient.reset(new Client(*jid, passwd));
+        jclient.reset(new Client(*jid, passwd)); // auto_ptr
+
         jclient->disco()->setVersion("iCalk", ICALK_VERSION, OS);
         jclient->setResource("iCalk");
         jclient->setPresence(Presence::Available, -1);
         jclient->disco()->setIdentity("Client", "iCalk");
+        jclient->disco()->registerDiscoHandler(&discohandler);
         jclient->registerMessageHandler(&talkmsg);
         jclient->rosterManager()->registerRosterListener(&buddy_list);
         jclient->registerMessageSessionHandler(&talkmsg, 0);
-        jclient->registerConnectionListener(&talkconnect);
+        jclient->registerConnectionListener(&m_talkconnect);
         jclient->registerStanzaExtension(new DelayedDelivery(0));
         jclient->registerStanzaExtension(new XHtmlIM(0));
-        jclient->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &talkconnect);
-
-        PBUG("login\n");
-
-        if (!server.empty())
-                jclient->setServer(server);
-
-        if (!portstring.empty())
-        {
-                int port = atoi(portstring.c_str());
-                jclient->setPort(port);
-        }
+        jclient->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &m_talkconnect);
+        jclient->setServer(server);
+        jclient->setPort(port);
 
         /*
         Tag* t=new Tag("c");
@@ -247,44 +295,47 @@ int Bodies::connect(const char *name, const char* passwd)
         jclient->addPresenceExtension(se);
         */
 
-
-        jclient->disco()->registerDiscoHandler(&discohandler);
-
         //bookMark= new TalkBookMark(jclient.get());
 
         /** 初始化VCard管理类*/
         //cardManage.set_manage(jclient.get());
-        cardManage = new TalkCard(jclient.get());
+//        cardManage = new TalkCard(jclient.get());
 
         /** 初始化文件传输接收类*/
-        talkFT = new TalkFT(jclient.get());
+//        talkFT = new TalkFT(jclient.get());
 
-        talkFT->initFT();
+//        talkFT->initFT();
 
-        if (jclient->connect(false))
-        {
-                PBUG("connect call success\n");
+        if (jclient->connect(false)) {
                 return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
         }
-        else
-                PBUG("connect error\n");
+
+        DLOG("connect error\n");
 
         return -1;
 }
 
-bool Bodies::login(const std::string name, const std::string passwd)
+bool Bodies::login(const std::string& name, const std::string& passwd)
 {
         int mysock = -1;
+        int port = atoi(getAccountTag("port").c_str());
+        string server = getAccountTag("server");
 
-        if ((mysock = connect(name.c_str(), passwd.c_str())) != -1)
-        {
-                connectIO = Glib::signal_io().connect(
-                                    sigc::mem_fun(*this, &Bodies::callback),
-                                    mysock,
-                                    Glib::IO_IN | Glib::IO_HUP);
+        mysock = connect(name, passwd, server, port);
+
+        if (mysock < 0) {
+                DLOG("!!!connect failed\n");
+                return false;
         }
 
-        main_window->on_initalize();
+        DLOG("connected successfully\n");
+
+        connectIO = Glib::signal_io().connect(
+                            sigc::mem_fun(*this, &Bodies::callback),
+                            mysock,
+                            Glib::IO_IN | Glib::IO_HUP);
+
+        main_window->on_initialize();
         main_window->on_logining();
         main_window->set_label();
         const std::string iconpath = getAccountTag("icon");
@@ -325,8 +376,7 @@ int main(int argc, char *argv[])
         sigemptyset(&act.sa_mask);
         act.sa_flags = 0;
 
-        if (sigaction(SIGCHLD, &act, &oact) < 0)
-        {
+        if (sigaction(SIGCHLD, &act, &oact) < 0) {
                 perror("Sigaction failed");
                 exit(1);
         }

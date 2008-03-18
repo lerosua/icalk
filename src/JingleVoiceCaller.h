@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleVoiceCaller.h
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月23日 12时40分30秒

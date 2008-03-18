@@ -57,20 +57,18 @@ void *TalkFT::loopRecv(void *)
 {
         PBUG(" TalkFT thread starting\n");
 
-        while (R_RUNNING == RUN_RECV)
-        {
-                if (recvCount == 0)
-                {
+        while (R_RUNNING == RUN_RECV) {
+                if (recvCount == 0) {
                         bs_recvList.clear();
                         PBUG("all bytestream clear \n");
                         break;
                 }
 
                 std::list < Bytestream * >::iterator it =
+
                         bs_recvList.begin();
 
-                for (; it != bs_recvList.end(); ++it)
-                {
+                for (; it != bs_recvList.end(); ++it) {
                         (*it)->recv(100);
                 }
         }
@@ -84,23 +82,18 @@ void* TalkFT::loopSend(void* )
         ConnectionError ce = ConnNoError;
         char input[BLOCK_SIZE];
 
-        while (S_RUNNING == RUN_SEND)
-        {
-                if (m_server)
-                {
+        while (S_RUNNING == RUN_SEND) {
+                if (m_server) {
                         se = m_server->recv(1);
 
-                        if (se != ConnNoError)
-                        {
+                        if (se != ConnNoError) {
                                 PBUG("SOCKS5BytestreamServer returned: %d\n", se);
                                 //something error happen,please exit the send file
                         }
                 }
 
-                if (m_bs_send && ! sendfile.eof())
-                {
-                        if (m_bs_send->isOpen())
-                        {
+                if (m_bs_send && ! sendfile.eof()) {
+                        if (m_bs_send->isOpen()) {
                                 sendfile.read(input, BLOCK_SIZE);
                                 std::string content(input, sendfile.gcount());
 
@@ -111,9 +104,7 @@ void* TalkFT::loopSend(void* )
                         }
 
                         m_bs_send->recv(1);
-                }
-                else if (m_bs_send)
-                {
+                } else if (m_bs_send) {
                         m_bs_send->close();
                 }
         }
@@ -169,8 +160,7 @@ void TalkFT::handleFTBytestream(Bytestream * bs)
 
         bs->registerBytestreamDataHandler(this);
 
-        if (bs->connect())
-        {
+        if (bs->connect()) {
                 if (bs->type() == Bytestream::S5B)
                         PBUG("ok! s5b connected to streamhost\n");
                 else
@@ -205,41 +195,37 @@ void TalkFT::handleFTRequest(const JID & from,
 
         int result = askDialog.run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
-                        recvCount++;
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
+                recvCount++;
 
-                        if (R_RUNNING != RUN_RECV)
-                        {
-                                R_RUNNING = RUN_RECV;
-                                recvThread.start();
-                        }
-
-                        std::ofstream* recvfile = new std::ofstream();
-                        //recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
-                        recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
-                        rfilelist.insert(rfilelist.end(), RECVLIST::value_type(sid, recvfile));
-                        break;
+                if (R_RUNNING != RUN_RECV) {
+                        R_RUNNING = RUN_RECV;
+                        recvThread.start();
                 }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        m_ft->declineFT(from, sid,
-                                        SIManager::RequestRejected,
-                                        "just testing");
-                        break;
-                }
+                std::ofstream* recvfile = new std::ofstream();
 
-        default:
-                {
-                        m_ft->declineFT(from, sid,
-                                        SIManager::RequestRejected,
-                                        "just testing");
-                        break;
-                }
+                //recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+                recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+                rfilelist.insert(rfilelist.end(), RECVLIST::value_type(sid, recvfile));
+                break;
+        }
+
+        case (Gtk::RESPONSE_CANCEL): {
+                m_ft->declineFT(from, sid,
+                                SIManager::RequestRejected,
+                                "just testing");
+                break;
+        }
+
+        default: {
+                m_ft->declineFT(from, sid,
+                                SIManager::RequestRejected,
+                                "just testing");
+                break;
+        }
         }
 
 }
@@ -255,14 +241,12 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
         //区别对待发送流与接收流
 
-        if (isSend(s5b))
-        {
+        if (isSend(s5b)) {
                 /**如果发送列表为空，则关闭发送线程*/
 #if 0
                 bs_sendList.remove(s5b);
 
-                if (bs_sendList.empty())
-                {
+                if (bs_sendList.empty()) {
                         S_RUNNING = STOP_STATUS;
                         sendThread.join();
                 }
@@ -277,23 +261,19 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 m_bs_send = NULL;
 
                 PBUG(" close send bs sid %s\n", s5b->sid().c_str());
-        }
-        else
-        {
+        } else {
                 recvCount = recvCount - 1;
 
                 /**如果接收文件数为0，则关闭接收线程*/
 
-                if (recvCount <= 0)
-                {
+                if (recvCount <= 0) {
                         R_RUNNING = STOP_STATUS;
                         recvThread.join();
                 }
 
                 RECVLIST::iterator iter = rfilelist.find(s5b->sid());
 
-                if (iter != rfilelist.end())
-                {
+                if (iter != rfilelist.end()) {
                         (*iter).second->close();
                         delete (*iter).second;
                         rfilelist.erase(iter);
@@ -345,8 +325,7 @@ void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
 
         int result = askDialog.run();
 
-        switch (result)
-        {
+        switch (result) {
         case (Gtk::RESPONSE_OK):
                                 case(Gtk::RESPONSE_CANCEL):
                                                 break;

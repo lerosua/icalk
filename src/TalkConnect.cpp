@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  TalkConnect.cpp
-* 
+*
 *    Description:  连接处理类
-* 
+*
 *        Version:  1.0
 *        Created:  2007年07月1日 16时52分02秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -32,12 +32,12 @@ TalkConnect::~TalkConnect()
 
 void TalkConnect::onConnect()
 {
-        std::cout << "Talk had connected ..." << std::endl;
+        DLOG("Talk had connected ...\n");
 
         Bodies::Get_Bodies().get_main_window().on_login_finial();
         Bodies::Get_Bodies().get_main_window().on_combo_change();
-        Bodies::Get_Bodies().get_main_window().initRoom();
-        Bodies::Get_Bodies().fetch_self_vcard();
+//        Bodies::Get_Bodies().get_main_window().initRoom();
+//        Bodies::Get_Bodies().fetch_self_vcard();
         //      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
         //      bookmark.requestBookmarks();
 }
@@ -47,7 +47,7 @@ void TalkConnect::onDisconnect(ConnectionError er)
         if (ConnNoError == er)
                 return ;
 
-        std::cout << "Talk onDisconnect error in " << er << std::endl;
+        DLOG("Talk onDisconnect error in %d\n", er);
 
         Gtk::MessageDialog askDialog("连接错误",
                                      false /*use markup */ ,
@@ -56,8 +56,7 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         int result;
 
-        switch (er)
-        {
+        switch (er) {
                 /*
                    case 0:
                    std::cout<<"ConnNoError "<< er << std::endl;
@@ -172,31 +171,27 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         result = askDialog.run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        std::cout << "OK clicked" << std::endl;
-                        Bodies::Get_Bodies().logout();
-                        Bodies::Get_Bodies().get_main_window().
-                        on_relogin();
-                        break;
-                }
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                std::cout << "OK clicked" << std::endl;
+                Bodies::Get_Bodies().logout();
+                Bodies::Get_Bodies().get_main_window().
+                on_relogin();
+                break;
+        }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        std::cout << "Cancel clicked" << std::endl;
-                        //Bodies::Get_Bodies().logout();
-                        Bodies::Get_Bodies().get_main_window().on_quit();
-                        break;
-                }
+        case (Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cancel clicked" << std::endl;
+                //Bodies::Get_Bodies().logout();
+                Bodies::Get_Bodies().get_main_window().on_quit();
+                break;
+        }
 
-        default:
-                {
-                        std::cout << "nothing clicked" << std::endl;
-                        Bodies::Get_Bodies().logout();
-                        break;
-                }
+        default: {
+                std::cout << "nothing clicked" << std::endl;
+                Bodies::Get_Bodies().logout();
+                break;
+        }
         }
 
 
@@ -218,23 +213,25 @@ void TalkConnect::onSessionCreateError(SessionCreateError error)
 
 bool TalkConnect::onTLSConnect(const CertInfo & info)
 {
-        std::cout << "Talk had TLS connected ..." << std::endl;
+        DLOG("Talk had TLS connected\n");
 
-        printf
-        ("status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\ncipher: %s\ncompression: %s\n"
-         "from: %s\nto: %s\n", info.status, info.issuer.c_str(),
-         info.server.c_str(), info.protocol.c_str(), info.mac.c_str(),
-         info.cipher.c_str(), info.compression.c_str(),
-         ctime((const time_t *) &info.date_from),
-         ctime((const time_t *) &info.date_to));
+        DLOG("connection detail: \n"
+             "status: %d\nissuer: %s\npeer: %s\nprotocol: %s\nmac: %s\n"
+             "cipher: %s\ncompression: %s\n",
+             info.status,
+             info.issuer.c_str(),
+             info.server.c_str(),
+             info.protocol.c_str(),
+             info.mac.c_str(),
+             info.cipher.c_str(),
+             info.compression.c_str());
+
         return true;
-
-
 }
 
 void TalkConnect::onStreamEvent(StreamEvent event)
 {
-        std::cout << "Talk onStreamEvent.." << std::endl;
+        DLOG("Talk onStreamEvent\n");
 }
 
 void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& message)

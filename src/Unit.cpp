@@ -3,7 +3,7 @@
 *
 *       Filename:  Unit.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年07月12日 22时21分43秒 CST

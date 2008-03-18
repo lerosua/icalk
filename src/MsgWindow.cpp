@@ -3,7 +3,7 @@
 *
 *       Filename:  MsgWindow.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年05月24日 19时43分28秒 CST
@@ -49,7 +49,7 @@ MsgWindow::MsgWindow()
                     (msg_xml->get_widget("statusbar"));
 
         add
-                (*widget);
+        (*widget);
 
         showTypeImage(false);
 
@@ -117,7 +117,7 @@ void MsgWindow::add_page(MsgPage & page)
 
         notebook->append_page(page, *box);
 
-        setCurrentPage(&page);
+        //setCurrentPage(&page);
 
         set_focus(*(page.getFocusWidge()));
 
@@ -138,15 +138,13 @@ bool MsgWindow::on_delete_event(GdkEventAny *)
 {
         int num;
 
-        do
-        {
+        do {
                 num = notebook->get_current_page();
                 MsgPage *page =
                         dynamic_cast <
                         MsgPage * > (notebook->get_nth_page(num));
                 page->close();
-        }
-        while (num > 0);
+        } while (num > 0);
 
         hide();
 }
@@ -186,14 +184,12 @@ void MsgWindow::showTypeImage(bool isShow)
                 dynamic_cast <
                 Gtk::Image * > (msg_xml->get_widget("image_type"));
 
-        if (isShow)
-        {
+        if (isShow) {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("typed.png");
 
                 typeImage->set
                 (pix);
-        }
-        else
+        } else
                 typeImage->clear();
 }
 
@@ -203,14 +199,12 @@ void MsgWindow::showEncryptImage(bool isShow)
                 dynamic_cast <
                 Gtk::Image * > (msg_xml->get_widget("image_encrypt"));
 
-        if (isShow)
-        {
+        if (isShow) {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("crypto.png");
 
                 encryptImage->set
                 (pix);
-        }
-        else
+        } else
                 encryptImage->clear();
 }
 
@@ -221,10 +215,8 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        if (ev->state & (GDK_MOD1_MASK))
-        {
-                switch (ev->keyval)
-                {
+        if (ev->state & (GDK_MOD1_MASK)) {
+                switch (ev->keyval) {
 
                 case GDK_1:
 
@@ -251,10 +243,8 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
                 }
         }
 
-        if (ev->state & (GDK_CONTROL_MASK))
-        {
-                switch (ev->keyval)
-                {
+        if (ev->state & (GDK_CONTROL_MASK)) {
+                switch (ev->keyval) {
 
                 case GDK_Tab:
 
@@ -315,16 +305,12 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
                 }
 
                 return true;
-        }
-        else
-        {
-                switch (ev->keyval)
-                {
+        } else {
+                switch (ev->keyval) {
 
                 case GDK_Escape:
 
-                        if (!Gtk::Window::on_key_press_event(ev))
-                        {
+                        if (!Gtk::Window::on_key_press_event(ev)) {
                                 on_page_close_click();
                         }
 
@@ -346,6 +332,7 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
         }
 
         return true;
+
         //return Gtk::Window::on_key_press_event(ev);
 
 }

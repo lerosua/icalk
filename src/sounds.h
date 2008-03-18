@@ -18,7 +18,7 @@
 *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
 ***************************************************************************/
 #ifndef _SOUNDS_H_
-#define _SOUNDS_H_ 
+#define _SOUNDS_H_
 /**
  * @brief 声音库的名字空间
  * @since 1.0

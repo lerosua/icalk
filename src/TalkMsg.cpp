@@ -36,6 +36,11 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         //Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(stanza.from().bare());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
         assert(buddy != NULL);
+
+        if (!buddy) {
+                DLOG("buddy is NULL");
+        }
+
         /* 发送消息已经显示的事件*/
         buddy->raiseMessageEvent(MessageEventDisplayed);
 
@@ -43,32 +48,34 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
 
         Glib::ustring sender;
+
         Glib::ustring msg = stanza.body();
+
         MsgPage* page_ = buddy->get_page();
+
         sender = buddy->get_nickname();
 
         if (sender.empty())
                 sender = target.username();
 
-        if (NULL == session)
+        if (NULL == session) {
+                DLOG("session is NULL");
                 return ;
+        }
 
         //page_->showMessage(sender,msg);
         const XHtmlIM* x = stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
 
-        if (x)
-        {
+        if (x) {
                 PBUG("the msg has use XhtmlIM\n");
         }
 
         const DelayedDelivery* dd = stanza.when();
 
-        if (dd)
-        {
-                PBUG("message time is %s\n", dd->stamp().c_str());
+        if (dd) {
+                DLOG("message time is %s\n", dd->stamp().c_str());
                 page_->showMessage(sender, msg, dd->stamp());
-        }
-        else
+        } else
                 page_->showMessage(sender, msg);
 
         Bodies::Get_Bodies().get_msg_window().add_page(*page_);
@@ -81,8 +88,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
         PBUG( "received event: %d from: %s\n", event, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
-        switch (event)
-        {
+        switch (event) {
 
         case 0:
                 /*取消打字事件*/
@@ -118,8 +124,7 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state )
         //PBUG( "received state: %d from: %s\n", state, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
-        switch (state)
-        {
+        switch (state) {
 
         case 1:
                 /*用户积极参与对话*/

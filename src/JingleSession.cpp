@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleSession.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月24日 10时50分01秒

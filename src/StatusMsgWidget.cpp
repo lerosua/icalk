@@ -16,7 +16,7 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
                 Gtk::VBox * > (vbox_xml->get_widget("statusMsgBox"));
 
         add
-                (*vBox);
+        (*vBox);
 
         set_transient_for(*parent);
 
@@ -131,25 +131,23 @@ void StatusMsgWidget::on_button_add()
         addMsgDialog->raise();
         int result = addMsgDialog->run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        Gtk::TextView* textview = dynamic_cast <
-                                                  Gtk::TextView* > (addDialog_xml->
-                                                                    get_widget("textview_add"));
-                        Glib::ustring text = textview->get_buffer()->get_text();
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                Gtk::TextView* textview = dynamic_cast <
+                                          Gtk::TextView* > (addDialog_xml->
+                                                            get_widget("textview_add"));
+                Glib::ustring text = textview->get_buffer()->get_text();
 
-                        if (text.empty())
-                                return ;
+                if (text.empty())
+                        return ;
 
-                        msgline->addLine(text);
+                msgline->addLine(text);
 
-                        msgline->Save();
+                msgline->Save();
 
-                }
+        }
 
-                break;
+        break;
 
         case Gtk::RESPONSE_CANCEL:
                 break;
@@ -218,18 +216,16 @@ void StatusMsgWidget::on_button_edit()
 
         int result = addMsgDialog->run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
 
-                        text = textview->get_buffer()->get_text();
-                        int num = msgline->getLineNumber(iter);
-                        msgline->editLine(num, text);
+                text = textview->get_buffer()->get_text();
+                int num = msgline->getLineNumber(iter);
+                msgline->editLine(num, text);
 
-                }
+        }
 
-                break;
+        break;
 
         case Gtk::RESPONSE_CANCEL:
                 break;
@@ -253,8 +249,7 @@ bool StatusMsgWidget::on_key_press_event(GdkEventKey * ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval)
-        {
+        switch (ev->keyval) {
 
         case GDK_Escape:
                 on_button_cancel();
@@ -288,8 +283,7 @@ void MsgLine::init()
         snprintf(buf, 512, "%s/StatusMsgFile", GUnit::getUserPath());
         std::ifstream msgfile(buf);
 
-        if (!msgfile)
-        {
+        if (!msgfile) {
                 std::ofstream outfile(buf);
                 outfile.close();
                 msgfile.open(buf);
@@ -297,10 +291,8 @@ void MsgLine::init()
 
         std::string line;
 
-        if (msgfile)
-        {
-                while (getline(msgfile, line))
-                {
+        if (msgfile) {
+                while (getline(msgfile, line)) {
                         number++;
                         addLine(number, line);
                 }
@@ -315,8 +307,7 @@ void MsgLine::Save()
         snprintf(buf, 512, "%s/StatusMsgFile", GUnit::getUserPath());
         std::ofstream msgfile(buf);
 
-        if (!msgfile)
-        {
+        if (!msgfile) {
                 std::ofstream outfile(buf);
                 outfile.close();
                 msgfile.open(buf);
@@ -324,13 +315,11 @@ void MsgLine::Save()
 
         Glib::ustring strline;
 
-        if (msgfile)
-        {
+        if (msgfile) {
                 Gtk::TreeModel::Children children = m_liststore->children();
                 Gtk::TreeModel::iterator iter = children.begin();
 
-                for (; iter != children.end(); iter++)
-                {
+                for (; iter != children.end(); iter++) {
                         strline = (*iter)[columns.message];
                         msgfile << strline;
                         msgfile << std::endl;
@@ -430,14 +419,11 @@ bool MsgLine::on_button_press_event(GdkEventButton * ev)
                 return FALSE;
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS))
-        {
+                        ev->type == GDK_3BUTTON_PRESS)) {
                 Glib::ustring msg = (*iter)[columns.message];
                 Bodies::Get_Bodies().get_main_window().setStatusMsg(msg);
 
-        }
-        else if ((ev->type == GDK_BUTTON_PRESS)
-                        && (ev->button == 3))
-        {}
+        } else if ((ev->type == GDK_BUTTON_PRESS)
+                        && (ev->button == 3)) {}
 
 }

@@ -11,8 +11,7 @@ Tag* ConfXml::xml_from_file(char* filename)
 {
         std::ifstream infile(filename, ios::binary);
 
-        if (!infile)
-        {
+        if (!infile) {
                 //没有这个文件则新建
                 std::ofstream outfile(filename);
                 outfile << "<?xml version='1.0' encoding='UTF-8'?>\n<account version='1.0'></account>" << std::endl;

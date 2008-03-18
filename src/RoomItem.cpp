@@ -47,8 +47,7 @@ void RoomItem::setMemberList(const Disco::ItemList& m_list_)
         std::string mid;
         Disco::ItemList::const_iterator iter = m_list_.begin();
 
-        for (;iter != m_list_.end();iter++)
-        {
+        for (;iter != m_list_.end();iter++) {
                 name = (*iter)->name();
                 Member member_;
                 member_.id = (*iter)->jid().full();

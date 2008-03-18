@@ -3,10 +3,10 @@
 *
 *       Filename:  BuddyList.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
-*        Created:  2007年06月18日 星期一 10时28分37秒 
+*        Created:  2007年06月18日 星期一 10时28分37秒
 *       Revision:  none
 *       Compiler:  g++
 *
@@ -37,13 +37,13 @@ Buddy* BuddyList::find_buddy(const Glib::ustring& id) const
 BuddyList::~BuddyList()
 {
         BUDDY_MAP::iterator iter = buddy_map.begin();
-	for(; iter!=buddy_map.end();iter++)
-	{
-		delete iter->second;
-		buddy_map.erase(iter);
-	}
+
+        for (; iter != buddy_map.end();iter++) {
+                delete iter->second;
+                buddy_map.erase(iter);
+        }
 }
-	
+
 void BuddyList::handleItemSubscribed(const JID & jid)
 {
         PBUG( "subscribed %s\n", jid.bare().c_str() );
@@ -53,8 +53,7 @@ void BuddyList::handleItemAdded(const JID & jid)
 {
         std::string jid_str = jid.bare().c_str();
 
-        if ( NULL == find_buddy(jid_str) )
-        {
+        if ( NULL == find_buddy(jid_str) ) {
                 /** 将新的好友加入到BuddyMap里。*/
                 RosterItem* item = Bodies::Get_Bodies().get_client().rosterManager()->getRosterItem(jid_str);
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
@@ -75,11 +74,10 @@ void BuddyList::handleItemRemoved(const JID & jid)
         Bodies::Get_Bodies().get_main_window().get_buddy_view().remove(jid_str);
         BUDDY_MAP::iterator iter = buddy_map.find(jid_str);
 
-        if ( iter != buddy_map.end() )
-	{
-		delete (*iter).second;
+        if ( iter != buddy_map.end() ) {
+                delete (*iter).second;
                 buddy_map.erase(iter);
-	}
+        }
 
 }
 
@@ -149,7 +147,7 @@ void BuddyList::handleSelfPresence(const RosterItem & item,
                                    Presence::PresenceType presence,
                                    const std::string & msg )
 {
-        PBUG( "self presence received: %s/%s -- %d\n", item.jid().c_str(), resource.c_str(), presence );
+        DLOG( "self presence received: %s/%s -- %d\n", item.jid().c_str(), resource.c_str(), presence );
 
 }
 
@@ -162,29 +160,25 @@ bool BuddyList::handleSubscriptionRequest(const JID & jid,
         dialog.set_secondary_text(msg_text);
         int result = dialog.run();
 
-        switch (result)
-        {
-        case(Gtk::RESPONSE_OK):
-                {
-                        //对方请求加为好友。
-                        StringList groups;
-                        JID id(jid);
-                        Bodies::Get_Bodies().get_client().rosterManager()->subscribe( id , "", groups, "");
-                        return true;
-                        break;
-                }
+        switch (result) {
+        case(Gtk::RESPONSE_OK): {
+                //对方请求加为好友。
+                StringList groups;
+                JID id(jid);
+                Bodies::Get_Bodies().get_client().rosterManager()->subscribe( id , "", groups, "");
+                return true;
+                break;
+        }
 
-        case(Gtk::RESPONSE_CANCEL):
-                {
-                        return false;
-                        break;
-                }
+        case(Gtk::RESPONSE_CANCEL): {
+                return false;
+                break;
+        }
 
-        default:
-                {
-                        return false;
-                        break;
-                }
+        default: {
+                return false;
+                break;
+        }
         }
 
         return false;

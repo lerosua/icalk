@@ -35,7 +35,7 @@ bool MemberList::isMember(const std::string& mid)
                 bind2nd(CompareBuddy(MemberColumns), mid));
         if(listiter == children.end())
          return false;
-        */ 
+        */
         return true;
 
 }
@@ -57,8 +57,7 @@ void MemberList::clearMember()
         Gtk::TreeModel::Children children = refListStore->children();
         Gtk::TreeModel::iterator iter = children.begin();
 
-        while ( iter != children.end())
-        {
+        while ( iter != children.end()) {
                 //Glib::ustring name = (*iter)[columns.name];
                 //std::cout<<"erase ============"<<name<<std::endl;
                 iter = refListStore->erase(iter);
@@ -115,15 +114,12 @@ bool MemberList::on_button_press_event(GdkEventButton * ev)
                 return FALSE;
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS))
-        {
+                        ev->type == GDK_3BUTTON_PRESS)) {
                 std::cout << "双击" << name << std::endl;
 
 
-        }
-        else if ((ev->type == GDK_BUTTON_PRESS)
-                        && (ev->button == 3))
-        {
+        } else if ((ev->type == GDK_BUTTON_PRESS)
+                        && (ev->button == 3)) {
                 std::cout << "右击" << name << std::endl;
         }
 

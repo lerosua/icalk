@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  TalkDiscoHandler.h
-* 
+*
 *    Description:  server discover
-* 
+*
 *        Version:  1.0
 *        Created:  2007年09月27日 20时10分25秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -31,11 +31,9 @@ class TalkDiscoHandler: public DiscoHandler
 {
 
 public:
-        TalkDiscoHandler()
-        {}
+        TalkDiscoHandler() {}
 
-        ~TalkDiscoHandler()
-        {}
+        ~TalkDiscoHandler() {}
 
         void handleDiscoInfoResult(IQ * stanza, int context ) ;
         void handleDiscoItemsResult(IQ * stanza , int context ) ;

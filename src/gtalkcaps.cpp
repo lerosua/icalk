@@ -25,8 +25,7 @@ GtalkCaps::GtalkCaps(const std::string& ver, const std::string& ext):
 GtalkCaps::GtalkCaps(Tag* tag):
                 StanzaExtension(ExtCaps), m_ext("share-v1 voice-v1"), m_ver("1.0.104")
 {
-        if (tag && (tag->name() == "c" && tag->hasAttribute("xmlns", XMLNS_C_CAPS)))
-        {
+        if (tag && (tag->name() == "c" && tag->hasAttribute("xmlns", XMLNS_C_CAPS))) {
                 tag->addAttribute("note", XMLNS_GOOGLE_CAPS);
                 tag->addAttribute("ver", m_ver);
                 tag->addAttribute("ext", m_ext);

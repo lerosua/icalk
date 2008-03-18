@@ -139,8 +139,7 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
         int cell_x, cell_y;
         int delay = 600;
 
-        if (tipTimeout.connected())
-        {
+        if (tipTimeout.connected()) {
 
                 tipTimeout.disconnect();
                 tooltips->hideTooltip();
@@ -148,8 +147,7 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
 
         if (this->
                         get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x,
-                                        cell_y))
-        {
+                                        cell_y)) {
                 Gtk::TreeModel::iterator iter =
                         this->get_model()->get_iter(path);
                 int type = (*iter)[buddyColumns.status];
@@ -165,8 +163,7 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
                                                                   ev), delay);
                 else
                         tooltips->hideTooltip();
-        }
-        else
+        } else
                 tooltips->hideTooltip();
 
         return true;
@@ -180,8 +177,7 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 
         if (this->
                         get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x,
-                                        cell_y))
-        {
+                                        cell_y)) {
                 Gtk::TreeModel::iterator iter =
                         this->get_model()->get_iter(path);
 
@@ -194,8 +190,7 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 
                 Glib::ustring text_, status_, status_sub, msg_;
 
-                if (STATUS_ROOM != type)
-                {
+                if (STATUS_ROOM != type) {
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
                                 find_buddy(jid);
@@ -235,9 +230,7 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
                         tooltips->setImage(logo);
 
                         tooltips->showTooltip(ev);
-                }
-                else
-                {
+                } else {
                         text_ =
                                 "<span weight='bold'>" + jid + "\n" +
                                 "type:</span> Room\n";
@@ -255,8 +248,7 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 
 bool BuddyView::on_leave_event(GdkEventCrossing * ev)
 {
-        if (tipTimeout.connected())
-        {
+        if (tipTimeout.connected()) {
                 tipTimeout.disconnect();
         }
 
@@ -295,8 +287,7 @@ const std::string BuddyView::getBlistTag(const std::string & tagname,
 {
         Tag *tmpTag = blistTag->findChild(tagname, "name", name);
 
-        if (tmpTag == NULL)
-        {
+        if (tmpTag == NULL) {
                 return std::string();
         }
 
@@ -315,20 +306,17 @@ void BuddyView::setBlistTag(const std::string & tagname,
 {
         Tag *tmpTag = blistTag->findChild(tagname, "name", name);
 
-        if (tmpTag == NULL)
-        {
+        if (tmpTag == NULL) {
                 tmpTag = new Tag(tagname, "name", name);
                 blistTag->addChild(tmpTag);
         }
 
         Tag *sontag = tmpTag->findChild(attr);
 
-        if (sontag == NULL)
-        {
+        if (sontag == NULL) {
                 sontag = new Tag(attr, value);
                 tmpTag->addChild(sontag);
-        }
-        else
+        } else
                 sontag->setCData(value);
 
         saveBlistTag();
@@ -348,8 +336,7 @@ void BuddyView::tvc_connect_cell_data(Gtk::CellRenderer * renderer,
                                       const Gtk::TreeModel::
                                       iterator & iter)
 {
-        if (iter)
-        {
+        if (iter) {
 #ifdef GLIBMM_PROPERTIES_ENABLED
                 //rendtext.property_text() = (*iter)[buddyColumns.nickname];
                 rendtext.property_markup() =
@@ -391,12 +378,9 @@ void BuddyView::setFilterText(const Glib::ustring& text)
 
 void BuddyView::cellrender_edited(bool mode)
 {
-        if (mode)
-        {
+        if (mode) {
                 rendtext.property_editable() = true;
-        }
-        else
-        {
+        } else {
 
                 rendtext.property_editable() = false;
         }
@@ -424,8 +408,7 @@ void BuddyView::cellrender_on_editing_start(Gtk::CellEditable *
 
         Gtk::Entry * pEntry = dynamic_cast < Gtk::Entry * >(cell);
 
-        if (pEntry)
-        {
+        if (pEntry) {
                 if (!nickname.empty())
                         pEntry->set_text(nickname);
                 else
@@ -444,8 +427,7 @@ void BuddyView::cellrender_on_edited(const Glib::ustring & path_string,
         //Get the row from the path;
         Gtk::TreeModel::iterator iter = m_treestore->get_iter(path);
 
-        if (iter)
-        {
+        if (iter) {
                 Glib::ustring jid = (*iter)[buddyColumns.id];
                 Buddy *buddy =
                         Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
@@ -497,7 +479,7 @@ void BuddyView::expanded_list()
 }
 
 bool BuddyView::remove
-        (const Glib::ustring & id)
+(const Glib::ustring & id)
 {
         /*查找要删除的好友在列表中是否已经显示 */
 
@@ -508,16 +490,14 @@ bool BuddyView::remove
                 Bodies::Get_Bodies().get_buddy_list().find_buddy(id);
         StringList g = buddy->getGroups();
 
-        if (g.empty())
-        {
+        if (g.empty()) {
                 std::string mainGroup = "iCalk";
                 g.push_back(mainGroup);
         }
 
         StringList::const_iterator it_g = g.begin();
 
-        for (; it_g != g.end(); ++it_g)
-        {
+        for (; it_g != g.end(); ++it_g) {
                 listiter = getListIter(children, *it_g);
 
                 if (listiter == children.end())
@@ -583,8 +563,7 @@ void BuddyView::initBuddyType(Buddy* value)
         const std::string & type_ =
                 getBlistTag("buddy", buddyname, "type");
 
-        if (!type_.empty())
-        {
+        if (!type_.empty()) {
                 if (type_ == "transport")
                         value->setType(TYPE_TRANPORT);
                 else if (type_ == "groupchat")
@@ -608,18 +587,15 @@ void BuddyView::initBuddy(Buddy * value)
         Gtk::TreeModel::Children children = m_treestore->children();
         Gtk::TreeModel::iterator listiter;
 
-        if (g.empty())
-        {
+        if (g.empty()) {
                 std::string mainGroup = "iCalk";
                 g.push_back(mainGroup);
         }
 
-        for (it_g = g.begin(); it_g != g.end(); ++it_g)
-        {
+        for (it_g = g.begin(); it_g != g.end(); ++it_g) {
                 listiter = getListIter(children, *it_g);
 
-                if (listiter == children.end())
-                {
+                if (listiter == children.end()) {
                         listiter = addBuddyGroup(*it_g);
                         groupList.push_back(*it_g);
                 }
@@ -634,8 +610,7 @@ void BuddyView::initBuddy(Buddy * value)
                 /** 根据用户信息猜测用户类型*/
                 const int buddyType = value->guessType();
 
-                switch (buddyType)
-                {
+                switch (buddyType) {
 
                 case TYPE_TRANPORT:
                         (*treeiter)[buddyColumns.type] = TYPE_TRANPORT;
@@ -662,8 +637,7 @@ void BuddyView::initBuddy(Buddy * value)
                 const std::string & type_ =
                         getBlistTag("buddy", buddyname, "type");
 
-                if (!type_.empty())
-                {
+                if (!type_.empty()) {
                         if (type_ == "transport")
                                 value->setType(TYPE_TRANPORT);
                         else if (type_ == "groupchat")
@@ -680,31 +654,25 @@ void BuddyView::initBuddy(Buddy * value)
 
 
                 Glib::RefPtr < Gdk::Pixbuf > officon;
+
                 const std::string & filename_ =
                         getBlistTag("buddy", buddyname, "icon");
 
                 if ((!filename_.empty())
-                                && (!access(filename_.c_str(), F_OK)))
-                {
-                        try
-                        {
+                                && (!access(filename_.c_str(), F_OK))) {
+                        try {
                                 officon =
                                         Gdk::Pixbuf::create_from_file(filename_.
                                                                       c_str(), 30, 30);
-                        }
-                        catch (Glib::FileError e)
-                        {
+                        } catch (Glib::FileError e) {
                                 g_message("caught Glib::FileError in initBuddy create from file");
-                        }
-                        catch (Gdk::PixbufError e)
-                        {
+                        } catch (Gdk::PixbufError e) {
                                 g_message("Gdk::PixbufError in create_from_file");
                         }
 
                         if (0 == officon)
                                 officon = getPix30("offline.png");
-                }
-                else
+                } else
                         officon = getPix30("offline.png");
 
                 Glib::RefPtr < Gdk::Pixbuf > emblem =
@@ -757,8 +725,7 @@ void BuddyView::initRoomList()
         gloox::TagList rlist = blistTag->findChildren("room");
         gloox::TagList::const_iterator it_g;
 
-        for (it_g = rlist.begin(); it_g != rlist.end(); ++it_g)
-        {
+        for (it_g = rlist.begin(); it_g != rlist.end(); ++it_g) {
                 ConferenceListItem ci;
                 ci.jid = (*it_g)->findAttribute("name");
                 Tag *tmptag = (*it_g)->findChild("roomname");
@@ -841,8 +808,7 @@ void BuddyView::addRoom(const ConferenceListItem & ci)
         Bodies::Get_Bodies().getRoomHandler().addRoomItem(ci.jid,
                         item);
 
-        if (ci.autojoin)
-        {
+        if (ci.autojoin) {
                 item->join();
         }
 }
@@ -888,7 +854,7 @@ void BuddyView::delRoom(const Glib::ustring & jid)
 }
 
 void BuddyView::add
-        (const Glib::ustring & jid_str)
+(const Glib::ustring & jid_str)
 {
 
         Buddy *buddy =
@@ -901,15 +867,13 @@ void BuddyView::add
 
 
 
-        if (g.empty())
-        {
+        if (g.empty()) {
                 //printf("group empty\n");
                 std::string mainGroup = "iCalk";
                 g.push_back(mainGroup);
         }
 
-        for (it_g = g.begin(); it_g != g.end(); ++it_g)
-        {
+        for (it_g = g.begin(); it_g != g.end(); ++it_g) {
                 listiter = getListIter(children, *it_g);
 
                 if (listiter == children.end())
@@ -978,8 +942,7 @@ void BuddyView::showGroup(bool mode)
         Gtk::TreeModel::iterator it_g;
         it_g = children.begin();
 
-        while (it_g != children.end())
-        {
+        while (it_g != children.end()) {
                 Gtk::TreeModel::Children grandson = it_g->children();
 
                 if (grandson.empty())
@@ -996,19 +959,16 @@ void BuddyView::showOffline(bool mode)
                 Bodies::Get_Bodies().get_buddy_list().get_buddy_map();
         BuddyList::BUDDY_MAP::const_iterator iter;
 
-        for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++)
-        {
+        for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++) {
                 Presence::PresenceType type = (*iter).second->get_status();
 
-                if (Presence::Unavailable == type)
-                {
+                if (Presence::Unavailable == type) {
                         if (mode)
                                 add
-                                        ((*iter).second->get_jid());
-                        else
-                        {
+                                ((*iter).second->get_jid());
+                        else {
                                 remove
-                                        ((*iter).second->get_jid());
+                                ((*iter).second->get_jid());
                         }
                 }
 
@@ -1027,8 +987,7 @@ void BuddyView::refreshList()
                 Bodies::Get_Bodies().get_buddy_list().get_buddy_map();
         BuddyList::BUDDY_MAP::const_iterator iter;
 
-        for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++)
-        {
+        for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++) {
                 refreshBuddyStatus((*iter).second->get_jid());
         }
 }
@@ -1047,16 +1006,14 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
         Glib::RefPtr < Gdk::Pixbuf > emblem;
         StringList g = buddy->getGroups();
 
-        if (g.empty())
-        {
+        if (g.empty()) {
                 std::string mainGroup = "iCalk";
                 g.push_back(mainGroup);
         }
 
         StringList::const_iterator it_g = g.begin();
 
-        for (; it_g != g.end(); ++it_g)
-        {
+        for (; it_g != g.end(); ++it_g) {
                 listiter = getListIter(children, *it_g);
 
                 if (listiter == children.end())
@@ -1071,8 +1028,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
 
                 /*在列表中找不到则添加,这种情况应该为刚上线时 */
-                if ((Presence::Unavailable != status_) && (treeiter == grandson.end()))
-                {
+                if ((Presence::Unavailable != status_) && (treeiter == grandson.end())) {
                         treeiter =
                                 m_treestore->append(listiter->children());
 
@@ -1100,9 +1056,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                         sounds::play(sounds::ARRIVE_SOUND);
 
                         return ;
-                }
-                else if ((Presence::Unavailable == status_) && (treeiter == grandson.end()))
-                {
+                } else if ((Presence::Unavailable == status_) && (treeiter == grandson.end())) {
                         /**好友状态为离线，并且不在列表中的状况*/
                         return ;
                 }
@@ -1113,8 +1067,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
                 /*下线时的处理情况 */
 
-                if (Presence::Unavailable == status_)
-                {
+                if (Presence::Unavailable == status_) {
                         int delay = 9000;
                         Glib::RefPtr < Gdk::Pixbuf > signoff =
                                 getPix("log-out.png");
@@ -1130,9 +1083,9 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                                 mem_fun(*this,
                                                                         &BuddyView::
                                                                         remove
-                                                                               ),
-                                                                        jid_ctr),
-                                                                       delay);
+                                                                       ),
+                                                                jid_ctr),
+                                                               delay);
 
                         sounds::play(sounds::LEAVE_SOUND);
 
@@ -1140,27 +1093,21 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 }
 
                 /*如果签名不为空的情况 */
-                if (!msg.empty())
-                {
+                if (!msg.empty()) {
                         /*如果有昵称的情况 */
 
-                        if (!nickname.empty())
-                        {
+                        if (!nickname.empty()) {
                                 marktext =
                                         g_markup_printf_escaped
                                         ("%s\n<span color='dim grey'><small>%s</small></span>",
                                          nickname.c_str(), msg.c_str());
-                        }
-                        else
-                        {
+                        } else {
                                 marktext =
                                         g_markup_printf_escaped
                                         ("%s\n<span color='dim grey'><small>%s</small></span>",
                                          buddyname.c_str(), msg.c_str());
                         }
-                }
-                else
-                {
+                } else {
                         char buf[512];
 
                         if (!nickname.empty())
@@ -1168,8 +1115,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                         else
                                 sprintf(buf, "%s", buddyname.c_str());
 
-                        switch (status_)
-                        {
+                        switch (status_) {
 
                         case Presence::XA:
                                 marktext =
@@ -1210,8 +1156,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 initBuddyType(buddy);
                 BuddyType type_ = buddy->getType();
 
-                switch (type_)
-                {
+                switch (type_) {
                         /*
                            case TYPE_FRIEND:
                            (*treeiter)[buddyColumns.audioicon] = getPix("CallOver.png");
@@ -1243,13 +1188,11 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
                 default:
 
-                        if (TYPE_GROUPCHAT == buddy->guessType())
-                        {
+                        if (TYPE_GROUPCHAT == buddy->guessType()) {
                                 buddy->setType(TYPE_GROUPCHAT);
                                 (*treeiter)[buddyColumns.audioicon] =
                                         getPix("groupchat.png");
-                        }
-                        else
+                        } else
                                 (*treeiter)[buddyColumns.audioicon] =
                                         getPix("CallOver.png");
 
@@ -1275,45 +1218,33 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                         /*文件名存在且能打开文件 */
 
                         if ((!filename_.empty())
-                                        && (!access(filename_.c_str(), F_OK)))
-                        {
-                                try
-                                {
+                                        && (!access(filename_.c_str(), F_OK))) {
+                                try {
                                         faceicon_orgin =
                                                 Gdk::Pixbuf::
                                                 create_from_file(filename_.c_str());
-                                }
-                                catch (Glib::FileError e)
-                                {
+                                } catch (Glib::FileError e) {
                                         g_message("caught Glib::FileError in refreshBuddyStatus create from file");
-                                }
-                                catch (Gdk::PixbufError e)
-                                {
+                                } catch (Gdk::PixbufError e) {
                                         g_message("Gdk::PixbufError in create_from_file");
                                 }
 
-                                if (faceicon_orgin == 0)
-                                {
+                                if (faceicon_orgin == 0) {
                                         faceicon = getPix30("default.png");
                                         printf
                                         ("pixbuf load file %s error\n",
                                          filename);
                                         buddy->setLogo(faceicon);
-                                }
-                                else
-                                {
+                                } else {
                                         faceicon =
                                                 faceicon_orgin->scale_simple(30, 30,
                                                                              Gdk::
                                                                              INTERP_NEAREST);
                                         buddy->setLogo(faceicon_orgin);
                                 }
-                        }
-                        else
-                        {
+                        } else {
 
-                                if (vcard && !vcard->photo().binval.empty())
-                                {
+                                if (vcard && !vcard->photo().binval.empty()) {
                                         std::ofstream fout(filename);
                                         fout.write((const char *) vcard->
                                                    photo().binval.c_str(),
@@ -1321,24 +1252,18 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                    size());
                                         fout.close();
 
-                                        try
-                                        {
+                                        try {
                                                 faceicon_orgin =
                                                         Gdk::Pixbuf::
                                                         create_from_file(filename, 30,
                                                                          30);
-                                        }
-                                        catch (Glib::FileError e)
-                                        {
+                                        } catch (Glib::FileError e) {
                                                 g_message("caught Glib::FileError in refreshBuddyStatus create from file");
-                                        }
-                                        catch (Gdk::PixbufError e)
-                                        {
+                                        } catch (Gdk::PixbufError e) {
                                                 g_message("Gdk::PixbufError in create_from_file");
                                         }
 
-                                        if (faceicon_orgin == 0)
-                                        {
+                                        if (faceicon_orgin == 0) {
                                                 faceicon =
                                                         getPix30
                                                         ("default.png");
@@ -1346,9 +1271,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                 ("pixbuf load file %s error\n",
                                                  filename);
                                                 buddy->setLogo(faceicon);
-                                        }
-                                        else
-                                        {
+                                        } else {
                                                 faceicon =
                                                         faceicon_orgin->scale_simple(30, 30,
                                                                                      Gdk::
@@ -1359,17 +1282,14 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                             filename);
                                                 buddy->setLogo(faceicon_orgin);
                                         }
-                                }
-                                else
-                                {
+                                } else {
                                         faceicon = getPix30("default.png");
                                         buddy->setLogo(faceicon);
                                 }
                         }
 
 
-                        switch (status_)
-                        {
+                        switch (status_) {
 
                         case Presence::XA:
                                 emblem = getPix("Xa.png");
@@ -1399,6 +1319,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 }
 
                 int num = iter_n_children(listiter);
+
                 Glib::ustring groupName = (*listiter)[buddyColumns.id];
                 marktext =
                         g_markup_printf_escaped("<b>%s</b>(%d)",
@@ -1436,10 +1357,8 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                 return FALSE;
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS))
-        {
-                if ((type != STATUS_GROUP) && (type != STATUS_ROOM))
-                {
+                        ev->type == GDK_3BUTTON_PRESS)) {
+                if ((type != STATUS_GROUP) && (type != STATUS_ROOM)) {
                         Glib::ustring name = (*iter)[buddyColumns.id];
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
@@ -1451,29 +1370,22 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         Bodies::Get_Bodies().get_msg_window().show();
                         Bodies::Get_Bodies().get_msg_window().
                         setCurrentPage(page_);
-                }
-                else if (STATUS_GROUP == type)
-                {
+                } else if (STATUS_GROUP == type) {
                         //组的双击
 
-                        if (this->row_expanded(path))
-                        {
+                        if (this->row_expanded(path)) {
                                 this->collapse_row(path);
                                 //Glib::ustring group_ = (*iter)[buddyColumns.id];
                                 //setBlistTag(group_,"group","collapsed");
                                 //printf("row collapsed\n");
-                        }
-                        else
-                        {
+                        } else {
                                 this->expand_row(path, false);
                                 this->scroll_to_row(path);
                                 //Glib::ustring group_ = (*iter)[buddyColumns.id];
                                 //setBlistTag(group_,"group","expanded");
                                 //printf("row expanded\n");
                         }
-                }
-                else if (STATUS_ROOM == type)
-                {
+                } else if (STATUS_ROOM == type) {
                         //房间的双击
                         Glib::ustring mid = (*iter)[buddyColumns.id];
                         RoomItem *room =
@@ -1482,8 +1394,7 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
 
                         MsgPage *page = room->getPage();
 
-                        if (NULL == page)
-                        {
+                        if (NULL == page) {
                                 room->join();
                                 const std::string label =
                                         room->getRoomJID();
@@ -1498,6 +1409,7 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         }
 
                         Bodies::Get_Bodies().get_msg_window().show();
+
                         Bodies::Get_Bodies().get_msg_window().
                         setCurrentPage(page);
 
@@ -1505,21 +1417,16 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
 
 
                 }
-        }
-        else if ((ev->type == GDK_BUTTON_PRESS)
-                        && (ev->button == 3))
-        {
-                if ((type != STATUS_GROUP) && (type != STATUS_ROOM))
-                {
+        } else if ((ev->type == GDK_BUTTON_PRESS)
+                        && (ev->button == 3)) {
+                if ((type != STATUS_GROUP) && (type != STATUS_ROOM)) {
                         Gtk::Menu* buddyMenu = parent.getBuddyMenu();
 
                         if (buddyMenu)
                                 buddyMenu->popup(1, ev->time);
 
                         //buddyMenu.popup(1, ev->time);
-                }
-                else if (STATUS_ROOM == type)
-                {
+                } else if (STATUS_ROOM == type) {
                         Gtk::Menu* roomMenu = parent.getRoomMenu();
 
                         if (roomMenu)

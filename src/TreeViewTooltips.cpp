@@ -3,7 +3,7 @@
 *
 *       Filename:  TreeViewTooltips.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年10月09日 20时07分21秒 CST
@@ -46,7 +46,7 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
         hbox->show_all();
 
         add
-                (*hbox);
+        (*hbox);
 
         add_events(Gdk::POINTER_MOTION_MASK);
 
@@ -81,8 +81,7 @@ bool TreeViewTooltips::on_motion_event(GdkEventMotion* ev)
         Gtk::TreeViewColumn* column;
         int cell_x, cell_y;
 
-        if ( buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) )
-        {
+        if ( buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) ) {
                 hideTooltip();
                 return 0;
         }

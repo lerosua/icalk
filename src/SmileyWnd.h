@@ -16,11 +16,9 @@ class GlademmData
 
 public:
 
-        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag)
-        {}
+        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag) {}
 
-        Glib::RefPtr<Gtk::AccelGroup> getAccelGroup()
-        {
+        Glib::RefPtr<Gtk::AccelGroup> getAccelGroup() {
                 return accgrp;
         }
 };
@@ -46,8 +44,7 @@ public:
         ~SmileyWnd();
         bool on_key_press_event(GdkEventKey * ev);
         bool on_leave_event(GdkEventCrossing* ev);
-        void showWindow()
-        {
+        void showWindow() {
                 show();
                 raise();
         }

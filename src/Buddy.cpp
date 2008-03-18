@@ -11,7 +11,7 @@
 *       Compiler:  gcc
 *
 *         Author:  wind (xihe), xihels@gmail.com
-*        Company:  
+*        Company:
 *
 * =====================================================================================
 */
@@ -25,7 +25,7 @@
 #include "Bodies.h"
 
 /** 带内数据传输图片的大小*/
-#define PICZIAE 102400 
+#define PICZIAE 102400
 //#define PICZIAE 40960
 
 Buddy::Buddy(const RosterItem& item):
@@ -45,7 +45,7 @@ Buddy::Buddy(const RosterItem& item):
         logo = Gdk::Pixbuf::create_from_file(DATA_DIR"/images/default.png");
 
         /*
-        std::cout 
+        std::cout
          << "username = " << jid.username() << std::endl
          << "server = " << jid.server() << std::endl
          << "resource = " << jid.resource() << std::endl
@@ -111,8 +111,7 @@ BuddyType Buddy::guessType()const
 
         const std::string& server = jid.server();
 
-        if (server.empty())
-        {
+        if (server.empty()) {
                 printf(" %s 's server empty\n", jid.username().c_str());
         }
 
@@ -129,6 +128,7 @@ BuddyType Buddy::guessType()const
         /** 资源开头为conference，则可能为Gtalk群机器人*/
         if (0 == m_resource.find("conference"))
                 return TYPE_GROUPCHAT;
+
         if (0 == m_resource.find("bot"))
                 return TYPE_BOT;
 
@@ -138,8 +138,7 @@ BuddyType Buddy::guessType()const
 
 void Buddy::new_session()
 {
-        if (NULL == session)
-        {
+        if (NULL == session) {
                 Client& jclient_ = Bodies::Get_Bodies().get_client();
                 session = new MessageSession(&jclient_, jid);
                 TalkMsg& handler_ = Bodies::Get_Bodies().get_talkmsg();
@@ -149,14 +148,12 @@ void Buddy::new_session()
 
 void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 {
-        if (session != session_)
-        {
+        if (session != session_) {
                 close_session(false);
                 session = session_;
         }
 
-        if (NULL != session)
-        {
+        if (NULL != session) {
                 session->registerMessageHandler(handler);
 
                 message_event_filter = new MessageEventFilter(session);
@@ -167,12 +164,10 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 
                 /* 这里还需要生成标签页*/
 
-                if (NULL == page)
-                {
+                if (NULL == page) {
                         if (!nickname.empty())
                                 page = new MsgPage(nickname, this);
-                        else
-                        {
+                        else {
                                 const char* label = session->target().bare().c_str();
                                 page = new MsgPage(label, this);
                         }
@@ -183,12 +178,10 @@ void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
 
 void Buddy::close_session(bool closePage)
 {
-        if (NULL != session)
-        {
+        if (NULL != session) {
                 /**发出关闭对话框的信号给对方*/
 
-                if (closePage)
-                {
+                if (closePage) {
                         this->setChatState( ChatStateGone );
                         this->raiseMessageEvent(MessageEventCancel);
                 }
@@ -201,16 +194,14 @@ void Buddy::close_session(bool closePage)
                 //printf(" 真正地disposeMessagesession\n");
                 Bodies::Get_Bodies().get_client().disposeMessageSession(session);
 
-                if (NULL != session)
-                {
+                if (NULL != session) {
                         session = NULL;
                 }
 
         }
 
         /** 关闭标签页 */
-        if (closePage && (NULL != page))
-        {
+        if (closePage && (NULL != page)) {
                 page = NULL;
         }
 }

@@ -3,7 +3,7 @@
 *
 *       Filename:  MainWindow.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年05月24日 19时43分28秒 CST
@@ -41,7 +41,6 @@
 #include "pixmaps.h"
 #include "sounds.h"
 #include "about.h"
-#include "Unit.h"
 
 #define SYSTEM_MENU 0
 #define TIMEOUT 5
@@ -140,20 +139,20 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
                 dynamic_cast <
                 Gtk::HBox * > (main_xml->get_widget("account_box"));
         hbox->pack_start(*comboAccount);
-	Gtk::HBox* hbox2=
-		dynamic_cast<
-		Gtk::HBox*>(main_xml->get_widget("passwd_box"));
-	entryPasswd = Gtk::manage(new Sexy::IconEntry());
-	hbox2->pack_start(*entryPasswd);
-	entryPasswd->set_visibility(false);
-	Gtk::Image* icon =Gtk::manage(new Gtk::Image(Gtk::Stock::DIALOG_AUTHENTICATION,Gtk::ICON_SIZE_MENU));
-	icon->show();
-	entryPasswd->set_icon(Sexy::ICON_ENTRY_PRIMARY,icon);
-	/*
-        entryPasswd =
+        Gtk::HBox* hbox2 =
                 dynamic_cast <
-                Gtk::Entry * > (main_xml->get_widget("entryPasswd"));
-	*/
+                Gtk::HBox* > (main_xml->get_widget("passwd_box"));
+        entryPasswd = Gtk::manage(new Sexy::IconEntry());
+        hbox2->pack_start(*entryPasswd);
+        entryPasswd->set_visibility(false);
+        Gtk::Image* icon = Gtk::manage(new Gtk::Image(Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_MENU));
+        icon->show();
+        entryPasswd->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
+        /*
+               entryPasswd =
+                       dynamic_cast <
+                       Gtk::Entry * > (main_xml->get_widget("entryPasswd"));
+        */
         comboAccount->signal_changed().
         connect(sigc::mem_fun(*this, &MainWindow::on_account_changed));
         USERLIST & userlist = bodies.getUserList();
@@ -174,6 +173,9 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
         entryPort = dynamic_cast<Gtk::Entry*>
                     (main_xml->get_widget("entry_port"));
 
+        entryPort->signal_insert_text().connect(
+                sigc::bind(sigc::mem_fun(*this, &MainWindow::on_entry_port_insert_text), entryPort));
+
         Gtk::Button* button_clean = dynamic_cast<Gtk::Button*>
                                     (main_xml->get_widget("button_clean"));
 
@@ -189,19 +191,25 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
         /** 第三页标签*/
         Gtk::Widget * widget = Gtk::manage(main_xml->get_widget("vbMain"));
 
-	Gtk::HBox* hboxfiler=dynamic_cast<Gtk::HBox*>
-			(main_xml->get_widget("filter_box"));
-	entryFilter = Gtk::manage(new Sexy::IconEntry());
-	hboxfiler->pack_start(*entryFilter);
-	entryFilter->add_clear_button();
-	icon=Gtk::manage(new Gtk::Image(Gtk::Stock::FIND,Gtk::ICON_SIZE_MENU));
-	icon->show();
-	entryFilter->set_icon(Sexy::ICON_ENTRY_PRIMARY,icon);
-	
-	/*
-        entryFilter = dynamic_cast<Gtk::Entry*>
-                      (main_xml->get_widget("entryFilter"));
-	      */
+        Gtk::HBox* hboxfiler = dynamic_cast<Gtk::HBox*>
+                               (main_xml->get_widget("filter_box"));
+
+        entryFilter = Gtk::manage(new Sexy::IconEntry());
+
+        hboxfiler->pack_start(*entryFilter);
+
+        entryFilter->add_clear_button();
+
+        icon = Gtk::manage(new Gtk::Image(Gtk::Stock::FIND, Gtk::ICON_SIZE_MENU));
+
+        icon->show();
+
+        entryFilter->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
+
+        /*
+               entryFilter = dynamic_cast<Gtk::Entry*>
+                             (main_xml->get_widget("entryFilter"));
+              */
 
         entryFilter->signal_changed().connect(sigc::mem_fun(*this, &MainWindow::on_entryFilter_changed));
 
@@ -338,7 +346,7 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
         set_icon(pix);
 
         add
-                (*main_notebook);
+        (*main_notebook);
 
         show_all();
 }
@@ -364,16 +372,15 @@ void MainWindow::on_login()
         server = entryServer->get_text();
         port = entryPort->get_text();
 
-        if (name.empty() || passwd.empty())
-        {
+        if (name.empty() || passwd.empty()) {
                 return ;
         }
 
         GUnit::init(name.c_str());
+
         bodies.loadAccountTag();
 
-        if (keepMe->get_active() | keeppasswd->get_active())
-        {
+        if (keepMe->get_active() || keeppasswd->get_active()) {
                 USERLIST & userlist = bodies.getUserList();
                 USERLIST::iterator iter =
                         find(userlist.begin(), userlist.end(), name);
@@ -387,22 +394,21 @@ void MainWindow::on_login()
                 if (!port.empty())
                         bodies.setAccountTag("port", port);
 
-                if (keeppasswd->get_active())
-                {
+                if (keeppasswd->get_active()) {
                         bodies.setAccountTag("keeppasswd", "true");
                         bodies.setAccountTag("passwd", passwd);
-                }
-                else
-                {
+                } else {
                         bodies.setAccountTag("keeppasswd", "false");
                         bodies.setAccountTag("passwd", "xxxxxxx");
                 }
         }
 
+        bodies.setAccountTag("name", name);
+
         bodies.login(name, passwd);
 }
 
-void MainWindow::on_initalize()
+void MainWindow::on_initialize()
 {
         list_view->loadBlistTag();
         const std::string & sound = bodies.getAccountTag("sound");
@@ -426,16 +432,14 @@ void MainWindow::on_login_finial()
 
 void MainWindow::on_account_changed()
 {
-        if (!comboAccount->get_active_text().empty())
-        {
+        if (!comboAccount->get_active_text().empty()) {
                 Glib::ustring name = comboAccount->get_entry()->get_text();
                 printf("select name %s\n", name.c_str());
                 GUnit::init(name.c_str());
                 bodies.loadAccountTag();
                 std::string keep_passwd = bodies.getAccountTag("keeppasswd");
 
-                if ("true" == keep_passwd)
-                {
+                if ("true" == keep_passwd) {
                         keepMe->set_active();
                         keeppasswd->set_active();
                         std::string passwd_ = bodies.getAccountTag("passwd");
@@ -452,9 +456,7 @@ void MainWindow::on_account_changed()
                                 entryPort->set_text(port_);
                         else
                                 entryPort->set_text("");
-                }
-                else
-                {
+                } else {
                         keepMe->set_active(false);
                         keeppasswd->set_active(false);
                 }
@@ -469,8 +471,7 @@ void MainWindow::set_logo(const std::string & iconpath)
         //VCard *vcard = bodies.get_vcard();
         //Glib::RefPtr<Gdk::Pixbuf> pix;
 
-        if (!iconpath.empty())
-        {
+        if (!iconpath.empty()) {
                 logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
 
                 /*
@@ -484,8 +485,7 @@ void MainWindow::set_logo(const std::string & iconpath)
                    vcard->setPhoto(type,binval);
                    bodies.get_cardManage().store_vcard(vcard);
                    */
-        }
-        else
+        } else
                 logo =
                         Gdk::Pixbuf::
                         create_from_file(DATA_DIR "/images/avatar.png");
@@ -529,6 +529,22 @@ void MainWindow::set_label()
 
 }
 
+void MainWindow::on_entry_port_insert_text(const Glib::ustring& f_str, int* f_pos, Entry* f_entry)
+{
+        gchar c = *(f_str.c_str());
+
+        if (c < 0x30 || c > 0x39) {
+                // XXX how to show it immediately ?
+                //GtkTooltips* tip = gtk_tooltips_new();
+                //gtk_tooltips_set_tip(tip, f_entry, "please input digital!", NULL);
+                //gtk_tooltips_enable(tip);
+
+                if (*f_pos < 4) { // skip the text
+                        f_entry->delete_text(*f_pos - 1, *f_pos);
+                }
+        }
+}
+
 bool MainWindow::on_delete_event(GdkEventAny *)
 {
         hide();
@@ -556,8 +572,7 @@ bool MainWindow::on_key_press_event(GdkEventKey * ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval)
-        {
+        switch (ev->keyval) {
 
         case GDK_Return:
 
@@ -593,8 +608,7 @@ void MainWindow::on_entryStatus_change()
         Glib::ustring msg_ = statusEntry->get_text();
         bodies.set_status(status_, msg_);
 
-        if (!msg_.empty())
-        {
+        if (!msg_.empty()) {
                 char buf[512];
                 snprintf(buf, 512, "%s/StatusMsgFile",
                          GUnit::getUserPath());
@@ -633,8 +647,7 @@ bool MainWindow::statusMsgWidgetTimeout()
         /** 用于计算是否达到TIMEOUT所指的分钟时间，因为超时是每分钟
          * 调用，所以这里只有用检测的办法达到第N分钟才设置状态*/
 
-        if (config.TIMECOUNT != TIMEOUT)
-        {
+        if (config.TIMECOUNT != TIMEOUT) {
                 config.TIMECOUNT = config.TIMECOUNT + 1;
                 //printf(" timecout is %d\n",config.TIMECOUNT);
                 return true;
@@ -649,18 +662,15 @@ bool MainWindow::statusMsgWidgetTimeout()
         snprintf(buf, 512, "%s/StatusMsgFile", GUnit::getUserPath());
         std::ifstream msgfile(buf);
 
-        if (!msgfile)
-        {
+        if (!msgfile) {
                 printf("not context\n");
                 return true;
         }
 
         std::string line;
 
-        if (msgfile)
-        {
-                while (getline(msgfile, line))
-                {
+        if (msgfile) {
+                while (getline(msgfile, line)) {
                         //std::cout<<"read line is "<<line<<std::endl;
                         number++;
                 }
@@ -677,8 +687,7 @@ bool MainWindow::statusMsgWidgetTimeout()
 
         msgfile.open(buf);
 
-        for (int i = 0; i <= linenum; i++)
-        {
+        for (int i = 0; i <= linenum; i++) {
                 getline(msgfile, line);
                 //std::cout<<"read line is "<<i<<"  "<<line<<std::endl;
         }
@@ -715,12 +724,9 @@ void MainWindow::setStatusMsg(const std::string & msg)
 
 void MainWindow::on_btstatusmsgmanager_clicked()
 {
-        if (NULL == statusMsgWidget)
-        {
+        if (NULL == statusMsgWidget) {
                 statusMsgWidget = new StatusMsgWidget(this);
-        }
-        else
-        {
+        } else {
                 statusMsgWidget->raise();
         }
 
@@ -740,13 +746,10 @@ void MainWindow::on_btlistexpand_clicked()
 
 void MainWindow::on_btlistshowoffline_clicked()
 {
-        if (config.SHOWALLFRIEND)
-        {
+        if (config.SHOWALLFRIEND) {
                 list_view->showOffline(false);
                 config.SHOWALLFRIEND = false;
-        }
-        else
-        {
+        } else {
                 list_view->showOffline(true);
                 config.SHOWALLFRIEND = true;
         }
@@ -778,46 +781,42 @@ void MainWindow::on_btnLogo_clicked()
 
         int result = dialog.run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        std::string filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
-                        this->set_logo(filename);
-                        bodies.setAccountTag("icon", filename);
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                std::string filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
+                this->set_logo(filename);
+                bodies.setAccountTag("icon", filename);
 
 #if 0
 
-                        const VCard *vcard = bodies.get_vcard();
-                        std::ifstream fin(filename.c_str(), ios::binary);
-                        const std::string type = "image/png";
-                        std::string binval;
-                        std::copy((std::istreambuf_iterator<char>(fin)),
-                                  std::istreambuf_iterator<char>(),
-                                  std::inserter(binval, binval.begin()));
-                        fin.close();
-                        std::cout << "photo size is " << binval.size() << std::endl;
-                        //vcard->setPhoto(type,binval);
-                        vcard->setNickname("cyclone blog");
-                        bodies.get_cardManage().store_vcard(vcard);
+                const VCard *vcard = bodies.get_vcard();
+                std::ifstream fin(filename.c_str(), ios::binary);
+                const std::string type = "image/png";
+                std::string binval;
+                std::copy((std::istreambuf_iterator<char>(fin)),
+                          std::istreambuf_iterator<char>(),
+                          std::inserter(binval, binval.begin()));
+                fin.close();
+                std::cout << "photo size is " << binval.size() << std::endl;
+                //vcard->setPhoto(type,binval);
+                vcard->setNickname("cyclone blog");
+                bodies.get_cardManage().store_vcard(vcard);
 #endif
 
 
-                        break;
-                }
+                break;
+        }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        std::cout << "Cannel choose icon" << std::endl;
-                        break;
-                }
+        case (Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cannel choose icon" << std::endl;
+                break;
+        }
 
-        default:
-                {
+        default: {
 
-                        std::cout << "Cannel choose icon" << std::endl;
-                        break;
-                }
+                std::cout << "Cannel choose icon" << std::endl;
+                break;
+        }
         }
 }
 
@@ -941,29 +940,25 @@ void MainWindow::on_buddyRemove_activate()
 
         int result = dialog.run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        const JID *jid = new JID(name);
-                        bodies.get_client().rosterManager()->
-                        unsubscribe(*jid, "");
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                const JID *jid = new JID(name);
+                bodies.get_client().rosterManager()->
+                unsubscribe(*jid, "");
 
-                        bodies.get_client().rosterManager()->remove
-                        (*jid);
+                bodies.get_client().rosterManager()->remove
+                (*jid);
 
-                        break;
-                }
+                break;
+        }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        break;
-                }
+        case (Gtk::RESPONSE_CANCEL): {
+                break;
+        }
 
-        default:
-                {
-                        break;
-                }
+        default: {
+                break;
+        }
         }
 
 
@@ -995,10 +990,9 @@ void MainWindow::on_buddyAdd_activate()
         {
 
         public:
-                ModelColumns()
-                {
+                ModelColumns() {
                         add
-                                (m_col_string);
+                        (m_col_string);
                 }
 
                 Gtk::TreeModelColumn < Glib::ustring > m_col_string;
@@ -1012,8 +1006,7 @@ void MainWindow::on_buddyAdd_activate()
         StringList groupList = list_view->getGroupList();
         StringList::iterator iter = groupList.begin();
 
-        for (; iter != groupList.end(); iter++)
-        {
+        for (; iter != groupList.end(); iter++) {
                 row = *(m_refTreeModel->append());
                 row[m_Columns.m_col_string] = *iter;
         }
@@ -1023,53 +1016,48 @@ void MainWindow::on_buddyAdd_activate()
         addBuddyDialog->raise();
         int result = addBuddyDialog->run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        std::cout << "OK clicked" << std::endl;
-                        Gtk::Entry * name_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addDialog_xml->get_widget("add_entry_name"));
-                        Gtk::Entry * alias_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addDialog_xml->
-                                   get_widget("add_entry_nickname"));
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                std::cout << "OK clicked" << std::endl;
+                Gtk::Entry * name_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addDialog_xml->get_widget("add_entry_name"));
+                Gtk::Entry * alias_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addDialog_xml->
+                           get_widget("add_entry_nickname"));
 
-                        Glib::ustring name = name_entry->get_text();
-                        Glib::ustring alias = alias_entry->get_text();
-                        Glib::ustring group =
-                                comboGroup->get_entry()->get_text();
-                        printf("name_entry %s\n", name.c_str());
-                        printf("alias_entry %s\n", alias.c_str());
+                Glib::ustring name = name_entry->get_text();
+                Glib::ustring alias = alias_entry->get_text();
+                Glib::ustring group =
+                        comboGroup->get_entry()->get_text();
+                printf("name_entry %s\n", name.c_str());
+                printf("alias_entry %s\n", alias.c_str());
 
-                        if (!name.empty())
-                        {
-                                JID *jid = new JID(name);
-                                StringList g;
-                                g.push_back(group);
-                                bodies.get_client().rosterManager()->
-                                subscribe(*jid, alias, g);
+                if (!name.empty()) {
+                        JID *jid = new JID(name);
+                        StringList g;
+                        g.push_back(group);
+                        bodies.get_client().rosterManager()->
+                        subscribe(*jid, alias, g);
 
-                        }
-
-
-                        break;
                 }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        std::cout << "Cancel clicked" << std::endl;
-                        break;
-                }
 
-        default:
-                {
-                        std::cout << "nothing clicked" << std::endl;
-                        break;
-                }
+                break;
+        }
+
+        case (Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cancel clicked" << std::endl;
+                break;
+        }
+
+        default: {
+                std::cout << "nothing clicked" << std::endl;
+                break;
+        }
         }
 
 }
@@ -1097,74 +1085,70 @@ void MainWindow::on_roomAdd_activate()
         addRoomDialog->raise();
         int result = addRoomDialog->run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        Gtk::Entry * room_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addRoom_xml->get_widget("room_entry"));
-                        Gtk::Entry * server_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addRoom_xml->get_widget("server_entry"));
-                        Gtk::Entry * passwd_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addRoom_xml->get_widget("pass_entry"));
-                        Gtk::Entry * alias_entry =
-                                dynamic_cast <
-                                Gtk::Entry *
-                                > (addRoom_xml->get_widget("alias_entry"));
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                Gtk::Entry * room_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addRoom_xml->get_widget("room_entry"));
+                Gtk::Entry * server_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addRoom_xml->get_widget("server_entry"));
+                Gtk::Entry * passwd_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addRoom_xml->get_widget("pass_entry"));
+                Gtk::Entry * alias_entry =
+                        dynamic_cast <
+                        Gtk::Entry *
+                        > (addRoom_xml->get_widget("alias_entry"));
 
-                        if (room_entry->get_text().empty())
-                                return ;
+                if (room_entry->get_text().empty())
+                        return ;
 
-                        ConferenceListItem CLitem;
+                ConferenceListItem CLitem;
 
-                        CLitem.name = alias_entry->get_text();
+                CLitem.name = alias_entry->get_text();
 
-                        if (CLitem.name.empty())
-                                CLitem.name = room_entry->get_text();
+                if (CLitem.name.empty())
+                        CLitem.name = room_entry->get_text();
 
-                        CLitem.nick = name_entry->get_text();
+                CLitem.nick = name_entry->get_text();
 
-                        CLitem.password = passwd_entry->get_text();
+                CLitem.password = passwd_entry->get_text();
 
-                        CLitem.jid =
-                                room_entry->get_text() + "@" +
-                                server_entry->get_text();
+                CLitem.jid =
+                        room_entry->get_text() + "@" +
+                        server_entry->get_text();
 
-                        CLitem.autojoin = true;
+                CLitem.autojoin = true;
 
 
-                        list_view->setBlistTag("room", CLitem.jid,
-                                               "nickname", CLitem.nick);
+                list_view->setBlistTag("room", CLitem.jid,
+                                       "nickname", CLitem.nick);
 
-                        list_view->setBlistTag("room", CLitem.jid,
-                                               "roomname", CLitem.name);
+                list_view->setBlistTag("room", CLitem.jid,
+                                       "roomname", CLitem.name);
 
-                        list_view->setBlistTag("room", CLitem.jid,
-                                               "passwd", CLitem.password);
+                list_view->setBlistTag("room", CLitem.jid,
+                                       "passwd", CLitem.password);
 
-                        list_view->setBlistTag("room", CLitem.jid,
-                                               "autojoin", "true");
+                list_view->setBlistTag("room", CLitem.jid,
+                                       "autojoin", "true");
 
-                        list_view->addRoom(CLitem);
+                list_view->addRoom(CLitem);
 
-                        break;
-                }
+                break;
+        }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        break;
-                }
+        case (Gtk::RESPONSE_CANCEL): {
+                break;
+        }
 
-        default:
-                {
-                        break;
-                }
+        default: {
+                break;
+        }
         }
 
 }
@@ -1213,14 +1197,11 @@ void MainWindow::on_sound_activate()
         Glib::RefPtr<Gtk::ToggleAction>melem =
                 Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mutt"));
 
-        if (melem->get_active())
-        {
+        if (melem->get_active()) {
                 sounds::mute(1);
                 config.MUTE = true;
                 bodies.setAccountTag("sound", "MUTE");
-        }
-        else
-        {
+        } else {
                 sounds::mute(0);
                 config.MUTE = false;
                 bodies.setAccountTag("sound", "ON");
@@ -1233,25 +1214,19 @@ void MainWindow::on_show_all_friends()
         Glib::RefPtr<Gtk::ToggleAction>melem =
                 Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("ShowOffline"));
 
-        if (melem->get_active())
-        {
+        if (melem->get_active()) {
                 if (config.SHOWALLFRIEND)
                         return ;
-                else
-                {
+                else {
                         list_view->showOffline(true);
                         config.SHOWALLFRIEND = true;
                 }
-        }
-        else
-        {
-                if (config.SHOWALLFRIEND)
-                {
+        } else {
+                if (config.SHOWALLFRIEND) {
                         list_view->showOffline(false);
                         list_view->showGroup(false);
                         config.SHOWALLFRIEND = false;
-                }
-                else
+                } else
                         return ;
 
         }
@@ -1278,20 +1253,18 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
         GtkWidget *widget;
         GtkMenu *menu;
 
-        if (SYSTEM_MENU == id)
-        {
+        if (SYSTEM_MENU == id) {
                 widget = GTK_WIDGET(buttonSystem->gobj());
                 //menu = systemMenu.gobj();
                 menu = systemMenu->gobj();
-        }
-        else
-        {
+        } else {
                 //widget = GTK_WIDGET(buttonUser->gobj());
                 //menu= userMenu.gobj();
         }
 
 
         gtk_widget_get_child_requisition(GTK_WIDGET(menu), &requisition);
+
         menu_height = requisition.height;
 
         gdk_window_get_origin(widget->window, &menu_xpos, &menu_ypos);
@@ -1318,13 +1291,10 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 
 void MainWindow::toggle_visibility()
 {
-        if (this->is_visible())
-        {
+        if (this->is_visible()) {
                 this->get_position(win_x, win_y);
                 this->hide();
-        }
-        else
-        {
+        } else {
                 this->move(win_x, win_y);
                 this->show();
         }
@@ -1432,19 +1402,19 @@ void MainWindow::register_stock_items()
         (stock_id_disco, icon_set);
 
         Gtk::Stock::add
-                (Gtk::StockItem( stock_id_chat, _("CHAT")));
+        (Gtk::StockItem( stock_id_chat, _("CHAT")));
 
         Gtk::Stock::add
-                (Gtk::StockItem( stock_id_log, _("LOG")));
+        (Gtk::StockItem( stock_id_log, _("LOG")));
 
         Gtk::Stock::add
-                (Gtk::StockItem( stock_id_block, _("BLOCK")));
+        (Gtk::StockItem( stock_id_block, _("BLOCK")));
 
         Gtk::Stock::add
-                (Gtk::StockItem( stock_id_type, _("TYPE")));
+        (Gtk::StockItem( stock_id_type, _("TYPE")));
 
         Gtk::Stock::add
-                (Gtk::StockItem( stock_id_disco, _("Disco")));
+        (Gtk::StockItem( stock_id_disco, _("Disco")));
 
 
         factory->add_default();

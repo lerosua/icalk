@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  SmileTree.h
-* 
+*
 *    Description:  表情符号查找树
-* 
+*
 *        Version:  1.0
 *        Created:  2007年10月02日 14时05分58秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  wind (xihe), xihels@gmail.com
 *        Company:  cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -33,12 +33,10 @@ class Smile
 {
 
 public:
-        Smile(const string& filename): val(filename)
-        {}
+        Smile(const string& filename): val(filename) {}
 
         string val;
-        Gtk::Image* getSmileImage()
-        {
+        Gtk::Image* getSmileImage() {
                 return getSmil(val.c_str());
         }
 };
@@ -56,8 +54,7 @@ public:
         template <typename posT>
         Smile* find_smile(posT iter, posT end, int& key_len);
 
-        SMILELIST& getSmileList()
-        {
+        SMILELIST& getSmileList() {
                 return smilelist;
         }
 
@@ -103,8 +100,7 @@ Smile* SmileTree<T>::find_smile(posT iter, posT end, int& key_len)
         posT tmp = key;
         ITEM* item = &head;
 
-        for (key_len = 0; tmp != end ; ++tmp, key_len++)
-        {
+        for (key_len = 0; tmp != end ; ++tmp, key_len++) {
                 item = find_item(item->left, *tmp);
 
                 if (NULL == item)
@@ -125,8 +121,7 @@ SmileTree<T>::SmileTree(const std::string& theme):
         std::ifstream file(buf);
         std::string line;
 
-        while (getline(file, line))
-        {
+        while (getline(file, line)) {
                 parser(line);
         }
 }
@@ -180,12 +175,10 @@ void SmileTree<T>::insert(const Glib::ustring& action, Smile* smile)
         ITEM* last = NULL;
         ITEM* first = &head;
 
-        for (; text != action.end(); ++text)
-        {
+        for (; text != action.end(); ++text) {
                 last = find_item(first->left, *text);
 
-                if (NULL == last)
-                {
+                if (NULL == last) {
                         last = new ITEM(*text);
                         last->right = first->left;
                         first->left = last;

@@ -3,7 +3,7 @@
 *
 *       Filename:  TalkRoomHandler.h
 *
-*    Description: 聊天室中事件处理类 
+*    Description: 聊天室中事件处理类
 *
 *        Version:  1.0
 *        Created:  2007年05月24日 19时43分28秒 CST
@@ -45,16 +45,14 @@ class TalkRoomHandler: public MUCRoomHandler
 {
 
 public:
-        TalkRoomHandler()
-        {}
+        TalkRoomHandler() {}
 
         typedef std::map<std::string, RoomItem*> ROOMLIST;
 
         /** 用于依次将加入所有的房间*/
         void joinRoom();
         /** 返回已存的房间列表 */
-        ROOMLIST& getRoomList()
-        {
+        ROOMLIST& getRoomList() {
                 return roomList;
         }
 
@@ -65,8 +63,7 @@ public:
         RoomItem* findRoom(const MUCRoom* room) const;
 
         template <class Tfun>
-        void for_each(Tfun fun) const
-        {
+        void for_each(Tfun fun) const {
                 std::for_each(roomList.begin(), roomList.end(), fun);
         }
 

@@ -63,8 +63,7 @@ void sounds::play(int code)
 
         char filename[255];
 
-        switch (code)
-        {
+        switch (code) {
 
         case ARRIVE_SOUND:
                 snprintf(filename, 255, "%sarrive.wav", GUnit::getSoundPath());
@@ -97,18 +96,14 @@ void sounds::do_play(const char* filename)
         int status;
         pid = fork();
 
-        if ( -1 == pid)
-        {
+        if ( -1 == pid) {
                 perror("Fork falid to creat a process");
-        }
-        else if (0 == pid)
-        {
+        } else if (0 == pid) {
                 close(0);
                 close(1);
                 close(2);
 
-                if (execlp(command, command, filename, NULL) < 0)
-                {
+                if (execlp(command, command, filename, NULL) < 0) {
                         perror("Execl failed");
                         exit (1);
                 }

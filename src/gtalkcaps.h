@@ -35,19 +35,16 @@ public:
         GtalkCaps(Tag* tag);
         virtual ~GtalkCaps();
 
-        const std::string& ext()const
-        {
+        const std::string& ext()const {
                 return m_ext;
         }
 
-        const std::string& ver()const
-        {
+        const std::string& ver()const {
                 return m_ver;
         }
 
         virtual const std::string& filterString() const;
-        virtual StanzaExtension* newInstance(const Tag* tag) const
-        {
+        virtual StanzaExtension* newInstance(const Tag* tag) const {
                 return new GtalkCaps(tag);
         };
 

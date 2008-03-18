@@ -17,8 +17,7 @@ bool TreeModelDnd::row_draggable_vfunc(const Gtk::TreeModel::Path& path)const
         TreeModelDnd* unconstThis = const_cast<TreeModelDnd*>(this);
         const_iterator iter = unconstThis->get_iter(path);
 
-        if (iter)
-        {
+        if (iter) {
                 Row row = *iter;
                 int status_ = row[buddyColumns.status];
                 //printf("status_ is %d\n",status_);
@@ -38,14 +37,11 @@ bool TreeModelDnd::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 
         bool dest_is_not_top_level = dest_parent.up();
 
-        if (!dest_is_not_top_level || dest_parent.empty())
-        {
+        if (!dest_is_not_top_level || dest_parent.empty()) {
                 //The user wants to move something to the top-level.
                 //Let's always allow that.
                 //printf(" drag this \n");
-        }
-        else
-        {
+        } else {
                 TreeModelDnd* unconstThis = const_cast<TreeModelDnd*>(this);
                 const_iterator iter_dest_parent = unconstThis->get_iter(dest_parent);
                 Row row = *iter_dest_parent;
@@ -54,8 +50,7 @@ bool TreeModelDnd::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
                 int status_ = row[buddyColumns.status];
                 //printf("status_ is %d\n",status_);
 
-                if (iter_dest_parent)
-                {
+                if (iter_dest_parent) {
                         return true;
                 }
         }
@@ -75,20 +70,20 @@ bool TreeModelDnd::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 BuddyColumns::BuddyColumns()
 {
         add
-                (icon);
+        (icon);
 
         add
-                (nickname);
+        (nickname);
 
         add
-                (audioicon);
+        (audioicon);
 
         add
-                (id);
+        (id);
 
         add
-                (status);
+        (status);
 
         add
-                (type);
+        (type);
 }

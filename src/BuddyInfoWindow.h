@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  BuddyInfoWindow.h
-* 
+*
 *    Description:  用户信息面板
-* 
+*
 *        Version:  1.0
 *        Created:  2007年09月27日 20时12分38秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 

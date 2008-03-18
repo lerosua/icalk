@@ -1,22 +1,22 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  Unit.h
-* 
+*
 *    Description:  用于初始化工作
-* 
+*
 *        Version:  1.0
 *        Created:  2007年07月12日 22时17分41秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
-*/ 
+*/
 /*! @mainpage iCalk API Documentation
- * 
+ *
  * @section contents Contents
  * @ref intro_sec <br>
  * @ref test_sec <br>
@@ -61,38 +61,31 @@ class GUnit
 
 public:
         static void init(const char* user);
-        static const char* getImagePath()
-        {
+        static const char* getImagePath() {
                 return imagePath;
         }
 
-        static const char* getSoundPath()
-        {
+        static const char* getSoundPath() {
                 return soundPath;
         }
 
-        static const char* getHomePath()
-        {
+        static const char* getHomePath() {
                 return homePath;
         }
 
-        static const char* getUserPath()
-        {
+        static const char* getUserPath() {
                 return userPath;
         }
 
-        static const char* getLogPath()
-        {
+        static const char* getLogPath() {
                 return logPath;
         }
 
-        static const char* getIconPath()
-        {
+        static const char* getIconPath() {
                 return iconPath;
         }
 
-        static const char* getTempPath()
-        {
+        static const char* getTempPath() {
                 return tempPath;
         }
 

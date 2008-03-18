@@ -3,7 +3,7 @@
 *
 *       Filename:  ServerDiscoWindow.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年09月30日 16时02分04秒 CST
@@ -27,7 +27,7 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
         Gtk::VBox* vBox = dynamic_cast<Gtk::VBox*>(server_discovery_xml->get_widget("vBox"));
 
         add
-                (*vBox);
+        (*vBox);
 
         set_transient_for(*parent);
 
@@ -70,8 +70,7 @@ bool ServerDiscoWindow::on_key_press_event(GdkEventKey* ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval)
-        {
+        switch (ev->keyval) {
 
         case GDK_Escape:
                 on_btclose_clicked();

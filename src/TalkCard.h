@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  TalkCard.h
-* 
+*
 *    Description:  Talk版本的VCard处理类
-* 
+*
 *        Version:  1.0
 *        Created:  2007年06月30日 16时52分02秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 

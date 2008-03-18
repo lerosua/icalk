@@ -3,7 +3,7 @@
 
 
 #if defined __GNUC__ && __GNUC__ < 3
-#error This program will crash if compiled with g++ 2.x 
+#error This program will crash if compiled with g++ 2.x
 // see the dynamic_cast bug in the gtkmm FAQ
 #endif //
 #include "config.h"
@@ -48,8 +48,7 @@ SmileyWnd::SmileyWnd(MsgPage* page_) :
         SMILELIST::const_iterator iter = smilelist.begin();
         Glib::ustring tip;
 
-        for (int i = 0; iter != smilelist.end(); iter++, i++)
-        {
+        for (int i = 0; iter != smilelist.end(); iter++, i++) {
                 image = (*iter).second->getSmileImage();
                 image->set_alignment(0.5, 0.5);
                 image->set_padding(0, 0);
@@ -105,8 +104,7 @@ void SmileyWnd::on_smiley_clicked(Glib::ustring code)
 {
         hide();
 
-        if (NULL != page)
-        {
+        if (NULL != page) {
                 printf("insertSmiley code ? \n");
                 page->insertSmiley(code);
         }
@@ -128,18 +126,17 @@ bool SmileyWnd::on_key_press_event(GdkEventKey * ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval)
-        {
+        switch (ev->keyval) {
 
         case GDK_Escape:
                 hide();
 
-                if (NULL != page)
-                {
+                if (NULL != page) {
                         page = NULL;
                 }
 
         default:
+
                 return Gtk::Window::on_key_press_event(ev);
         }
 

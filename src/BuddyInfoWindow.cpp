@@ -65,8 +65,7 @@ BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_)
 
         int type_ = buddy->getType();
 
-        switch (type_)
-        {
+        switch (type_) {
 
         case TYPE_FRIEND:
                 msg_ = resources_ + "\n" + _("server: ") + server_ +
@@ -109,6 +108,7 @@ BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_)
         }
 
         infoBox->showGrayMsg(msg_);
+
         std::string nickname = buddy->get_nickname();
         msg_ = _("nick name: ") + nickname + "\n";
         infoBox->showGrayMsg(msg_);
@@ -139,8 +139,7 @@ bool BuddyInfoWindow::on_key_press_event(GdkEventKey* ev)
         if (ev->type != GDK_KEY_PRESS)
                 return Gtk::Window::on_key_press_event(ev);
 
-        switch (ev->keyval)
-        {
+        switch (ev->keyval) {
 
         case GDK_Escape:
                 on_btclose_clicked();

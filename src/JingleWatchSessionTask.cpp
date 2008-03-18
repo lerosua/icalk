@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleWatchSessionTask.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月23日 16时41分17秒

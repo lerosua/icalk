@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  TalkConnect.h
-* 
+*
 *    Description:  连接处理类
-* 
+*
 *        Version:  1.0
 *        Created:  2007年07月1日 16时52分02秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 #ifndef _TALKCONNECT_H_

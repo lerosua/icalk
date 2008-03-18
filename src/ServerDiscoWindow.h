@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  ServerDiscoWindow.h
-* 
+*
 *    Description:  发现服务窗口
-* 
+*
 *        Version:  1.0
 *        Created:  2007年09月30日 15时57分04秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -21,7 +21,7 @@
 
 #include <gtkmm.h>
 #include <libglademm/xml.h>
-#include <iostream> 
+#include <iostream>
 //#include <sigc++/compatibility.h>
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"

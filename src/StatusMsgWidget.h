@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  StatusMsgWidget.h
-* 
+*
 *    Description:  状态签名管理
-* 
+*
 *        Version:  1.0
 *        Created:  2007年09月27日 20时11分23秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -25,7 +25,7 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>
 #include <functional>
-#include <vector> 
+#include <vector>
 #define statusmsg_ui     DATA_DIR"/ui/statusMsg.glade"
 
 using namespace std;
@@ -79,15 +79,13 @@ protected:
 
 private:
 
-struct MsgColumns: public Gtk::TreeModel::ColumnRecord
-        {
-                MsgColumns()
-                {
+struct MsgColumns: public Gtk::TreeModel::ColumnRecord {
+                MsgColumns() {
                         add
-                                (num);
+                        (num);
 
                         add
-                                (message);
+                        (message);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> message;
@@ -104,15 +102,12 @@ private:
         /** 比较Message*/
 
 struct CompareMsg: public binary_function < Gtk::TreeModel::Row,
-                                const int, bool >
-        {
+                                const int, bool > {
                 explicit CompareMsg(const MsgColumns &
-                                    column_): column(column_)
-                {}
+                                    column_): column(column_) {}
 
                 bool operator () (const Gtk::TreeRow & lhs,
-                                  const int num) const
-                {
+                                  const int num) const {
                         return lhs[column.num] == num;
                 }
 

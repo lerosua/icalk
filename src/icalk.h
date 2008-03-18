@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  icalk.h
-* 
+*
 *    Description:  各种常量定义
-* 
+*
 *        Version:  1.0
 *        Created:  2008年02月22日 20时05分59秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -31,11 +31,10 @@ typedef list<std::string> USERLIST;
 
 
 /** 定义Buddy的一些类型*/
-enum BuddyType
-{ TYPE_FRIEND, TYPE_TRANPORT, TYPE_GROUPCHAT
-  , TYPE_BOT, TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
-  , TYPE_OTHER
-};
+enum BuddyType { TYPE_FRIEND, TYPE_TRANPORT, TYPE_GROUPCHAT
+                 , TYPE_BOT, TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
+                 , TYPE_OTHER
+               };
 /**定义Buddy的状态的类型，用于扩展组和聊天室*/
 #define STATUS_GROUP 9
 #define STATUS_ROOM 11
@@ -50,8 +49,8 @@ enum BuddyType
 using namespace gloox;
 
 /**
- * @brief 聊天室里成员的数据结构 
- * @param id full jid string, example : linuxcn@jabber.org/lerosua 
+ * @brief 聊天室里成员的数据结构
+ * @param id full jid string, example : linuxcn@jabber.org/lerosua
  * @param affiliation 成员角色，比如管理员，创建者，普通会员.
  * @param role  角色权利？ 比如，只浏览聊天室，可在聊天室发言，聊天室管理员?
  * @param flags  成员标识， 比如，成员改名，成员被踢，成员被屏蔽，成员角色被改变，房间被删除
@@ -59,8 +58,7 @@ using namespace gloox;
  * @param presence 成员的状态
  */
 
-typedef struct Member
-{
+typedef struct Member {
         std::string id;
         MUCRoomAffiliation affiliation;
         MUCRoomRole role;
@@ -74,6 +72,69 @@ Member;
 
 typedef std::map<std::string, Member> MemberMap;
 
+/**
+ * why need ## in front of __VA_ARGS__
+ * GCC4.1.1.pdf 236LINE
+ * 5.14 Macros with a Variable Number of Arguments.
+ */
+#ifdef __DEBUG_D
+
+#define DLOG(fmt, ...) \
+    { \
+        char buffer[36] = {0}; \
+        time_t t = time(NULL); \
+        strftime(buffer, 36, "%F %T ", localtime(&t)); \
+        fprintf(stderr, "%s", buffer); \
+        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
+        fprintf(stderr, fmt, ##__VA_ARGS__); \
+    }
+
+#define RLOG(fmt, ...) \
+    { \
+        char buffer[36] = {0}; \
+        time_t t = time(NULL); \
+        strftime(buffer, 36, "%F %T ", localtime(&t)); \
+        fprintf(stdout, "%s ", buffer); \
+        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
+        fprintf(stderr, fmt, ##__VA_ARGS__); \
+    }
+
+#elif __RELEASE_D
+
+#define DLOG(fmt, ...) \
+        ;
+
+#define RLOG(fmt, ...) \
+    { \
+        char buffer[36] = {0}; \
+        time_t t = time(NULL); \
+        strftime(buffer, 36, "%F %T ", localtime(&t)); \
+        fprintf(stdout, "%s ", buffer); \
+        fprintf(stdout, fmt, ##__VA_ARGS__); \
+    }
+
+#else // by default: __RELEASE_D and __DEBUG_D are not present in compilation
+
+#define DLOG(fmt, ...) \
+    { \
+        char buffer[36] = {0}; \
+        time_t t = time(NULL); \
+        strftime(buffer, 36, "%F %T ", localtime(&t)); \
+        fprintf(stderr, "%s", buffer); \
+        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
+        fprintf(stderr, fmt, ##__VA_ARGS__); \
+    }
+
+#define RLOG(fmt, ...) \
+    { \
+        char buffer[36] = {0}; \
+        time_t t = time(NULL); \
+        strftime(buffer, 36, "%F %T ", localtime(&t)); \
+        fprintf(stdout, "%s ", buffer); \
+        fprintf(stdout, fmt, ##__VA_ARGS__); \
+    }
+
+#endif
 
 #endif   /* ----- #ifndef ICALK_FILE_HEADER_INC  ----- */
 

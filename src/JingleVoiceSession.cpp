@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleVoiceSession.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月25日 11时50分20秒
@@ -60,8 +60,7 @@ void JingleVoiceSession::start()
 
 void JingleVoiceSession::accept()
 {
-        if (currentCall)
-        {
+        if (currentCall) {
                 currentCall->AcceptSession(currentCall->sessions()[0]);
                 phoneSessionClient->SetFocus(currentCall);
         }
@@ -70,8 +69,7 @@ void JingleVoiceSession::accept()
 
 void JingleVoiceSession::decline()
 {
-        if (currentCall)
-        {
+        if (currentCall) {
                 currentCall->RejectSession(currentCall->sessions()[0]);
         }
 
@@ -79,8 +77,7 @@ void JingleVoiceSession::decline()
 
 void JingleVoiceSession::terminate()
 {
-        if (currentCall)
-        {
+        if (currentCall) {
                 currentCall->Terminate();
         }
 }
@@ -109,41 +106,19 @@ void JingleVoiceSession::PhoneSessionStateChanged(cricket::Call* call, cricket::
         if ( !hasPeer(peers(), jid))
                 return ;
 
-        if (state == cricket::Session::STATE_INIT)
-        {}
+        if (state == cricket::Session::STATE_INIT) {}
 
-else if (state == cricket;: Session::STATE_SENTINITIATE)
-        {}
-        else if (state == cricket::Session::STATE_RECEIVEDINITIATE)
-        {
+else if (state == cricket;: Session::STATE_SENTINITIATE) {} else if (state == cricket::Session::STATE_RECEIVEDINITIATE) {
                 setCall(call);
-        }
-        else if (state == cricket::Session::STATE_SENTACCEPT)
-        {}
-        else if (state == cricket::Session::STATE_RECEIVEDACCEPT)
-        {
+        } else if (state == cricket::Session::STATE_SENTACCEPT) {} else if (state == cricket::Session::STATE_RECEIVEDACCEPT) {
                 //emit voiceSession->accepted();
-        }
-        else if (state == cricket::Session::STATE_SENTMODIFY)
-        {}
-        else if (state == cricket::Session::STATE_RECEIVEDMODIFY)
-        {}
-        else if (state == cricket::Session::STATE_RECEIVEDREJECT)
-        {
+        } else if (state == cricket::Session::STATE_SENTMODIFY) {} else if (state == cricket::Session::STATE_RECEIVEDMODIFY) {} else if (state == cricket::Session::STATE_RECEIVEDREJECT) {
                 //emit voiceSession->declined();
-        }
-        else if (state == cricket::Session::STATE_SENTREDIRECT)
-        {}
-        else if (state == cricket::Session::STATE_SENTTERMINATE)
-        {
+        } else if (state == cricket::Session::STATE_SENTREDIRECT) {} else if (state == cricket::Session::STATE_SENTTERMINATE) {
                 //emit voiceSession->terminated();
-        }
-        else if (state == cricket::Session::STATE_RECEIVEDTERMINATE)
-        {
+        } else if (state == cricket::Session::STATE_RECEIVEDTERMINATE) {
                 //emit voiceSession->terminated();
-        }
-        else if (state == cricket::Session::STATE_INPROGRESS)
-        {
+        } else if (state == cricket::Session::STATE_INPROGRESS) {
                 //emit voiceSession->sessionStarted();
         }
 }

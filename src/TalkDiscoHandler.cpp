@@ -47,8 +47,7 @@ void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& ite
         const Disco::ItemList& list = items.items();
         Disco::ItemList::const_iterator iter = list.begin();
 
-        for (; iter != list.end(); ++iter)
-        {
+        for (; iter != list.end(); ++iter) {
                 PBUG("jid = %s\n", (*iter)->jid().full().c_str());
 
                 //do something

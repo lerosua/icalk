@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  Bodies.h
-* 
+*
 *    Description:  主类,负责创建其它各个功能类.
-* 
+*
 *        Version:  1.0
 *        Created:  2007年06月22日 20时59分48秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  wind (xihe), xihels@gmail.com
 *        Company:  cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -58,7 +58,7 @@ public:
         /**得到全局的Bodies类*/
         static Bodies& Get_Bodies();
         /**进行登录的函数,程序由此开始*/
-        bool login(const std::string name, const std::string passwd);
+        bool login(const std::string& name, const std::string& passwd);
         /**退出登录*/
         void logout();
         /**读取文件中的Account结构*/
@@ -71,121 +71,74 @@ public:
         void saveUserList(const std::string& jid);
 
         /**得到好友列表的窗口*/
-        MainWindow& get_main_window()
-        {
+        MainWindow& get_main_window() {
                 return *main_window;
         }
 
         /**得到聊天窗口*/
-        MsgWindow& get_msg_window()
-        {
+        MsgWindow& get_msg_window() {
                 return *msg_window;
         }
 
         /**得到好友列表类*/
-        BuddyList& get_buddy_list()
-        {
+        BuddyList& get_buddy_list() {
                 return buddy_list;
         }
 
         /**得到消息处理类*/
-        TalkMsg& get_talkmsg()
-        {
+        TalkMsg& get_talkmsg() {
                 return talkmsg;
         }
 
         /**得到client类*/
-        Client& get_client()
-        {
+        Client& get_client() {
                 return *jclient;
         }
 
         /**得到聊天室处理类*/
-        TalkRoomHandler& getRoomHandler()
-        {
+        TalkRoomHandler& getRoomHandler() {
                 return roomHandler;
         }
 
         /**得到本人jid*/
-        JID& get_jid()
-        {
+        JID& get_jid() {
                 return *jid;
         }
 
         /** 从配置文件中得到相应的项目*/
-        const std::string getAccountTag(const std::string& name)
-        {
-                Tag* tmpTag = accountTag->findChild(name);
+        const std::string getAccountTag(const std::string& name) ;
 
-                if (tmpTag == NULL)
-                {
-                        //printf("findChild error\n");
-                        return std::string();
-                }
-
-                return tmpTag->cdata();
-        }
 
         /**设置配置文件中相应的项目*/
-        void setAccountTag(const std::string& name, const std::string& value)
-        {
-                Tag* tmpTag = accountTag->findChild(name);
-
-                if (tmpTag == NULL)
-                {
-                        tmpTag = new Tag(name, value);
-                        accountTag->addChild(tmpTag);
-                }
-                else
-                {
-                        tmpTag->setCData(value);
-                }
-
-                saveAccountTag();
-        }
+        void setAccountTag(const std::string& name, const std::string& value) ;
 
         /**设置本人的状态与签名档,并且保存到配置文件中*/
-        void set_status(Presence::PresenceType status_, Glib::ustring msg_ = "")
-        {
-                jclient->setPresence(status_, 1, msg_);
-                statusIcon->on_status_change(status_, jid->username(), msg_);
-                //setAccountTag("status",status_);
-                setAccountTag("message", msg_);
-        }
+        void set_status(Presence::PresenceType f_status, Glib::ustring f_msg = "") ;
 
         /** 返回文件传输处理类 */
-        TalkFT& getFThandler() const
-        {
+        TalkFT& getFThandler() const {
                 return *talkFT;
         }
 
         /**得到书签处理类*/
         //TalkBookMark&    get_bookmark()   { return *bookMark; }
         /**得到VCard管理类*/
-        TalkCard& get_cardManage()
-        {
+        TalkCard& get_cardManage() {
                 return *cardManage;
         }
 
         /**设置本人的VCard信息*/
         void set_vcard(const VCard*);
         /**得到本人的VCard*/
-        const VCard* get_vcard() const
-        {
+        const VCard* get_vcard() const {
                 return vcard;
         }
 
         /**发出获取本人VCard信息的命令*/
-        void fetch_self_vcard()
-        {
-                cardManage->fetch_vcard(*jid);
-        }
+        void fetch_self_vcard() ;
 
         void disco_node(const std::string& node);
-        void disconnect()
-        {
-                connectIO.disconnect();
-        }
+        void disconnect();
 
 private:
         /**
@@ -197,9 +150,11 @@ private:
          * @brief 主体中用于连接的函数，非阻塞型连接.
          * @param name 用户名
          * @param passwd 用户密码
+         * @param server 连接服务器的地址
+         * @param port 连接服务器的端口，默认 5222
          * @return 先不用理这个了。
          */
-        int connect(const char *name, const char* passwd);
+        int connect(const string& name, const string& passwd, const string& server, const int port);
 
 private:
         JID* jid;
@@ -210,7 +165,7 @@ private:
 
         BuddyList buddy_list;
 
-        TalkConnect talkconnect;
+        TalkConnect m_talkconnect;
         TalkMsg talkmsg;
         TalkRoomHandler roomHandler;
         TalkDiscoHandler discohandler;

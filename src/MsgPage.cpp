@@ -405,17 +405,13 @@ void MsgPage::showStatusBarMsg(const std::string& msg, unsigned int id)
 
 void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_, bool self)
 {
-        if (!isRoom)
-        {
+        if (!isRoom) {
                 Glib::RefPtr<Gdk::Pixbuf>pix_;
 
-                if (self)
-                {
+                if (self) {
                         setTitleColor(false);
                         pix_ = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
-                }
-                else
-                {
+                } else {
                         sounds::play(sounds::RECEIVE_SOUND);
                         setTitleColor(true);
                         //pix_ = buddy->getLogo()->scale_simple(30,30,Gdk::INTERP_NEAREST);
@@ -425,15 +421,14 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
                 //msgBox->insertImage(image);
                 if ((TYPE_GROUPCHAT != buddy->getType()) || self)
                         msgBox->showTitle(sender_, self);
-        }
-        else
-        {
+        } else {
                 sounds::play(sounds::RECEIVE_SOUND);
                 setTitleColor(true);
                 msgBox->showTitle(sender_, self);
         }
 
         msgBox->showMessage(msg_, time_);
+
         msglog->write(sender_, msg_);
 }
 
@@ -446,14 +441,11 @@ void MsgPage::showPicture(const char* picname, bool self)
 
         Glib::RefPtr<Gdk::Pixbuf>pix_;
 
-        if (self)
-        {
+        if (self) {
                 setTitleColor(false);
                 pix_ = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
                 sender = Bodies::Get_Bodies().get_jid().username();
-        }
-        else
-        {
+        } else {
                 sounds::play(sounds::RECEIVE_SOUND);
                 setTitleColor(true);
                 pix_ = buddy->getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
@@ -464,6 +456,7 @@ void MsgPage::showPicture(const char* picname, bool self)
         }
 
         Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
+
         msgBox->insertImage(image);
         msgBox->showTitle(sender, self);
         msgBox->insertImage(picimage);
@@ -479,25 +472,20 @@ void MsgPage::sendMessage()
         if (utext.empty())
                 return ;
 
-        if (!isRoom)
-        {
+        if (!isRoom) {
                 /*然后发送utext*/
 
-                if (buddy->get_session())
-                {
+                if (buddy->get_session()) {
                         buddy->get_session()->send(utext);
                         /**发出停止打字信号*/
                         buddy->setChatState( ChatStatePaused );
                 }
-        }
-        else
-        {
+        } else {
                 mucroom->send(utext);
         }
 
 
-        if (!isRoom)
-        {
+        if (!isRoom) {
                 std::string sender = Bodies::Get_Bodies().get_jid().username();
                 showMessage(sender, utext, TIME_NULL, MSG_ME);
                 sounds::play(sounds::SEND_SOUND);
@@ -541,18 +529,14 @@ void MsgPage::setTitleColor(bool hascolor)
 {
         Bodies::Get_Bodies().get_msg_window().setNewMsgTitle(hascolor);
 
-        if ((NULL != titlelable) && (hascolor != hasColor))
-        {
-                if (hascolor && !(inputMsgBox->is_focus()))
-                {
+        if ((NULL != titlelable) && (hascolor != hasColor)) {
+                if (hascolor && !(inputMsgBox->is_focus())) {
                         char* marktext = g_markup_printf_escaped("<span color='red'>%s</span>",
                                          titlelable->get_text().c_str());
                         titlelable->set_label(marktext);
                         hasColor = true;
                         g_free(marktext); // C free
-                }
-                else
-                {
+                } else {
                         titlelable->set_label(titlelable->get_text());
                         hasColor = false;
                 }
@@ -564,15 +548,12 @@ void MsgPage::close()
         msgBox->clear();
         inputMsgBox->clear();
 
-        if (!isRoom)
-        {
+        if (!isRoom) {
                 /**发出关闭对话框的信号给对方*/
                 //buddy->setChatState( ChatStateGone );
                 buddy->close_session();
                 buddy = NULL;
-        }
-        else
-        {
+        } else {
                 mucroom->closePage();
         }
 
@@ -599,8 +580,7 @@ bool MsgPage::on_memberList_double_click_event(GdkEventButton* ev)
 
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
-                        ev->type == GDK_3BUTTON_PRESS))
-        {
+                        ev->type == GDK_3BUTTON_PRESS)) {
                 std::cout << "点击成员" << mid << std::endl;
         }
 
@@ -674,31 +654,28 @@ void MsgPage::on_toolbar_image()
         //dialog.set_current_folder("~/Desktop");
         int result = dialog.run();
 
-        switch (result)
-        {
-        case (Gtk::RESPONSE_OK):
-                {
-                        filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
 
-                        break;
-                }
+                break;
+        }
 
-        case (Gtk::RESPONSE_CANCEL):
-                {
-                        std::cout << "Cannel choose icon" << std::endl;
-                        return ;
-                        //break;
-                }
+        case (Gtk::RESPONSE_CANCEL): {
+                std::cout << "Cannel choose icon" << std::endl;
+                return ;
+                //break;
+        }
 
-        default:
-                {
+        default: {
 
-                        std::cout << "Cannel choose icon" << std::endl;
-                        return ;
-                        //break;
-                }
+                std::cout << "Cannel choose icon" << std::endl;
+                return ;
+                //break;
+        }
         }
 
         std::cout << "选择文件： " << filename << std::endl;
+
         buddy->sendPicture(filename);
 }

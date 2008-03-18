@@ -3,7 +3,7 @@
 *
 *       Filename:  MsgBox.cpp
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2007年07月17日 22时47分13秒 CST
@@ -51,12 +51,10 @@ void MsgBox::showMessage(const Glib::ustring& msg_, const std::string& time_)
         int key_len = 0;
         Smile* smile = NULL;
 
-        while (first <= last)
-        {
+        while (first <= last) {
                 smile = smileTree.find_smile(iter, last, key_len);
 
-                if (NULL != smile)
-                {
+                if (NULL != smile) {
                         if (iter != first)
                                 showMessage(first, iter);
 
@@ -71,10 +69,8 @@ void MsgBox::showMessage(const Glib::ustring& msg_, const std::string& time_)
                 }
 
                 //没有找到，直接显示
-                if (iter == last)
-                {
-                        if (first != last)
-                        {
+                if (iter == last) {
+                        if (first != last) {
                                 showMessage(first, last);
                         }
 
@@ -145,8 +141,7 @@ void MsgBox::showTime(const std::string& time_)
 {
         char timetext[255];
 
-        if (time_.empty())
-        {
+        if (time_.empty()) {
 
                 /*设置时间戳*/
 
@@ -155,14 +150,13 @@ void MsgBox::showTime(const std::string& time_)
                 time(&now);
                 tmw = localtime(&now);
                 snprintf(timetext, 32, "%02d:%02d:%02d ", tmw->tm_hour, tmw->tm_min, tmw->tm_sec);
-        }
-        else
-        {
+        } else {
                 printf("Debug in time stamp\n");
                 snprintf(timetext, time_.size(), time_.c_str());
         }
 
         RefTag titlecolor = taglist.getTimeFont();
+
         Glib::RefPtr < Gtk::TextBuffer > buffer = get_buffer();
 
         Gtk::TextBuffer::iterator end = buffer->end();
@@ -227,8 +221,7 @@ void MsgBox::readline(int type)
         Gtk::TextBuffer::iterator first = buffer->begin();
         Gtk::TextBuffer::iterator last = buffer->end();
 
-        switch (type)
-        {
+        switch (type) {
 
         case DELETE_CHAR:
                 last.backward_char();
@@ -247,6 +240,7 @@ void MsgBox::readline(int type)
         }
 
         Glib::ustring text = buffer->get_text(first, last);
+
         buffer->set_text(text);
 
 }
@@ -260,27 +254,22 @@ void MsgBox::getText(Glib::ustring & text)
         Glib::RefPtr < Gtk::TextChildAnchor > anchor;
         gunichar c;
 
-        for (; first != last; ++first)
-        {
+        for (; first != last; ++first) {
                 c = first.get_char();
 
-                if (0xFFFC == c)
-                {
+                if (0xFFFC == c) {
                         anchor = first.get_child_anchor();
 
-                        if (anchor)
-                        {
+                        if (anchor) {
                                 data = (std::string*) anchor->get_data("shortcut");
                                 anchor->set_data("shortcur", NULL);
 
-                                if (NULL != data)
-                                {
+                                if (NULL != data) {
                                         text.append(*data);
                                         delete data;
                                 }
                         }
-                }
-                else
+                } else
                         text.push_back(c);
         }
 }

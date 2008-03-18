@@ -18,26 +18,22 @@ class ConfXml : public TagHandler
 {
 
 public:
-        ConfXml(): tagxml(0)
-        {
+        ConfXml(): tagxml(0) {
                 parser = new Parser(this);
         }
 
         /**通过调用得到XML转化为Tag类，并拷贝到本类的tagxml里*/
-        void handleTag(Tag* tag)
-        {
+        void handleTag(Tag* tag) {
                 tagxml = tag->clone();
         }
 
         /**将本类的Tag设置为给定的Tag类*/
-        void setTagXml(Tag* tag_)
-        {
+        void setTagXml(Tag* tag_) {
                 tagxml = tag_->clone();
         }
 
         /**得到本类的Tag*/
-        Tag* getTagXml()
-        {
+        Tag* getTagXml() {
                 return tagxml;
         }
 

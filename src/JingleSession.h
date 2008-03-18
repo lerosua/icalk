@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  jinglesession.h
-* 
+*
 *    Description:  Define a Jingle Session.
-* 
+*
 *        Version:  1.0
 *        Created:  2008年01月20日 22时09分05秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -47,7 +47,7 @@ public:
 public:
         /**
          * Return the type of Session(ex:share-file,voice,video,games)
-         * Note that you must return return the XML namespace that 
+         * Note that you must return return the XML namespace that
          * define the session: ex:(http://jabber.org/protocol/jingle/sessions/audio)
          * @cn 返回会话的类型(例如：文件传输，语音，视频，游戏)
          * 注意您必须返回定义会话的XML的名字空间：比如

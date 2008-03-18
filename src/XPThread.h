@@ -39,40 +39,33 @@ class XPthreadMutex
         XPthreadMutex& operator = (const XPthreadMutex& rhs);
 
 public:
-        XPthreadMutex(const pthread_mutexattr_t* attr = NULL)
-        {
+        XPthreadMutex(const pthread_mutexattr_t* attr = NULL) {
                 ::pthread_mutex_init(&mutex_, attr);
         }
 
-        ~XPthreadMutex()
-        {
+        ~XPthreadMutex() {
                 while (EBUSY == ::pthread_mutex_destroy(&mutex_) )
                         unLock();
 
         }
 
-        operator pthread_mutex_t () const
-        {
+        operator pthread_mutex_t () const {
                 return mutex_;
         }
 
-        operator pthread_mutex_t* ()
-        {
+        operator pthread_mutex_t* () {
                 return &mutex_;
         }
 
-        int lock ()
-        {
+        int lock () {
                 return ::pthread_mutex_lock(&mutex_);
         }
 
-        int tryLock()
-        {
+        int tryLock() {
                 return ::pthread_mutex_trylock(&mutex_);
         }
 
-        int unLock()
-        {
+        int unLock() {
                 return ::pthread_mutex_unlock(&mutex_);
         }
 };
@@ -81,19 +74,14 @@ class XMutexLock
 {
 
 public:
-        XMutexLock(XPthreadMutex& mutex) : mutex_(mutex)
-        {
+        XMutexLock(XPthreadMutex& mutex) : mutex_(mutex) {
                 mutex_.lock();
         }
 
-        ~XMutexLock()
-        {
-                try
-                {
+        ~XMutexLock() {
+                try {
                         mutex_.unLock();
-                }
-                catch (...)
-                {}
+                } catch (...) {}
 
         }
 
@@ -133,36 +121,29 @@ class XPthreadCond
         XPthreadCond& operator = (const XPthreadCond&);
 
 public:
-        XPthreadCond(const pthread_condattr_t* attr = NULL)
-        {
+        XPthreadCond(const pthread_condattr_t* attr = NULL) {
                 ::pthread_cond_init(&cond_, attr);
         }
 
-        ~XPthreadCond()
-        {
+        ~XPthreadCond() {
                 while (EBUSY == ::pthread_cond_destroy(&cond_))
                         sleep(1);
         }
 
-        operator pthread_cond_t () const
-        {
+        operator pthread_cond_t () const {
                 return cond_;
         }
 
-        operator pthread_cond_t* ()
-        {
+        operator pthread_cond_t* () {
                 return &cond_;
         }
 
-        XPthreadMutex& getMutex()
-        {
+        XPthreadMutex& getMutex() {
                 return mutex_;
         }
 
-        int wait(int second = 0)
-        {
-                if (mutex_.lock())
-                {
+        int wait(int second = 0) {
+                if (mutex_.lock()) {
                         perror("pthread_mutex_lock");
                         mutex_.unLock();
                         pthread_exit(NULL);
@@ -170,12 +151,9 @@ public:
 
                 int ret;
 
-                if (!second)
-                {
+                if (!second) {
                         ret = ::pthread_cond_wait(&cond_, mutex_);
-                }
-                else
-                {
+                } else {
 
                         struct timeval now;
 
@@ -187,17 +165,16 @@ public:
                 }
 
                 mutex_.unLock();
+
                 return ret;
 
         }
 
-        int wake()
-        {
+        int wake() {
                 return ::pthread_cond_signal(&cond_);
         }
 
-        int wakeAll()
-        {
+        int wakeAll() {
                 return ::pthread_cond_broadcast(&cond_);
         }
 };
@@ -207,23 +184,19 @@ class XPthreadKey
         typedef void (*FUN)(void*);
 
 public:
-        XPthreadKey(FUN fun = NULL)
-        {
+        XPthreadKey(FUN fun = NULL) {
                 pthread_key_create(&key, fun);
         }
 
-        ~XPthreadKey()
-        {
+        ~XPthreadKey() {
                 pthread_key_delete(key);
         }
 
-        int setSpecific(void* data)
-        {
+        int setSpecific(void* data) {
                 return pthread_setspecific(key, data);
         }
 
-        void* getSpecific()
-        {
+        void* getSpecific() {
                 return pthread_getspecific(key);
         }
 
@@ -241,8 +214,7 @@ class XPThread
         PMF pmf_;
         pthread_t id_;
         void * arg_;
-        static void* run(void* me)
-        {
+        static void* run(void* me) {
                 T* t = ((XPThread*)me)->worker_;
                 PMF pmf = ((XPThread*)me)->pmf_;
                 void* arg = ((XPThread*)me)->arg_;
@@ -251,28 +223,22 @@ class XPThread
 
 public:
         XPThread(T* w, PMF pmf, void* arg = NULL) :
-                        worker_(w), pmf_(pmf), arg_(arg), id_(0)
-        {}
+                        worker_(w), pmf_(pmf), arg_(arg), id_(0) {}
 
-        ~XPThread()
-        {
-                if (id_)
-                {
+        ~XPThread() {
+                if (id_) {
                         join();
                 }
         }
 
-        int start()
-        {
+        int start() {
                 return pthread_create(&id_, NULL, XPThread<T>::run, this);
         }
 
-        int join( void** value_ptr = NULL)
-        {
+        int join( void** value_ptr = NULL) {
                 int ret = 0;
 
-                if (id_)
-                {
+                if (id_) {
                         ret = ::pthread_join(id_, value_ptr) ;
                         id_ = 0;
                 }
@@ -280,19 +246,16 @@ public:
                 return ret;
         }
 
-        int cancel()
-        {
+        int cancel() {
                 return ::pthread_cancel(id_);
         }
 
-        int detach()
-        {
+        int detach() {
                 return ::pthread_detach(id_);
         }
 
 
-        pthread_t getId() const
-        {
+        pthread_t getId() const {
                 return id_;
         }
 };

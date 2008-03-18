@@ -1,18 +1,18 @@
 /*
 * =====================================================================================
-* 
+*
 *       Filename:  IbbStreamHandler.h
-* 
-*    Description:  
-* 
+*
+*    Description:
+*
 *        Version:  1.0
 *        Created:  2007年10月21日 15时39分04秒 CST
 *       Revision:  none
 *       Compiler:  gcc
-* 
+*
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
-* 
+*
 * =====================================================================================
 */
 
@@ -56,7 +56,7 @@ public:
         /**
          * @brief 当有新的IBB请求时的通知。使用 @link InBandBytestream::attachTo()@endlink将IBB
          * 绑定到一个 @link MessageSession @endlink中。
-         * 
+         *
          * @li 对于同步的 <br>InBandBytestreamHandler:
          * 如果返回值为True，则参数中的bytestream将被接收，而此InBandBytestreamHandler处理类
          * 将变成此InBandBytestream对象的主管。如果返回False，参数中的 InBandBytestream将

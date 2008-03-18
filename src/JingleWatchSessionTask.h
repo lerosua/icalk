@@ -3,7 +3,7 @@
 *
 *       Filename:  JingleWatchSessionTask.h
 *
-*    Description:  
+*    Description:
 *
 *        Version:  1.0
 *        Created:  2008年01月23日 16时37分03秒
