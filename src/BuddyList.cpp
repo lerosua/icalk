@@ -34,6 +34,16 @@ Buddy* BuddyList::find_buddy(const Glib::ustring& id) const
 
 }
 
+BuddyList::~BuddyList()
+{
+        BUDDY_MAP::iterator iter = buddy_map.begin();
+	for(; iter!=buddy_map.end();iter++)
+	{
+		delete iter->second;
+		buddy_map.erase(iter);
+	}
+}
+	
 void BuddyList::handleItemSubscribed(const JID & jid)
 {
         PBUG( "subscribed %s\n", jid.bare().c_str() );
@@ -66,7 +76,10 @@ void BuddyList::handleItemRemoved(const JID & jid)
         BUDDY_MAP::iterator iter = buddy_map.find(jid_str);
 
         if ( iter != buddy_map.end() )
+	{
+		delete (*iter).second;
                 buddy_map.erase(iter);
+	}
 
 }
 

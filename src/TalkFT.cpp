@@ -20,9 +20,8 @@ TalkFT::TalkFT(Client* client_): m_client(client_)
                 , m_bs_send(0)
                 , m_ft(NULL)
                 , m_server(NULL)
-		,recvCount(0)
-{
-}
+                , recvCount(0)
+{}
 
 TalkFT::~TalkFT()
 {
@@ -60,12 +59,13 @@ void *TalkFT::loopRecv(void *)
 
         while (R_RUNNING == RUN_RECV)
         {
-		if(recvCount==0)
-		{
-			bs_recvList.clear();
-			PBUG("all bytestream clear \n");
-			break;
-		}
+                if (recvCount == 0)
+                {
+                        bs_recvList.clear();
+                        PBUG("all bytestream clear \n");
+                        break;
+                }
+
                 std::list < Bytestream * >::iterator it =
                         bs_recvList.begin();
 
@@ -125,10 +125,11 @@ void* TalkFT::loopSend(void* )
 
 bool TalkFT::isSend(Bytestream* bs)
 {
-	/** 比较流的发起人，如果是自己则返回真。*/
-        return bs->initiator().bare() == Bodies::Get_Bodies().get_jid().bare(); 
+        /** 比较流的发起人，如果是自己则返回真。*/
+        return bs->initiator().bare() == Bodies::Get_Bodies().get_jid().bare();
 
 }
+
 void TalkFT::handleFTSend(const JID& to, const std::string m_file)
 {
 
@@ -158,9 +159,10 @@ void TalkFT::handleFTBytestream(Bytestream * bs)
 {
         PBUG("received bytestream type: %s from %s \n",
              bs->type() ==
-             Bytestream::S5B ? "sock5bytestream" : "ibbstream",bs->sid().c_str());
+             Bytestream::S5B ? "sock5bytestream" : "ibbstream", bs->sid().c_str());
         // 如果发起者是本人的话，则表示这是发送的流
-	if(isSend(bs))
+
+        if (isSend(bs))
                 m_bs_send = bs;
         else
                 bs_recvList.push_back(bs);
@@ -208,16 +210,18 @@ void TalkFT::handleFTRequest(const JID & from,
         case (Gtk::RESPONSE_OK):
                 {
                         m_ft->acceptFT(from, sid, SIProfileFT::FTTypeS5B);
-			recvCount++;
-                        if(R_RUNNING != RUN_RECV)
-			{
-				R_RUNNING=RUN_RECV;
-				recvThread.start();
-			}
-			std::ofstream* recvfile=new std::ofstream();
+                        recvCount++;
+
+                        if (R_RUNNING != RUN_RECV)
+                        {
+                                R_RUNNING = RUN_RECV;
+                                recvThread.start();
+                        }
+
+                        std::ofstream* recvfile = new std::ofstream();
                         //recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
-			rfilelist.insert(rfilelist.end(),RECVLIST::value_type(sid,recvfile));
+                        rfilelist.insert(rfilelist.end(), RECVLIST::value_type(sid, recvfile));
                         break;
                 }
 
@@ -249,49 +253,61 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 {
         PBUG("stream closed\n");
 
-	//区别对待发送流与接收流
-	if(isSend(s5b))
+        //区别对待发送流与接收流
+
+        if (isSend(s5b))
         {
-		/**如果发送列表为空，则关闭发送线程*/
+                /**如果发送列表为空，则关闭发送线程*/
 #if 0
-		bs_sendList.remove(s5b);
-		if(bs_sendList.empty())
-		{
-			S_RUNNING = STOP_STATUS;
-			sendThread.join();
-		}
+                bs_sendList.remove(s5b);
+
+                if (bs_sendList.empty())
+                {
+                        S_RUNNING = STOP_STATUS;
+                        sendThread.join();
+                }
+
 #endif
                 S_RUNNING = STOP_STATUS;
-		sendThread.join();
+
+                sendThread.join();
+
                 sendfile.close();
-		m_bs_send=NULL;
-		PBUG(" close send bs sid %s\n",s5b->sid().c_str());
+
+                m_bs_send = NULL;
+
+                PBUG(" close send bs sid %s\n", s5b->sid().c_str());
         }
-	else
+        else
         {
-		recvCount=recvCount-1;
+                recvCount = recvCount - 1;
 
-		/**如果接收文件数为0，则关闭接收线程*/
-		if(recvCount<=0)
-		{
-			R_RUNNING = STOP_STATUS;
-			recvThread.join();
-		}
+                /**如果接收文件数为0，则关闭接收线程*/
 
-		RECVLIST::iterator iter=rfilelist.find(s5b->sid());
-		if(iter!=rfilelist.end())
-		{
-			(*iter).second->close();
-			rfilelist.erase(iter);
-			PBUG(" close bs sid %s\n",s5b->sid().c_str());
+                if (recvCount <= 0)
+                {
+                        R_RUNNING = STOP_STATUS;
+                        recvThread.join();
+                }
 
-		}
-			PBUG(" close bs2 sid %s\n",s5b->sid().c_str());
+                RECVLIST::iterator iter = rfilelist.find(s5b->sid());
+
+                if (iter != rfilelist.end())
+                {
+                        (*iter).second->close();
+                        delete (*iter).second;
+                        rfilelist.erase(iter);
+                        PBUG(" close bs sid %s\n", s5b->sid().c_str());
+
+                }
+
+                PBUG(" close bs2 sid %s\n", s5b->sid().c_str());
 
                 //recvfile.close();
-		s5b->removeBytestreamDataHandler();
-		if (s5b)
-			s5b->close();
+                s5b->removeBytestreamDataHandler();
+
+                if (s5b)
+                        s5b->close();
         }
 
         //if (s5b)
@@ -302,15 +318,15 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 {
         PBUG("socks5 stream error\n");
-	handleBytestreamClose(s5b);
+        handleBytestreamClose(s5b);
 }
 
 void TalkFT::handleBytestreamData(Bytestream * s5b,
                                   const std::string & data)
 {
         //PBUG("received %d bytes of data\n\n", data.length());
-	RECVLIST::iterator iter=rfilelist.find(s5b->sid());
-        (*iter).second->write(data.c_str(),data.length());
+        RECVLIST::iterator iter = rfilelist.find(s5b->sid());
+        (*iter).second->write(data.c_str(), data.length());
         //(*iter).second << data;
 }
 
@@ -332,8 +348,8 @@ void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
         switch (result)
         {
         case (Gtk::RESPONSE_OK):
-	case(Gtk::RESPONSE_CANCEL):
-		break;
-	}
+                                case(Gtk::RESPONSE_CANCEL):
+                                                break;
+        }
 
 }
