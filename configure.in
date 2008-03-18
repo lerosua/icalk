@@ -39,6 +39,12 @@ PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
+AC_CHECK_LIB(sexymm,_init,SEXYMM="yes",,$SEXYMM_LIBS -lsexymm)
+if test "x$SEXYMM" = "xyes"; then
+	AC_DEFINE(HAVE_LIBSEXYMM,1,[Define if libsexymm is present])
+	SEXYMM_LIBS="-lsexymm"
+	AC_SUBST(SEXYMM_LIBS)
+fi
 dnl  Language Support 
 GETTEXT_PACKAGE=icalk
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Define the gettext package to be used])
@@ -47,7 +53,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AM_GLIB_GNU_GETTEXT
 
 
-AC_OUTPUT([Makefile 
+AC_CONFIG_FILES([Makefile 
            doc/Makefile
            po/Makefile.in
 	   src/Makefile
@@ -58,3 +64,4 @@ AC_OUTPUT([Makefile
 	   data/smiley/Makefile
 	   data/smiley/default/Makefile
 	   data/ui/Makefile])
+AC_OUTPUT

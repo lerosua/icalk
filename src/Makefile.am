@@ -76,4 +76,4 @@ noinst_HEADERS = \
 		 about.h 	\
 		 icalk.h 	\
 	         pixmaps.h
-icalk_LDADD = @LIBS@ @PACKAGE_LIBS@
+icalk_LDADD = @LIBS@ @PACKAGE_LIBS@ @SEXYMM_LIBS@

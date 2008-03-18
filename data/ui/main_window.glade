@@ -393,17 +393,14 @@
 		      </child>
 
 		      <child>
-			<widget class="GtkEntry" id="entryPasswd">
-			  <property name="width_request">140</property>
+			<widget class="GtkHBox" id="passwd_box">
 			  <property name="visible">True</property>
-			  <property name="can_focus">True</property>
-			  <property name="editable">True</property>
-			  <property name="visibility">False</property>
-			  <property name="max_length">0</property>
-			  <property name="text" translatable="yes"></property>
-			  <property name="has_frame">True</property>
-			  <property name="invisible_char">●</property>
-			  <property name="activates_default">False</property>
+			  <property name="homogeneous">False</property>
+			  <property name="spacing">0</property>
+
+			  <child>
+			    <placeholder/>
+			  </child>
 			</widget>
 			<packing>
 			  <property name="left_attach">1</property>
@@ -411,7 +408,6 @@
 			  <property name="top_attach">3</property>
 			  <property name="bottom_attach">4</property>
 			  <property name="x_options"></property>
-			  <property name="y_options"></property>
 			</packing>
 		      </child>
 		    </widget>
@@ -1336,17 +1332,14 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkEntry" id="entryFilter">
-		      <property name="width_request">200</property>
+		    <widget class="GtkHBox" id="filter_box">
 		      <property name="visible">True</property>
-		      <property name="can_focus">True</property>
-		      <property name="editable">True</property>
-		      <property name="visibility">True</property>
-		      <property name="max_length">10</property>
-		      <property name="text" translatable="yes"></property>
-		      <property name="has_frame">True</property>
-		      <property name="invisible_char">●</property>
-		      <property name="activates_default">False</property>
+		      <property name="homogeneous">False</property>
+		      <property name="spacing">0</property>
+
+		      <child>
+			<placeholder/>
+		      </child>
 		    </widget>
 		    <packing>
 		      <property name="padding">0</property>

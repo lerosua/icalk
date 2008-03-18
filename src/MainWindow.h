@@ -23,9 +23,9 @@
 
 #include <gtkmm.h>
 #include <libglademm/xml.h>
+#include <libsexymm/icon-entry.h>
 #include <iostream>
 #include <sigc++/connection.h> 
-//#include "TalkMenu.h"
 #include "StatusMsgWidget.h"
 #include "BuddyInfoWindow.h"
 #include "ServerDiscoWindow.h"
@@ -254,12 +254,14 @@ private:
         Glib::RefPtr<Gdk::Pixbuf> logo;
         Gtk::Notebook* main_notebook;
         Gtk::ComboBoxEntryText* comboAccount;
-        Gtk::Entry* entryPasswd;
+        //Gtk::Entry* entryPasswd;
+	Sexy::IconEntry* entryPasswd;
         Gtk::CheckButton* keeppasswd;
         Gtk::CheckButton* keepMe;
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
-        Gtk::Entry* entryFilter;
+        //Gtk::Entry* entryFilter;
+	Sexy::IconEntry* entryFilter;
         ServerDiscoWindow* discowindow;
         StatusMsgWidget *statusMsgWidget;
         sigc::connection msgTimeout;
