@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: italk 0.01\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-10 20:40+0800\n"
-"PO-Revision-Date: 2008-03-10 20:45+0800\n"
+"POT-Creation-Date: 2008-03-19 21:01+0800\n"
+"PO-Revision-Date: 2008-03-19 21:05+0800\n"
 "Last-Translator: lerosua <lerosua@gmail.com>\n"
 "Language-Team: yetist@gmail.com <yetist@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -18,46 +18,41 @@ msgstr ""
 "X-Poedit-Country: CHINA\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: ../src/BuddyList.cpp:103
-#: ../src/MainWindow.cpp:200
+#: ../src/BuddyList.cpp:130 ../src/MainWindow.cpp:261
 msgid "offline"
 msgstr "离线"
 
-#. PBUG(" %s subscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
-#: ../src/BuddyList.cpp:125
+#: ../src/BuddyList.cpp:157
 msgid "Information from stranger"
 msgstr "来自陌生人的消息"
 
 #. use markup
-#: ../src/BuddyList.cpp:126
+#: ../src/BuddyList.cpp:158
 msgid "Ask for a friend , press OK to add"
 msgstr "请求为好友，按确定加入"
 
-#. PBUG(" %s UnsubscriptionRequest with %s\n",jid.bare().c_str(),msg.c_str());
-#: ../src/BuddyList.cpp:157
+#: ../src/BuddyList.cpp:190
 msgid "The message from friend"
 msgstr "来自 好友的消息"
 
-#: ../src/BuddyList.cpp:158
+#: ../src/BuddyList.cpp:191
 msgid "Delete you from his buddy list"
 msgstr "将您从好友列表中删除"
 
-#: ../src/BuddyView.cpp:194
+#: ../src/BuddyView.cpp:209
 msgid "subscribed: </span>Both \n"
 msgstr "定阅: </span> 双向 \n"
 
-#: ../src/BuddyView.cpp:198
+#: ../src/BuddyView.cpp:213
 msgid "subscribed: </span>Delay \n"
 msgstr "定阅: </span> 推迟的 \n"
 
-#: ../src/BuddyView.cpp:202
+#: ../src/BuddyView.cpp:217
 msgid "Status ("
 msgstr "状态 ("
 
-#: ../src/BuddyView.cpp:610
-#: ../src/BuddyView.cpp:616
-#: ../src/BuddyView.cpp:779
-#: ../src/BuddyView.cpp:785
+#: ../src/BuddyView.cpp:695 ../src/BuddyView.cpp:701 ../src/BuddyView.cpp:902
+#: ../src/BuddyView.cpp:908
 #, c-format
 msgid ""
 "<span color='dim grey'>%s\n"
@@ -66,7 +61,7 @@ msgstr ""
 "<span color='dim grey'>%s\n"
 "离线</span>"
 
-#: ../src/BuddyView.cpp:772
+#: ../src/BuddyView.cpp:895
 #, c-format
 msgid ""
 "<span color='dim grey'>%s\n"
@@ -75,7 +70,7 @@ msgstr ""
 "<span color='dim grey'>%s\n"
 "未认证</span>"
 
-#: ../src/BuddyView.cpp:965
+#: ../src/BuddyView.cpp:1124
 #, c-format
 msgid ""
 "%s\n"
@@ -84,7 +79,7 @@ msgstr ""
 "%s\n"
 "<span color='dim grey'><small>远远离开</small></span>"
 
-#: ../src/BuddyView.cpp:972
+#: ../src/BuddyView.cpp:1132
 #, c-format
 msgid ""
 "%s\n"
@@ -93,7 +88,7 @@ msgstr ""
 "%s\n"
 "<span color='dim grey'><small>请勿打扰</small></span>"
 
-#: ../src/BuddyView.cpp:979
+#: ../src/BuddyView.cpp:1140
 #, c-format
 msgid ""
 "%s\n"
@@ -102,232 +97,211 @@ msgstr ""
 "%s\n"
 "<span color='dim grey'><small>离开</small></span>"
 
-#: ../src/BuddyInfoWindow.cpp:20
+#: ../src/BuddyInfoWindow.cpp:26
 #, c-format
 msgid "<span weight='heavy' color='black'>%s 's information</span>"
 msgstr "<span weight='heavy' color='black'>%s 的信息</span>"
 
-#: ../src/BuddyInfoWindow.cpp:24
+#: ../src/BuddyInfoWindow.cpp:33
 msgid "Friend's information"
 msgstr "好友的信息"
 
 #. *get the resources
-#: ../src/BuddyInfoWindow.cpp:46
+#: ../src/BuddyInfoWindow.cpp:60
 msgid "resources: "
 msgstr "资源： "
 
-#: ../src/BuddyInfoWindow.cpp:54
-#: ../src/BuddyInfoWindow.cpp:59
-#: ../src/BuddyInfoWindow.cpp:65
-#: ../src/BuddyInfoWindow.cpp:70
-#: ../src/BuddyInfoWindow.cpp:75
-#: ../src/BuddyInfoWindow.cpp:80
+#: ../src/BuddyInfoWindow.cpp:71 ../src/BuddyInfoWindow.cpp:77
+#: ../src/BuddyInfoWindow.cpp:84 ../src/BuddyInfoWindow.cpp:90
+#: ../src/BuddyInfoWindow.cpp:96 ../src/BuddyInfoWindow.cpp:102
 msgid "server: "
 msgstr "服务器: "
 
-#: ../src/BuddyInfoWindow.cpp:55
-#: ../src/BuddyInfoWindow.cpp:66
-#: ../src/BuddyInfoWindow.cpp:71
-#: ../src/BuddyInfoWindow.cpp:76
-#: ../src/BuddyInfoWindow.cpp:81
+#: ../src/BuddyInfoWindow.cpp:72 ../src/BuddyInfoWindow.cpp:85
+#: ../src/BuddyInfoWindow.cpp:91 ../src/BuddyInfoWindow.cpp:97
+#: ../src/BuddyInfoWindow.cpp:103
 msgid "full name: "
 msgstr "全名： "
 
-#: ../src/BuddyInfoWindow.cpp:58
+#: ../src/BuddyInfoWindow.cpp:76
 msgid " Type: Transport\n"
 msgstr "类型：代理\n"
 
-#: ../src/BuddyInfoWindow.cpp:64
+#: ../src/BuddyInfoWindow.cpp:83
 msgid "Type: GroupChat\n"
 msgstr "类型：群聊\n"
 
-#: ../src/BuddyInfoWindow.cpp:69
+#: ../src/BuddyInfoWindow.cpp:89
 msgid "Type: Bot\n"
 msgstr "类型：机器人\n"
 
-#: ../src/BuddyInfoWindow.cpp:74
+#: ../src/BuddyInfoWindow.cpp:95
 msgid "Type: MSN\n"
 msgstr "类型： MSN \n"
 
-#: ../src/BuddyInfoWindow.cpp:79
+#: ../src/BuddyInfoWindow.cpp:101
 msgid "Type: Other\n"
 msgstr "类型： 其它\n"
 
-#: ../src/BuddyInfoWindow.cpp:89
+#: ../src/BuddyInfoWindow.cpp:113
 msgid "nick name: "
 msgstr "昵称: "
 
-#: ../src/BuddyInfoWindow.cpp:93
+#: ../src/BuddyInfoWindow.cpp:117
 msgid "Status Message: "
 msgstr "状态消息: "
 
-#: ../src/BuddyInfoWindow.cpp:97
+#: ../src/BuddyInfoWindow.cpp:121
 msgid "picture ："
 msgstr ""
 "图片：\n"
 "    "
 
-#: ../src/MainWindow.cpp:190
+#: ../src/MainWindow.cpp:241
 msgid "online"
 msgstr "在线"
 
-#: ../src/MainWindow.cpp:192
+#: ../src/MainWindow.cpp:245
 msgid "alway"
 msgstr "唠叨"
 
-#: ../src/MainWindow.cpp:194
+#: ../src/MainWindow.cpp:249
 msgid "leave"
 msgstr "离开"
 
-#: ../src/MainWindow.cpp:196
+#: ../src/MainWindow.cpp:253
 msgid "don't disturb"
 msgstr "请勿打扰"
 
-#: ../src/MainWindow.cpp:198
+#: ../src/MainWindow.cpp:257
 msgid "extend leave"
 msgstr "远远离开"
 
-#: ../src/MainWindow.cpp:264
+#: ../src/MainWindow.cpp:342
 msgid "Friend list"
 msgstr "好友列表"
 
-#: ../src/MainWindow.cpp:613
-#: ../src/MsgPage.cpp:488
+#: ../src/MainWindow.cpp:760 ../src/MsgPage.cpp:612
 msgid "Please select a file"
 msgstr "请选择一个文件"
 
-#: ../src/MainWindow.cpp:762
+#: ../src/MainWindow.cpp:931
 msgid "delete friend"
 msgstr "删除好友"
 
-#: ../src/MainWindow.cpp:766
+#: ../src/MainWindow.cpp:936
 msgid "You will delete the friend "
 msgstr "您将删除这个好友"
 
-#: ../src/MainWindow.cpp:767
+#: ../src/MainWindow.cpp:937
 msgid ". are you ready to do this ?"
 msgstr "您确认要删除吗?"
 
-#: ../src/MainWindow.cpp:1180
+#: ../src/MainWindow.cpp:1405
 msgid "CHAT"
 msgstr "开聊"
 
-#: ../src/MainWindow.cpp:1181
+#: ../src/MainWindow.cpp:1408
 msgid "LOG"
 msgstr "日志"
 
-#: ../src/MainWindow.cpp:1182
+#: ../src/MainWindow.cpp:1411
 msgid "BLOCK"
 msgstr "屏蔽"
 
-#: ../src/MainWindow.cpp:1183
+#: ../src/MainWindow.cpp:1414
 msgid "TYPE"
 msgstr "类型"
 
-#: ../src/MainWindow.cpp:1184
+#: ../src/MainWindow.cpp:1417
 msgid "Disco"
 msgstr ""
 
-#. TrayMenu
-#: ../src/MainWindow.cpp:1199
+#: ../src/MainWindow.cpp:1435
 msgid "Info"
 msgstr "信息"
 
-#: ../src/MainWindow.cpp:1199
+#: ../src/MainWindow.cpp:1435
 msgid "About iCalk something"
-msgstr ""
+msgstr "关于iCalk的某些事"
 
-#: ../src/MainWindow.cpp:1201
+#: ../src/MainWindow.cpp:1439
 msgid "Preferences"
 msgstr "首选项"
 
-#: ../src/MainWindow.cpp:1203
+#: ../src/MainWindow.cpp:1443
 msgid "Quit"
 msgstr "退出"
 
-#. BuddyMenu
-#: ../src/MainWindow.cpp:1207
-#: ../src/TalkMenu.cpp:54
-#: ../data/ui/main_window.glade.h:27
+#: ../src/MainWindow.cpp:1448 ../data/ui/main_window.glade.h:27
 msgid "Information"
 msgstr "信息"
 
-#. RoomMenu
-#: ../src/MainWindow.cpp:1209
-#: ../src/MainWindow.cpp:1223
+#: ../src/MainWindow.cpp:1452 ../src/MainWindow.cpp:1477
 msgid "_Chat"
 msgstr "聊天"
 
-#: ../src/MainWindow.cpp:1211
-#: ../src/MainWindow.cpp:1229
+#: ../src/MainWindow.cpp:1456 ../src/MainWindow.cpp:1487
 msgid "_Log"
 msgstr "登入"
 
-#: ../src/MainWindow.cpp:1213
-#: ../src/MainWindow.cpp:1226
+#: ../src/MainWindow.cpp:1460 ../src/MainWindow.cpp:1482
 msgid "_Block"
 msgstr "屏蔽"
 
-#: ../src/MainWindow.cpp:1215
+#: ../src/MainWindow.cpp:1464
 msgid "_Type"
 msgstr "类型"
 
-#: ../src/MainWindow.cpp:1217
+#: ../src/MainWindow.cpp:1468
 msgid "_Alias"
 msgstr "别名"
 
-#: ../src/MainWindow.cpp:1219
-#: ../src/MainWindow.cpp:1232
+#: ../src/MainWindow.cpp:1472 ../src/MainWindow.cpp:1492
 msgid "_Delete"
 msgstr "删除"
 
-#. SysMenu
-#: ../src/MainWindow.cpp:1237
+#: ../src/MainWindow.cpp:1498
 msgid "_About"
 msgstr "关于"
 
-#: ../src/MainWindow.cpp:1240
+#: ../src/MainWindow.cpp:1503
 msgid "_Add Friend"
 msgstr "增加好友"
 
-#: ../src/MainWindow.cpp:1243
+#: ../src/MainWindow.cpp:1508
 msgid "_Add Room"
 msgstr "添加房间"
 
-#: ../src/MainWindow.cpp:1246
+#: ../src/MainWindow.cpp:1513
 msgid "_Find"
 msgstr "查找"
 
-#: ../src/MainWindow.cpp:1249
+#: ../src/MainWindow.cpp:1518
 msgid "Server Discover"
 msgstr "发掘服务"
 
-#. 菜单-显示离线好友
-#: ../src/MainWindow.cpp:1252
-#: ../src/TalkMenu.cpp:154
+#: ../src/MainWindow.cpp:1523
 msgid "Show offline"
 msgstr "显示离线好友(O)"
 
-#. 静音
-#: ../src/MainWindow.cpp:1256
-#: ../src/TalkMenu.cpp:156
+#: ../src/MainWindow.cpp:1528
 msgid "Mutt"
 msgstr "静音"
 
-#: ../src/MsgPage.cpp:128
-#: ../src/MsgPage.cpp:252
+#: ../src/MsgPage.cpp:173 ../src/MsgPage.cpp:356
 msgid "Send(_S)"
 msgstr "发送"
 
-#: ../src/MsgPage.cpp:181
+#: ../src/MsgPage.cpp:246
 msgid " subject: "
 msgstr "主题"
 
-#: ../src/MsgWindow.cpp:65
+#: ../src/MsgWindow.cpp:73
 msgid "*New Message"
 msgstr "**新消息"
 
-#: ../src/MsgWindow.cpp:67
+#: ../src/MsgWindow.cpp:75
 msgid " iCalk"
 msgstr ""
 
@@ -359,56 +333,25 @@ msgstr "(远远离开)"
 msgid "(Offline)  "
 msgstr "离线"
 
-#: ../src/TalkMenu.cpp:61
-msgid "Chat(_C)"
-msgstr "聊天"
+#: ../src/TalkFT.cpp:186 ../src/TalkFT.cpp:317
+msgid "File Transport"
+msgstr "文件传输"
 
-#: ../src/TalkMenu.cpp:66
-#: ../src/TalkMenu.cpp:114
-msgid "Log(_L)"
-msgstr "日志"
+#: ../src/TalkFT.cpp:192
+msgid " want to send you a file: "
+msgstr "想要发送一个文件给您："
 
-#. 菜单-屏蔽
-#: ../src/TalkMenu.cpp:70
-#: ../src/TalkMenu.cpp:111
-msgid "block(_B)"
-msgstr "屏蔽"
-
-#: ../src/TalkMenu.cpp:77
-msgid "Type"
-msgstr "类型"
-
-#: ../src/TalkMenu.cpp:81
-msgid "Alias"
-msgstr "别名"
-
-#: ../src/TalkMenu.cpp:108
-msgid "join in(_C)"
-msgstr "加入"
-
-#: ../src/TalkMenu.cpp:131
-msgid "Add Friend(_A)"
-msgstr "添加好友(A)..."
-
-#: ../src/TalkMenu.cpp:136
-msgid "Add Room(_H)"
-msgstr "添加聊天室"
-
-#: ../src/TalkMenu.cpp:146
-msgid "Server Disco"
-msgstr "发掘服务"
-
-#: ../src/TalkMenu.cpp:151
-msgid "Refresh List"
-msgstr "更新列表"
+#: ../src/TalkFT.cpp:322
+msgid "File Send Error"
+msgstr "文件发送错误"
 
 #. 消息已经被离线的接受者的服务保存
-#: ../src/TalkMsg.cpp:82
+#: ../src/TalkMsg.cpp:100
 msgid "\t\tThe Message has stored by the receiver's server\n"
 msgstr "\t\t消息已经被接受者的服务器保存\n"
 
 #. 用户关闭了对话
-#: ../src/TalkMsg.cpp:121
+#: ../src/TalkMsg.cpp:149
 msgid ""
 "\n"
 "\t\tUser has closed the window\n"
@@ -417,32 +360,31 @@ msgstr ""
 "\n"
 "\t\t用户关闭了对话框\n"
 
-#: ../src/TalkRoomHandler.cpp:77
+#: ../src/TalkRoomHandler.cpp:81
 msgid " join in the room"
 msgstr "  进入了聊天室。"
 
-#: ../src/TalkRoomHandler.cpp:86
+#: ../src/TalkRoomHandler.cpp:90
 msgid " leave the room"
 msgstr "   离开了聊天室。"
 
-#: ../src/TalkRoomHandler.cpp:121
+#: ../src/TalkRoomHandler.cpp:125
 msgid "said to you: "
 msgstr "  对您说："
 
-#: ../src/TalkRoomHandler.cpp:144
+#: ../src/TalkRoomHandler.cpp:150
 msgid " has set the Subject: "
 msgstr "已经设置主题为: "
 
-#: ../src/StatusMsgWidget.cpp:73
-#: ../data/ui/main_window.glade.h:40
+#: ../src/StatusMsgWidget.cpp:98 ../data/ui/main_window.glade.h:39
 msgid "Status Message Manager"
 msgstr "签名消息管理"
 
-#: ../src/StatusMsgWidget.cpp:159
+#: ../src/StatusMsgWidget.cpp:198
 msgid "Edit Message"
 msgstr "编辑状态消息"
 
-#: ../src/StatusMsgWidget.cpp:162
+#: ../src/StatusMsgWidget.cpp:203
 msgid ""
 "\n"
 "  Edit the Status Message by here   \n"
@@ -470,8 +412,7 @@ msgstr ""
 msgid "GPL (C) 2007 Cyclone Team"
 msgstr ""
 
-#: ../data/ui/about.glade.h:4
-#: ../data/ui/main_window.glade.h:48
+#: ../data/ui/about.glade.h:4 ../data/ui/main_window.glade.h:49
 msgid "iCalk"
 msgstr ""
 
@@ -510,23 +451,22 @@ msgid "            "
 msgstr ""
 
 #: ../data/ui/main_window.glade.h:9
-#, fuzzy
-msgid "             "
-msgstr "组: "
-
-#: ../data/ui/main_window.glade.h:10
 msgid ""
 "          If you want add a room,  put the room name \n"
 "follow there\n"
 msgstr "如果你想加入一个聊天室，在下面填入房间名。\n"
 
-#: ../data/ui/main_window.glade.h:13
+#: ../data/ui/main_window.glade.h:12
 msgid " Account  "
 msgstr "帐号"
 
-#: ../data/ui/main_window.glade.h:14
+#: ../data/ui/main_window.glade.h:13
 msgid " Password "
 msgstr "密码"
+
+#: ../data/ui/main_window.glade.h:14
+msgid "5"
+msgstr ""
 
 #: ../data/ui/main_window.glade.h:15
 msgid "AddFriend"
@@ -593,36 +533,37 @@ msgid "Port"
 msgstr "端口"
 
 #: ../data/ui/main_window.glade.h:34
-msgid "Register"
-msgstr "注册新帐户"
-
-#: ../data/ui/main_window.glade.h:35
 msgid "Remember Me"
 msgstr "记住帐户"
 
-#: ../data/ui/main_window.glade.h:36
+#: ../data/ui/main_window.glade.h:35
 msgid "Room(R) :           "
 msgstr "房间 ： "
 
-#: ../data/ui/main_window.glade.h:37
+#: ../data/ui/main_window.glade.h:36
 msgid "Roster"
 msgstr ""
 
-#: ../data/ui/main_window.glade.h:38
+#: ../data/ui/main_window.glade.h:37
 msgid "Server"
 msgstr "服务器: "
 
-#: ../data/ui/main_window.glade.h:39
+#: ../data/ui/main_window.glade.h:38
 msgid "Server(S) :          "
 msgstr "服务器端 : "
 
-#: ../data/ui/main_window.glade.h:41
+#: ../data/ui/main_window.glade.h:40
 msgid "System Menu"
 msgstr "系统菜单"
 
-#: ../data/ui/main_window.glade.h:42
+#: ../data/ui/main_window.glade.h:41
 msgid "XXX Information"
 msgstr "的信息"
+
+#: ../data/ui/main_window.glade.h:42
+#, fuzzy
+msgid "add a friend"
+msgstr "增加好友"
 
 #: ../data/ui/main_window.glade.h:43
 msgid "clean up all entry"
@@ -641,34 +582,45 @@ msgid "expand/collapse buddylist "
 msgstr "展开/折叠好友列表"
 
 #: ../data/ui/main_window.glade.h:47
+msgid "forget passwd "
+msgstr "忘记密码"
+
+#: ../data/ui/main_window.glade.h:48
 msgid "group :          "
 msgstr "组: "
 
-#: ../data/ui/main_window.glade.h:49
-msgid "if you want get some friend, put his full name, and you can alias his nickname"
+#: ../data/ui/main_window.glade.h:50
+msgid ""
+"if you want get some friend, put his full name, and you can alias his "
+"nickname"
 msgstr "如果你想添加好友，填写它的全名，您也可以为他取昵称。昵称会优先显示。"
 
-#: ../data/ui/main_window.glade.h:50
+#: ../data/ui/main_window.glade.h:51
 msgid "loading"
 msgstr "正在加载"
 
-#: ../data/ui/main_window.glade.h:51
+#: ../data/ui/main_window.glade.h:52
 msgid "login"
 msgstr "登入"
 
-#: ../data/ui/main_window.glade.h:52
+#: ../data/ui/main_window.glade.h:53
 msgid "nickname :    "
 msgstr "昵称："
 
-#: ../data/ui/main_window.glade.h:53
+#: ../data/ui/main_window.glade.h:54
+#, fuzzy
+msgid "register"
+msgstr "注册新帐户"
+
+#: ../data/ui/main_window.glade.h:55
 msgid "show/hide the offline friends"
 msgstr "显示/隐藏离线好友"
 
-#: ../data/ui/main_window.glade.h:54
+#: ../data/ui/main_window.glade.h:56
 msgid "type:"
 msgstr "类型："
 
-#: ../data/ui/main_window.glade.h:55
+#: ../data/ui/main_window.glade.h:57
 msgid "username：  "
 msgstr "用户名  ："
 
@@ -741,8 +693,42 @@ msgstr ""
 msgid "StatusMsg manager"
 msgstr "签名消息管理"
 
+#~ msgid "Chat(_C)"
+#~ msgstr "聊天"
+
+#~ msgid "Log(_L)"
+#~ msgstr "日志"
+
+#~ msgid "block(_B)"
+#~ msgstr "屏蔽"
+
+#~ msgid "Type"
+#~ msgstr "类型"
+
+#~ msgid "Alias"
+#~ msgstr "别名"
+
+#~ msgid "join in(_C)"
+#~ msgstr "加入"
+
+#~ msgid "Add Friend(_A)"
+#~ msgstr "添加好友(A)..."
+
+#~ msgid "Add Room(_H)"
+#~ msgstr "添加聊天室"
+
+#~ msgid "Server Disco"
+#~ msgstr "发掘服务"
+
+#~ msgid "Refresh List"
+#~ msgstr "更新列表"
+
+#, fuzzy
+#~ msgid "             "
+#~ msgstr "组: "
+
 #~ msgid "picture size must be under 100k bytes"
 #~ msgstr "图片大小超过100K,默认将不发送"
+
 #~ msgid "Auto Login"
 #~ msgstr "自动登陆"
-

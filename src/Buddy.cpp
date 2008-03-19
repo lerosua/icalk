@@ -93,12 +93,12 @@ void Buddy::set_nickname(const std::string& name_)
         Bodies::Get_Bodies().get_client().rosterManager()->getRosterItem(id)->setName(name_);
 }
 
-void Buddy::set_vcard(const VCard* vcard_)
+void Buddy::set_vcard(const VCard* f_vcard)
 {
         if (NULL != vcard)
                 delete vcard;
 
-        vcard = new VCard(*vcard_);
+        vcard = new VCard(*f_vcard);
 }
 
 void Buddy::refreshVcard()

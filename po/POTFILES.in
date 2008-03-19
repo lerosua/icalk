@@ -21,7 +21,6 @@ src/TagList.cpp
 src/TalkCard.cpp
 src/TalkConnect.cpp
 src/TalkFT.cpp
-src/TalkMenu.cpp
 src/TalkMsg.cpp
 src/TalkRoomHandler.cpp
 src/StatusMsgWidget.cpp
