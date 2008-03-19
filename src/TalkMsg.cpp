@@ -67,7 +67,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         const XHtmlIM* x = stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
 
         if (x) {
-                PBUG("the msg has use XhtmlIM\n");
+                DLOG("the msg has use XhtmlIM\n");
         }
 
         const DelayedDelivery* dd = stanza.when();
@@ -85,7 +85,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 
 void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 {
-        PBUG( "received event: %d from: %s\n", event, from.full().c_str() );
+        DLOG( "received event: %d from: %s\n", event, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
         switch (event) {
@@ -121,7 +121,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
 void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 {
-        //PBUG( "received state: %d from: %s\n", state, from.full().c_str() );
+        //DLOG( "received state: %d from: %s\n", state, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
 
         switch (state) {
@@ -163,7 +163,7 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state )
  */
 void TalkMsg::handleMessageSession( MessageSession *session )
 {
-        //PBUG("got new session\n");
+        //DLOG("got new session\n");
         JID receipient = session->target();
         std::string id = receipient.bare();
         std::cout << "session id is " << id << std::endl;

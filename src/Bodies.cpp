@@ -298,13 +298,11 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
         //bookMark= new TalkBookMark(jclient.get());
 
         /** 初始化VCard管理类*/
-        //cardManage.set_manage(jclient.get());
-//        cardManage = new TalkCard(jclient.get());
+        cardManage = new TalkCard(jclient.get());
 
         /** 初始化文件传输接收类*/
-//        talkFT = new TalkFT(jclient.get());
-
-//        talkFT->initFT();
+        talkFT = new TalkFT(jclient.get());
+        talkFT->initFT();
 
         if (jclient->connect(false)) {
                 return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();

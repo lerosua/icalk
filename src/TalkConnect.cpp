@@ -36,7 +36,7 @@ void TalkConnect::onConnect()
 
         Bodies::Get_Bodies().get_main_window().on_login_finial();
         Bodies::Get_Bodies().get_main_window().on_combo_change();
-//        Bodies::Get_Bodies().get_main_window().initRoom();
+        Bodies::Get_Bodies().get_main_window().initRoom();
 //        Bodies::Get_Bodies().fetch_self_vcard();
         //      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
         //      bookmark.requestBookmarks();

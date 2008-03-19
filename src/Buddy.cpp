@@ -25,7 +25,7 @@
 #include "Bodies.h"
 
 /** 带内数据传输图片的大小*/
-#define PICZIAE 102400
+#define PICZIAE 102400 
 //#define PICZIAE 40960
 
 Buddy::Buddy(const RosterItem& item):
@@ -58,21 +58,30 @@ Buddy::Buddy(const RosterItem& item):
 
 Buddy::~Buddy()
 {
-        if (NULL != vcard)
+        if (NULL != vcard) {
                 delete vcard;
+                vcard = NULL;
+        }
 
-        delete session;
+        if (NULL != session) {
+                delete session;
+                session = NULL;
+        }
 
-        delete message_event_filter;
+        if (NULL != message_event_filter) {
+                delete message_event_filter;
+                message_event_filter = NULL;
+        }
 
-        delete chat_state_filter;
+        if (NULL != chat_state_filter) {
+                delete chat_state_filter;
+                chat_state_filter = NULL;
+        }
 
-        if (NULL != page)
+        if (NULL != page) {
                 delete page;
-
-        page = NULL;
-
-        vcard = NULL;
+                page = NULL;
+        }
 }
 
 
@@ -245,3 +254,7 @@ void Buddy::sendPicture(const std::string& filename)
         */
 }
 
+void Buddy::sendFile(const std::string& filename)
+{
+        Bodies::Get_Bodies().getFThandler().handleFTSend(jid, filename);
+}

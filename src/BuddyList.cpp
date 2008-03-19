@@ -46,7 +46,7 @@ BuddyList::~BuddyList()
 
 void BuddyList::handleItemSubscribed(const JID & jid)
 {
-        PBUG( "subscribed %s\n", jid.bare().c_str() );
+        DLOG( "subscribed %s\n", jid.bare().c_str() );
 }
 
 void BuddyList::handleItemAdded(const JID & jid)
@@ -64,12 +64,12 @@ void BuddyList::handleItemAdded(const JID & jid)
 
 void BuddyList::handleItemUnsubscribed(const JID & jid)
 {
-        PBUG( "ItemUnsubscribed  %s\n", jid.bare().c_str() );
+        DLOG( "ItemUnsubscribed  %s\n", jid.bare().c_str() );
 }
 
 void BuddyList::handleItemRemoved(const JID & jid)
 {
-        PBUG( "ItemRemoved   %s\n", jid.bare().c_str() );
+        DLOG( "ItemRemoved   %s\n", jid.bare().c_str() );
         std::string jid_str = jid.bare();
         Bodies::Get_Bodies().get_main_window().get_buddy_view().remove(jid_str);
         BUDDY_MAP::iterator iter = buddy_map.find(jid_str);
@@ -83,7 +83,7 @@ void BuddyList::handleItemRemoved(const JID & jid)
 
 void BuddyList::handleItemUpdated(const JID & jid)
 {
-        PBUG( "ItemUnpdated %s\n", jid.bare().c_str() );
+        DLOG( "ItemUnpdated %s\n", jid.bare().c_str() );
 }
 
 void BuddyList::handleRoster(const Roster & roster)
@@ -97,17 +97,17 @@ void BuddyList::handleRoster(const Roster & roster)
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
 
                 /**获取vcard*/
-                Bodies::Get_Bodies().get_cardManage().fetch_vcard((*it).second->jid());
+                //Bodies::Get_Bodies().get_cardManage().fetch_vcard((*it).second->jid());
 
                 /*
                 StringList g = (*it).second->groups();
                 StringList::const_iterator it_g = g.begin();
                 for (; it_g != g.end(); ++it_g)
-                 PBUG("\tgroup: %s\n", (*it_g).c_str());
+                 DLOG("\tgroup: %s\n", (*it_g).c_str());
                 RosterItem::ResourceMap::const_iterator rit =
                  (*it).second->resources().begin();
                 for (; rit != (*it).second->resources().end(); ++rit)
-                 PBUG("resource: %s\n", (*rit).first.c_str());
+                 DLOG("resource: %s\n", (*rit).first.c_str());
                  */
         }
 
@@ -119,7 +119,6 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
                                      Presence::PresenceType presence,
                                      const std::string & msg)
 {
-        //std::string jid = item.jid();
         Glib::ustring jid(item.jid());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
 
@@ -133,7 +132,7 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
         else
         {
                 buddy->set_sign_msg(msg);
-                //Bodies::Get_Bodies().get_cardManage().fetch_vcard(item.jid());
+                Bodies::Get_Bodies().get_cardManage().fetch_vcard(item.jid());
         }
 
         buddy->set_status(presence);
@@ -154,7 +153,7 @@ void BuddyList::handleSelfPresence(const RosterItem & item,
 bool BuddyList::handleSubscriptionRequest(const JID & jid,
                 const std::string& msg )
 {
-        PBUG(" %s subscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
+        DLOG(" %s subscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
         Gtk::MessageDialog dialog(_("Information from stranger"), false /*use markup*/, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
         Glib::ustring msg_text = jid.bare() + _("Ask for a friend , press OK to add");
         dialog.set_secondary_text(msg_text);
@@ -187,7 +186,7 @@ bool BuddyList::handleSubscriptionRequest(const JID & jid,
 bool BuddyList::handleUnsubscriptionRequest(const JID & jid,
                 const std::string& msg )
 {
-        PBUG(" %s UnsubscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
+        DLOG(" %s UnsubscriptionRequest with %s\n", jid.bare().c_str(), msg.c_str());
         Gtk::MessageDialog dialog(_("The message from friend"));
         Glib::ustring msg_text = jid.bare() + _("Delete you from his buddy list");
         dialog.set_secondary_text(msg_text);
@@ -197,12 +196,12 @@ bool BuddyList::handleUnsubscriptionRequest(const JID & jid,
 
 void BuddyList::handleNonrosterPresence(const Presence& stanza)
 {
-        PBUG("接收到状态并不在列表中的人 %s \n", stanza.from().full().c_str());
+        DLOG("接收到状态并不在列表中的人 %s \n", stanza.from().full().c_str());
 }
 
 void BuddyList::handleNonrosterPresence(Presence * stanza)
 {
-        PBUG("接收到状态并不在列表中的人 %s \n", stanza->from().full().c_str());
+        DLOG("接收到状态并不在列表中的人 %s \n", stanza->from().full().c_str());
 }
 
 
