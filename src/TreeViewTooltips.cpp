@@ -19,7 +19,7 @@
 #include "TreeViewTooltips.h"
 #include "pixmaps.h"
 
-TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
+TreeViewTooltips::TreeViewTooltips(BuddyView* view): m_buddyview(view)
                 , Window(Gtk::WINDOW_POPUP)
 {
         this->set_decorated(false);
@@ -32,17 +32,17 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): buddyview(view)
         this->set_app_paintable(true);
         this->property_can_focus() = false;
 
-        label = Gtk::manage(new Gtk::Label());
-        label->set_line_wrap(true);
-        label->set_alignment(0.5, 0.5);
-        label->set_use_markup(true);
+        m_label = Gtk::manage(new Gtk::Label());
+        m_label->set_line_wrap(true);
+        m_label->set_alignment(0.5, 0.5);
+        m_label->set_use_markup(true);
 
-        avatar = Gtk::manage(new Gtk::Image());
+        m_avatar = Gtk::manage(new Gtk::Image());
         Gtk::HBox* hbox = Gtk::manage(new Gtk::HBox());
         Gtk::Image* logo = getImage("default.png");
         hbox->pack_start(*logo);
-        hbox->pack_start(*label);
-        hbox->pack_start(*avatar);
+        hbox->pack_start(*m_label);
+        hbox->pack_start(*m_avatar);
         hbox->show_all();
 
         add
@@ -81,7 +81,7 @@ bool TreeViewTooltips::on_motion_event(GdkEventMotion* ev)
         Gtk::TreeViewColumn* column;
         int cell_x, cell_y;
 
-        if ( buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) ) {
+        if ( m_buddyview->get_path_at_pos((int) ev->x, (int) ev->y, path, column, cell_x, cell_y) ) {
                 hideTooltip();
                 return 0;
         }
@@ -106,7 +106,7 @@ void TreeViewTooltips::showTooltip(GdkEventMotion* ev)
         int x, y;
         int s_width, s_height;
         int currentX, currentY;
-        buddyview->get_pointer(currentX, currentY);
+        m_buddyview->get_pointer(currentX, currentY);
 
         x_root = (int)ev->x_root;
         y_root = (int)ev->y_root;

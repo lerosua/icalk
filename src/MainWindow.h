@@ -249,13 +249,11 @@ private:
         Glib::RefPtr<Gdk::Pixbuf> logo;
         Gtk::Notebook* main_notebook;
         Gtk::ComboBoxEntryText* comboAccount;
-        //Gtk::Entry* entryPasswd;
         Sexy::IconEntry* entryPasswd;
         Gtk::CheckButton* keeppasswd;
         Gtk::CheckButton* keepMe;
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
-        //Gtk::Entry* entryFilter;
         Sexy::IconEntry* entryFilter;
         ServerDiscoWindow* discowindow;
         StatusMsgWidget *statusMsgWidget;

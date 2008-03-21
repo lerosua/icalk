@@ -39,12 +39,12 @@ public:
         virtual bool on_expose_event(GdkEventExpose* event);
 
         void setLabel(const Glib::ustring& msg) {
-                label->set_markup(msg);
+                m_label->set_markup(msg);
         }
 
         void setImage(const Glib::RefPtr<Gdk::Pixbuf> pixbuf) {
 
-                avatar->set
+                m_avatar->set
                 (pixbuf);
         }
 
@@ -57,9 +57,9 @@ public:
 
 
 private:
-        BuddyView* buddyview;
-        Gtk::Label* label;
-        Gtk::Image* avatar;
+        BuddyView* m_buddyview;
+        Gtk::Label* m_label;
+        Gtk::Image* m_avatar;
 
 
 };

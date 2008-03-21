@@ -2,24 +2,24 @@
 #include "RoomItem.h"
 
 
-RoomItem::RoomItem(const ConferenceListItem& ci_): page(NULL)
+RoomItem::RoomItem(const ConferenceListItem& ci_): m_page(NULL)
 {
-        citem.nick = ci_.nick;
-        citem.password = ci_.password;
-        citem.name = ci_.name;
-        citem.jid = ci_.jid;
-        citem.autojoin = ci_.autojoin;
-        std::string fulljid = citem.jid + "/" + citem.name;
+        m_citem.nick = ci_.nick;
+        m_citem.password = ci_.password;
+        m_citem.name = ci_.name;
+        m_citem.jid = ci_.jid;
+        m_citem.autojoin = ci_.autojoin;
+        std::string fulljid = m_citem.jid + "/" + m_citem.name;
 
         const JID nick_(fulljid);
         Client& jclient = Bodies::Get_Bodies().get_client();
-        mucroom = new MUCRoom(&jclient, nick_, 0, 0);
+        m_mucroom = new MUCRoom(&jclient, nick_, 0, 0);
 
 }
 
 RoomItem::~RoomItem()
 {
-        delete mucroom;
+        delete m_mucroom;
 
 
 }
@@ -27,17 +27,17 @@ RoomItem::~RoomItem()
 void RoomItem::join()
 {
         TalkRoomHandler& roomhandler = Bodies::Get_Bodies().getRoomHandler();
-        mucroom->registerMUCRoomHandler(&roomhandler);
-        mucroom->setNick(citem.nick);
-        mucroom->join();
-        mucroom->getRoomInfo();
-        mucroom->getRoomItems();
+        m_mucroom->registerMUCRoomHandler(&roomhandler);
+        m_mucroom->setNick(m_citem.nick);
+        m_mucroom->join();
+        m_mucroom->getRoomInfo();
+        m_mucroom->getRoomItems();
 }
 
 void RoomItem::leave()
 {
-        mucroom->leave();
-        mucroom->removeMUCRoomHandler();
+        m_mucroom->leave();
+        m_mucroom->removeMUCRoomHandler();
 }
 
 

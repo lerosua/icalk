@@ -86,18 +86,18 @@ public:
         }
 
         /**得到消息处理类*/
-        TalkMsg& get_talkmsg() {
-                return talkmsg;
+        TalkMsg& getTalkMsg() {
+                return m_talkMsg;
         }
 
         /**得到client类*/
         Client& get_client() {
-                return *jclient;
+                return *m_client;
         }
 
         /**得到聊天室处理类*/
         TalkRoomHandler& getRoomHandler() {
-                return roomHandler;
+                return m_roomHandler;
         }
 
         /**得到本人jid*/
@@ -117,21 +117,21 @@ public:
 
         /** 返回文件传输处理类 */
         TalkFT& getFThandler() const {
-                return *talkFT;
+                return *m_talkFT;
         }
 
         /**得到书签处理类*/
         //TalkBookMark&    get_bookmark()   { return *bookMark; }
         /**得到VCard管理类*/
-        TalkCard& get_cardManage() {
-                return *cardManage;
+        TalkCard& getCardManage() {
+                return *m_cardManage;
         }
 
         /**设置本人的VCard信息*/
         void set_vcard(const VCard*);
         /**得到本人的VCard*/
         const VCard* get_vcard() const {
-                return vcard;
+                return m_vcard;
         }
 
         /**发出获取本人VCard信息的命令*/
@@ -158,20 +158,20 @@ private:
 
 private:
         JID* jid;
-        std::auto_ptr<Client> jclient;
+        std::auto_ptr<Client> m_client;
         MainWindow* main_window;
         MsgWindow* msg_window;
         TrayIcon* statusIcon;
 
         BuddyList buddy_list;
 
-        TalkConnect m_talkconnect;
-        TalkMsg talkmsg;
-        TalkRoomHandler roomHandler;
-        TalkDiscoHandler discohandler;
-        TalkCard* cardManage;
-        TalkFT* talkFT;
-        VCard* vcard;
+        TalkConnect m_talkConnect;
+        TalkMsg m_talkMsg;
+        TalkRoomHandler m_roomHandler;
+        TalkDiscoHandler m_discoHandler;
+        TalkCard* m_cardManage;
+        TalkFT* m_talkFT;
+        VCard* m_vcard;
         //用于保存account结构的Tag
         Tag* accountTag;
         USERLIST userlist;

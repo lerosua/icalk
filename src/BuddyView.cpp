@@ -28,10 +28,10 @@
 #include "Unit.h"
 
 
-BuddyView::BuddyView(MainWindow & parent_):
-                parent(parent_)
+BuddyView::BuddyView(MainWindow & f_parent):
+                m_parent(f_parent)
                 , SHOWALL(false)
-                , filterText("")
+                , m_filterText("")
 {
         set_headers_visible(false);
         set_border_width(5);
@@ -42,7 +42,7 @@ BuddyView::BuddyView(MainWindow & parent_):
                    Gdk::BUTTON_PRESS_MASK | Gdk::
                    BUTTON_RELEASE_MASK | Gdk::ENTER_NOTIFY_MASK | Gdk::
                    LEAVE_NOTIFY_MASK);
-        tooltips = new TreeViewTooltips(this);
+        m_tooltips = new TreeViewTooltips(this);
 
         m_treestore = TreeModelDnd::create(buddyColumns);
         //set_model(m_treestore);
@@ -69,31 +69,31 @@ BuddyView::BuddyView(MainWindow & parent_):
 
         Gtk::TreeView::Column * col =
                 Gtk::manage(new Gtk::TreeView::Column("iCalk"));
-        col->pack_start(rendtext);
+        col->pack_start(m_rendtext);
         //Tell the view column how to render the model values:
         //将ViewColumn控件和Model values关联起来
-        col->set_cell_data_func(rendtext,
+        col->set_cell_data_func(m_rendtext,
                                 sigc::mem_fun(*this,
                                               &BuddyView::
                                               tvc_connect_cell_data));
         //make the cellrenderer ellipsize
 #ifdef GLIBMM_PROPERTIES_ENABLED
-        //rendtext.property_editable()=true;
-        rendtext.property_ellipsize() = Pango::ELLIPSIZE_END;
+        //m_rendtext.property_editable()=true;
+        m_rendtext.property_ellipsize() = Pango::ELLIPSIZE_END;
 #else
 
-        rendtext.set_property("editable", ture);
+        m_rendtext.set_property("editable", ture);
 #endif
 
-        rendtext.signal_editing_started().
+        m_rendtext.signal_editing_started().
         connect(sigc::
                 mem_fun(*this,
                         &BuddyView::cellrender_on_editing_start));
-        rendtext.signal_edited().
+        m_rendtext.signal_edited().
         connect(sigc::
                 mem_fun(*this, &BuddyView::cellrender_on_edited));
 
-        col->add_attribute(rendtext.property_markup(),
+        col->add_attribute(m_rendtext.property_markup(),
                            buddyColumns.nickname);
         col->set_resizable(true);
         col->set_expand();
@@ -128,7 +128,7 @@ BuddyView::BuddyView(MainWindow & parent_):
 
 BuddyView::~BuddyView()
 {
-        delete tooltips;
+        delete m_tooltips;
 
 }
 
@@ -139,10 +139,10 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
         int cell_x, cell_y;
         int delay = 600;
 
-        if (tipTimeout.connected()) {
+        if (m_tipTimeout.connected()) {
 
-                tipTimeout.disconnect();
-                tooltips->hideTooltip();
+                m_tipTimeout.disconnect();
+                m_tooltips->hideTooltip();
         }
 
         if (this->
@@ -153,7 +153,7 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
                 int type = (*iter)[buddyColumns.status];
 
                 if (STATUS_GROUP != type)
-                        tipTimeout =
+                        m_tipTimeout =
                                 Glib::signal_timeout().connect(sigc::bind <
                                                                GdkEventMotion *
                                                                > (sigc::
@@ -162,9 +162,9 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
                                                                           tooltip_timeout),
                                                                   ev), delay);
                 else
-                        tooltips->hideTooltip();
+                        m_tooltips->hideTooltip();
         } else
-                tooltips->hideTooltip();
+                m_tooltips->hideTooltip();
 
         return true;
 }
@@ -222,23 +222,23 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 
                         msg_ = text_ + status_;
 
-                        tooltips->setLabel(msg_);
+                        m_tooltips->setLabel(msg_);
 
                         Glib::RefPtr < Gdk::Pixbuf > logo =
                                 buddy->getLogo();
 
-                        tooltips->setImage(logo);
+                        m_tooltips->setImage(logo);
 
-                        tooltips->showTooltip(ev);
+                        m_tooltips->showTooltip(ev);
                 } else {
                         text_ =
                                 "<span weight='bold'>" + jid + "\n" +
                                 "type:</span> Room\n";
                         Glib::RefPtr < Gdk::Pixbuf > logo_ =
                                 getPix("room.png");
-                        tooltips->setLabel(text_);
-                        tooltips->setImage(logo_);
-                        tooltips->showTooltip(ev);
+                        m_tooltips->setLabel(text_);
+                        m_tooltips->setImage(logo_);
+                        m_tooltips->showTooltip(ev);
                 }
 
         }
@@ -248,8 +248,8 @@ bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 
 bool BuddyView::on_leave_event(GdkEventCrossing * ev)
 {
-        if (tipTimeout.connected()) {
-                tipTimeout.disconnect();
+        if (m_tipTimeout.connected()) {
+                m_tipTimeout.disconnect();
         }
 
         return false;
@@ -338,12 +338,12 @@ void BuddyView::tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 {
         if (iter) {
 #ifdef GLIBMM_PROPERTIES_ENABLED
-                //rendtext.property_text() = (*iter)[buddyColumns.nickname];
-                rendtext.property_markup() =
+                //m_rendtext.property_text() = (*iter)[buddyColumns.nickname];
+                m_rendtext.property_markup() =
                         (*iter)[buddyColumns.nickname];
 #else
 
-                rendtext.set_property("text",
+                m_rendtext.set_property("text",
                                       (*iter)[buddyColumns.nickname]);
 #endif
 
@@ -357,11 +357,11 @@ bool BuddyView::list_visible_func(const Gtk::TreeIter& iter)
         Glib::ustring name = (*iter)[buddyColumns.nickname];
         int type = (*iter)[buddyColumns.status];
 
-        if (filterText.empty())
+        if (m_filterText.empty())
                 return true;
-        else if (email.lowercase().find(filterText.lowercase()) != Glib::ustring::npos)
+        else if (email.lowercase().find(m_filterText.lowercase()) != Glib::ustring::npos)
                 return true;
-        else if (name.lowercase().find(filterText.lowercase()) != Glib::ustring::npos)
+        else if (name.lowercase().find(m_filterText.lowercase()) != Glib::ustring::npos)
                 return true;
         else if (type == STATUS_GROUP )
                 return true;
@@ -372,17 +372,17 @@ bool BuddyView::list_visible_func(const Gtk::TreeIter& iter)
 
 void BuddyView::setFilterText(const Glib::ustring& text)
 {
-        filterText = text;
+        m_filterText = text;
         m_treemodelfilter->refilter();
 }
 
 void BuddyView::cellrender_edited(bool mode)
 {
         if (mode) {
-                rendtext.property_editable() = true;
+                m_rendtext.property_editable() = true;
         } else {
 
-                rendtext.property_editable() = false;
+                m_rendtext.property_editable() = false;
         }
 }
 
@@ -1420,14 +1420,14 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
         } else if ((ev->type == GDK_BUTTON_PRESS)
                         && (ev->button == 3)) {
                 if ((type != STATUS_GROUP) && (type != STATUS_ROOM)) {
-                        Gtk::Menu* buddyMenu = parent.getBuddyMenu();
+                        Gtk::Menu* buddyMenu = m_parent.getBuddyMenu();
 
                         if (buddyMenu)
                                 buddyMenu->popup(1, ev->time);
 
                         //buddyMenu.popup(1, ev->time);
                 } else if (STATUS_ROOM == type) {
-                        Gtk::Menu* roomMenu = parent.getRoomMenu();
+                        Gtk::Menu* roomMenu = m_parent.getRoomMenu();
 
                         if (roomMenu)
                                 roomMenu->popup(1, ev->time);

@@ -57,7 +57,7 @@ void BuddyList::handleItemAdded(const JID & jid)
                 /** 将新的好友加入到BuddyMap里。*/
                 RosterItem* item = Bodies::Get_Bodies().get_client().rosterManager()->getRosterItem(jid_str);
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
-                Bodies::Get_Bodies().get_cardManage().fetch_vcard(jid_str);
+                Bodies::Get_Bodies().getCardManage().fetch_vcard(jid_str);
                 Bodies::Get_Bodies().get_main_window().get_buddy_view().add(jid_str);
         }
 }
@@ -97,7 +97,7 @@ void BuddyList::handleRoster(const Roster & roster)
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
 
                 /**获取vcard*/
-                //Bodies::Get_Bodies().get_cardManage().fetch_vcard((*it).second->jid());
+                //Bodies::Get_Bodies().getCardManage().fetch_vcard((*it).second->jid());
 
                 /*
                 StringList g = (*it).second->groups();
@@ -132,7 +132,7 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
         else
         {
                 buddy->set_sign_msg(msg);
-                Bodies::Get_Bodies().get_cardManage().fetch_vcard(item.jid());
+                Bodies::Get_Bodies().getCardManage().fetch_vcard(item.jid());
         }
 
         buddy->set_status(presence);

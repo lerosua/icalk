@@ -483,7 +483,7 @@ void MainWindow::set_logo(const std::string & iconpath)
                    std::inserter(binval,binval.begin()));
                    fin.close();
                    vcard->setPhoto(type,binval);
-                   bodies.get_cardManage().store_vcard(vcard);
+                   bodies.getCardManage().store_vcard(vcard);
                    */
         } else
                 logo =
@@ -800,7 +800,7 @@ void MainWindow::on_btnLogo_clicked()
                 std::cout << "photo size is " << binval.size() << std::endl;
                 //vcard->setPhoto(type,binval);
                 vcard->setNickname("cyclone blog");
-                bodies.get_cardManage().store_vcard(vcard);
+                bodies.getCardManage().store_vcard(vcard);
 #endif
 
 

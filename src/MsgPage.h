@@ -83,23 +83,23 @@ public:
         virtual ~ MsgPage();
 
         Gtk::Image & get_logo() {
-                return *logo;
+                return *m_logo;
         }
 
         Gtk::Label & get_lable() {
-                return *titlelable;
+                return *m_titlelable;
         }
 
         Gtk::Widget * getFocusWidge() {
-                return inputMsgBox;
+                return m_inputMsgBox;
         }
 
         SMILELIST& getSmileMap() {
-                return inputMsgBox->getSmileMap();
+                return m_inputMsgBox->getSmileMap();
         }
 
         void insertSmiley(const Glib::ustring& code) {
-                inputMsgBox->insertSmiley(code);
+                m_inputMsgBox->insertSmiley(code);
         }
 
         /**
@@ -141,14 +141,14 @@ public:
          * @param msg_ 消息内容
          */
         void showSystemMsg(const std::string & msg) {
-                msgBox->showSystemMsg(msg);
+                m_msgBox->showSystemMsg(msg);
         }
 
         /**
          * @brief 高层的发送信息函数
          * 获取输入框中的文本，调用Buddy中的会话发送函数
          * @code
-         *  buddy->get_session()->send(utext);
+         *  m_buddy->get_session()->send(utext);
          * @endcode
          * 然后用@link showMessage showMessage() @endlink显示文件
          */
@@ -164,7 +164,7 @@ public:
         void deleteWord(int type);
         /**
          * @brief 关闭标签（MsgPage)
-         * 调用buddy.close_session()关闭会话
+         * 调用m_buddy.close_session()关闭会话
          * 再得到MsgWindow,用来删除MsgPage
          */
         void close();
@@ -175,7 +175,7 @@ public:
         void refreshMember();
         /** 获取聊天室内的成员列表*/
         MemberList *getMemberList() {
-                return memberList;
+                return m_memberList;
         }
 
         /**用于输入窗口获取焦点时处理*/
@@ -190,19 +190,19 @@ public:
         void on_toolbar_image();
 
 private:
-        MsgBox * msgBox;
-        MsgBox *inputMsgBox;
+        MsgBox * m_msgBox;
+        MsgBox *m_inputMsgBox;
         CommandBar *toolbar;
-        Gtk::Image * logo;
-        Gtk::Label * titlelable;
-        Gtk::Entry * subject;
+        Gtk::Image * m_logo;
+        Gtk::Label * m_titlelable;
+        Gtk::Entry * m_subject;
         bool hasColor;
         bool isRoom;
 
-        Buddy *buddy;
-        RoomItem *mucroom;
-        MemberList *memberList;
-        MsgLog *msglog;
+        Buddy *m_buddy;
+        RoomItem *m_mucroom;
+        MemberList *m_memberList;
+        MsgLog *m_msgLog;
 
 };
 

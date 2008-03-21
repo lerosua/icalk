@@ -103,7 +103,7 @@ void Buddy::set_vcard(const VCard* f_vcard)
 
 void Buddy::refreshVcard()
 {
-        Bodies::Get_Bodies().get_cardManage().fetch_vcard(jid.bare());
+        Bodies::Get_Bodies().getCardManage().fetch_vcard(jid.bare());
 }
 
 void Buddy::refreshinfo()
@@ -150,7 +150,7 @@ void Buddy::new_session()
         if (NULL == session) {
                 Client& jclient_ = Bodies::Get_Bodies().get_client();
                 session = new MessageSession(&jclient_, jid);
-                TalkMsg& handler_ = Bodies::Get_Bodies().get_talkmsg();
+                TalkMsg& handler_ = Bodies::Get_Bodies().getTalkMsg();
                 set_session(session, &handler_);
         }
 }

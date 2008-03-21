@@ -217,9 +217,9 @@ private:
 
 
 private:
-        MainWindow & parent;
+        MainWindow & m_parent;
 
-        TreeViewTooltips* tooltips;
+        TreeViewTooltips* m_tooltips;
 
         /*列表中好友的本地配置的配置文件类 */
         Tag *blistTag;
@@ -228,16 +228,16 @@ private:
 
         Glib::RefPtr <Gtk::TreeModelFilter> m_treemodelfilter;
 
-        Glib::ustring filterText;
+        Glib::ustring m_filterText;
 
         BuddyColumns buddyColumns;
 
-        Gtk::CellRendererText rendtext;
+        Gtk::CellRendererText m_rendtext;
 
         /*全局组列表*/
         StringList groupList;
 
-        sigc::connection tipTimeout;
+        sigc::connection m_tipTimeout;
 
         bool SHOWALL;
 

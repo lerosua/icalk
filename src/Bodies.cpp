@@ -51,30 +51,28 @@ Bodies& Bodies::Get_Bodies()
 }
 
 Bodies::Bodies():
-                talkFT(NULL)
+                m_talkFT(NULL)
                 , jid(NULL)
-                , cardManage(NULL)
-                , vcard(NULL)
+                , m_cardManage(NULL)
+                , m_vcard(NULL)
                 , accountTag(NULL)
 {
         main_window = new MainWindow(*this);
         msg_window = new MsgWindow();
         statusIcon = new TrayIcon(main_window);
-
-        //accountTag = NULL;
 }
 
 Bodies::~Bodies()
 {
         disconnect();
         // has been done in disconnect()
-        // if (talkFT) {
-        //     delete talkFT;
-        //     talkFT = NULL;
+        // if (m_talkFT) {
+        //     delete m_talkFT;
+        //     m_talkFT = NULL;
         // }
-        // if (cardManage) {
-        //     delete cardManage;
-        //     cardManage = NULL;
+        // if (m_cardManage) {
+        //     delete m_cardManage;
+        //     m_cardManage = NULL;
         // }
 
         if (main_window) {
@@ -97,9 +95,9 @@ Bodies::~Bodies()
                 jid = NULL;
         }
 
-        if (vcard) {
-                delete vcard;
-                vcard = NULL;
+        if (m_vcard) {
+                delete m_vcard;
+                m_vcard = NULL;
         }
 
         //logout();
@@ -132,12 +130,12 @@ void Bodies::setAccountTag(const std::string& name, const std::string& value)
 
 void Bodies::fetch_self_vcard()
 {
-        cardManage->fetch_vcard(*jid);
+        m_cardManage->fetch_vcard(*jid);
 }
 
 void Bodies::set_status(Presence::PresenceType f_status, Glib::ustring f_msg)
 {
-        jclient->setPresence(f_status, 1, f_msg);
+        m_client->setPresence(f_status, 1, f_msg);
         statusIcon->on_status_change(f_status, jid->username(), f_msg);
         //setAccountTag("status",f_status);
         setAccountTag("message", f_msg);
@@ -238,16 +236,14 @@ bool Bodies::callback(Glib::IOCondition condition)
         //std::cout<<"talk connecting...: "<<ce<<std::endl;
 
         if ( ce == ConnNoError) {
-                ce = jclient->recv(1000); // microseconds, not milliseconds
-                //talkFT->loopRecv();
-                //IBBSHandler.sendIBBData("lerosua icalk testing");
+                ce = m_client->recv(1000); // microseconds, not milliseconds
         }
 
         return true;
 }
 
 // XXX
-// 应该把 talkFT 和 cardManage 的处理放到
+// 应该把 m_talkFT 和 m_cardManage 的处理放到
 //   - 连接建立成功
 //   - 登录成功
 //   - 好友列表初始化成功
@@ -256,14 +252,14 @@ void Bodies::disconnect()
 {
         connectIO.disconnect();
 
-        if (talkFT) {
-                delete talkFT;
-                talkFT = NULL;
+        if (m_talkFT) {
+                delete m_talkFT;
+                m_talkFT = NULL;
         }
 
-        if (cardManage) {
-                delete cardManage;
-                cardManage = NULL;
+        if (m_cardManage) {
+                delete m_cardManage;
+                m_cardManage = NULL;
         }
 }
 
@@ -271,41 +267,41 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
 {
         DLOG("%s is connecting %s:%d\n", name.c_str(), server.c_str(), port);
         jid = new JID(name);
-        jclient.reset(new Client(*jid, passwd)); // auto_ptr
+        m_client.reset(new Client(*jid, passwd)); // auto_ptr
 
-        jclient->disco()->setVersion("iCalk", ICALK_VERSION, OS);
-        jclient->setResource("iCalk");
-        jclient->setPresence(Presence::Available, -1);
-        jclient->disco()->setIdentity("Client", "iCalk");
-        jclient->disco()->registerDiscoHandler(&discohandler);
-        jclient->registerMessageHandler(&talkmsg);
-        jclient->rosterManager()->registerRosterListener(&buddy_list);
-        jclient->registerMessageSessionHandler(&talkmsg, 0);
-        jclient->registerConnectionListener(&m_talkconnect);
-        jclient->registerStanzaExtension(new DelayedDelivery(0));
-        jclient->registerStanzaExtension(new XHtmlIM(0));
-        jclient->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &m_talkconnect);
-        jclient->setServer(server);
-        jclient->setPort(port);
+        m_client->disco()->setVersion("iCalk", ICALK_VERSION, OS);
+        m_client->setResource("iCalk");
+        m_client->setPresence(Presence::Available, -1);
+        m_client->disco()->setIdentity("Client", "iCalk");
+        m_client->disco()->registerDiscoHandler(&m_discoHandler);
+        m_client->registerMessageHandler(&m_talkMsg);
+        m_client->rosterManager()->registerRosterListener(&buddy_list);
+        m_client->registerMessageSessionHandler(&m_talkMsg, 0);
+        m_client->registerConnectionListener(&m_talkConnect);
+        m_client->registerStanzaExtension(new DelayedDelivery(0));
+        m_client->registerStanzaExtension(new XHtmlIM(0));
+        m_client->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &m_talkConnect);
+        m_client->setServer(server);
+        m_client->setPort(port);
 
         /*
         Tag* t=new Tag("c");
         t->addAttribute("xmlns",XMLNS_C_CAPS);
         FCAPS* se=new FCAPS(t) ;
-        jclient->addPresenceExtension(se);
+        m_client->addPresenceExtension(se);
         */
 
-        //bookMark= new TalkBookMark(jclient.get());
+        //bookMark= new TalkBookMark(m_client.get());
 
         /** 初始化VCard管理类*/
-        cardManage = new TalkCard(jclient.get());
+        m_cardManage = new TalkCard(m_client.get());
 
         /** 初始化文件传输接收类*/
-        talkFT = new TalkFT(jclient.get());
-        talkFT->initFT();
+        m_talkFT = new TalkFT(m_client.get());
+        m_talkFT->initFT();
 
-        if (jclient->connect(false)) {
-                return dynamic_cast<ConnectionTCPClient*>(jclient->connectionImpl())->socket();
+        if (m_client->connect(false)) {
+                return dynamic_cast<ConnectionTCPClient*>(m_client->connectionImpl())->socket();
         }
 
         DLOG("connect error\n");
@@ -343,23 +339,23 @@ bool Bodies::login(const std::string& name, const std::string& passwd)
         return true;
 }
 
-void Bodies::set_vcard(const VCard* vcard_)
+void Bodies::set_vcard(const VCard* f_vcard)
 {
-        if (NULL != vcard)
-                delete vcard;
+        if (NULL != m_vcard)
+                delete m_vcard;
 
-        vcard = new VCard(*vcard_);
+        m_vcard = new VCard(*f_vcard);
 }
 
 void Bodies::logout()
 {
-        jclient->disconnect();
+        m_client->disconnect();
 }
 
 void Bodies::disco_node(const std::string& node)
 {
-        jclient->disco()->getDiscoInfo( JID(node), "", &discohandler, 0, "");
-        jclient->disco()->getDiscoItems( JID(node), "", &discohandler, 0, "");
+        m_client->disco()->getDiscoInfo( JID(node), "", &m_discoHandler, 0, "");
+        m_client->disco()->getDiscoItems( JID(node), "", &m_discoHandler, 0, "");
 }
 
 int main(int argc, char *argv[])
@@ -382,7 +378,6 @@ int main(int argc, char *argv[])
         Gtk::Main kit(argc, argv);
 
         Bodies::Get_Bodies();
-        //if (Bodies::Get_Bodies().login())
         kit.run();
 
         return 0;

@@ -43,7 +43,7 @@ public:
 
         /** 得到聊天室的JID号 */
         const std::string& getRoomJID() const {
-                return citem.jid;
+                return m_citem.jid;
         }
 
         /** 进入聊天室 */
@@ -51,21 +51,21 @@ public:
         /** 离开聊天室 */
         void leave();
         MsgPage* getPage() {
-                return page;
+                return m_page;
         }
 
-        void setPage(MsgPage* page_) {
-                page = page_;
+        void setPage(MsgPage* f_page) {
+                m_page = f_page;
         }
 
         /** 关闭页面 */
         void closePage() {
-                page = NULL;
+                m_page = NULL;
         }
 
         /** 发送信息 */
         void send(Glib::ustring& text) {
-                mucroom->send(text);
+                m_mucroom->send(text);
         }
 
         /** 初始化聊天室成员列表 */
@@ -81,19 +81,19 @@ public:
         void removeMember(const std::string& name);
         /** 设置聊天室主题 */
         void setSubject(const Glib::ustring& sub) {
-                subject = sub;
+                m_subject = sub;
         }
 
         /** 获取聊天室主题 */
         Glib::ustring& getSubject() {
-                return subject;
+                return m_subject;
         }
 
 private:
-        MUCRoom* mucroom;
-        ConferenceListItem citem;
-        MsgPage* page;
-        Glib::ustring subject;
+        MUCRoom* m_mucroom;
+        ConferenceListItem m_citem;
+        MsgPage* m_page;
+        Glib::ustring m_subject;
         MemberMap m_list;
 };
 
