@@ -30,9 +30,14 @@
 #include "StatusMsgWidget.h"
 #include "BuddyInfoWindow.h"
 #include "ServerDiscoWindow.h"
+#include "MVC.h"
 
 #define main_ui     DATA_DIR"/ui/main_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
+
+using namespace Gtk;
+
+using namespace std;
 
 class Bodies;
 
@@ -47,7 +52,6 @@ class BuddyView;
  * @brief 好友列表窗口，主窗口
  */
 
-using namespace Gtk;
 
 class MainWindow: public Gtk::Window
 {
@@ -55,6 +59,9 @@ class MainWindow: public Gtk::Window
 public:
         MainWindow(Bodies& bodies_);
 
+        void Observer(CLogin::Handler* f_handler, CLogin::View::Func f_call);
+        bool KeepUser();
+        bool KeepPassword();
         /** 用于初始化一些菜单的动作。*/
         void on_initialize();
 
@@ -91,7 +98,7 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
         /** 设置窗口右上角的Logo图标*/
         void set_logo(const std::string& iconpath);
         /** 设置窗口最上边标签的信息，一般是本ID*/
-        void set_label();
+        void set_label(string f_label, string f_msg);
         /** 接收到删除事件时的回调*/
         bool on_delete_event(GdkEventAny*);
         /** 退出程序处理函数*/
@@ -186,13 +193,6 @@ public:
 
         /**登录成功后显示列表页*/
         void on_login_finial();
-        /** 登录中，显示正在登录的标签页*/
-        void on_logining() {
-                DLOG("in logining\n");
-                main_notebook->set_current_page(LOGIN_LOADING);
-                config.STATUS = LOGIN_LOADING;
-        }
-
         /** 重新登录，显示登录框的页*/
         void on_relogin() {
                 main_notebook->set_current_page(LOGIN_INIT);
@@ -202,7 +202,7 @@ public:
         /** 在登录中取消登录*/
         void on_logining_cancel();
         /** 登录处理函数，将跳到@link Bodies @endlink的login函数中进行登录处理*/
-        void on_login();
+        void on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call);
         /** 当登录窗口里帐户框口变化时*/
         void on_account_changed();
         /**初始化房间*/

@@ -21,8 +21,11 @@
 #include <gloox/connectionlistener.h>
 #include <gloox/loghandler.h>
 #include <iostream>
+#include "MVC.h"
 
 using namespace gloox;
+
+using namespace std;
 
 class Bodies;
 
@@ -36,16 +39,21 @@ class TalkConnect: public ConnectionListener, public LogHandler
 
 public:
         TalkConnect();
-        ~TalkConnect();
-        void onConnect();
-        void onDisconnect(ConnectionError er);
-        void onResourceBindError(ResourceBindError error);
-        void onSessionCreateError(SessionCreateError error);
-        bool onTLSConnect(const CertInfo& info);
-        void onStreamEvent(StreamEvent event);
+        virtual ~TalkConnect();
+        void Observer(CLogin::Handler* f_handler, CLogin::Model::Func f_call);
 
-        void handleLog(LogLevel level, LogArea area, const std::string& message);
+protected:
+        virtual void onConnect();
+        virtual void onDisconnect(ConnectionError er);
+        virtual void onResourceBindError(ResourceBindError error);
+        virtual void onSessionCreateError(SessionCreateError error);
+        virtual bool onTLSConnect(const CertInfo& info);
+        virtual void onStreamEvent(StreamEvent event);
+        virtual void handleLog(LogLevel level, LogArea area, const std::string& message);
 
+private:
+        CLogin::Handler* m_login_handler;
+        CLogin::Model::Func m_login_call;
 };
 
 

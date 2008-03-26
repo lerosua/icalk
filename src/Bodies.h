@@ -42,6 +42,7 @@
 #include "icalk.h"
 using std::list;
 
+using namespace std;
 
 /**
  * @brief 用于集合各种功能的工厂
@@ -57,8 +58,6 @@ public:
         ~Bodies();
         /**得到全局的Bodies类*/
         static Bodies& Get_Bodies();
-        /**进行登录的函数,程序由此开始*/
-        bool login(const std::string& name, const std::string& passwd);
         /**退出登录*/
         void logout();
         /**读取文件中的Account结构*/
@@ -168,7 +167,7 @@ private:
         TalkConnect m_talkConnect;
         TalkMsg m_talkMsg;
         TalkRoomHandler m_roomHandler;
-        TalkDiscoHandler m_discoHandler;
+        TalkDiscoHandler m_discoHandler; // useless currently
         TalkCard* m_cardManage;
         TalkFT* m_talkFT;
         VCard* m_vcard;
@@ -177,6 +176,12 @@ private:
         USERLIST userlist;
         sigc::connection connectIO;
 
+protected:
+        /**进行登录的函数,程序由此开始*/
+        // 开始建立连接，由 MainWindow 回调
+        virtual bool on_login(string f_name, string f_passwd, string f_server, int f_port);
+        // 连接建立成功，由 TalkConnect 回调
+        virtual void has_login();
 };
 
 #endif // _BODIES_H_

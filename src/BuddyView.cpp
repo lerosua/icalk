@@ -344,7 +344,7 @@ void BuddyView::tvc_connect_cell_data(Gtk::CellRenderer * renderer,
 #else
 
                 m_rendtext.set_property("text",
-                                      (*iter)[buddyColumns.nickname]);
+                                        (*iter)[buddyColumns.nickname]);
 #endif
 
         }

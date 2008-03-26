@@ -46,6 +46,9 @@
 #define TIMEOUT 5
 typedef std::map < std::string, Resource * >ResourceMap;
 
+using namespace Gtk;
+
+using namespace std;
 
 /**构建菜单的xml信息*/
 Glib::ustring ui_menu_info =
@@ -131,9 +134,6 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
         Gtk::Button * button_cancel =
                 dynamic_cast <
                 Gtk::Button * > (main_xml->get_widget("login_cancel"));
-        Gtk::Button * button_ok =
-                dynamic_cast <
-                Gtk::Button * > (main_xml->get_widget("login_ok"));
         comboAccount = Gtk::manage(new Gtk::ComboBoxEntryText());
         Gtk::HBox * hbox =
                 dynamic_cast <
@@ -184,9 +184,6 @@ MainWindow::MainWindow(Bodies & bodies_): bodies(bodies_)
 
         button_cancel->signal_clicked().
         connect(sigc::mem_fun(*this, &MainWindow::on_quit));
-
-        button_ok->signal_clicked().
-        connect(sigc::mem_fun(*this, &MainWindow::on_login));
 
         /** 第三页标签*/
         Gtk::Widget * widget = Gtk::manage(main_xml->get_widget("vbMain"));
@@ -360,52 +357,28 @@ void MainWindow::on_logining_cancel()
         on_relogin();
 }
 
-void MainWindow::on_login()
+// 只处理视图(界面)
+void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
 {
+        Glib::ustring name   = comboAccount->get_entry()->get_text();
+        Glib::ustring passwd = entryPasswd->get_text();
+        Glib::ustring server = entryServer->get_text();
+        Glib::ustring port   = entryPort->get_text();
+        int iport = atoi(port.c_str());
 
-        Glib::ustring name;
-        Glib::ustring passwd;
-        Glib::ustring server;
-        Glib::ustring port;
-        name = comboAccount->get_entry()->get_text();
-        passwd = entryPasswd->get_text();
-        server = entryServer->get_text();
-        port = entryPort->get_text();
-
-        if (name.empty() || passwd.empty()) {
-                return ;
+        { // TODO clear
+                on_initialize();
+                main_notebook->set_current_page(LOGIN_LOADING);
+                config.STATUS = LOGIN_LOADING;
         }
 
-        GUnit::init(name.c_str());
-
-        bodies.loadAccountTag();
-
-        if (keepMe->get_active() || keeppasswd->get_active()) {
-                USERLIST & userlist = bodies.getUserList();
-                USERLIST::iterator iter =
-                        find(userlist.begin(), userlist.end(), name);
-
-                if (iter == userlist.end())
-                        bodies.saveUserList(name);
-
-                if (!server.empty())
-                        bodies.setAccountTag("server", server);
-
-                if (!port.empty())
-                        bodies.setAccountTag("port", port);
-
-                if (keeppasswd->get_active()) {
-                        bodies.setAccountTag("keeppasswd", "true");
-                        bodies.setAccountTag("passwd", passwd);
-                } else {
-                        bodies.setAccountTag("keeppasswd", "false");
-                        bodies.setAccountTag("passwd", "xxxxxxx");
-                }
+        if (!(f_handler->*f_call)(name, passwd, server, iport)) { // 登录失败
+                // 界面处理
         }
 
-        bodies.setAccountTag("name", name);
+        // 登录成功，界面处理
 
-        bodies.login(name, passwd);
+
 }
 
 void MainWindow::on_initialize()
@@ -506,26 +479,21 @@ void MainWindow::set_logo(const std::string & iconpath)
 
 }
 
-void MainWindow::set_label()
+void MainWindow::set_label(string f_label, string f_msg)
 {
         Gtk::Label * name_label =
                 dynamic_cast <
                 Gtk::Label * > (main_xml->get_widget("label_name"));
         name_label->set_use_markup(true);
         name_label->set_ellipsize(Pango::ELLIPSIZE_END);
-        std::string text = bodies.get_jid().bare();
-        char *marktext =
-                g_markup_printf_escaped
-                ("<span weight='heavy' color='#6cb349'>%s</span>",
-                 text.c_str());
+        char *marktext = g_markup_printf_escaped(
+                                 "<span weight='heavy' color='#6cb349'>%s</span>",
+                                 f_label.c_str());
         name_label->set_label(marktext);
         g_free(marktext);
 
-        /*顺便设置签名档 */
-        const std::string msg = bodies.getAccountTag("message");
-
-        if (!msg.empty())
-                statusEntry->set_text(msg);
+        if (!f_msg.empty())
+                statusEntry->set_text(f_msg);
 
 }
 
@@ -539,7 +507,7 @@ void MainWindow::on_entry_port_insert_text(const Glib::ustring& f_str, int* f_po
                 //gtk_tooltips_set_tip(tip, f_entry, "please input digital!", NULL);
                 //gtk_tooltips_enable(tip);
 
-                if (*f_pos < 4) { // skip the text
+                if (*f_pos < 5) { // skip the text
                         f_entry->delete_text(*f_pos - 1, *f_pos);
                 }
         }
@@ -582,9 +550,9 @@ bool MainWindow::on_key_press_event(GdkEventKey * ev)
                         on_entryStatus_change();
 
                 else if (LOGIN_INIT == config.STATUS)
-                        on_login();
+                        // on_login();
 
-                break;
+                        break;
 
         default:
                 return Gtk::Window::on_key_press_event(ev);
@@ -1539,4 +1507,22 @@ void MainWindow::init_ui_manager()
 
         ui_manager->add_ui_from_string(ui_menu_info);
 
+}
+
+void MainWindow::Observer(CLogin::Handler* f_handler, CLogin::View::Func f_call)
+{
+        Button* button_ok = dynamic_cast <Button*>(main_xml->get_widget("login_ok"));
+        button_ok->signal_clicked().connect(sigc::bind(
+                                                    sigc::mem_fun(*this, &MainWindow::on_login), f_handler, f_call));
+}
+
+
+bool MainWindow::KeepUser()
+{
+        return keepMe->get_active();
+}
+
+bool MainWindow::KeepPassword()
+{
+        return keeppasswd->get_active();
 }

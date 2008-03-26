@@ -233,10 +233,9 @@ public:
         void sendPicture();
         /** 带内数据传输地发送图片--filename为文件名*/
         void sendPicture(const std::string& filename);
-	/** 发送文件*/
-	void sendFile(const std::string& filename);
-        const std::string& getCustomData()
-        {
+        /** 发送文件*/
+        void sendFile(const std::string& filename);
+        const std::string& getCustomData() {
                 return customSmile;
         }
 

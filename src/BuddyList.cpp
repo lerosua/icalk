@@ -90,8 +90,7 @@ void BuddyList::handleRoster(const Roster & roster)
 {
         Roster::const_iterator it = roster.begin();
 
-        for (; it != roster.end(); ++it)
-        {
+        for (; it != roster.end(); ++it) {
 
                 const RosterItem* item = (*it).second;
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
@@ -122,20 +121,18 @@ void BuddyList::handleRosterPresence(const RosterItem & item,
         Glib::ustring jid(item.jid());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(jid);
 
-        if (Presence::Unavailable == presence)
-        {
+        if (Presence::Unavailable == presence) {
                 if (buddy->get_status() == Presence::Unavailable)
                         return ;
                 else
                         buddy->set_sign_msg(_("offline"));
-        }
-        else
-        {
+        } else {
                 buddy->set_sign_msg(msg);
                 Bodies::Get_Bodies().getCardManage().fetch_vcard(item.jid());
         }
 
         buddy->set_status(presence);
+
         buddy->setResource(resource);
         Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshBuddyStatus(jid);
 

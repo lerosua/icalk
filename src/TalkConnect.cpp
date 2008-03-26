@@ -29,14 +29,13 @@ TalkConnect::TalkConnect()
 TalkConnect::~TalkConnect()
 {}
 
-
+// 只处理逻辑(功能)
 void TalkConnect::onConnect()
 {
         DLOG("Talk had connected ...\n");
 
-        Bodies::Get_Bodies().get_main_window().on_login_finial();
-        Bodies::Get_Bodies().get_main_window().on_combo_change();
-        Bodies::Get_Bodies().get_main_window().initRoom();
+        (m_login_handler->*m_login_call)(); // 连接成功 == 登录成功 ??
+
 //        Bodies::Get_Bodies().fetch_self_vcard();
         //      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
         //      bookmark.requestBookmarks();
@@ -238,4 +237,10 @@ void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& mes
 {
         //printf("log: level: %d, area %d, %s\n",level, area,message.c_str());
 
+}
+
+void TalkConnect::Observer(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
+{
+        m_login_handler = f_handler;
+        m_login_call    = f_call;
 }

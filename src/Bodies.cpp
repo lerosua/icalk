@@ -60,20 +60,15 @@ Bodies::Bodies():
         main_window = new MainWindow(*this);
         msg_window = new MsgWindow();
         statusIcon = new TrayIcon(main_window);
+
+        // 绑定登录回调函数
+        main_window->Observer(this, &Bodies::on_login);
+        m_talkConnect.Observer(this, &Bodies::has_login);
 }
 
 Bodies::~Bodies()
 {
         disconnect();
-        // has been done in disconnect()
-        // if (m_talkFT) {
-        //     delete m_talkFT;
-        //     m_talkFT = NULL;
-        // }
-        // if (m_cardManage) {
-        //     delete m_cardManage;
-        //     m_cardManage = NULL;
-        // }
 
         if (main_window) {
                 delete main_window;
@@ -221,12 +216,11 @@ void Bodies::loadAccountTag()
                 if (!accountTag) {
                         // TODO
                         // 1. remove try..catch
-                        // 2. use macro define fpr..(err.., .., __FILE__, __LINE__)
-                        fprintf(stderr, "!!! %s:%d\n", __FILE__, __LINE__);
+                        DLOG("accountTag == NULL\n");
                         throw;
                 }
         } catch (exception& e) {
-                fprintf(stderr, "%s\n", e.what());
+                DLOG("%s\n", e.what());
         }
 }
 
@@ -239,15 +233,11 @@ bool Bodies::callback(Glib::IOCondition condition)
                 ce = m_client->recv(1000); // microseconds, not milliseconds
         }
 
+        DLOG("recv return %d\n", ce);
+
         return true;
 }
 
-// XXX
-// 应该把 m_talkFT 和 m_cardManage 的处理放到
-//   - 连接建立成功
-//   - 登录成功
-//   - 好友列表初始化成功
-// 之后
 void Bodies::disconnect()
 {
         connectIO.disconnect();
@@ -284,14 +274,80 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
         m_client->setServer(server);
         m_client->setPort(port);
 
-        /*
-        Tag* t=new Tag("c");
-        t->addAttribute("xmlns",XMLNS_C_CAPS);
-        FCAPS* se=new FCAPS(t) ;
-        m_client->addPresenceExtension(se);
-        */
+        // connect(true)  -- block until connection has been established.
+        // connect(false) -- unblock, return immediately.
 
-        //bookMark= new TalkBookMark(m_client.get());
+        if (m_client->connect(false)) {
+                return dynamic_cast<ConnectionTCPClient*>(m_client->connectionImpl())->socket();
+        }
+
+        DLOG("connect: unknown error\n");
+
+        return -1;
+}
+
+bool Bodies::on_login(string f_name, string f_passwd, string f_server, int f_port)
+{
+        if (f_name.empty() || f_passwd.empty() || (f_port >= 65535) || (f_port <= 1024)) {
+                return false;
+        }
+
+        GUnit::init(f_name.c_str());
+
+        loadAccountTag();
+
+        if (main_window->KeepUser() || main_window->KeepPassword()) {
+                USERLIST::iterator iter =
+                        find(userlist.begin(), userlist.end(), f_name);
+
+                if (iter == userlist.end())
+                        saveUserList(f_name);
+
+                if (!f_server.empty())
+                        setAccountTag("server", f_server);
+
+                { // port
+                        char p[6] = "";
+                        sprintf(p, "%d", f_port);
+                        setAccountTag("port", p);
+                }
+
+                if (main_window->KeepPassword()) {
+                        setAccountTag("keeppasswd", "true");
+                        setAccountTag("passwd", f_passwd);
+                } else {
+                        setAccountTag("keeppasswd", "false");
+                        setAccountTag("passwd", "xxxxxxx");
+                }
+        }
+
+        setAccountTag("name", f_name);
+
+        int mysock = connect(f_name, f_passwd, f_server, f_port);
+
+        if (mysock < 0) {
+                return false;
+        }
+
+        connectIO = Glib::signal_io().connect(
+
+                            sigc::mem_fun(*this, &Bodies::callback),
+                            mysock,
+                            Glib::IO_IN | Glib::IO_HUP);
+
+        return true;
+}
+
+void Bodies::has_login()
+{
+        string label = jid->bare();
+        string msg = getAccountTag("message");
+
+        main_window->on_login_finial();
+        main_window->on_combo_change();
+        main_window->initRoom();
+        main_window->set_label(label, msg);
+        main_window->set_logo(getAccountTag("icon"));
 
         /** 初始化VCard管理类*/
         m_cardManage = new TalkCard(m_client.get());
@@ -300,43 +356,6 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
         m_talkFT = new TalkFT(m_client.get());
         m_talkFT->initFT();
 
-        if (m_client->connect(false)) {
-                return dynamic_cast<ConnectionTCPClient*>(m_client->connectionImpl())->socket();
-        }
-
-        DLOG("connect error\n");
-
-        return -1;
-}
-
-bool Bodies::login(const std::string& name, const std::string& passwd)
-{
-        int mysock = -1;
-        int port = atoi(getAccountTag("port").c_str());
-        string server = getAccountTag("server");
-
-        mysock = connect(name, passwd, server, port);
-
-        if (mysock < 0) {
-                DLOG("!!!connect failed\n");
-                return false;
-        }
-
-        DLOG("connected successfully\n");
-
-        connectIO = Glib::signal_io().connect(
-                            sigc::mem_fun(*this, &Bodies::callback),
-                            mysock,
-                            Glib::IO_IN | Glib::IO_HUP);
-
-        main_window->on_initialize();
-        main_window->on_logining();
-        main_window->set_label();
-        const std::string iconpath = getAccountTag("icon");
-        main_window->set_logo(iconpath);
-        //fetch_self_vcard();
-
-        return true;
 }
 
 void Bodies::set_vcard(const VCard* f_vcard)

@@ -84,9 +84,8 @@ typedef std::map<std::string, Member> MemberMap;
         char buffer[36] = {0}; \
         time_t t = time(NULL); \
         strftime(buffer, 36, "%F %T ", localtime(&t)); \
-        fprintf(stderr, "%s", buffer); \
-        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
-        fprintf(stderr, fmt, ##__VA_ARGS__); \
+        fprintf(stderr, "%s %s|%d| " fmt, \
+                buffer, __FILE__, __LINE__, ##__VA_ARGS__); \
     }
 
 #define RLOG(fmt, ...) \
@@ -94,9 +93,8 @@ typedef std::map<std::string, Member> MemberMap;
         char buffer[36] = {0}; \
         time_t t = time(NULL); \
         strftime(buffer, 36, "%F %T ", localtime(&t)); \
-        fprintf(stdout, "%s ", buffer); \
-        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
-        fprintf(stderr, fmt, ##__VA_ARGS__); \
+        fprintf(stderr, "%s %s|%d| " fmt, \
+                buffer, __FILE__, __LINE__, ##__VA_ARGS__); \
     }
 
 #elif __RELEASE_D
@@ -109,8 +107,7 @@ typedef std::map<std::string, Member> MemberMap;
         char buffer[36] = {0}; \
         time_t t = time(NULL); \
         strftime(buffer, 36, "%F %T ", localtime(&t)); \
-        fprintf(stdout, "%s ", buffer); \
-        fprintf(stdout, fmt, ##__VA_ARGS__); \
+        fprintf(stdout, "%s " fmt, buffer, ##__VA_ARGS__); \
     }
 
 #else // by default: __RELEASE_D and __DEBUG_D are not present in compilation
@@ -120,9 +117,8 @@ typedef std::map<std::string, Member> MemberMap;
         char buffer[36] = {0}; \
         time_t t = time(NULL); \
         strftime(buffer, 36, "%F %T ", localtime(&t)); \
-        fprintf(stderr, "%s", buffer); \
-        fprintf(stderr, "%s|%d| ", __FILE__, __LINE__); \
-        fprintf(stderr, fmt, ##__VA_ARGS__); \
+        fprintf(stderr, "%s %s|%d| " fmt, \
+                buffer, __FILE__, __LINE__, ##__VA_ARGS__); \
     }
 
 #define RLOG(fmt, ...) \
@@ -130,8 +126,7 @@ typedef std::map<std::string, Member> MemberMap;
         char buffer[36] = {0}; \
         time_t t = time(NULL); \
         strftime(buffer, 36, "%F %T ", localtime(&t)); \
-        fprintf(stdout, "%s ", buffer); \
-        fprintf(stdout, fmt, ##__VA_ARGS__); \
+        fprintf(stdout, "%s " fmt, buffer, ##__VA_ARGS__); \
     }
 
 #endif

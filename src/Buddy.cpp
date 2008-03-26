@@ -25,7 +25,7 @@
 #include "Bodies.h"
 
 /** 带内数据传输图片的大小*/
-#define PICZIAE 102400 
+#define PICZIAE 102400
 //#define PICZIAE 40960
 
 Buddy::Buddy(const RosterItem& item):
