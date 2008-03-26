@@ -44,17 +44,16 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 
         if (myjid.bare() == jid.bare()) {
                 Bodies::Get_Bodies().set_vcard(vcard);
-                printf("geting %s vcard\n", jid.username().c_str());
+                DLOG("geting %s vcard\n", jid.username().c_str());
 
                 if (!vcard) {
-                        printf("empty vcard!\n");
+                        DLOG("empty vcard!\n");
                         return ;
                 }
 
                 std::cout << "nickname is " << vcard->
 
                 nickname() << std::endl;
-                //std::cout << "photo is " << vcard->photo().binval << std::endl;
 
                 if (!vcard->photo().type.empty()) {
                         char *random =
@@ -74,21 +73,24 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
                         Bodies::Get_Bodies().get_main_window().set_logo(filename);
                 }
 
-        } else {
-                Buddy *buddy =
-                        Bodies::Get_Bodies().get_buddy_list().find_buddy(jid.
-                                        bare
-                                        ());
-
-                if (!vcard) {
-                        //printf("empty vcard!\n");
-                        return ;
-                }
-
-                buddy->set_vcard(vcard);
-
-                buddy->refreshinfo();
         }
+
+        Buddy *buddy =
+                Bodies::Get_Bodies().get_buddy_list().find_buddy(jid.
+                                bare
+                                ());
+
+        if (buddy == NULL)
+                return ;
+
+        if (!vcard) {
+                //DLOG("empty vcard!\n");
+                return ;
+        }
+
+        buddy->set_vcard(vcard);
+
+        buddy->refreshinfo();
 }
 
 void TalkCard::handleVCardResult(VCardContext context, const JID & jid,

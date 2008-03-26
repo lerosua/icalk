@@ -197,8 +197,9 @@ void Buddy::close_session(bool closePage)
 
                 /** 关闭会话 */
                 session->disposeMessageFilter(message_event_filter);
-
                 session->disposeMessageFilter(chat_state_filter);
+		message_event_filter=NULL;
+		chat_state_filter=NULL;
 
                 //printf(" 真正地disposeMessagesession\n");
                 Bodies::Get_Bodies().get_client().disposeMessageSession(session);
