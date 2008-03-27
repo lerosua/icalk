@@ -441,23 +441,18 @@ void MainWindow::on_account_changed()
 
 void MainWindow::set_logo(const std::string & iconpath)
 {
-        //VCard *vcard = bodies.get_vcard();
-        //Glib::RefPtr<Gdk::Pixbuf> pix;
-
         if (!iconpath.empty()) {
+                        try {
                 logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
+                        } catch (Glib::FileError e) {
+                                g_message("caught Glib::FileError in initBuddy create from file");
+                        } catch (Gdk::PixbufError e) {
+                                g_message("Gdk::PixbufError in create_from_file");
+			}
+		if(0 == logo)
+			logo =Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png");
 
-                /*
-                   std::ifstream fin(iconpath.c_str(),ios::binary);
-                   const std::string type="image/png";
-                   std::string binval;
-                   std::copy((std::istreambuf_iterator<char>(fin)),
-                   std::istreambuf_iterator<char>(),
-                   std::inserter(binval,binval.begin()));
-                   fin.close();
-                   vcard->setPhoto(type,binval);
-                   bodies.getCardManage().store_vcard(vcard);
-                   */
+     
         } else
                 logo =
                         Gdk::Pixbuf::

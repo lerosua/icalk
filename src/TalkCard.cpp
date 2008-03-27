@@ -51,10 +51,6 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
                         return ;
                 }
 
-                std::cout << "nickname is " << vcard->
-
-                nickname() << std::endl;
-
                 if (!vcard->photo().type.empty()) {
                         char *random =
                                 g_strdup_printf("%x", g_random_int());
@@ -84,7 +80,6 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
                 return ;
 
         if (!vcard) {
-                //DLOG("empty vcard!\n");
                 return ;
         }
 
@@ -96,5 +91,5 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 void TalkCard::handleVCardResult(VCardContext context, const JID & jid,
                                  StanzaError se)
 {
-        std::cout << "jid vcard result error? " << jid.bare() << " StanzaError " << se << std::endl;
+	DLOG("jid vcard result error -- %s --StanzaError id %d\n",jid.bare().c_str(),se);
 }
