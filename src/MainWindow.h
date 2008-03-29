@@ -207,6 +207,7 @@ public:
         void on_account_changed();
         /**初始化房间*/
         void initRoom();
+	ServerDiscoWindow* get_disco_window(){return discowindow;}
 
 public:
         /** 获取当前的签名消息*/

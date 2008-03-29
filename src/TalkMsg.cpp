@@ -33,7 +33,6 @@ void TalkMsg::handleMessage(Message * stanza, MessageSession *session)
 void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 {
         const JID target = session->target();
-        //Buddy* buddy=Bodies::Get_Bodies().get_buddy_list().find_buddy(stanza.from().bare());
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
         assert(buddy != NULL);
 

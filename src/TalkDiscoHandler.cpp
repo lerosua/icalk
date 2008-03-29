@@ -17,40 +17,46 @@
 */
 
 #include "TalkDiscoHandler.h"
+#include "Bodies.h"
+#include "ServerDiscoWindow.h"
 #include "icalk.h"
 
 
 void TalkDiscoHandler::handleDiscoInfoResult(IQ * stanza, int context)
 {
-        printf("handleDiscoInfoResult}\n");
+        DLOG("handleDiscoInfoResult}\n");
 }
 
 void TalkDiscoHandler::handleDiscoItemsResult(IQ * stanza, int context)
 {
-        printf("handleDiscoItemsResult\n");
+        DLOG("handleDiscoItemsResult\n");
 }
 
 void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context)
 {
-        printf("handleDiscoError\n");
+        DLOG("handleDiscoError\n");
 }
 
 
 void TalkDiscoHandler::handleDiscoInfo(const JID& from, const Disco::Info& info, int context)
 {
-        printf("handleDiscoInfo}\n");
+        DLOG("handleDiscoInfo}\n");
 }
 
 void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& items, int context)
 {
-        printf("handleDiscoItems}\n");
+        DLOG("handleDiscoItems}\n");
         const Disco::ItemList& list = items.items();
         Disco::ItemList::const_iterator iter = list.begin();
 
+        ServerDiscoWindow* discowindow = Bodies::Get_Bodies().get_main_window().get_disco_window();
+
+        if (NULL == discowindow)
+                return ;
+
         for (; iter != list.end(); ++iter) {
                 PBUG("jid = %s\n", (*iter)->jid().full().c_str());
-
-                //do something
+                discowindow->addAgent((*iter)->jid().full());
 
         }
 }

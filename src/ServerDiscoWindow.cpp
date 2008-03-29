@@ -15,6 +15,7 @@
 *
 * =====================================================================================
 */
+#include <glib/gi18n.h>
 #include "ServerDiscoWindow.h"
 #include "Bodies.h"
 #include "MainWindow.h"
@@ -27,7 +28,7 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
         Gtk::VBox* vBox = dynamic_cast<Gtk::VBox*>(server_discovery_xml->get_widget("vBox"));
 
         add
-        (*vBox);
+                (*vBox);
 
         set_transient_for(*parent);
 
@@ -43,6 +44,15 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
         btClose->signal_clicked().
         connect(sigc::mem_fun(*this, &ServerDiscoWindow::on_btclose_clicked));
 
+
+        Gtk::ScrolledWindow * scrolledwin = dynamic_cast<Gtk::ScrolledWindow*>(server_discovery_xml->get_widget("services_scrollwin"));
+
+        agentline = Gtk::manage(new class AgentLine);
+
+        scrolledwin->add
+        (*agentline);
+
+
         set_default_size(450, 320);
 
         show_all();
@@ -50,6 +60,11 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
 
 ServerDiscoWindow::~ServerDiscoWindow()
 {}
+
+void ServerDiscoWindow::addAgent(const std::string& f_jid)
+{
+        agentline->addLine(f_jid);
+}
 
 void ServerDiscoWindow::on_btGo_clicked()
 {
@@ -81,4 +96,60 @@ bool ServerDiscoWindow::on_key_press_event(GdkEventKey* ev)
         }
 
         return true;
+}
+
+AgentLine::AgentLine()
+{
+        AgentLine *agentline = this;
+        agentline->set_name("icalk_statusmsg_listview");
+        agentline->set_flags(Gtk::CAN_FOCUS);
+        agentline->set_headers_visible(false);
+        agentline->set_rules_hint(false);
+
+        m_liststore = Gtk::ListStore::create(m_columns);
+        agentline->set_model(m_liststore);
+        agentline->append_column("icon", m_columns.icon);
+        agentline->append_column("name", m_columns.name);
+        agentline->show();
+
+
+}
+
+void AgentLine::addLine(const std::string& f_jid, const int f_type)
+{
+        Gtk::TreeModel::iterator iter = m_liststore->append();
+        (*iter)[m_columns.name] = f_jid;
+        (*iter)[m_columns.jid] = f_jid;
+}
+
+bool AgentLine::on_button_press_event(GdkEventButton * ev)
+{
+        bool result = Gtk::TreeView::on_button_press_event(ev);
+
+        Glib::RefPtr < Gtk::TreeSelection > selection =
+                this->get_selection();
+        Gtk::TreeModel::iterator iter = selection->get_selected();
+
+        if (!selection->count_selected_rows())
+                return result;
+
+
+        Gtk::TreeModel::Path path(iter);
+
+        Gtk::TreeViewColumn * tvc;
+
+        int cx, cy;
+
+        /** get_path_at_pos() 是为确认鼠标是否在选择行上点击的*/
+        if (!this->
+                        get_path_at_pos((int) ev->x, (int) ev->y, path, tvc, cx, cy))
+                return FALSE;
+
+        if ((ev->type == GDK_2BUTTON_PRESS ||
+                        ev->type == GDK_3BUTTON_PRESS)) {
+                //Glib::ustring msg = (*iter)[m_columns.jid];
+
+        } else if ((ev->type == GDK_BUTTON_PRESS)
+                && (ev->button == 3)) {}
+
 }

@@ -21,7 +21,7 @@
 
 #include <gtkmm.h>
 #include <libglademm/xml.h>
-#include <iostream>
+#include <iostream> 
 //#include <sigc++/compatibility.h>
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
@@ -31,12 +31,15 @@ class Bodies;
 
 class MainWindow;
 
+class AgentLine;
+
 class ServerDiscoWindow: public Gtk::Window
 {
 
 public:
         ServerDiscoWindow(MainWindow* parent_);
         ~ServerDiscoWindow();
+        void addAgent(const std::string& f_jid);
 
 private:
         bool on_key_press_event(GdkEventKey* ev);
@@ -46,10 +49,46 @@ private:
 private:
         GlademmXML server_discovery_xml;
         MainWindow* parent;
+        AgentLine* agentline;
         Gtk::ComboBoxEntry* nodeEntry;
 
 };
 
+class AgentLine: public Gtk::TreeView
+{
+
+public:
+        AgentLine();
+        void addLine(const std::string& f_jid, const int f_type = 0);
+
+protected:
+        bool on_button_press_event(GdkEventButton *);
+
+private:
+
+struct AgentColumns: public Gtk::TreeModel::ColumnRecord
+        {
+                AgentColumns()
+                {
+                        add
+                                (icon);
+
+                        add
+                                (name);
+
+                        add
+                                (jid);
+                }
+
+                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
+                Gtk::TreeModelColumn<std::string> name;
+                Gtk::TreeModelColumn<std::string> jid;
+        };
+
+private:
+        AgentColumns m_columns;
+        Glib::RefPtr<Gtk::ListStore> m_liststore;
+};
 
 
 

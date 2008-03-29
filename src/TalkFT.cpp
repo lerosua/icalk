@@ -41,7 +41,14 @@ void TalkFT::initFT()
         ConnectionError le = ConnNoError;
 
         if ((le = m_server->listen()) != ConnNoError)
+	{
                 DLOG("listen returned: %d\n", le);
+		delete m_server;
+		m_server= new SOCKS5BytestreamServer(m_client->logInstance(),PORT+1);
+		if ((le = m_server->listen()) != ConnNoError)
+			DLOG("listen2 returned: %d\n", le);
+
+	}
 
         m_ft->registerSOCKS5BytestreamServer(m_server);
 
