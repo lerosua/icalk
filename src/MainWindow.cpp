@@ -442,17 +442,18 @@ void MainWindow::on_account_changed()
 void MainWindow::set_logo(const std::string & iconpath)
 {
         if (!iconpath.empty()) {
-                        try {
-                logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
-                        } catch (Glib::FileError e) {
-                                g_message("caught Glib::FileError in initBuddy create from file");
-                        } catch (Gdk::PixbufError e) {
-                                g_message("Gdk::PixbufError in create_from_file");
-			}
-		if(0 == logo)
-			logo =Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png");
+                try {
+                        logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
+                } catch (Glib::FileError e) {
+                        g_message("caught Glib::FileError in initBuddy create from file");
+                } catch (Gdk::PixbufError e) {
+                        g_message("Gdk::PixbufError in create_from_file");
+                }
 
-     
+                if (0 == logo)
+                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png");
+
+
         } else
                 logo =
                         Gdk::Pixbuf::
@@ -1315,6 +1316,7 @@ void MainWindow::on_roomDelete_activate()
 void MainWindow::register_stock_items()
 {
         Glib::RefPtr<Gtk::IconFactory> factory = Gtk::IconFactory::create();
+
         Gtk::IconSource source_chat;
         Gtk::IconSource source_log;
         Gtk::IconSource source_block;
@@ -1336,12 +1338,17 @@ void MainWindow::register_stock_items()
         source_disco.set_pixbuf(Gdk::Pixbuf::create_from_file(DATA_DIR"/images/disco.png"));
         source_disco.set_size_wildcarded();
 
-        Gtk::IconSet icon_set;
-        icon_set.add_source(source_chat);  //more than one source per set is allow.
-        icon_set.add_source(source_log);
-        icon_set.add_source(source_block);
-        icon_set.add_source(source_type);
-        icon_set.add_source(source_disco);
+        Gtk::IconSet icon_set_chat;
+        Gtk::IconSet icon_set_log;
+        Gtk::IconSet icon_set_block;
+        Gtk::IconSet icon_set_type;
+        Gtk::IconSet icon_set_disco;
+
+        icon_set_chat.add_source(source_chat);  //more than one source per set is allow.
+        icon_set_log.add_source(source_log);
+        icon_set_block.add_source(source_block);
+        icon_set_type.add_source(source_type);
+        icon_set_disco.add_source(source_disco);
 
         const Gtk::StockID stock_id_chat("CHAT");
         const Gtk::StockID stock_id_log("LOG");
@@ -1349,20 +1356,37 @@ void MainWindow::register_stock_items()
         const Gtk::StockID stock_id_type("TYPE");
         const Gtk::StockID stock_id_disco("DISCO");
 
+        /*
+               factory_chat->add
+               (stock_id_chat, icon_set_chat);
+
+               factory_log->add
+               (stock_id_log, icon_set_log);
+
+               factory_block->add
+               (stock_id_block, icon_set_block);
+
+               factory_type->add
+               (stock_id_type, icon_set_type);
+
+               factory_disco->add
+               (stock_id_disco, icon_set_disco);
+        */
         factory->add
-        (stock_id_chat, icon_set);
+        (stock_id_chat, icon_set_chat);
 
         factory->add
-        (stock_id_log, icon_set);
+        (stock_id_log, icon_set_log);
 
         factory->add
-        (stock_id_block, icon_set);
+        (stock_id_block, icon_set_block);
 
         factory->add
-        (stock_id_type, icon_set);
+        (stock_id_type, icon_set_type);
 
         factory->add
-        (stock_id_disco, icon_set);
+        (stock_id_disco, icon_set_disco);
+
 
         Gtk::Stock::add
         (Gtk::StockItem( stock_id_chat, _("CHAT")));
@@ -1378,7 +1402,6 @@ void MainWindow::register_stock_items()
 
         Gtk::Stock::add
         (Gtk::StockItem( stock_id_disco, _("Disco")));
-
 
         factory->add_default();
 }

@@ -40,6 +40,11 @@ public:
         ServerDiscoWindow(MainWindow* parent_);
         ~ServerDiscoWindow();
         void addAgent(const std::string& f_jid);
+	/** 
+	 * @brief 窗口的进度条，
+	 * @param f_blink True:进度条来回闪动，False:进度条满
+	 */
+	void progress(const bool f_blink);
 
 private:
         bool on_key_press_event(GdkEventKey* ev);
@@ -48,9 +53,10 @@ private:
 
 private:
         GlademmXML server_discovery_xml;
-        MainWindow* parent;
+        MainWindow* m_parent;
         AgentLine* agentline;
-        Gtk::ComboBoxEntry* nodeEntry;
+	Gtk::ProgressBar* m_progressbar;
+        Gtk::ComboBoxEntry* m_nodeEntry;
 
 };
 

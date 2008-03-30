@@ -21,7 +21,7 @@
 #include "MainWindow.h"
 
 
-ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
+ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): m_parent(parent_)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
         server_discovery_xml = Gnome::Glade::Xml::create(server_discovery_ui, "vBox");
@@ -30,9 +30,9 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
         add
                 (*vBox);
 
-        set_transient_for(*parent);
+        set_transient_for(*m_parent);
 
-        nodeEntry = dynamic_cast<Gtk::ComboBoxEntry*>(server_discovery_xml->get_widget("address_comboboxentry"));
+        m_nodeEntry = dynamic_cast<Gtk::ComboBoxEntry*>(server_discovery_xml->get_widget("address_comboboxentry"));
 
         Gtk::Button* btGo = dynamic_cast<Gtk::Button*>(server_discovery_xml->get_widget("browse_button"));
 
@@ -43,6 +43,7 @@ ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): parent(parent_)
 
         btClose->signal_clicked().
         connect(sigc::mem_fun(*this, &ServerDiscoWindow::on_btclose_clicked));
+	m_progressbar = dynamic_cast<Gtk::ProgressBar*>(server_discovery_xml->get_widget("services_progressbar"));
 
 
         Gtk::ScrolledWindow * scrolledwin = dynamic_cast<Gtk::ScrolledWindow*>(server_discovery_xml->get_widget("services_scrollwin"));
@@ -66,18 +67,31 @@ void ServerDiscoWindow::addAgent(const std::string& f_jid)
         agentline->addLine(f_jid);
 }
 
+void ServerDiscoWindow::progress(const bool f_blink)
+{
+	if(f_blink)
+	{
+		m_progressbar->pulse();
+	}
+	else
+		m_progressbar->set_pulse_step(1.0);
+}
+
 void ServerDiscoWindow::on_btGo_clicked()
 {
 
-        std::string node = nodeEntry->get_entry()->get_text();
+        std::string node = m_nodeEntry->get_entry()->get_text();
+	if(node.empty())
+		return;
         Bodies::Get_Bodies().disco_node(node);
+	progress(true);
 
 }
 
 void ServerDiscoWindow::on_btclose_clicked()
 {
         //delete this;
-        parent->on_serverDisco_close(this);
+        m_parent->on_serverDisco_close(this);
 }
 
 bool ServerDiscoWindow::on_key_press_event(GdkEventKey* ev)

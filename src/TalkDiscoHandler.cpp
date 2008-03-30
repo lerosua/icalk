@@ -59,6 +59,7 @@ void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& ite
                 discowindow->addAgent((*iter)->jid().full());
 
         }
+	discowindow->progress(false);
 }
 
 void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int context)
