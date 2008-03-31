@@ -67,6 +67,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 
         if (x) {
                 DLOG("the msg has use XhtmlIM\n");
+		DLOG("xhtmlIM tag = %s\n",x->tag()->xml().c_str());
         }
 
         const DelayedDelivery* dd = stanza.when();

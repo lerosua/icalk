@@ -311,10 +311,8 @@ void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 void TalkFT::handleBytestreamData(Bytestream * s5b,
                                   const std::string & data)
 {
-        //DLOG("received %d bytes of data\n\n", data.length());
         RECVLIST::iterator iter = rfilelist.find(s5b->sid());
         (*iter).second->write(data.c_str(), data.length());
-        //(*iter).second << data;
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)

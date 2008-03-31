@@ -227,13 +227,12 @@ void Bodies::loadAccountTag()
 bool Bodies::callback(Glib::IOCondition condition)
 {
         ConnectionError ce = ConnNoError;
-        //std::cout<<"talk connecting...: "<<ce<<std::endl;
 
         if ( ce == ConnNoError) {
                 ce = m_client->recv(1000); // microseconds, not milliseconds
         }
 
-        DLOG("recv return %d\n", ce);
+        //DLOG("recv return %d\n", ce);
 
         return true;
 }

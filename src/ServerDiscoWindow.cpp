@@ -74,7 +74,7 @@ void ServerDiscoWindow::progress(const bool f_blink)
 		m_progressbar->pulse();
 	}
 	else
-		m_progressbar->set_pulse_step(1.0);
+		m_progressbar->set_fraction(1.0);
 }
 
 void ServerDiscoWindow::on_btGo_clicked()
