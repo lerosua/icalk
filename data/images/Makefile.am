@@ -51,6 +51,11 @@ icalkimages_DATA = 	\
 	       mail.png 	\
 	       yahoo.png 	\
 	       sip.png 		\
+	       aim.png 	\
+	       jud.png  \
+	       gadu.png \
+	       weather.png 	\
+	       qq.png 		\
 	       avatar.png
 
 EXTRA_DIST = $(pixmaps_DATA) $(icalkimages_DATA)

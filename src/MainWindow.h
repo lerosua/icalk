@@ -155,7 +155,7 @@ public:
         /** 查看好友资料时回调。窗口返回VCard*/
         void on_buddyInfo_activate();
         /** 删除好友回调，会跳出窗口询问是否删除*/
-        void on_buddyRemove_activate();
+        void on_buddyDelete_activate();
         /** 更改好友类型窗口*/
         void on_buddyType_activate();
         /** 添加好友对话窗口*/
@@ -184,6 +184,8 @@ public:
         void on_roomChat_activate();
         /** 屏蔽房间，等于不自动加入聊天室*/
         void on_roomBlock_activate();
+	/** 房间名的别名更改*/
+	void on_roomNameEdit_activate();
         /** 删除房间的回调*/
         void on_roomDelete_activate();
         /** 房间的聊天记录*/

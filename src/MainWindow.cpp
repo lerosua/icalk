@@ -72,6 +72,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='RoomChat'/>"
         " <menuitem action='RoomBlock'/>"
         " <menuitem action='RoomLog'/>"
+	" <menuitem action='RoomEdit'/>"
         " <menuitem action='RoomDelete'/>"
         "</popup>"
         "<popup name='SysMenu'>"
@@ -880,7 +881,7 @@ void MainWindow::on_buddyInfo_activate()
 }
 
 
-void MainWindow::on_buddyRemove_activate()
+void MainWindow::on_buddyDelete_activate()
 {
         Glib::RefPtr < Gtk::TreeSelection > selection =
                 list_view->get_selection();
@@ -1265,7 +1266,40 @@ void MainWindow::toggle_visibility()
 }
 
 void MainWindow::on_roomChat_activate()
-{}
+{
+        Glib::RefPtr < Gtk::TreeSelection > selection =
+                list_view->get_selection();
+
+        if (!selection->count_selected_rows())
+                return ;
+
+        Gtk::TreeModel::iterator iter = selection->get_selected();
+
+        Glib::ustring mid= list_view->getIDfromIter(iter);
+		RoomItem *room =
+                                Bodies::Get_Bodies().getRoomHandler().
+                                findRoom(mid);
+
+                        MsgPage *page = room->getPage();
+
+                        if (NULL == page) {
+                                room->join();
+                                const std::string label =
+                                        room->getRoomJID();
+                                MsgPage *page_ =
+                                        new MsgPage(label, room, 1);
+                                room->setPage(page_);
+                                page = room->getPage();
+                                page->setSubject();
+                                page->refreshMember();
+                                Bodies::Get_Bodies().get_msg_window().
+                                add_page(*page);
+                        }
+
+                        Bodies::Get_Bodies().get_msg_window().show();
+                        Bodies::Get_Bodies().get_msg_window().setCurrentPage(page);
+
+}
 
 void MainWindow::on_roomBlock_activate()
 {
@@ -1293,6 +1327,10 @@ void MainWindow::on_roomBlock_activate()
 void MainWindow::on_buddyBlock_activate()
 {}
 
+void MainWindow::on_roomNameEdit_activate()
+{
+}
+
 void MainWindow::on_roomDelete_activate()
 {
         Glib::RefPtr < Gtk::TreeSelection > selection =
@@ -1302,14 +1340,34 @@ void MainWindow::on_roomDelete_activate()
                 return ;
 
         Gtk::TreeModel::iterator iter = selection->get_selected();
-
         Glib::ustring jid = list_view->getIDfromIter(iter);
 
+	Gtk::MessageDialog dialog(*this, _("delete Room"), false,
+                                  Gtk::MESSAGE_QUESTION,
+                                  Gtk::BUTTONS_OK_CANCEL);
+
+        Glib::ustring msg =
+                _("You will delete the Chat Room ") + jid +
+                _(". are you ready to do this ?");
+
+        dialog.set_secondary_text(msg);
+
+        int result = dialog.run();
+
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
         RoomItem *room = bodies.getRoomHandler().findRoom(jid);
-
         room->leave();
-
         list_view->delRoom(jid);
+			break;
+
+				 }
+	case (Gtk::RESPONSE_CANCEL):
+			break;
+	default:
+			break;
+	}
+
 }
 
 
@@ -1456,7 +1514,7 @@ void MainWindow::init_ui_manager()
 
         action_group->add
         (Gtk::Action::create("BuddyDelete", Gtk::Stock::DELETE, _("_Delete")),
-         sigc::mem_fun(*this, &MainWindow::on_buddyRemove_activate));
+         sigc::mem_fun(*this, &MainWindow::on_buddyDelete_activate));
 
         //RoomMenu
         action_group->add
@@ -1474,6 +1532,10 @@ void MainWindow::init_ui_manager()
          sigc::mem_fun(*this, &MainWindow::
                        on_roomLog_activate));
 
+        action_group->add
+	(Gtk::Action::create("RoomEdit",Gtk::Stock::EDIT, _("_Alias")),
+	 sigc::mem_fun(*this,&MainWindow::
+		 on_roomNameEdit_activate));
         action_group->add
         (Gtk::Action::create("RoomDelete", Gtk::Stock::DELETE, _("_Delete")),
          sigc::mem_fun(*this, &MainWindow::
