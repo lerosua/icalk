@@ -28,35 +28,35 @@
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-static char* agent_type_info[19][3]={ 
-	  { "aim",   _("AIM Transports"),"aim.png"}
-	, { "icq",   _("ICQ Transports"),"icq.png"}
-	, { "msn",   _("MSN Transports"), "msn.png" }
-	, { "yahoo", _("Yahoo Transports"), "yahoo.png" }
-	, { "qq",    _("QQ Transports"),    "qq.png" }
-	, { "gadu-gadu", _("Gadu-Gadu Transports"), "gadu.png"}
-	, { "irc",   _("IRC Transports"), "icq.png" }
-	, { "conference", _("Conference"), "groupchat.png" }
-	, { "rss",    _("RSS Transports"),  "rss.png"	}
-	, { "weather", _("Weather"), "other.png" }
-	, { "sip",     _("SIP"),     "other.png" }
-	, { "bytestreams", _("Socks5 proxy"), "bytestreams.png" }
-	, { "pubsub",      _("PubSub"),       "pubsub.png" }
-	, { "http-ws" ,    _("Http-ws"),      "other.png" }
-	, { "sms",         _("SMS Transports"), "sms.png" }
-	, { "smtp",        _("SMTP Transports"), "mail.png" }
-	, { "user",        _("User"),		 "jud.png" }
-	, { "other",       "",           "other.png" }
-};
-enum { AGENT_AIM=0, AGENT_ICQ,AGENT_MSN,
-		   AGENT_YAHOO, AGENT_QQ, AGENT_GADU,
-		   AGENT_IRC,   AGENT_CONFERENCE, AGENT_RSS,
-		   AGENT_WEATHER, AGENT_SIP, AGENT_BYTESTREAMS,
-		   AGENT_PUBSUB,
-		   AGENT_HTTP_WS, AGENT_SMS, AGENT_SMTP,
-		   AGENT_JUD,
-		   AGENT_OTHER
-};
+static char* agent_type_info[19][3] = {
+                                              { "aim", _("AIM Transports"), "aim.png"}
+                                              , { "icq", _("ICQ Transports"), "icq.png"}
+                                              , { "msn", _("MSN Transports"), "msn.png" }
+                                              , { "yahoo", _("Yahoo Transports"), "yahoo.png" }
+                                              , { "qq", _("QQ Transports"), "qq.png" }
+                                              , { "gadu-gadu", _("Gadu-Gadu Transports"), "gadu.png"}
+                                              , { "irc", _("IRC Transports"), "irc.png" }
+                                              , { "conference", _("Conference"), "groupchat.png" }
+                                              , { "rss", _("RSS Transports"), "rss.png" }
+                                              , { "weather", _("Weather"), "other.png" }
+                                              , { "sip", _("SIP"), "other.png" }
+                                              , { "bytestreams", _("Socks5 proxy"), "bytestreams.png" }
+                                              , { "pubsub", _("PubSub"), "pubsub.png" }
+                                              , { "http-ws" , _("Http-ws"), "other.png" }
+                                              , { "sms", _("SMS Transports"), "sms.png" }
+                                              , { "smtp", _("SMTP Transports"), "mail.png" }
+                                              , { "user", _("User"), "jud.png" }
+                                              , { "other", "", "other.png" }
+                                      };
+enum { AGENT_AIM = 0, AGENT_ICQ, AGENT_MSN,
+       AGENT_YAHOO, AGENT_QQ, AGENT_GADU,
+       AGENT_IRC, AGENT_CONFERENCE, AGENT_RSS,
+       AGENT_WEATHER, AGENT_SIP, AGENT_BYTESTREAMS,
+       AGENT_PUBSUB,
+       AGENT_HTTP_WS, AGENT_SMS, AGENT_SMTP,
+       AGENT_JUD,
+       AGENT_OTHER
+     };
 #define agent_jid 0
 #define agent_info 1
 #define agent_icon 2
@@ -73,14 +73,23 @@ class ServerDiscoWindow: public Gtk::Window
 public:
         ServerDiscoWindow(MainWindow* parent_);
         ~ServerDiscoWindow();
+        /** 添加代理*/
         void addAgent(const std::string& f_jid);
-	/** 清除列表*/
-	void clear();
-	/** 
-	 * @brief 窗口的进度条，
-	 */
-	void final_progress();
-	bool on_progress();
+        /**
+         * @brief 设置所查询的服务器的信息
+         * @param  f_node 所查询的服务器，比如 jabber.org
+         * @param  f_server xmpp服务器,比如 ejabbered
+         */
+        void setLabel(const std::string& f_node, const std::string& f_server = "XMPP");
+        /** 清除列表*/
+        void clear();
+        /**
+         * @brief 进度条完成，
+         */
+        void final_progress();
+        /** 进度条开始跳动*/
+        bool on_progress();
+	void showError();
 
 private:
         bool on_key_press_event(GdkEventKey* ev);
@@ -91,8 +100,9 @@ private:
         GlademmXML server_discovery_xml;
         MainWindow* m_parent;
         AgentLine* agentline;
-	Gtk::ProgressBar* m_progressbar;
+        Gtk::ProgressBar* m_progressbar;
         Gtk::ComboBoxEntry* m_nodeEntry;
+        Gtk::Label* m_label;
         sigc::connection m_timeout;
 
 };
@@ -102,9 +112,14 @@ class AgentLine: public Gtk::TreeView
 
 public:
         AgentLine();
+        /**
+         * @brief 添加代理进列表
+         * @param f_jid 代理的jid
+         * @param f_type 代理的类型，比如msn的transport,icq的transport
+         */
         void addLine(const std::string& f_jid, const int f_type = 0);
-	/** 清除列表*/
-	void clear();
+        /** 清除列表*/
+        void clear();
 
 protected:
         bool on_button_press_event(GdkEventButton *);

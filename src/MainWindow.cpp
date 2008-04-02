@@ -711,12 +711,17 @@ void MainWindow::on_btlistexpand_clicked()
 
 void MainWindow::on_btlistshowoffline_clicked()
 {
+        Glib::RefPtr<Gtk::ToggleAction>melem =
+                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("ShowOffline"));
+
         if (config.SHOWALLFRIEND) {
                 list_view->showOffline(false);
                 config.SHOWALLFRIEND = false;
+		melem->set_active(false);
         } else {
                 list_view->showOffline(true);
                 config.SHOWALLFRIEND = true;
+		melem->set_active(true);
         }
 }
 

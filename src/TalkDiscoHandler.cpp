@@ -40,12 +40,26 @@ void TalkDiscoHandler::handleDiscoError(IQ * stanza, int context)
 
 void TalkDiscoHandler::handleDiscoInfo(const JID& from, const Disco::Info& info, int context)
 {
-        DLOG("handleDiscoInfo}\n");
+        ServerDiscoWindow* discowindow = Bodies::Get_Bodies().get_main_window().get_disco_window();
+
+        if (NULL == discowindow)
+                return ;
+
+
+        const Disco::IdentityList& list = info.identities();
+
+        Disco::IdentityList::const_iterator iter = list.begin();
+
+        for (; iter != list.end(); ++iter) {
+                if ((*iter)->category() == "server") {
+
+                        discowindow->setLabel(from.full(), (*iter)->name());
+                }
+        }
 }
 
 void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& items, int context)
 {
-        DLOG("handleDiscoItems}\n");
         const Disco::ItemList& list = items.items();
         Disco::ItemList::const_iterator iter = list.begin();
 
@@ -55,15 +69,22 @@ void TalkDiscoHandler::handleDiscoItems(const JID& from, const Disco::Items& ite
                 return ;
 
         for (; iter != list.end(); ++iter) {
-                PBUG("jid = %s\n", (*iter)->jid().full().c_str());
+                //PBUG("jid = %s\n", (*iter)->jid().full().c_str());
                 discowindow->addAgent((*iter)->jid().full());
 
         }
-	discowindow->final_progress();
+
+        discowindow->final_progress();
 }
 
 void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int context)
-{}
+{
+        ServerDiscoWindow* discowindow = Bodies::Get_Bodies().get_main_window().get_disco_window();
+
+        if (NULL == discowindow)
+                return ;
+	discowindow->showError();
+}
 
 bool TalkDiscoHandler::handleDiscoSet(IQ* iq)
 {}
