@@ -54,7 +54,7 @@ public:
         TalkFT(Client * client_);
         ~TalkFT();
 
-        typedef std::map<std::string , std::ofstream*> RECVLIST;
+        typedef std::map<std::string , std::fstream*> FILELIST;
         /** 初始化SIProfileFT类和接收/发送所需要的proxy服务器*/
         void initFT();
         /** 循环接收流函数 */
@@ -67,7 +67,7 @@ public:
         bool isSend(Bytestream* bs);
 
         /** 自定义的发送文件的处理*/
-        void handleFTSend(const JID& to, const std::string m_file);
+        void handleFTSend(const JID& to, const std::string& m_file);
         /** 此函数在对方要发送一个文件给你时调用。*/
         void handleFTRequest(const JID & from,
                              const std::string & sid,
@@ -84,7 +84,8 @@ public:
         /** 如果协商好用OOB策略传输则调用此函数*/
         virtual const std::string handleOOBRequestResult(const JID & from,
                         const std::
-                        string & sid) {
+                        string & sid)
+        {
                 return std::string();
         };
 
@@ -110,14 +111,16 @@ private:
         SIProfileFT * m_ft;
         SOCKS5BytestreamServer *m_server;
         std::list < Bytestream * >bs_recvList;
-        //std::list < Bytestream * >bs_sendList;
-        Bytestream* m_bs_send;
-        std::ifstream sendfile;
+        std::list < Bytestream * >bs_sendList;
+        //Bytestream* m_bs_send;
+        //std::ifstream sendfile;
         //std::ofstream recvfile;
-        RECVLIST rfilelist;
+        FILELIST rfilelist;
+        FILELIST sfilelist;
         XPThread < TalkFT > recvThread;
         XPThread < TalkFT > sendThread;
         volatile int recvCount; //接收文件计数
+        volatile int sendCount; //发送文件计数
         //XPthreadMutex mutex;
         volatile int R_RUNNING; //接收线程标志
         volatile int S_RUNNING; //发送线程标志
