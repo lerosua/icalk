@@ -240,6 +240,7 @@ private:
         sigc::connection m_tipTimeout;
 
         bool SHOWALL;
+	bool EXPAND;
 
 
         /** 比较好友*/

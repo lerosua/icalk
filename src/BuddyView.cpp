@@ -31,6 +31,7 @@
 BuddyView::BuddyView(MainWindow & f_parent):
                 m_parent(f_parent)
                 , SHOWALL(false)
+		, EXPAND(true)
                 , m_filterText("")
 {
         set_headers_visible(false);
@@ -468,13 +469,14 @@ int BuddyView::iter_n_children(Gtk::TreeModel::iterator listiter)
 
 void BuddyView::expanded_list()
 {
-        Gtk::TreeModel::iterator iter = m_treestore->children().begin();
-        Gtk::TreeModel::Path path(iter);
-
-        if (this->row_expanded(path))
-                this->collapse_all();
-        else
-                this->expand_all();
+	if(EXPAND){
+		this->collapse_all();
+		EXPAND=false;
+	}
+	else{
+		this->expand_all();
+		EXPAND =true;
+	}
 
 }
 
@@ -717,7 +719,6 @@ void BuddyView::initBuddy(Buddy * value)
 
         }
 
-        this->expand_all();
 }
 
 void BuddyView::initRoomList()
@@ -933,7 +934,7 @@ void BuddyView::add
                 g_free(marktext);
         }
 
-        //this->expand_all();
+        this->expand_all();
 }
 
 void BuddyView::showGroup(bool mode)

@@ -95,22 +95,8 @@ void BuddyList::handleRoster(const Roster & roster)
                 const RosterItem* item = (*it).second;
                 buddy_map.insert(buddy_map.end(), BUDDY_MAP::value_type(item->jid(), new Buddy(*item)));
 
-                /**获取vcard*/
-                //Bodies::Get_Bodies().getCardManage().fetch_vcard((*it).second->jid());
-
-                /*
-                StringList g = (*it).second->groups();
-                StringList::const_iterator it_g = g.begin();
-                for (; it_g != g.end(); ++it_g)
-                 DLOG("\tgroup: %s\n", (*it_g).c_str());
-                RosterItem::ResourceMap::const_iterator rit =
-                 (*it).second->resources().begin();
-                for (; rit != (*it).second->resources().end(); ++rit)
-                 DLOG("resource: %s\n", (*rit).first.c_str());
-                 */
         }
 
-        //Bodies::Get_Bodies().get_main_window().get_buddy_view().refreshList();
 }
 
 void BuddyList::handleRosterPresence(const RosterItem & item,
