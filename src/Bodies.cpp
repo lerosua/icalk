@@ -35,7 +35,7 @@
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
 #include <gloox/delayeddelivery.h>
-#include <gloox/xhtmlim.h>
+#include <gloox/xhtmlim.h> 
 //#include "gtalkcaps.h"
 #include "MainWindow.h"
 #include "Bodies.h"
@@ -52,7 +52,6 @@ Bodies& Bodies::Get_Bodies()
 
 Bodies::Bodies():
                 m_talkFT(NULL)
-                , jid(NULL)
                 , m_cardManage(NULL)
                 , m_vcard(NULL)
                 , accountTag(NULL)
@@ -85,10 +84,6 @@ Bodies::~Bodies()
                 statusIcon = NULL;
         }
 
-        if (jid) {
-                delete jid;
-                jid = NULL;
-        }
 
         if (m_vcard) {
                 delete m_vcard;
@@ -125,13 +120,13 @@ void Bodies::setAccountTag(const std::string& name, const std::string& value)
 
 void Bodies::fetch_self_vcard()
 {
-        m_cardManage->fetch_vcard(*jid);
+        m_cardManage->fetch_vcard(m_jid);
 }
 
 void Bodies::set_status(Presence::PresenceType f_status, Glib::ustring f_msg)
 {
         m_client->setPresence(f_status, 1, f_msg);
-        statusIcon->on_status_change(f_status, jid->username(), f_msg);
+        statusIcon->on_status_change(f_status, m_jid.username(), f_msg);
         //setAccountTag("status",f_status);
         setAccountTag("message", f_msg);
 }
@@ -255,8 +250,8 @@ void Bodies::disconnect()
 int Bodies::connect(const string& name, const string& passwd, const string& server, const int port = 5222)
 {
         DLOG("%s is connecting %s:%d\n", name.c_str(), server.c_str(), port);
-        jid = new JID(name);
-        m_client.reset(new Client(*jid, passwd)); // auto_ptr
+        m_jid.setJID(name);
+        m_client.reset(new Client(m_jid, passwd)); // auto_ptr
 
         m_client->disco()->setVersion("iCalk", ICALK_VERSION, OS);
         m_client->setResource("iCalk");
@@ -339,7 +334,7 @@ bool Bodies::on_login(string f_name, string f_passwd, string f_server, int f_por
 
 void Bodies::has_login()
 {
-        string label = jid->bare();
+        string label = m_jid.bare();
         string msg = getAccountTag("message");
 
         main_window->on_login_finial();

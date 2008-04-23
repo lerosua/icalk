@@ -25,7 +25,7 @@
 #include "Bodies.h"
 
 /** 带内数据传输图片的大小*/
-#define PICZIAE 102400
+#define PICZIAE 102400 
 //#define PICZIAE 40960
 
 Buddy::Buddy(const RosterItem& item):
@@ -43,16 +43,6 @@ Buddy::Buddy(const RosterItem& item):
         status = Presence::Unavailable;
         type = TYPE_FRIEND;
         logo = Gdk::Pixbuf::create_from_file(DATA_DIR"/images/default.png");
-
-        /*
-        std::cout
-         << "username = " << jid.username() << std::endl
-         << "server = " << jid.server() << std::endl
-         << "resource = " << jid.resource() << std::endl
-         << "serverRaw = " << jid.serverRaw() << std::endl
-         << "full = "<< jid.full() << std::endl
-         << "subscription = " << subscription << std::endl;
-         */
 
 }
 
@@ -84,6 +74,59 @@ Buddy::~Buddy()
         }
 }
 
+void Buddy::set_jid(const JID& f_jid)
+{
+        jid.setJID(f_jid.full());
+}
+
+void Buddy::setType(int f_type)
+{
+        switch (f_type) {
+
+        case 0:
+                setType(TYPE_FRIEND);
+                break;
+
+        case 1:
+                setType(TYPE_TRANPORT);
+                break;
+
+        case 2:
+                setType(TYPE_GROUPCHAT);
+                break;
+
+        case 3:
+                setType(TYPE_BOT);
+                break;
+
+        case 4:
+                setType(TYPE_MSN);
+                break;
+
+        case 5:
+                setType(TYPE_ICQ);
+                break;
+
+        case 6:
+                setType(TYPE_YAHOO);
+                break;
+
+        case 7:
+                setType(TYPE_OTHER);
+                break;
+
+defalut:
+                break;
+        }
+}
+
+void Buddy::setType(BuddyType f_type)
+{
+        if (f_type >= 0 && f_type < 9)
+                type = f_type ;
+        else
+                type = TYPE_FRIEND;
+}
 
 void Buddy::set_nickname(const std::string& name_)
 {
@@ -155,11 +198,11 @@ void Buddy::new_session()
         }
 }
 
-void Buddy::set_session(MessageSession* session_, TalkMsg* handler)
+void Buddy::set_session(MessageSession* f_session, TalkMsg* handler)
 {
-        if (session != session_) {
+        if (session != f_session) {
                 close_session(false);
-                session = session_;
+                session = f_session;
         }
 
         if (NULL != session) {
@@ -197,9 +240,12 @@ void Buddy::close_session(bool closePage)
 
                 /** 关闭会话 */
                 session->disposeMessageFilter(message_event_filter);
+
                 session->disposeMessageFilter(chat_state_filter);
-		message_event_filter=NULL;
-		chat_state_filter=NULL;
+
+                message_event_filter = NULL;
+
+                chat_state_filter = NULL;
 
                 //printf(" 真正地disposeMessagesession\n");
                 Bodies::Get_Bodies().get_client().disposeMessageSession(session);
@@ -218,8 +264,8 @@ void Buddy::close_session(bool closePage)
 
 void Buddy::sendPicture()
 {
-        std::string id = jid.full() + "/" + getResource();
-        JID jid_(id);
+        //std::string id = jid.full() + "/" + getResource();
+        //JID f_jid(id);
 }
 
 void Buddy::sendPicture(const std::string& filename)

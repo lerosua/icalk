@@ -89,7 +89,7 @@ public:
         void final_progress();
         /** 进度条开始跳动*/
         bool on_progress();
-	void showError();
+        void showError();
 
 private:
         bool on_key_press_event(GdkEventKey* ev);

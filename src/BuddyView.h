@@ -33,11 +33,11 @@
 #include <sigc++/connection.h>
 #include "RoomItem.h"
 #include "TalkRoomHandler.h"
-//#include "TalkMenu.h"
 #include "BuddyList.h"
 #include "ConfXml.h"
 #include "TreeModelDnd.h"
 #include "TreeViewTooltips.h"
+#include "icalk.h" 
 //using std::vector;
 //using std::unary_function;
 
@@ -66,15 +66,15 @@ public:
         ~BuddyView();
 
         /**初始化好友列表，将调用initBuddy*/
-        void initial();
+        ICALK_DEPRECATED void initial();
         /**添加好友进列表*/
 
         void add
-        (const Glib::ustring & jid);
+                (const Glib::ustring & jid);
 
         /**删除列表中的好友显示*/
         bool remove
-        (const Glib::ustring & id);
+                (const Glib::ustring & id);
 
         bool on_buddy_login(const Glib::ustring& id);
 
@@ -85,7 +85,7 @@ public:
         void refreshList();
 
         /**初始化时添加好友进列表*/
-        void initBuddy(Buddy * value);
+        ICALK_DEPRECATED void initBuddy(Buddy * value);
 
         /** 初始化好友的类型*/
         void initBuddyType(Buddy* value);
@@ -118,7 +118,8 @@ public:
          * @param iter TreeView里的某行
          * @return 返回此行的ID
          */
-        Glib::ustring getIDfromIter(Gtk::TreeModel::iterator iter) {
+        Glib::ustring getIDfromIter(Gtk::TreeModel::iterator iter)
+        {
                 return (*iter)[buddyColumns.id];
         }
 
@@ -178,7 +179,8 @@ public:
         void removeBlistTag(const std::string& tagname, const std::string& name);
 
         /**得到当前treeview中的所有分组*/
-        StringList getGroupList()const {
+        StringList& getGroupList()
+        {
                 return groupList;
         }
 
@@ -240,18 +242,22 @@ private:
         sigc::connection m_tipTimeout;
 
         bool SHOWALL;
-	bool EXPAND;
+
+        bool EXPAND;
 
 
         /** 比较好友*/
 
 struct CompareBuddy: public binary_function < Gtk::TreeModel::Row,
-                                const Glib::ustring, bool > {
+                                const Glib::ustring, bool >
+        {
                 explicit CompareBuddy(const BuddyColumns &
-                                      column_): column(column_) {}
+                                      column_): column(column_)
+                {}
 
                 bool operator () (const Gtk::TreeRow & lhs,
-                                  const Glib::ustring & var) const {
+                                  const Glib::ustring & var) const
+                {
                         return lhs[column.id] == var;
                 }
 
@@ -260,7 +266,8 @@ struct CompareBuddy: public binary_function < Gtk::TreeModel::Row,
 
         /** TreeView的排序函数*/
         int on_sort_compare(const Gtk::TreeModel::iterator & a,
-                            const Gtk::TreeModel::iterator & b) {
+                            const Gtk::TreeModel::iterator & b)
+        {
                 int result;
 
                 if ((result =

@@ -31,7 +31,7 @@
 BuddyView::BuddyView(MainWindow & f_parent):
                 m_parent(f_parent)
                 , SHOWALL(false)
-		, EXPAND(true)
+                , EXPAND(true)
                 , m_filterText("")
 {
         set_headers_visible(false);
@@ -469,19 +469,18 @@ int BuddyView::iter_n_children(Gtk::TreeModel::iterator listiter)
 
 void BuddyView::expanded_list()
 {
-	if(EXPAND){
-		this->collapse_all();
-		EXPAND=false;
-	}
-	else{
-		this->expand_all();
-		EXPAND =true;
-	}
+        if (EXPAND) {
+                this->collapse_all();
+                EXPAND = false;
+        } else {
+                this->expand_all();
+                EXPAND = true;
+        }
 
 }
 
 bool BuddyView::remove
-(const Glib::ustring & id)
+        (const Glib::ustring & id)
 {
         /*查找要删除的好友在列表中是否已经显示 */
 
@@ -562,24 +561,11 @@ void BuddyView::initBuddyType(Buddy* value)
         value->setType(buddyType);
 
         /** 根据配置设置Buddy的类型*/
-        const std::string & type_ =
+        const std::string & mType =
                 getBlistTag("buddy", buddyname, "type");
 
-        if (!type_.empty()) {
-                if (type_ == "transport")
-                        value->setType(TYPE_TRANPORT);
-                else if (type_ == "groupchat")
-                        value->setType(TYPE_GROUPCHAT);
-                else if ("bot" == type_)
-                        value->setType(TYPE_BOT);
-                else if ("msn" == type_)
-                        value->setType(TYPE_MSN);
-                else if ("other" == type_)
-                        value->setType(TYPE_OTHER);
-                else
-                        value->setType(TYPE_FRIEND);
-        }
-
+        int iType = atoi(mType.c_str());
+        value->setType(iType);
 }
 
 void BuddyView::initBuddy(Buddy * value)
@@ -599,7 +585,7 @@ void BuddyView::initBuddy(Buddy * value)
 
                 if (listiter == children.end()) {
                         listiter = addBuddyGroup(*it_g);
-                        groupList.push_back(*it_g);
+                        //groupList.push_back(*it_g);
                 }
 
 
@@ -636,23 +622,12 @@ void BuddyView::initBuddy(Buddy * value)
                 }
 
                 /** 根据配置设置Buddy的类型*/
-                const std::string & type_ =
+                const std::string & mType =
                         getBlistTag("buddy", buddyname, "type");
 
-                if (!type_.empty()) {
-                        if (type_ == "transport")
-                                value->setType(TYPE_TRANPORT);
-                        else if (type_ == "groupchat")
-                                value->setType(TYPE_GROUPCHAT);
-                        else if ("bot" == type_)
-                                value->setType(TYPE_BOT);
-                        else if ("msn" == type_)
-                                value->setType(TYPE_MSN);
-                        else if ("other" == type_)
-                                value->setType(TYPE_OTHER);
-                        else
-                                value->setType(TYPE_FRIEND);
-                }
+                int iType = atoi(mType.c_str());
+
+                value->setType(iType);
 
 
                 Glib::RefPtr < Gdk::Pixbuf > officon;
@@ -765,6 +740,7 @@ Gtk::TreeModel::iterator BuddyView::addBuddyGroup(const Glib::
         (*listiter)[buddyColumns.status] = STATUS_GROUP;
         g_free(marktext);
 
+        groupList.push_back(groupName);
         return listiter;
 }
 
@@ -855,7 +831,7 @@ void BuddyView::delRoom(const Glib::ustring & jid)
 }
 
 void BuddyView::add
-(const Glib::ustring & jid_str)
+        (const Glib::ustring & jid_str)
 {
 
         Buddy *buddy =
@@ -966,10 +942,10 @@ void BuddyView::showOffline(bool mode)
                 if (Presence::Unavailable == type) {
                         if (mode)
                                 add
-                                ((*iter).second->get_jid());
+                                        ((*iter).second->get_jid());
                         else {
                                 remove
-                                ((*iter).second->get_jid());
+                                        ((*iter).second->get_jid());
                         }
                 }
 
@@ -1084,9 +1060,9 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                                 mem_fun(*this,
                                                                         &BuddyView::
                                                                         remove
-                                                                       ),
-                                                                jid_ctr),
-                                                               delay);
+                                                                               ),
+                                                                        jid_ctr),
+                                                                       delay);
 
                         sounds::play(sounds::LEAVE_SOUND);
 
@@ -1155,9 +1131,9 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
 
                 (*treeiter)[buddyColumns.status] = (int) status_;
                 initBuddyType(buddy);
-                BuddyType type_ = buddy->getType();
+                BuddyType mType = buddy->getType();
 
-                switch (type_) {
+                switch (mType) {
                         /*
                            case TYPE_FRIEND:
                            (*treeiter)[buddyColumns.audioicon] = getPix("CallOver.png");

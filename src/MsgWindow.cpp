@@ -49,7 +49,7 @@ MsgWindow::MsgWindow()
                     (msg_xml->get_widget("statusbar"));
 
         add
-        (*widget);
+                (*widget);
 
         showTypeImage(false);
 

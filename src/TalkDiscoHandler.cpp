@@ -83,7 +83,8 @@ void TalkDiscoHandler::handleDiscoError(const JID& from, const Error* error, int
 
         if (NULL == discowindow)
                 return ;
-	discowindow->showError();
+
+        discowindow->showError();
 }
 
 bool TalkDiscoHandler::handleDiscoSet(IQ* iq)

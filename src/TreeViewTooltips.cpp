@@ -46,7 +46,7 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): m_buddyview(view)
         hbox->show_all();
 
         add
-        (*hbox);
+                (*hbox);
 
         add_events(Gdk::POINTER_MOTION_MASK);
 

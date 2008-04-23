@@ -26,7 +26,7 @@
 
 #define DELETE_CHAR 0
 #define DELETE_WORD 1
-#define DELETE_LINE 2
+#define DELETE_LINE 2 
 /**
  * @brief 继承自TextView，处理消息输出的格式
  */
@@ -91,7 +91,8 @@ public:
          */
         void clear();
 
-        SMILELIST& getSmileMap() {
+        SMILELIST& getSmileMap()
+        {
                 return smileTree.getSmileList();
         }
 

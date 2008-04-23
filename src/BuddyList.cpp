@@ -51,7 +51,8 @@ void BuddyList::handleItemSubscribed(const JID & jid)
 
 void BuddyList::handleItemAdded(const JID & jid)
 {
-        std::string jid_str = jid.bare().c_str();
+        //std::string jid_str = jid.bare().c_str();
+        const std::string& jid_str = jid.bare();
 
         if ( NULL == find_buddy(jid_str) ) {
                 /** 将新的好友加入到BuddyMap里。*/
@@ -70,7 +71,7 @@ void BuddyList::handleItemUnsubscribed(const JID & jid)
 void BuddyList::handleItemRemoved(const JID & jid)
 {
         DLOG( "ItemRemoved   %s\n", jid.bare().c_str() );
-        std::string jid_str = jid.bare();
+        const std::string& jid_str = jid.bare();
         Bodies::Get_Bodies().get_main_window().get_buddy_view().remove(jid_str);
         BUDDY_MAP::iterator iter = buddy_map.find(jid_str);
 
@@ -144,23 +145,23 @@ bool BuddyList::handleSubscriptionRequest(const JID & jid,
 
         switch (result) {
         case(Gtk::RESPONSE_OK): {
-                //对方请求加为好友。
-                StringList groups;
-                JID id(jid);
-                Bodies::Get_Bodies().get_client().rosterManager()->subscribe( id , "", groups, "");
-                return true;
-                break;
-        }
+                        //对方请求加为好友。
+                        StringList groups;
+                        JID id(jid);
+                        Bodies::Get_Bodies().get_client().rosterManager()->subscribe( id , "", groups, "");
+                        return true;
+                        break;
+                }
 
         case(Gtk::RESPONSE_CANCEL): {
-                return false;
-                break;
-        }
+                        return false;
+                        break;
+                }
 
         default: {
-                return false;
-                break;
-        }
+                        return false;
+                        break;
+                }
         }
 
         return false;

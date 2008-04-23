@@ -37,7 +37,8 @@ class BuddyList: public RosterListener
 {
 
 public:
-        BuddyList() {}
+        BuddyList()
+        {}
 
         /** 保存好友数据的结构，以好友id为关键字*/
         typedef std::map<Glib::ustring, Buddy*> BUDDY_MAP;
@@ -45,7 +46,8 @@ public:
         ~BuddyList();
 
         /** 获取好友数据，好友都保存在此MAP中*/
-        const BUDDY_MAP& get_buddy_map() const {
+        const BUDDY_MAP& get_buddy_map() const
+        {
                 return buddy_map;
         }
 
@@ -62,7 +64,8 @@ public:
          */
 
         template <class Tfun>
-        void for_each(Tfun fun) const {
+        void for_each(Tfun fun) const
+        {
                 std::for_each(buddy_map.begin(), buddy_map.end(), fun);
         }
 

@@ -79,13 +79,15 @@ protected:
 
 private:
 
-struct MsgColumns: public Gtk::TreeModel::ColumnRecord {
-                MsgColumns() {
+struct MsgColumns: public Gtk::TreeModel::ColumnRecord
+        {
+                MsgColumns()
+                {
                         add
-                        (num);
+                                (num);
 
                         add
-                        (message);
+                                (message);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> message;
@@ -102,12 +104,15 @@ private:
         /** 比较Message*/
 
 struct CompareMsg: public binary_function < Gtk::TreeModel::Row,
-                                const int, bool > {
+                                const int, bool >
+        {
                 explicit CompareMsg(const MsgColumns &
-                                    column_): column(column_) {}
+                                    column_): column(column_)
+                {}
 
                 bool operator () (const Gtk::TreeRow & lhs,
-                                  const int num) const {
+                                  const int num) const
+                {
                         return lhs[column.num] == num;
                 }
 

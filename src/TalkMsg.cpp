@@ -32,7 +32,7 @@ void TalkMsg::handleMessage(Message * stanza, MessageSession *session)
 
 void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 {
-        const JID target = session->target();
+        const JID& target = session->target();
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(target.bare());
         assert(buddy != NULL);
 
@@ -67,7 +67,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 
         if (x) {
                 DLOG("the msg has use XhtmlIM\n");
-		DLOG("xhtmlIM tag = %s\n",x->tag()->xml().c_str());
+                DLOG("xhtmlIM tag = %s\n", x->tag()->xml().c_str());
         }
 
         const DelayedDelivery* dd = stanza.when();
@@ -164,7 +164,7 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 void TalkMsg::handleMessageSession( MessageSession *session )
 {
         //DLOG("got new session\n");
-        JID receipient = session->target();
+        const JID& receipient = session->target();
         std::string id = receipient.bare();
         std::cout << "session id is " << id << std::endl;
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(id);

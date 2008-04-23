@@ -186,7 +186,8 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
         if (!sendfile)
                 return ;
 
-	std::string m_filename(basename(const_cast<char *>(m_file.c_str())));
+        std::string m_filename(basename(const_cast<char *>(m_file.c_str())));
+
         const std::string sid = m_ft->requestFT(to, m_filename, m_size);
 
         if (sid.empty()) {
@@ -405,7 +406,7 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
 {
-        DLOG("m_ft request error sid =%s\n",sid.c_str());
+        DLOG("m_ft request error sid =%s\n", sid.c_str());
         sendCount = sendCount - 1;
         /** 如果发送文件数为0,则关闭发送线程 */
 

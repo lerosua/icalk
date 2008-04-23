@@ -40,7 +40,7 @@ void TalkCard::store_vcard(VCard * f_vcard)
 
 void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 {
-        JID myjid = Bodies::Get_Bodies().get_jid();
+        const JID& myjid = Bodies::Get_Bodies().get_jid();
 
         if (myjid.bare() == jid.bare()) {
                 Bodies::Get_Bodies().set_vcard(vcard);
@@ -91,5 +91,5 @@ void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 void TalkCard::handleVCardResult(VCardContext context, const JID & jid,
                                  StanzaError se)
 {
-	DLOG("jid vcard result error -- %s --StanzaError id %d\n",jid.bare().c_str(),se);
+        DLOG("jid vcard result error -- %s --StanzaError id %d\n", jid.bare().c_str(), se);
 }

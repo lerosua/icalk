@@ -42,7 +42,8 @@ public:
         ~RoomItem();
 
         /** 得到聊天室的JID号 */
-        const std::string& getRoomJID() const {
+        const std::string& getRoomJID() const
+        {
                 return m_citem.jid;
         }
 
@@ -50,28 +51,33 @@ public:
         void join();
         /** 离开聊天室 */
         void leave();
-        MsgPage* getPage() {
+        MsgPage* getPage()
+        {
                 return m_page;
         }
 
-        void setPage(MsgPage* f_page) {
+        void setPage(MsgPage* f_page)
+        {
                 m_page = f_page;
         }
 
         /** 关闭页面 */
-        void closePage() {
+        void closePage()
+        {
                 m_page = NULL;
         }
 
         /** 发送信息 */
-        void send(Glib::ustring& text) {
+        void send(Glib::ustring& text)
+        {
                 m_mucroom->send(text);
         }
 
         /** 初始化聊天室成员列表 */
         void setMemberList(const Disco::ItemList& m_list_);
         /** 获取聊天室成员列表 */
-        MemberMap& getMemberList() {
+        MemberMap& getMemberList()
+        {
                 return m_list;
         }
 
@@ -80,12 +86,14 @@ public:
         /** 从聊天室成员列表里删除名为name的成员 */
         void removeMember(const std::string& name);
         /** 设置聊天室主题 */
-        void setSubject(const Glib::ustring& sub) {
+        void setSubject(const Glib::ustring& sub)
+        {
                 m_subject = sub;
         }
 
         /** 获取聊天室主题 */
-        Glib::ustring& getSubject() {
+        Glib::ustring& getSubject()
+        {
                 return m_subject;
         }
 

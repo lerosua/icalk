@@ -146,14 +146,18 @@ void ServerDiscoWindow::showError()
         if (m_timeout.connected())
                 m_timeout.disconnect();
 
-	Glib::ustring msg(_("Server Discover happen error"));
-            Gtk::MessageDialog dialog("Error",false,
-              Gtk::MESSAGE_INFO);
-            dialog.set_secondary_text(msg);
-            dialog.run();
+        Glib::ustring msg(_("Server Discover happen error"));
 
-            return;
+        Gtk::MessageDialog dialog("Error", false,
+                                  Gtk::MESSAGE_INFO);
+
+        dialog.set_secondary_text(msg);
+
+        dialog.run();
+
+        return ;
 }
+
 void ServerDiscoWindow::on_btGo_clicked()
 {
         clear();

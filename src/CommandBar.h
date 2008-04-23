@@ -15,9 +15,11 @@ class GlademmData
 
 public:
 
-        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag) {}
+        GlademmData(Glib::RefPtr<Gtk::AccelGroup> ag) : accgrp(ag)
+        {}
 
-        Glib::RefPtr<Gtk::AccelGroup> getAccelGroup() {
+        Glib::RefPtr<Gtk::AccelGroup> getAccelGroup()
+        {
                 return accgrp;
         }
 };

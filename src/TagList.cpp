@@ -188,7 +188,7 @@ const TagList::RefTag TagList::getTitleColor(uint32_t uid)
  colorid %= COLOR_LIST_SIZE;
  return tag;
     }
-
+ 
     return iter->second;
 }
 */

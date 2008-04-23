@@ -30,8 +30,8 @@
 #define MSG_ME 1
 #define TIME_NULL ""
 
-MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
-                m_buddy(buddy_),
+MsgPage::MsgPage(const std::string& title, Buddy* f_buddy):
+                m_buddy(f_buddy),
                 m_mucroom(NULL),
                 m_memberList(NULL),
                 hasColor(false),
@@ -195,12 +195,12 @@ MsgPage::MsgPage(const std::string& title, Buddy* buddy_):
         set_border_width(3);
 }
 
-MsgPage::MsgPage(const std::string& title, RoomItem* room_, bool isRoom_):
-                m_mucroom(room_),
+MsgPage::MsgPage(const std::string& title, RoomItem* f_room, bool f_isRroom):
+                m_mucroom(f_room),
                 m_buddy(NULL),
                 hasColor(false),
                 m_titlelable(NULL),
-                isRoom(isRoom_)
+                isRoom(f_isRroom)
 {
         const std::string& jid_ = m_mucroom->getRoomJID();
         m_msgLog = new MsgLog(jid_);
@@ -656,23 +656,23 @@ void MsgPage::on_toolbar_image()
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
-                filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
+                        filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
 
-                break;
-        }
+                        break;
+                }
 
         case (Gtk::RESPONSE_CANCEL): {
-                std::cout << "Cannel choose icon" << std::endl;
-                return ;
-                //break;
-        }
+                        std::cout << "Cannel choose icon" << std::endl;
+                        return ;
+                        //break;
+                }
 
         default: {
 
-                std::cout << "Cannel choose icon" << std::endl;
-                return ;
-                //break;
-        }
+                        std::cout << "Cannel choose icon" << std::endl;
+                        return ;
+                        //break;
+                }
         }
 
         std::cout << "选择文件： " << filename << std::endl;

@@ -30,9 +30,11 @@ class GlademmData
 
 public:
 
-        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag) {}
+        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag)
+        {}
 
-        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup() {
+        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup()
+        {
                 return accgrp;
         }
 };
@@ -103,7 +105,8 @@ public:
         /**
          * @brief 获取当前聊天窗口（MsgPage）
          */
-        MsgPage *getCurrentPage() {
+        MsgPage *getCurrentPage()
+        {
                 return static_cast <
                        MsgPage * > (notebook->get_current()->get_child());
         }
@@ -111,7 +114,8 @@ public:
         /**
          * @brief 设置当前聊天窗口(MsgPage)
          * @param page_ 需要设置的聊天窗口
-         */ void setCurrentPage(MsgPage * page_) {
+         */ void setCurrentPage(MsgPage * page_) 
+        {
                 int num = notebook->page_num(*page_);
                 notebook->set_current_page(num);
         }

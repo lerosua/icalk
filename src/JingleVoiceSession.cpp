@@ -106,15 +106,20 @@ void JingleVoiceSession::PhoneSessionStateChanged(cricket::Call* call, cricket::
         if ( !hasPeer(peers(), jid))
                 return ;
 
-        if (state == cricket::Session::STATE_INIT) {}
+if (state == cricket::Session::STATE_INIT) {}
 
-else if (state == cricket;: Session::STATE_SENTINITIATE) {} else if (state == cricket::Session::STATE_RECEIVEDINITIATE) {
+else if (state == cricket;: Session::STATE_SENTINITIATE) {}
+        else if (state == cricket::Session::STATE_RECEIVEDINITIATE) {
                 setCall(call);
-        } else if (state == cricket::Session::STATE_SENTACCEPT) {} else if (state == cricket::Session::STATE_RECEIVEDACCEPT) {
+        } else if (state == cricket::Session::STATE_SENTACCEPT) {}
+        else if (state == cricket::Session::STATE_RECEIVEDACCEPT) {
                 //emit voiceSession->accepted();
-        } else if (state == cricket::Session::STATE_SENTMODIFY) {} else if (state == cricket::Session::STATE_RECEIVEDMODIFY) {} else if (state == cricket::Session::STATE_RECEIVEDREJECT) {
+        } else if (state == cricket::Session::STATE_SENTMODIFY) {}
+        else if (state == cricket::Session::STATE_RECEIVEDMODIFY) {}
+        else if (state == cricket::Session::STATE_RECEIVEDREJECT) {
                 //emit voiceSession->declined();
-        } else if (state == cricket::Session::STATE_SENTREDIRECT) {} else if (state == cricket::Session::STATE_SENTTERMINATE) {
+        } else if (state == cricket::Session::STATE_SENTREDIRECT) {}
+        else if (state == cricket::Session::STATE_SENTTERMINATE) {
                 //emit voiceSession->terminated();
         } else if (state == cricket::Session::STATE_RECEIVEDTERMINATE) {
                 //emit voiceSession->terminated();

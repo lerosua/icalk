@@ -8,11 +8,13 @@ namespace CLogin
 {
 typedef Bodies Handler;
 
-namespace View {
+namespace View
+{
 typedef bool (Handler::*Func)(string f_name, string f_passwd, string f_server, int f_port);
 }
 
-namespace Model {
+namespace Model
+{
 typedef void (Handler::*Func)();
 }
 }

@@ -70,20 +70,20 @@ bool TreeModelDnd::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
 BuddyColumns::BuddyColumns()
 {
         add
-        (icon);
+                (icon);
 
         add
-        (nickname);
+                (nickname);
 
         add
-        (audioicon);
+                (audioicon);
 
         add
-        (id);
+                (id);
 
         add
-        (status);
+                (status);
 
         add
-        (type);
+                (type);
 }

@@ -27,6 +27,7 @@
 #include <gloox/messageeventhandler.h>
 #include <gloox/chatstatehandler.h>
 #include <gloox/message.h>
+#include "icalk.h"
 
 using namespace gloox;
 
@@ -42,7 +43,7 @@ class TalkMsg: public MessageHandler, public MessageEventHandler, public ChatSta
 public:
         TalkMsg();
         void handleMessage(const Message& stanza, MessageSession *session = 0) ;
-        void handleMessage(Message* stanza, MessageSession* session);
+        ICALK_DEPRECATED void handleMessage(Message* stanza, MessageSession* session);
         /**
          * @brief 处理消息前的事件。
          * @param from 发消息事件来的对方的jid

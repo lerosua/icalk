@@ -3,7 +3,7 @@
 
 
 #if defined __GNUC__ && __GNUC__ < 3
-#error This program will crash if compiled with g++ 2.x
+#error This program will crash if compiled with g++ 2.x 
 // see the dynamic_cast bug in the gtkmm FAQ
 #endif //
 #include "config.h"

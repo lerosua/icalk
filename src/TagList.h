@@ -22,7 +22,7 @@
 #include <gtkmm/texttag.h>
 #include <gtkmm/texttagtable.h>
 #include <ext/hash_map>
-#include <stdint.h>
+#include <stdint.h> 
 //using __gnu_cxx::hash_map;
 
 #define COLOR_LIST_SIZE 16
@@ -37,28 +37,34 @@ public:
         typedef Glib::RefPtr<Gtk::TextTagTable> RefTagTable;
         typedef Glib::RefPtr<Gtk::TextTag> RefTag;
 
-        TagList(): colorid(0) {}
+        TagList(): colorid(0)
+        {}
 
-        const RefTagTable getTagTable() const {
+        const RefTagTable getTagTable() const
+        {
                 return getTags().tagTable;
         }
 
         const RefTag getTitleColor(int id);
-        const RefTag getSelfTitleColor() const {
+        const RefTag getSelfTitleColor() const
+        {
                 return getTags().selfTitleColor;
         }
 
-        const RefTag getTimeFont() const {
+        const RefTag getTimeFont() const
+        {
                 return getTags().timeFont;
         }
 
-        const RefTag getBoldFont() const {
+        const RefTag getBoldFont() const
+        {
                 return getTags().boldFont;
         }
 
 private:
 
-        struct Tags {
+        struct Tags
+        {
                 Tags();
                 RefTag titleColorList[COLOR_LIST_SIZE];
                 RefTagTable tagTable;

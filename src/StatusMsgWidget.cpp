@@ -16,7 +16,7 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
                 Gtk::VBox * > (vbox_xml->get_widget("statusMsgBox"));
 
         add
-        (*vBox);
+                (*vBox);
 
         set_transient_for(*parent);
 
@@ -133,21 +133,21 @@ void StatusMsgWidget::on_button_add()
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
-                Gtk::TextView* textview = dynamic_cast <
-                                          Gtk::TextView* > (addDialog_xml->
-                                                            get_widget("textview_add"));
-                Glib::ustring text = textview->get_buffer()->get_text();
+                        Gtk::TextView* textview = dynamic_cast <
+                                                  Gtk::TextView* > (addDialog_xml->
+                                                                    get_widget("textview_add"));
+                        Glib::ustring text = textview->get_buffer()->get_text();
 
-                if (text.empty())
-                        return ;
+                        if (text.empty())
+                                return ;
 
-                msgline->addLine(text);
+                        msgline->addLine(text);
 
-                msgline->Save();
+                        msgline->Save();
 
-        }
+                }
 
-        break;
+                break;
 
         case Gtk::RESPONSE_CANCEL:
                 break;
@@ -219,13 +219,13 @@ void StatusMsgWidget::on_button_edit()
         switch (result) {
         case (Gtk::RESPONSE_OK): {
 
-                text = textview->get_buffer()->get_text();
-                int num = msgline->getLineNumber(iter);
-                msgline->editLine(num, text);
+                        text = textview->get_buffer()->get_text();
+                        int num = msgline->getLineNumber(iter);
+                        msgline->editLine(num, text);
 
-        }
+                }
 
-        break;
+                break;
 
         case Gtk::RESPONSE_CANCEL:
                 break;
@@ -424,6 +424,6 @@ bool MsgLine::on_button_press_event(GdkEventButton * ev)
                 Bodies::Get_Bodies().get_main_window().setStatusMsg(msg);
 
         } else if ((ev->type == GDK_BUTTON_PRESS)
-                        && (ev->button == 3)) {}
+                && (ev->button == 3)) {}
 
 }

@@ -31,9 +31,11 @@ class GlademmData
 
 public:
 
-        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag) {}
+        GlademmData(Glib::RefPtr < Gtk::AccelGroup > ag): accgrp(ag)
+        {}
 
-        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup() {
+        Glib::RefPtr < Gtk::AccelGroup > getAccelGroup()
+        {
                 return accgrp;
         }
 };
@@ -47,7 +49,7 @@ public:
 #include "MsgBox.h"
 #include "CommandBar.h"
 #include "MemberList.h"
-#include "MsgLog.h"
+#include "MsgLog.h" 
 //#include "RoomItem.h"
 
 using namespace gloox;
@@ -70,35 +72,40 @@ public:
         /**
          * @brief MsgPage的Buddy的构造函数
          * @param title 标签页的标题
-         * @param buddy_ 与之通信的Buddy成员
+         * @param f_buddy 与之通信的Buddy成员
          */
-        MsgPage(const std::string & title, Buddy * buddy_);
+        MsgPage(const std::string & title, Buddy * f_buddy);
         /**
          * @brief MsgPage的聊天室的构造函数
          * @param title 标签页的标题
-         * @param isRoom_ 是否生成聊天室,默认当然是生成啦
+         * @param f_isRroom 是否生成聊天室,默认当然是生成啦
          */
-        MsgPage(const std::string & title, RoomItem * room_, bool isRoom_);
+        MsgPage(const std::string & title, RoomItem * f_room, bool f_isRroom);
 
         virtual ~ MsgPage();
 
-        Gtk::Image & get_logo() {
+        Gtk::Image & get_logo()
+        {
                 return *m_logo;
         }
 
-        Gtk::Label & get_lable() {
+        Gtk::Label & get_lable()
+        {
                 return *m_titlelable;
         }
 
-        Gtk::Widget * getFocusWidge() {
+        Gtk::Widget * getFocusWidge()
+        {
                 return m_inputMsgBox;
         }
 
-        SMILELIST& getSmileMap() {
+        SMILELIST& getSmileMap()
+        {
                 return m_inputMsgBox->getSmileMap();
         }
 
-        void insertSmiley(const Glib::ustring& code) {
+        void insertSmiley(const Glib::ustring& code)
+        {
                 m_inputMsgBox->insertSmiley(code);
         }
 
@@ -140,7 +147,8 @@ public:
          * @brief 显示其它一些消息，如用户关闭窗口
          * @param msg_ 消息内容
          */
-        void showSystemMsg(const std::string & msg) {
+        void showSystemMsg(const std::string & msg)
+        {
                 m_msgBox->showSystemMsg(msg);
         }
 
@@ -174,7 +182,8 @@ public:
         /** 更新聊天室内成员列表*/
         void refreshMember();
         /** 获取聊天室内的成员列表*/
-        MemberList *getMemberList() {
+        MemberList *getMemberList()
+        {
                 return m_memberList;
         }
 

@@ -31,9 +31,11 @@ class TalkDiscoHandler: public DiscoHandler
 {
 
 public:
-        TalkDiscoHandler() {}
+        TalkDiscoHandler()
+        {}
 
-        ~TalkDiscoHandler() {}
+        ~TalkDiscoHandler()
+        {}
 
         void handleDiscoInfoResult(IQ * stanza, int context ) ;
         void handleDiscoItemsResult(IQ * stanza , int context ) ;

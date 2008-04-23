@@ -33,10 +33,12 @@ class Smile
 {
 
 public:
-        Smile(const string& filename): val(filename) {}
+        Smile(const string& filename): val(filename)
+        {}
 
         string val;
-        Gtk::Image* getSmileImage() {
+        Gtk::Image* getSmileImage()
+        {
                 return getSmil(val.c_str());
         }
 };
@@ -54,7 +56,8 @@ public:
         template <typename posT>
         Smile* find_smile(posT iter, posT end, int& key_len);
 
-        SMILELIST& getSmileList() {
+        SMILELIST& getSmileList()
+        {
                 return smilelist;
         }
 

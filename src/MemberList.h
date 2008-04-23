@@ -24,7 +24,7 @@
 #include <gtkmm/liststore.h>
 #include "pixmaps.h"
 #include <functional>
-#include "icalk.h"
+#include "icalk.h" 
 //#include "RoomItem.h"
 using std::unary_function;
 
@@ -47,22 +47,24 @@ protected:
 
 private:
 
-struct MemberColumns : public Gtk::TreeModel::ColumnRecord {
-                MemberColumns() {
+struct MemberColumns : public Gtk::TreeModel::ColumnRecord
+        {
+                MemberColumns()
+                {
                         add
-                        (icon);
+                                (icon);
 
                         add
-                        (name);
+                                (name);
 
                         add
-                        (mid);
+                                (mid);
 
                         add
-                        (status);
+                                (status);
 
                         add
-                        (presence);
+                                (presence);
                 }
 
                 Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
@@ -76,7 +78,8 @@ struct MemberColumns : public Gtk::TreeModel::ColumnRecord {
 private:
         //排序函数
         int on_sort_compare(const Gtk::TreeModel::iterator& a,
-                            const Gtk::TreeModel::iterator& b) {
+                            const Gtk::TreeModel::iterator& b)
+        {
                 int result = (*a)[columns.presence] - (*b)[columns.presence];
                 return result;
         }

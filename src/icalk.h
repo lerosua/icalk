@@ -31,7 +31,7 @@ typedef list<std::string> USERLIST;
 
 
 /** 定义Buddy的一些类型*/
-enum BuddyType { TYPE_FRIEND, TYPE_TRANPORT, TYPE_GROUPCHAT
+enum BuddyType { TYPE_FRIEND = 0, TYPE_TRANPORT, TYPE_GROUPCHAT
                  , TYPE_BOT, TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
                  , TYPE_OTHER
                };
@@ -58,7 +58,8 @@ using namespace gloox;
  * @param presence 成员的状态
  */
 
-typedef struct Member {
+typedef struct Member
+{
         std::string id;
         MUCRoomAffiliation affiliation;
         MUCRoomRole role;
@@ -129,6 +130,15 @@ typedef std::map<std::string, Member> MemberMap;
         fprintf(stdout, "%s " fmt, buffer, ##__VA_ARGS__); \
     }
 
+#endif
+
+
+#if defined( __GUNC__)&&(__GNUC__ - 0 >3 || (__GNUC__ - 0 == 3 && __GNUC_MINOR__ - 0 >= 2 ))
+ #define ICALK_DEPRECATED __attribute__ ( (__deprecated__) )
+#elif defined( _MSC_VER )&&(_MSC_VER >=1300)
+ #define ICALK_DEPRECATED __declspec(deprecated)
+#else
+ #define ICALK_DEPRECATED
 #endif
 
 #endif   /* ----- #ifndef ICALK_FILE_HEADER_INC  ----- */

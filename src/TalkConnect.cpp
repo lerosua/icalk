@@ -36,7 +36,7 @@ void TalkConnect::onConnect()
 
         (m_login_handler->*m_login_call)(); // 连接成功 == 登录成功 ??
 
-//        Bodies::Get_Bodies().fetch_self_vcard();
+        //        Bodies::Get_Bodies().fetch_self_vcard();
         //      TalkBookMark& bookmark = Bodies::Get_Bodies().get_bookmark();
         //      bookmark.requestBookmarks();
 }
@@ -172,25 +172,25 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
-                std::cout << "OK clicked" << std::endl;
-                Bodies::Get_Bodies().logout();
-                Bodies::Get_Bodies().get_main_window().
-                on_relogin();
-                break;
-        }
+                        std::cout << "OK clicked" << std::endl;
+                        Bodies::Get_Bodies().logout();
+                        Bodies::Get_Bodies().get_main_window().
+                        on_relogin();
+                        break;
+                }
 
         case (Gtk::RESPONSE_CANCEL): {
-                std::cout << "Cancel clicked" << std::endl;
-                //Bodies::Get_Bodies().logout();
-                Bodies::Get_Bodies().get_main_window().on_quit();
-                break;
-        }
+                        std::cout << "Cancel clicked" << std::endl;
+                        //Bodies::Get_Bodies().logout();
+                        Bodies::Get_Bodies().get_main_window().on_quit();
+                        break;
+                }
 
         default: {
-                std::cout << "nothing clicked" << std::endl;
-                Bodies::Get_Bodies().logout();
-                break;
-        }
+                        std::cout << "nothing clicked" << std::endl;
+                        Bodies::Get_Bodies().logout();
+                        break;
+                }
         }
 
 
@@ -242,5 +242,5 @@ void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& mes
 void TalkConnect::Observer(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
 {
         m_login_handler = f_handler;
-        m_login_call    = f_call;
+        m_login_call = f_call;
 }

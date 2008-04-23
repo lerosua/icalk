@@ -35,7 +35,7 @@ bool MemberList::isMember(const std::string& mid)
                 bind2nd(CompareBuddy(MemberColumns), mid));
         if(listiter == children.end())
          return false;
-        */
+        */ 
         return true;
 
 }

@@ -54,8 +54,7 @@ JingleSessionManager::JingleSessionManager(Client* client_)
 }
 
 JingleSessionManager::~JingleSessionManager()
-{
-}
+{}
 
 JingleSession* JingleSessionManager::createSession(const std::string& sessionType_, const JidList& peers_)
 {

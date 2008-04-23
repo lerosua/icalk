@@ -70,38 +70,45 @@ public:
         void saveUserList(const std::string& jid);
 
         /**得到好友列表的窗口*/
-        MainWindow& get_main_window() {
+        MainWindow& get_main_window()
+        {
                 return *main_window;
         }
 
         /**得到聊天窗口*/
-        MsgWindow& get_msg_window() {
+        MsgWindow& get_msg_window()
+        {
                 return *msg_window;
         }
 
         /**得到好友列表类*/
-        BuddyList& get_buddy_list() {
+        BuddyList& get_buddy_list()
+        {
                 return buddy_list;
         }
 
         /**得到消息处理类*/
-        TalkMsg& getTalkMsg() {
+        TalkMsg& getTalkMsg()
+        {
                 return m_talkMsg;
         }
 
         /**得到client类*/
-        Client& get_client() {
+        Client& get_client()
+        {
                 return *m_client;
         }
 
         /**得到聊天室处理类*/
-        TalkRoomHandler& getRoomHandler() {
+        TalkRoomHandler& getRoomHandler()
+        {
                 return m_roomHandler;
         }
 
         /**得到本人jid*/
-        JID& get_jid() {
-                return *jid;
+        const JID& get_jid() const
+        {
+                return m_jid;
         }
 
         /** 从配置文件中得到相应的项目*/
@@ -115,21 +122,24 @@ public:
         void set_status(Presence::PresenceType f_status, Glib::ustring f_msg = "") ;
 
         /** 返回文件传输处理类 */
-        TalkFT& getFThandler() const {
+        TalkFT& getFThandler() const
+        {
                 return *m_talkFT;
         }
 
         /**得到书签处理类*/
         //TalkBookMark&    get_bookmark()   { return *bookMark; }
         /**得到VCard管理类*/
-        TalkCard& getCardManage() {
+        TalkCard& getCardManage()
+        {
                 return *m_cardManage;
         }
 
         /**设置本人的VCard信息*/
         void set_vcard(const VCard*);
         /**得到本人的VCard*/
-        const VCard* get_vcard() const {
+        const VCard* get_vcard() const
+        {
                 return m_vcard;
         }
 
@@ -156,7 +166,7 @@ private:
         int connect(const string& name, const string& passwd, const string& server, const int port);
 
 private:
-        JID* jid;
+        JID m_jid;
         std::auto_ptr<Client> m_client;
         MainWindow* main_window;
         MsgWindow* msg_window;
