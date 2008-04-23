@@ -20,6 +20,26 @@
 #include "Bodies.h"
 #include "MainWindow.h"
 
+const char* agent_type_info[19][3] = {
+                                              { "aim", _("AIM Transports"), "aim.png"}
+                                              , { "icq", _("ICQ Transports"), "icq.png"}
+                                              , { "msn", _("MSN Transports"), "msn.png" }
+                                              , { "yahoo", _("Yahoo Transports"), "yahoo.png" }
+                                              , { "qq", _("QQ Transports"), "qq.png" }
+                                              , { "gadu-gadu", _("Gadu-Gadu Transports"), "gadu.png"}
+                                              , { "irc", _("IRC Transports"), "irc.png" }
+                                              , { "conference", _("Conference"), "groupchat.png" }
+                                              , { "rss", _("RSS Transports"), "rss.png" }
+                                              , { "weather", _("Weather"), "other.png" }
+                                              , { "sip", _("SIP"), "other.png" }
+                                              , { "bytestreams", _("Socks5 proxy"), "bytestreams.png" }
+                                              , { "pubsub", _("PubSub"), "pubsub.png" }
+                                              , { "http-ws" , _("Http-ws"), "other.png" }
+                                              , { "sms", _("SMS Transports"), "sms.png" }
+                                              , { "smtp", _("SMTP Transports"), "mail.png" }
+                                              , { "user", _("User"), "jud.png" }
+                                              , { "other", "", "other.png" }
+};
 
 ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): m_parent(parent_)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)

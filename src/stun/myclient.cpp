@@ -5,6 +5,7 @@
 #include <arpa/inet.h>
 
 using namespace std;
+using namespace stun;
 
 int main(int argc,char **argv)
 {

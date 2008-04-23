@@ -28,7 +28,10 @@
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-static char* agent_type_info[19][3] = {
+//const char* agent_type_info[19][3];
+
+/*
+const char* agent_type_info[19][3] = {
                                               { "aim", _("AIM Transports"), "aim.png"}
                                               , { "icq", _("ICQ Transports"), "icq.png"}
                                               , { "msn", _("MSN Transports"), "msn.png" }
@@ -48,6 +51,8 @@ static char* agent_type_info[19][3] = {
                                               , { "user", _("User"), "jud.png" }
                                               , { "other", "", "other.png" }
                                       };
+
+				      */
 enum { AGENT_AIM = 0, AGENT_ICQ, AGENT_MSN,
        AGENT_YAHOO, AGENT_QQ, AGENT_GADU,
        AGENT_IRC, AGENT_CONFERENCE, AGENT_RSS,
