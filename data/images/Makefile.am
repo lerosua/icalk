@@ -41,6 +41,10 @@ icalkimages_DATA = 	\
 	       other.png	\
 	       groupchat.png	\
 	       voice.png 	\
+	       admin.png 	\
+	       owner.png 	\
+	       invalid.png 	\
+	       outcast.png 	\
 	       extended_away.png \
 	       sms.png 		\
 	       bytestreams.png  \

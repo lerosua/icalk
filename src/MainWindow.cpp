@@ -83,7 +83,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='SysDisco'/>"
         "       <separator/>"
         " <menuitem action='ShowOffline'/>"
-        " <menuitem action='Mutt'/>"
+        " <menuitem action='Mute'/>"
         " <menuitem action='Preferences'/>"
         "       <separator/>"
         " <menuitem action='Quit'/>"
@@ -1224,7 +1224,7 @@ void MainWindow::on_setPrefer_activate()
 void MainWindow::on_sound_activate()
 {
         Glib::RefPtr<Gtk::ToggleAction>melem =
-                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mutt"));
+                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("Mute"));
 
         if (melem->get_active()) {
                 sounds::mute(1);
@@ -1642,7 +1642,7 @@ void MainWindow::init_ui_manager()
                        on_show_all_friends));
 
         action_group->add
-        (Gtk::ToggleAction::create("Mutt", _("Mutt")),
+        (Gtk::ToggleAction::create("Mute", _("Mute")),
          sigc::mem_fun(*this, &MainWindow::
                        on_sound_activate));
 

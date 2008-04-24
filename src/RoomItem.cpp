@@ -40,6 +40,10 @@ void RoomItem::leave()
         m_mucroom->removeMUCRoomHandler();
 }
 
+void RoomItem::invite(const JID& invitee, const std::string& reason)
+{
+        m_mucroom->invite(invitee, reason);
+}
 
 void RoomItem::setMemberList(const Disco::ItemList& m_list_)
 {

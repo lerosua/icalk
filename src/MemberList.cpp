@@ -40,11 +40,50 @@ bool MemberList::isMember(const std::string& mid)
 
 }
 
+Glib::RefPtr<Gdk::Pixbuf> MemberList::getPixfromAffilliation(MUCRoomAffiliation affiliation)
+{
+        std::string pix;
+
+        switch (affiliation) {
+
+        case AffiliationNone:
+                pix.assign("voice.png");
+                break;
+
+        case AffiliationOutcast:
+                pix.assign("outcast.png");
+                break;
+
+        case AffiliationMember:
+                pix.assign("voice.png");
+                break;
+
+        case AffiliationOwner:
+                pix.assign("owner.png");
+                break;
+
+        case AffiliationAdmin:
+                pix.assign("admin.png");
+                break;
+
+        case AffiliationInvalid:
+                pix.assign("invalid.png");
+                break;
+
+        default:
+                pix.assign("voice.png");
+                break;
+        }
+
+        return getPix(pix.c_str());
+}
+
 void MemberList::addMember(const std::string& name, const Member& member)
 {
         Gtk::TreeModel::iterator iter = refListStore->append();
 
-        (*iter)[columns.icon] = getPix("voice.png");
+        //(*iter)[columns.icon] = getPix("voice.png");
+        (*iter)[columns.icon] = getPixfromAffilliation(member.affiliation);
         (*iter)[columns.name] = name;
         (*iter)[columns.mid] = member.id;
         (*iter)[columns.status] = member.status;

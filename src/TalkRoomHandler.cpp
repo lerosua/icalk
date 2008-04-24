@@ -61,21 +61,21 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
         std::string name = participant.nick->resource();
         std::string mid = participant.nick->full();
 
-        std::cout << "flags = " << participant.flags << " reason = " << participant.reason << " newNick = " << participant.newNick << " Affiliation= " << participant.affiliation << " role = " << participant.role << std::endl;
+        //std::cout << "flags = " << participant.flags << " reason = " << participant.reason << " newNick = " << participant.newNick << " Affiliation= " << participant.affiliation << " role = " << participant.role << std::endl;
         MemberMap memberlist = item->getMemberList();
         MemberMap::iterator iter;
         iter = memberlist.find(name);
 
         if (iter == memberlist.end()) {
-                Member member_;
-                member_.id = participant.nick->full();
-                member_.affiliation = participant.affiliation;
-                member_.role = participant.role;
-                member_.flags = participant.flags;
-                member_.status = participant.status;
-                member_.presence = presence;
+                Member member;
+                member.id = participant.nick->full();
+                member.affiliation = participant.affiliation;
+                member.role = participant.role;
+                member.flags = participant.flags;
+                member.status = participant.status;
+                member.presence = presence;
 
-                item->addMember(name, member_);
+                item->addMember(name, member);
 
                 if (NULL != page) {
                         std::string msg_ = name + _(" join in the room");
@@ -104,10 +104,9 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 
         const std::string nick = msg.from().resource();
         bool history = msg.when() ? true : false;
-        printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
-               msg.body().c_str(), history ? "yes" : "no",
-               priv ? "yes" : "no");
-        //printf("ROOM Msg xml : %s \n",msg.tag()->xml().c_str());
+        //printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
+        //       msg.body().c_str(), history ? "yes" : "no",
+        //       priv ? "yes" : "no");
         RoomItem* item = findRoom(room);
         MsgPage* page = item->getPage();
 

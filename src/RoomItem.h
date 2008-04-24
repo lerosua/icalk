@@ -51,6 +51,8 @@ public:
         void join();
         /** 离开聊天室 */
         void leave();
+        /** 邀请某人进聊天室*/
+        void invite(const JID& invitee, const std::string& reason);
         MsgPage* getPage()
         {
                 return m_page;
