@@ -78,7 +78,7 @@ public:
         /** 初始化聊天室成员列表 */
         void setMemberList(const Disco::ItemList& m_list_);
         /** 获取聊天室成员列表 */
-        MemberMap& getMemberList()
+        MemberMap& getMemberMap()
         {
                 return m_list;
         }

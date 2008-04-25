@@ -62,11 +62,11 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
         std::string mid = participant.nick->full();
 
         //std::cout << "flags = " << participant.flags << " reason = " << participant.reason << " newNick = " << participant.newNick << " Affiliation= " << participant.affiliation << " role = " << participant.role << std::endl;
-        MemberMap memberlist = item->getMemberList();
+        MemberMap memberMap = item->getMemberMap();
         MemberMap::iterator iter;
-        iter = memberlist.find(name);
+        iter = memberMap.find(name);
 
-        if (iter == memberlist.end()) {
+        if (iter == memberMap.end()) {
                 Member member;
                 member.id = participant.nick->full();
                 member.affiliation = participant.affiliation;
@@ -80,6 +80,7 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
                 if (NULL != page) {
                         std::string msg_ = name + _(" join in the room");
                         page->showStatusBarMsg(msg_);
+                        page->addMember(name, member);
                 }
         }
 
@@ -89,11 +90,12 @@ void TalkRoomHandler::handleMUCParticipantPresence(MUCRoom * room ,
                 if (NULL != page) {
                         std::string msg_ = name + _(" leave the room");
                         page->showStatusBarMsg(msg_);
+                        page->removeMember(mid);
                 }
         }
 
-        if (NULL != page)
-                page->refreshMember();
+        //if (NULL != page)
+        //        page->refreshMember();
 
 }
 
@@ -104,9 +106,6 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
 
         const std::string nick = msg.from().resource();
         bool history = msg.when() ? true : false;
-        //printf("%s said: '%s' (history: %s, private: %s)\n", nick.c_str(),
-        //       msg.body().c_str(), history ? "yes" : "no",
-        //       priv ? "yes" : "no");
         RoomItem* item = findRoom(room);
         MsgPage* page = item->getPage();
 
@@ -130,7 +129,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
                 const DelayedDelivery* dd = msg.when();
 
                 if (dd)
-                        printf("message was sent at %s\n", dd->stamp().c_str());
+                        DLOG("message was sent at %s\n", dd->stamp().c_str());
 
                 page->showHistroy(nick, msg.body());
         } else
@@ -159,7 +158,7 @@ void TalkRoomHandler::handleMUCSubject(MUCRoom * room ,
 
 void TalkRoomHandler::handleMUCError(MUCRoom * room , StanzaError error)
 {
-        printf(" room %s got an error: %d\n", room->name().c_str(), error);
+        DLOG(" room %s got an error: %d\n", room->name().c_str(), error);
         room->leave();
 }
 
@@ -177,13 +176,6 @@ void TalkRoomHandler::handleMUCItems(MUCRoom * room ,
         RoomItem* item = findRoom(room);
         item->setMemberList(items);
 
-        /*
-        MemberMap::const_iterator it = items.begin();
-        for (; it != items.end(); ++it) {
-         printf("==================%s -- %s is an item here\n", (*it).first.c_str(),
-                (*it).second.c_str());
-        }
-        */
 }
 
 
@@ -192,14 +184,14 @@ void TalkRoomHandler::handleMUCInviteDecline(MUCRoom * room ,
                 const JID & invitee,
                 const std::string & reason)
 {
-        printf("Invitee %s declined invitation. reason given: %s\n",
-               invitee.full().c_str(), reason.c_str());
+        DLOG("Invitee %s declined invitation. reason given: %s\n",
+             invitee.full().c_str(), reason.c_str());
 }
 
 bool TalkRoomHandler::handleMUCRoomCreation(MUCRoom * room)
 {
-        printf("room %s didn't exist, beeing created.\n",
-               room->name().c_str());
+        DLOG("room %s didn't exist, beeing created.\n",
+             room->name().c_str());
         return true;
 }
 

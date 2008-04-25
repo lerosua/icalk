@@ -561,9 +561,19 @@ void MsgPage::close()
 }
 
 
+void MsgPage::addMember(const std::string& name, const Member& f_member)
+{
+        m_memberList->addMember(name, f_member);
+}
+
+void MsgPage::removeMember(const std::string& id)
+{
+        m_memberList->removeMember(id);
+}
+
 void MsgPage::refreshMember()
 {
-        const MemberMap& items = m_mucroom->getMemberList();
+        const MemberMap& items = m_mucroom->getMemberMap();
 
         m_memberList->clearMember();
         //printf("已经清空列表？\n");

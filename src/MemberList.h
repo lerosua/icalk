@@ -20,13 +20,14 @@
 #define  MEMBERLIST_FILE_HEADER_INC
 
 
+#include <gtkmm.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include "pixmaps.h"
 #include <functional>
-#include "icalk.h"
-using std::unary_function;
+#include "icalk.h" 
 
+using namespace std;
 
 class MemberList : public Gtk::TreeView
 {
@@ -62,41 +63,50 @@ struct MemberColumns : public Gtk::TreeModel::ColumnRecord
                                 (mid);
 
                         add
-                                (status);
+                                (statusMsg);
 
                         add
                                 (presence);
+
+                        add
+                                (affiliation);
                 }
 
                 Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
                 Gtk::TreeModelColumn < Glib::ustring > name;
                 Gtk::TreeModelColumn < Glib::ustring > mid;
-                Gtk::TreeModelColumn < Glib::ustring > status;
+                Gtk::TreeModelColumn < Glib::ustring > statusMsg;
                 Gtk::TreeModelColumn < int >presence;
+                Gtk::TreeModelColumn < int >affiliation;
 
         };
 
 private:
         //排序函数
         int on_sort_compare(const Gtk::TreeModel::iterator& a,
-                            const Gtk::TreeModel::iterator& b)
-        {
-                int result = (*a)[columns.presence] - (*b)[columns.presence];
-                return result;
-        }
+                            const Gtk::TreeModel::iterator& b);
+
+        Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::
+                                             Children children,
+                                             const Glib::ustring & id);
 
         /** 比较好友*/
-        /*
-        struct CompareBuddy:public binary_function < Gtk::TreeModel::Row,
-           const std::string, bool > {
-        explicit CompareBuddy(const MemberColumns &
-                column_):column(column_) {
-        } bool operator () (const Gtk::TreeRow & lhs,
-              const std::string & var) const {
-         return lhs[column.mid] == var;
-        } const MemberColumns & column;
+
+struct CompareMember: public binary_function < Gtk::TreeModel::Row,
+                                const Glib::ustring, bool >
+        {
+                explicit CompareMember(const MemberColumns &
+                                      column_): column(column_)
+                {}
+
+                bool operator () (const Gtk::TreeRow & lhs,
+                                  const Glib::ustring & var) const
+                {
+                        return lhs[column.mid] == var;
+                }
+
+                const MemberColumns & column;
         };
-        */
 
 
 private:

@@ -20,6 +20,7 @@ icalk_SOURCES = \
 	       TalkConnect.cpp \
 	       TalkRoomHandler.cpp  \
 	       RoomItem.cpp 	\
+	       RoomInvitation.cpp \
 	       MemberList.cpp 	\
 	       TalkCard.cpp   \
 	       TagList.cpp   	\
@@ -54,6 +55,7 @@ noinst_HEADERS = \
 		 TalkRoomHandler.h    \
 		 TalkDiscoHandler.h \
 		 RoomItem.h 	\
+		 RoomInvitation.h   \
 		 MemberList.h 	\
 		 TagList.h     \
 		 TalkFT.h 	\

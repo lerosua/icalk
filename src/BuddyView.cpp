@@ -132,7 +132,24 @@ BuddyView::~BuddyView()
         delete m_tooltips;
 
 }
+int BuddyView::on_sort_compare(const Gtk::TreeModel::iterator & a,
+                            const Gtk::TreeModel::iterator & b)
+        {
+                int result;
 
+                if ((result =
+                                        (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0)
+
+
+                {
+                        Glib::ustring an = (*a)[buddyColumns.nickname];
+                        Glib::ustring bn = (*b)[buddyColumns.nickname];
+                        //result = an.compare(bn);
+                        result = an.lowercase().compare(bn.lowercase());
+                }
+
+                return result;
+        }
 bool BuddyView::on_motion_event(GdkEventMotion * ev)
 {
         Gtk::TreeModel::Path path;

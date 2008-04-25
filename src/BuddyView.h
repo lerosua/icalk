@@ -38,8 +38,6 @@
 #include "TreeModelDnd.h"
 #include "TreeViewTooltips.h"
 #include "icalk.h" 
-//using std::vector;
-//using std::unary_function;
 
 using namespace std;
 
@@ -246,6 +244,7 @@ private:
         bool EXPAND;
 
 
+private:
         /** 比较好友*/
 
 struct CompareBuddy: public binary_function < Gtk::TreeModel::Row,
@@ -266,23 +265,8 @@ struct CompareBuddy: public binary_function < Gtk::TreeModel::Row,
 
         /** TreeView的排序函数*/
         int on_sort_compare(const Gtk::TreeModel::iterator & a,
-                            const Gtk::TreeModel::iterator & b)
-        {
-                int result;
-
-                if ((result =
-                                        (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0)
-
-                        ;
-
-                {
-                        Glib::ustring an = (*a)[buddyColumns.nickname];
-                        Glib::ustring bn = (*b)[buddyColumns.nickname];
-                        result = an.compare(bn);
-                }
-
-                return result;
-        }
+                            const Gtk::TreeModel::iterator & b);
+		
 };
 
 #endif    // _BUDDY_VIEW_H_

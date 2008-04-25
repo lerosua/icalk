@@ -35,6 +35,7 @@
 #include "BuddyView.h"
 #include "TalkCard.h"
 #include "TalkRoomHandler.h"
+#include "RoomInvitation.h"
 #include "TrayIcon.h"
 #include "TalkFT.h"
 #include "ConfXml.h"
@@ -177,7 +178,8 @@ private:
         TalkConnect m_talkConnect;
         TalkMsg m_talkMsg;
         TalkRoomHandler m_roomHandler;
-        TalkDiscoHandler m_discoHandler; // useless currently
+        TalkDiscoHandler m_discoHandler; // it can look over the server now
+	RoomInvitation   m_roominvitation;
         TalkCard* m_cardManage;
         TalkFT* m_talkFT;
         VCard* m_vcard;

@@ -187,6 +187,9 @@ public:
                 return m_memberList;
         }
 
+        void addMember(const std::string& name, const Member& f_member);
+        void removeMember(const std::string& id);
+
         /**用于输入窗口获取焦点时处理*/
         bool on_inputMsgBox_focus_in_event(GdkEventFocus * ev);
         /** 输入窗口失去焦点时的处理*/

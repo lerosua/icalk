@@ -63,15 +63,17 @@ Glib::ustring ui_menu_info =
         " <menuitem action='BuddyInfo'/>"
         " <menuitem action='BuddyChat'/>"
         " <menuitem action='BuddyLog'/>"
-        " <menuitem action='BuddyBlock'/>"
         " <menuitem action='BuddyType'/>"
+        "       <separator/>"
+        " <menuitem action='BuddyBlock'/>"
         " <menuitem action='BuddyEdit'/>"
         " <menuitem action='BuddyDelete'/>"
         "</popup>"
         "<popup name='RoomMenu'>"
         " <menuitem action='RoomChat'/>"
-        " <menuitem action='RoomBlock'/>"
         " <menuitem action='RoomLog'/>"
+        "       <separator/>"
+        " <menuitem action='RoomBlock'/>"
         " <menuitem action='RoomEdit'/>"
         " <menuitem action='RoomDelete'/>"
         "</popup>"
@@ -1390,7 +1392,15 @@ void MainWindow::on_roomBlock_activate()
 }
 
 void MainWindow::on_buddyBlock_activate()
-{}
+{
+
+        Glib::RefPtr<Gtk::ToggleAction>melem =
+                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("BuddyBlock"));
+
+        if (melem->get_active()) {
+        } else {
+        }
+}
 
 void MainWindow::on_roomNameEdit_activate()
 {}
@@ -1569,7 +1579,8 @@ void MainWindow::init_ui_manager()
          sigc::mem_fun(*this, &MainWindow::on_buddyLog_activate));
 
         action_group->add
-        (Gtk::Action::create("BuddyBlock", Gtk::StockID("BLOCK"), _("_Block")),
+        (Gtk::ToggleAction::create("BuddyBlock", _("Block")),
+        //(Gtk::Action::create("BuddyBlock", Gtk::StockID("BLOCK"), _("_Block")),
          sigc::mem_fun(*this, &MainWindow::on_buddyBlock_activate));
 
         action_group->add
@@ -1591,7 +1602,8 @@ void MainWindow::init_ui_manager()
                        on_roomChat_activate));
 
         action_group->add
-        (Gtk::Action::create("RoomBlock", Gtk::StockID("BLOCK"), _("_Block")),
+        //(Gtk::Action::create("RoomBlock", Gtk::StockID("BLOCK"), _("_Block")),
+        (Gtk::ToggleAction::create("RoomBlock", _("Block")),
          sigc::mem_fun(*this, &MainWindow::
                        on_roomBlock_activate));
 

@@ -20,11 +20,33 @@ MemberList::MemberList()
         memberList->set_model(refListStore);
         memberList->append_column("face", columns.icon);
         memberList->append_column("nickname", columns.name);
-        memberList->append_column("status", columns.status);
+        memberList->append_column("statusMsg", columns.statusMsg);
         memberList->show();
 
 }
 
+int MemberList::on_sort_compare(const Gtk::TreeModel::iterator& a,
+                            const Gtk::TreeModel::iterator& b)
+        {
+
+                int result;
+
+		if((result = (*b)[columns.affiliation]-(*a)[columns.affiliation])==0)
+                {
+		if((result =
+			(*a)[columns.presence] - (*b)[columns.presence]) == 0)
+		{
+
+                        Glib::ustring an = (*a)[columns.name];
+                        Glib::ustring bn = (*b)[columns.name];
+                        result = an.lowercase().compare(bn.lowercase());
+                }
+		}
+
+                return result;
+
+
+        }
 bool MemberList::isMember(const std::string& mid)
 {
         /*
@@ -32,12 +54,22 @@ bool MemberList::isMember(const std::string& mid)
         Gtk::TreeModel::iterator listiter;
         listiter = find_if(children.begin(),
                 children.end(),
-                bind2nd(CompareBuddy(MemberColumns), mid));
+                bind2nd(CompareMember(MemberColumns), mid));
         if(listiter == children.end())
          return false;
         */ 
         return true;
 
+}
+
+Gtk::TreeModel::iterator MemberList::getListIter(Gtk::TreeModel::
+                Children children,
+                const Glib::ustring & id)
+{
+        /*查找好友列表项 */
+        return find_if(children.begin(),
+                       children.end(),
+                       bind2nd(CompareMember(columns), id));
 }
 
 Glib::RefPtr<Gdk::Pixbuf> MemberList::getPixfromAffilliation(MUCRoomAffiliation affiliation)
@@ -82,12 +114,12 @@ void MemberList::addMember(const std::string& name, const Member& member)
 {
         Gtk::TreeModel::iterator iter = refListStore->append();
 
-        //(*iter)[columns.icon] = getPix("voice.png");
         (*iter)[columns.icon] = getPixfromAffilliation(member.affiliation);
         (*iter)[columns.name] = name;
         (*iter)[columns.mid] = member.id;
-        (*iter)[columns.status] = member.status;
-        (*iter)[columns.presence] = 0;
+        (*iter)[columns.statusMsg] = member.status;
+        (*iter)[columns.presence] = (int)member.presence;
+	(*iter)[columns.presence] = (int)member.affiliation;
 
 }
 
@@ -105,12 +137,11 @@ void MemberList::clearMember()
 
 void MemberList::removeMember(const std::string& name)
 {
-        /*
+	Glib::ustring id(name);
            Gtk::TreeModel::iterator iter =
-           getListIter(refListstore->children(), id);
-           if (iter != refListstore->children().end())
-           refListstore->erase(iter);
-           */
+           getListIter(refListStore->children(), id);
+           if (iter != refListStore->children().end())
+           refListStore->erase(iter);
 
 }
 
