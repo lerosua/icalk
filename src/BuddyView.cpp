@@ -132,24 +132,24 @@ BuddyView::~BuddyView()
         delete m_tooltips;
 
 }
+
 int BuddyView::on_sort_compare(const Gtk::TreeModel::iterator & a,
-                            const Gtk::TreeModel::iterator & b)
+                               const Gtk::TreeModel::iterator & b)
+{
+        int result;
+
+        if ((result =
+                                (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0)
         {
-                int result;
-
-                if ((result =
-                                        (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0)
-
-
-                {
-                        Glib::ustring an = (*a)[buddyColumns.nickname];
-                        Glib::ustring bn = (*b)[buddyColumns.nickname];
-                        //result = an.compare(bn);
-                        result = an.lowercase().compare(bn.lowercase());
-                }
-
-                return result;
+                Glib::ustring an = (*a)[buddyColumns.nickname];
+                Glib::ustring bn = (*b)[buddyColumns.nickname];
+                //result = an.compare(bn);
+                result = an.lowercase().compare(bn.lowercase());
         }
+
+        return result;
+}
+
 bool BuddyView::on_motion_event(GdkEventMotion * ev)
 {
         Gtk::TreeModel::Path path;
@@ -555,8 +555,6 @@ bool BuddyView::remove
 
 void BuddyView::initial()
 {
-        //BuddyList& list = Bodies::Get_Bodies().get_buddy_list();
-        //list.for_each(UpdateList<BuddyList::BUDDY_MAP>(*this));
         const BuddyList::BUDDY_MAP & buddyMap =
                 Bodies::Get_Bodies().get_buddy_list().get_buddy_map();
         BuddyList::BUDDY_MAP::const_iterator iter;
@@ -564,7 +562,6 @@ void BuddyView::initial()
         for (iter = buddyMap.begin(); iter != buddyMap.end(); iter++)
                 initBuddy((*iter).second);
 
-        //initRoomList();
         showOffline(false);
 
         showGroup(false);
@@ -581,7 +578,11 @@ void BuddyView::initBuddyType(Buddy* value)
         const std::string & mType =
                 getBlistTag("buddy", buddyname, "type");
 
+        if (mType.empty())
+                return ;
+
         int iType = atoi(mType.c_str());
+
         value->setType(iType);
 }
 
@@ -602,7 +603,7 @@ void BuddyView::initBuddy(Buddy * value)
 
                 if (listiter == children.end()) {
                         listiter = addBuddyGroup(*it_g);
-                        //groupList.push_back(*it_g);
+                        groupList.push_back(*it_g);
                 }
 
 
@@ -704,10 +705,6 @@ void BuddyView::initBuddy(Buddy * value)
 
                 (*treeiter)[buddyColumns.id] = value->get_jid();
 
-                /*
-                   (*treeiter)[buddyColumns.audioicon] =
-                   getPix("CallDown.png");
-                 */
 
         }
 
@@ -1172,37 +1169,44 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                 getPix("bot.png");
                         break;
 
+                case TYPE_ICQ:
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("icq.png");
+                        break;
+
                 case TYPE_MSN:
                         (*treeiter)[buddyColumns.audioicon] =
                                 getPix("msn.png");
                         break;
 
+                case TYPE_YAHOO:
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("yahoo.png");
+                        break;
+
                 case TYPE_OTHER:
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("other.png");
                         break;
 
                 default:
-
-                        if (TYPE_GROUPCHAT == buddy->guessType()) {
-                                buddy->setType(TYPE_GROUPCHAT);
-                                (*treeiter)[buddyColumns.audioicon] =
-                                        getPix("groupchat.png");
-                        } else
-                                (*treeiter)[buddyColumns.audioicon] =
-                                        getPix("CallOver.png");
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("CallOver.png");
 
                         break;
                 }
 
-                const VCard *vcard = buddy->get_vcard();
+                //const VCard *vcard = buddy->get_vcard();
 
                 {
 
-
-                        char *random =
-                                g_strdup_printf("%x", g_random_int());
-                        const char *dirname = GUnit::getIconPath();
-                        char *filename =
-                                g_build_filename(dirname, random, NULL);
+                        /*
+                                             char *random =
+                                                     g_strdup_printf("%x", g_random_int());
+                                             const char *dirname = GUnit::getIconPath();
+                                             char *filename =
+                                                     g_build_filename(dirname, random, NULL);
+                         */
 
                         Glib::RefPtr < Gdk::Pixbuf > faceicon;
                         Glib::RefPtr < Gdk::Pixbuf > faceicon_orgin;
@@ -1212,7 +1216,8 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                         /*文件名存在且能打开文件 */
 
                         if ((!filename_.empty())
-                                        && (!access(filename_.c_str(), F_OK))) {
+                                        && (!access(filename_.c_str(), F_OK)))
+                        {
                                 try {
                                         faceicon_orgin =
                                                 Gdk::Pixbuf::
@@ -1227,7 +1232,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                         faceicon = getPix30("default.png");
                                         printf
                                         ("pixbuf load file %s error\n",
-                                         filename);
+                                         filename_.c_str());
                                         buddy->setLogo(faceicon);
                                 } else {
                                         faceicon =
@@ -1236,54 +1241,58 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                                                                              INTERP_NEAREST);
                                         buddy->setLogo(faceicon_orgin);
                                 }
-                        } else {
+                        } else
+                        {
 
-                                if (vcard && !vcard->photo().binval.empty()) {
-                                        std::ofstream fout(filename);
-                                        fout.write((const char *) vcard->
-                                                   photo().binval.c_str(),
-                                                   vcard->photo().binval.
-                                                   size());
-                                        fout.close();
+                                /*
+                                                            if (vcard && !vcard->photo().binval.empty()) {
+                                                                    std::ofstream fout(filename);
+                                                                    fout.write((const char *) vcard->
+                                                                               photo().binval.c_str(),
+                                                                               vcard->photo().binval.
+                                                                               size());
+                                                                    fout.close();
 
-                                        try {
-                                                faceicon_orgin =
-                                                        Gdk::Pixbuf::
-                                                        create_from_file(filename, 30,
-                                                                         30);
-                                        } catch (Glib::FileError e) {
-                                                g_message("caught Glib::FileError in refreshBuddyStatus create from file");
-                                        } catch (Gdk::PixbufError e) {
-                                                g_message("Gdk::PixbufError in create_from_file");
-                                        }
+                                                                    try {
+                                                                            faceicon_orgin =
+                                                                                    Gdk::Pixbuf::
+                                                                                    create_from_file(filename, 30,
+                                                                                                     30);
+                                                                    } catch (Glib::FileError e) {
+                                                                            g_message("caught Glib::FileError in refreshBuddyStatus create from file");
+                                                                    } catch (Gdk::PixbufError e) {
+                                                                            g_message("Gdk::PixbufError in create_from_file");
+                                                                    }
 
-                                        if (faceicon_orgin == 0) {
-                                                faceicon =
-                                                        getPix30
-                                                        ("default.png");
-                                                printf
-                                                ("pixbuf load file %s error\n",
-                                                 filename);
-                                                buddy->setLogo(faceicon);
-                                        } else {
-                                                faceicon =
-                                                        faceicon_orgin->scale_simple(30, 30,
-                                                                                     Gdk::
-                                                                                     INTERP_NEAREST);
-                                                setBlistTag("buddy",
-                                                            buddyname,
-                                                            "icon",
-                                                            filename);
-                                                buddy->setLogo(faceicon_orgin);
-                                        }
-                                } else {
-                                        faceicon = getPix30("default.png");
-                                        buddy->setLogo(faceicon);
-                                }
+                                                                    if (faceicon_orgin == 0) {
+                                                                            faceicon =
+                                                                                    getPix30
+                                                                                    ("default.png");
+                                                                            printf
+                                                                            ("pixbuf load file %s error\n",
+                                                                             filename);
+                                                                            buddy->setLogo(faceicon);
+                                                                    } else {
+                                                                            faceicon =
+                                                                                    faceicon_orgin->scale_simple(30, 30,
+                                                                                                                 Gdk::
+                                                                                                                 INTERP_NEAREST);
+                                                                            setBlistTag("buddy",
+                                                                                        buddyname,
+                                                                                        "icon",
+                                                                                        filename);
+                                                                            buddy->setLogo(faceicon_orgin);
+                                                                    }
+                                                            } else {
+                                */
+                                faceicon = getPix30("default.png");
+                                buddy->setLogo(faceicon);
+                                //}
                         }
 
 
-                        switch (status_) {
+                        switch (status_)
+                        {
 
                         case Presence::XA:
                                 emblem = getPix("Xa.png");

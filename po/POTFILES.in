@@ -15,6 +15,7 @@ src/MsgPage.cpp
 src/MsgWindow.cpp
 src/pixmaps.cpp
 src/RoomItem.cpp
+src/RoomInvitation.cpp
 src/sounds.cpp
 src/TrayIcon.cpp
 src/TagList.cpp

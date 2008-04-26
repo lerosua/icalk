@@ -15,6 +15,8 @@
 *
 * =====================================================================================
 */
+#include <assert.h>
+#include <sys/stat.h>
 #include "Bodies.h"
 #include "TalkCard.h"
 TalkCard::TalkCard(Client * f_client): m_client(f_client)
@@ -40,50 +42,100 @@ void TalkCard::store_vcard(VCard * f_vcard)
 
 void TalkCard::handleVCard(const JID & jid, const VCard * vcard)
 {
-        const JID& myjid = Bodies::Get_Bodies().get_jid();
+        if (!vcard) {
+                DLOG("empty %s's vcard!\n", jid.full().c_str());
+                return ;
+        }
+
+        Bodies& bodies = Bodies::Get_Bodies();
+        const JID& myjid = bodies.get_jid();
+
+        char *random =
+                g_strdup_printf("%x", g_random_int());
+        const char *dirname = GUnit::getIconPath();
+        char *filename =
+                g_build_filename(dirname, random, NULL);
+        int f_size;
+        int n_size;
+
+        struct stat f_stat;
+        DLOG("geting %s vcard\n", jid.username().c_str());
+
+        //获取自己的vcard照片
 
         if (myjid.bare() == jid.bare()) {
-                Bodies::Get_Bodies().set_vcard(vcard);
-                DLOG("geting %s vcard\n", jid.username().c_str());
+                //bodies.set_vcard(vcard);
 
-                if (!vcard) {
-                        DLOG("empty vcard!\n");
-                        return ;
-                }
+                const std::string m_file = bodies.getAccountTag("icon");
+
+                if ((!m_file.empty())
+                                && (!access(m_file.c_str(), F_OK))) {
+
+
+                        if (stat(m_file.c_str(), &f_stat))
+                                return ;
+
+                        f_size = f_stat.st_size;
+                } else
+                        f_size = 0;
 
                 if (!vcard->photo().type.empty()) {
-                        char *random =
-                                g_strdup_printf("%x", g_random_int());
-                        const char *dirname = GUnit::getIconPath();
-                        char *filename =
-                                g_build_filename(dirname, random, NULL);
+                        n_size = vcard->photo().binval.size();
 
-                        std::ofstream fout(filename);
-                        fout.write((const char *) vcard->
-                                   photo().binval.c_str(),
-                                   vcard->photo().binval.
-                                   size());
-                        fout.close();
+                        if (f_size != n_size) {
+                                DLOG("orig picture size = %d,new size= %d\n", f_size, n_size);
+                                std::ofstream fout(filename);
+                                fout.write((const char *) vcard->
+                                           photo().binval.c_str(),
+                                           vcard->photo().binval.
+                                           size());
+                                fout.close();
 
-                        Bodies::Get_Bodies().setAccountTag("icon", filename);
-                        Bodies::Get_Bodies().get_main_window().set_logo(filename);
+                                bodies.setAccountTag("icon", filename);
+                                bodies.get_main_window().set_logo(filename);
+                        }
                 }
 
         }
 
         Buddy *buddy =
-                Bodies::Get_Bodies().get_buddy_list().find_buddy(jid.
-                                bare
-                                ());
+                bodies.get_buddy_list().find_buddy(jid.
+                                                   bare
+                                                   ());
+        assert(buddy);
+        //buddy->set_vcard(vcard);
 
-        if (buddy == NULL)
-                return ;
+        const std::string & buddyname = buddy->get_jid();
+        const std::string & f_file =
+                bodies.get_main_window().get_buddy_view().getBlistTag("buddy", buddyname, "icon");
 
-        if (!vcard) {
-                return ;
+        if ((!f_file.empty())
+                        && (!access(f_file.c_str(), F_OK))) {
+
+                if (stat(f_file.c_str(), &f_stat))
+                        return ;
+
+                f_size = f_stat.st_size;
+        } else
+                f_size = 0;
+
+        if (!vcard->photo().binval.empty()) {
+                n_size = vcard->photo().binval.size();
+
+                if (f_size != n_size) {
+                        DLOG("orig picture size = %d,new size= %d\n", f_size, n_size);
+                        std::ofstream fout(filename);
+                        fout.write((const char *) vcard->
+                                   photo().binval.c_str(),
+                                   n_size);
+                        fout.close();
+                        bodies.get_main_window().get_buddy_view().setBlistTag("buddy",
+                                        buddyname,
+                                        "icon",
+                                        filename);
+                }
         }
 
-        buddy->set_vcard(vcard);
 
         buddy->refreshinfo();
 }
