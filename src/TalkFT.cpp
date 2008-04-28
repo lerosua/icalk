@@ -57,9 +57,10 @@ void TalkFT::initFT()
 
         //m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
 
-        m_ft->addStreamHost(m_client->jid(), "192.168.1.103", LOCALPORT);
-	m_ft->addStreamHost( m_client->jid(), "219.137.76.220",8010);
+        m_ft->addStreamHost(m_client->jid(), "192.168.1.103", 28011);
         m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
+                            PORT);
+        m_ft->addStreamHost(JID("proxy.netlab.cz"), "77.48.19.1",
                             PORT);
 }
 
@@ -96,7 +97,7 @@ void* TalkFT::loopSend(void* )
 
         while (S_RUNNING == RUN_SEND) {
                 if (m_server) {
-                        se = m_server->recv(1);
+                        se = m_server->recv(100);
 
                         if (se != ConnNoError) {
                                 DLOG("SOCKS5BytestreamServer returned: %d\n", se);
@@ -205,32 +206,6 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
 
 }
 
-/*
-void TalkFT::handleFTSend(const JID& to, const std::string m_file)
-{
- 
-        struct stat f_stat;
- 
-        if (stat(m_file.c_str(), &f_stat))
-                return ;
- 
-        uint32_t m_size = f_stat.st_size;
- 
-        sendfile.open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
- 
-        if (!sendfile)
-                return ;
- 
-        if (S_RUNNING == RUN_SEND)
-                return ;
- 
-        m_ft->requestFT(to, m_file, m_size);
- 
-        S_RUNNING = RUN_SEND;
- 
-        sendThread.start();
-}
-*/
 
 void TalkFT::handleFTBytestream(Bytestream * bs)
 {

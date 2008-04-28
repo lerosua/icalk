@@ -112,9 +112,7 @@ private:
         SOCKS5BytestreamServer *m_server;
         std::list < Bytestream * >bs_recvList;
         std::list < Bytestream * >bs_sendList;
-        //Bytestream* m_bs_send;
-        //std::ifstream sendfile;
-        //std::ofstream recvfile;
+
         FILELIST rfilelist;
         FILELIST sfilelist;
         XPThread < TalkFT > recvThread;
