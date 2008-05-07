@@ -22,6 +22,8 @@
 #include <gtkmm/dialog.h>
 #include "Bodies.h"
 #include "MsgPage.h"
+#include "CommandBar.h"
+#include "MsgLog.h" 
 #include <assert.h>
 #include <sigc++/connection.h>
 #include "pixmaps.h"

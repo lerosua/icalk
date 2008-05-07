@@ -18,6 +18,7 @@
 
 #include "TreeViewTooltips.h"
 #include "pixmaps.h"
+#include "BuddyView.h" 
 
 TreeViewTooltips::TreeViewTooltips(BuddyView* view): m_buddyview(view)
                 , Window(Gtk::WINDOW_POPUP)

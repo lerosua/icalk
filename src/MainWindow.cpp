@@ -37,10 +37,14 @@
 
 #include "Bodies.h"
 #include "MainWindow.h"
+#include "BuddyInfoWindow.h"
+#include "StatusMsgWidget.h"
+#include "ServerDiscoWindow.h"
 #include "BuddyView.h"
 #include "pixmaps.h"
 #include "sounds.h"
 #include "about.h"
+#include "icalk.h"
 
 #define SYSTEM_MENU 0
 #define TIMEOUT 5

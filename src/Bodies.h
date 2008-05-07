@@ -30,7 +30,7 @@
 #include "BuddyList.h"
 #include "TalkMsg.h"
 #include "TalkConnect.h"
-#include "MainWindow.h"
+//#include "MainWindow.h"
 #include "MsgWindow.h"
 #include "BuddyView.h"
 #include "TalkCard.h"
@@ -44,6 +44,9 @@
 using std::list;
 
 using namespace std;
+//class TalkFT;
+class MainWindow;
+//class TalkCard;
 
 /**
  * @brief 用于集合各种功能的工厂
@@ -123,7 +126,7 @@ public:
         void set_status(Presence::PresenceType f_status, Glib::ustring f_msg = "") ;
 
         /** 返回文件传输处理类 */
-        TalkFT& getFThandler() const
+        TalkFT& getFThandler() 
         {
                 return *m_talkFT;
         }

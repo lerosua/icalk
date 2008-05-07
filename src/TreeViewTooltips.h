@@ -19,7 +19,9 @@
 #ifndef  TREEVIEWTOOLTIPS_FILE_HEADER_INC
 #define  TREEVIEWTOOLTIPS_FILE_HEADER_INC
 #include <gtkmm.h>
-#include "BuddyView.h" 
+//#include "BuddyView.h" 
+//
+class BuddyView;
 /**
  * @brief 用于显示好友信息提示。
  * @note gtkmm2.20开始才为TreeView添加了Tooltips功能。而之前的版本则需要

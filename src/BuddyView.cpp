@@ -1148,12 +1148,6 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 BuddyType mType = buddy->getType();
 
                 switch (mType) {
-                        /*
-                           case TYPE_FRIEND:
-                           (*treeiter)[buddyColumns.audioicon] = getPix("CallOver.png");
-                           break;
-                         */
-
                 case TYPE_TRANPORT:
                         (*treeiter)[buddyColumns.audioicon] =
                                 getPix("transport.png");

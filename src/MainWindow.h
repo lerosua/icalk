@@ -24,14 +24,12 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 #include <libsexymm/icon-entry.h>
+//#include <libsexymm/libsexymm/icon-entry.h>
 #include <iostream>
 #include <sigc++/connection.h>
 #include "Unit.h"
-#include "StatusMsgWidget.h"
-#include "BuddyInfoWindow.h"
-#include "ServerDiscoWindow.h"
 #include "MVC.h"
-#include "icalk.h"
+//#include "icalk.h"
 
 #define main_ui     DATA_DIR"/ui/main_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
@@ -43,6 +41,8 @@ using namespace std;
 class Bodies;
 
 class BuddyView;
+class StatusMsgWidget;
+class ServerDiscoWindow;
 /** 标识当前窗口为已连接后的页*/
 #define LOGIN_FINIAL 2 
 /** 标识当前窗口为正在连接的页*/

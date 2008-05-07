@@ -20,9 +20,9 @@
 #include <fstream>
 #include <string>
 #include <glib/gi18n.h>
-#include "Buddy.h"
 #include "TalkMsg.h"
 #include "Bodies.h"
+#include "Buddy.h"
 
 /** 带内数据传输图片的大小*/
 #define PICZIAE 102400 

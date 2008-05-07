@@ -3,9 +3,9 @@
 #include <gtkmm/dialog.h>
 #include <glib/gi18n.h>
 #include <libgen.h>
-#include "TalkFT.h"
 #include "icalk.h"
 #include "Bodies.h"
+#include "TalkFT.h"
 
 #define STOP_STATUS 0
 #define RUN_RECV  1

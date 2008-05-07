@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <stdlib.h>
+#include <libintl.h>
 #include <exception>
 #include <gtkmm.h>
 #include <libglademm/xml.h>
@@ -38,6 +39,8 @@
 #include <gloox/xhtmlim.h> 
 //#include "gtalkcaps.h"
 #include "MainWindow.h"
+//#include "TalkFT.h"
+//#include "TalkCard.h"
 #include "Bodies.h"
 #include "Unit.h"
 #include "sounds.h"

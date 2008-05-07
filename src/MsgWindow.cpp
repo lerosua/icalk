@@ -27,7 +27,6 @@
 #include <assert.h>
 #include <glib/gi18n.h>
 #include "MsgWindow.h"
-#include "MsgPage.h"
 #include "Bodies.h"
 #include "pixmaps.h"
 

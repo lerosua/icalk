@@ -257,7 +257,7 @@ public:
 
         int start()
         {
-                return pthread_create(&id_, NULL, XPThread<T>::run, this);
+		return ::pthread_create(&id_, NULL, XPThread<T>::run, this);
         }
 
         int join( void** value_ptr = NULL)
@@ -265,8 +265,8 @@ public:
                 int ret = 0;
 
                 if (id_) {
-                        ret = ::pthread_join(id_, value_ptr) ;
                         id_ = 0;
+                        ret = ::pthread_join(id_, value_ptr) ;
                 }
 
                 return ret;

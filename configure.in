@@ -34,17 +34,19 @@ AC_CHECK_HEADERS([fcntl.h unistd.h])
 # Checks for library functions.
 AC_CHECK_FUNCS([socket])
 
-pkg_modules="gloox >= 0.9 gtkmm-2.4 >= 2.6.0 libglademm-2.4 >= 2.4.0"
+pkg_modules="gloox >= 0.9 gtkmm-2.4 >= 2.6.0 libglademm-2.4 >= 2.4.0 libsexymm >= 0.1.9"
 PKG_CHECK_MODULES(PACKAGE, [$pkg_modules])
 AC_SUBST(PACKAGE_CFLAGS)
 AC_SUBST(PACKAGE_LIBS)
 
-AC_CHECK_LIB(sexymm,_init,SEXYMM="yes",,$SEXYMM_LIBS -lsexymm)
-if test "x$SEXYMM" = "xyes"; then
-	AC_DEFINE(HAVE_LIBSEXYMM,1,[Define if libsexymm is present])
-	SEXYMM_LIBS="-lsexymm"
-	AC_SUBST(SEXYMM_LIBS)
-fi
+#AC_CHECK_LIB(sexymm,_init,SEXYMM="yes",,$SEXYMM_LIBS -lsexymm)
+#if test "x$SEXYMM" = "xyes"; then
+#	AC_DEFINE(HAVE_LIBSEXYMM,1,[Define if libsexymm is present])
+#	SEXYMM_LIBS="-lsexymm"
+#	AC_SUBST(SEXYMM_LIBS)
+#fi
+PTHREAD_LIBS="-lpthread"
+AC_SUBST(PTHREAD_LIBS)
 dnl  Language Support 
 GETTEXT_PACKAGE=icalk
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Define the gettext package to be used])

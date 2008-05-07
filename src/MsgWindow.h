@@ -52,7 +52,6 @@ public:
 #define msg_ui  DATA_DIR"/ui/msg_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
-class MsgPage;
 /**
  * @brief 会话中的消息窗口。
  *
