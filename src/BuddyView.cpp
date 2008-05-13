@@ -17,15 +17,16 @@
 */
 
 #include <glib/gi18n.h>
+#include <fstream>
+#include <unistd.h>
 #include "BuddyView.h"
 #include "BuddyList.h"
 #include "Bodies.h"
 #include "Unit.h"
 #include "pixmaps.h"
 #include "sounds.h"
-#include <fstream>
-#include <unistd.h>
 #include "Unit.h"
+#include "TreeViewTooltips.h"
 
 
 BuddyView::BuddyView(MainWindow & f_parent):

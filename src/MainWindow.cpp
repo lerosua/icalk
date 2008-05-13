@@ -450,7 +450,8 @@ void MainWindow::set_logo(const std::string & iconpath)
 {
         if (!iconpath.empty()) {
                 try {
-                        logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
+                        //logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
+                        logo = Gdk::Pixbuf::create_from_file(iconpath, 32, 32);
                 } catch (Glib::FileError e) {
                         g_message("caught Glib::FileError in initBuddy create from file");
                 } catch (Gdk::PixbufError e) {
@@ -458,27 +459,26 @@ void MainWindow::set_logo(const std::string & iconpath)
                 }
 
                 if (0 == logo)
-                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png");
+                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png",32,32);
 
 
         } else
                 logo =
                         Gdk::Pixbuf::
-                        create_from_file(DATA_DIR "/images/avatar.png");
+                        create_from_file(DATA_DIR "/images/avatar.png",32,32);
 
-        //Glib::RefPtr < Gdk::Pixbuf > border =
-        //   getPix("border.png");
-        //border->composite(logo,1,1,36,36,0,0,1,1,Gdk::INTERP_BILINEAR,255);
-        //logo->composite(border,0,0,48,48,0,0,1,1,Gdk::INTERP_BILINEAR,255);
+        Glib::RefPtr < Gdk::Pixbuf > border =
+           getPix("border.png");
+        logo->composite(border,0,0,32,32,2,2,1,1,Gdk::INTERP_BILINEAR,255);
 
         Gtk::Image * logo_ =
                 dynamic_cast <
                 Gtk::Image * > (main_xml->get_widget("image_logo"));
 
-        logo_->set
-        (logo->scale_simple(36, 36, Gdk::INTERP_BILINEAR));
+        //logo_->set
+        //(logo->scale_simple(32, 32, Gdk::INTERP_BILINEAR));
 
-        //logo_->set(border);
+        logo_->set(border);
 
 }
 

@@ -24,11 +24,13 @@
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>
 
+#define ftwidget_ui DATA_DIR"/ui/ftwidget.glade"
 using namespace std;
 
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 class MainWindow;
+class XferLine;
 
 /**
  * 显示文件传输状态的窗口
@@ -51,4 +53,23 @@ private:
 
 };
 
+class XferLine:public Gtk::TreeView
+{
+	public:
+		XferLine();
+		~XferLine();
+
+	private:
+		struct XferColumns: public Gtk::TreeModel::ColumnRecord
+	{
+		XferColumns()
+		{
+			add();
+		}
+
+		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
+		Gtk::TreeModelColumn < Glib::ustring> filename;
+		Gtk::TreeModelColumn <int > size;
+		Gtk::TreeModelColumn <Glib::ustring> target;
+		Gtk::TreeModelColumn <
 #endif

@@ -1,6 +1,7 @@
 #include <glib/gi18n.h>
 #include "TrayIcon.h"
 #include "pixmaps.h"
+#include "MainWindow.h"
 
 
 TrayIcon::TrayIcon(MainWindow* wnd)

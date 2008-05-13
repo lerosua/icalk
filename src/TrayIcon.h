@@ -22,7 +22,6 @@
 #include <gtkmm/statusicon.h>
 #include <gtkmm/tooltips.h>
 #include <gtkmm/eventbox.h>
-#include "MainWindow.h"
 
 
 class MainWindow;

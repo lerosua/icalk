@@ -33,21 +33,20 @@
 #include <sigc++/connection.h>
 #include "RoomItem.h"
 #include "TalkRoomHandler.h"
-#include "BuddyList.h"
 #include "ConfXml.h"
 #include "TreeModelDnd.h"
-#include "TreeViewTooltips.h"
+#include "MainWindow.h"
 #include "icalk.h" 
 
 using namespace std;
 
 using namespace gloox;
 
-class BuddyList;
-
 class Bodies;
 
-class MainWindow;
+class BuddyList;
+
+//class MainWindow;
 
 class TreeViewTooltips;
 /**
