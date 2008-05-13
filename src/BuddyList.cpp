@@ -39,7 +39,7 @@ BuddyList::~BuddyList()
         BUDDY_MAP::iterator iter = buddy_map.begin();
 
         for (; iter != buddy_map.end();iter++) {
-                delete iter->second;
+                //delete iter->second;
                 buddy_map.erase(iter);
         }
 }

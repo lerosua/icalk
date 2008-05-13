@@ -239,8 +239,8 @@ AgentLine::AgentLine()
         agentline->set_headers_visible(false);
         agentline->set_rules_hint(false);
 
-        m_liststore = Gtk::ListStore::create(m_columns);
-        agentline->set_model(m_liststore);
+        m_refTreeModel = Gtk::ListStore::create(m_columns);
+        agentline->set_model(m_refTreeModel);
         agentline->append_column("icon", m_columns.icon);
         agentline->append_column("name", m_columns.name);
         agentline->append_column("jid", m_columns.jid);
@@ -251,7 +251,7 @@ AgentLine::AgentLine()
 
 void AgentLine::addLine(const std::string& f_jid, const int f_type)
 {
-        Gtk::TreeModel::iterator iter = m_liststore->append();
+        Gtk::TreeModel::iterator iter = m_refTreeModel->append();
 
         if (f_type != AGENT_OTHER)
                 (*iter)[m_columns.name] = std::string(agent_type_info[f_type][agent_info]);
@@ -267,7 +267,7 @@ void AgentLine::addLine(const std::string& f_jid, const int f_type)
 
 void AgentLine::clear()
 {
-        m_liststore->clear();
+        m_refTreeModel->clear();
 }
 
 bool AgentLine::on_button_press_event(GdkEventButton * ev)

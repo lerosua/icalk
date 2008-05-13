@@ -19,7 +19,6 @@ TalkFT::TalkFT(Client* client_): m_client(client_)
                 , sendThread(this, &TalkFT::loopSend)
                 , R_RUNNING(STOP_STATUS)
                 , S_RUNNING(STOP_STATUS)
-                //, m_bs_send(0)
                 , m_ft(NULL)
                 , m_server(NULL)
                 , recvCount(0)
@@ -135,26 +134,6 @@ void* TalkFT::loopSend(void* )
                         }
                 }
 
-                /*
-                              if (m_bs_send && ! sendfile.eof()) {
-                                      if (m_bs_send->isOpen()) {
-                                              sendfile.read(input, BLOCK_SIZE);
-                                              std::string content(input, sendfile.gcount());
-
-                  DLOG("##\n");
-                                              if (!m_bs_send->send(content))
-                                                      DLOG("file send shuld be return\n");
-
-                                              ; //do something end the file send thread
-                                      }
-
-                                      m_bs_send->recv(1);
-                              } else if (m_bs_send) {
-                                      m_bs_send->close();
-                 m_bs_send=NULL;
-                 DLOG("send closed");
-                              }
-                */
         }
 
 

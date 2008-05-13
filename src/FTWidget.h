@@ -42,17 +42,47 @@ class FTWidget: public Gtk::Window
 public:
         FTWidget(MainWindow* parent_);
         ~FTWidget();
-        void on_button_ok();
-        void on_button_cancel();
+        void on_button_quit();
+        void on_button_stop();
         void on_button_del();
+	void on_button_continue();
 
+	protected:
+		class XferColumns: public Gtk::TreeModel::ColumnRecord
+	{
+		public:
+		XferColumns()
+		{
+			add(m_icon);
+			add(m_sid);
+			add(m_filename);
+			add(m_size);
+			add(m_target);
+			add(m_percent);
+		}
+
+		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icon;
+		Gtk::TreeModelColumn < std::string> m_sid;
+		Gtk::TreeModelColumn < Glib::ustring> m_filename;
+		Gtk::TreeModelColumn <int > m_size;
+		Gtk::TreeModelColumn <Glib::ustring> m_target;
+		Gtk::TreeModelColumn <int > m_percent;
+	};
+	XferColumns m_columns;
 private:
         MainWindow* parent;
-
-
+	Gtk::TreeView m_TreeView;
+	Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
+	Gtk::ScrolledWindow m_ScrolledWindow;
+	Gtk::VBox m_VBox;
+	Gtk::HButtonBox m_ButtonBox;
+	Gtk::Button* m_Button_Quit;
+	Gtk::Button* m_Button_Stop;
+	Gtk::Button* m_Button_Delete;
+	Gtk::Button* m_Button_Continue;
 
 };
-
+/*
 class XferLine:public Gtk::TreeView
 {
 	public:
@@ -64,12 +94,24 @@ class XferLine:public Gtk::TreeView
 	{
 		XferColumns()
 		{
-			add();
+			add(m_icon);
+			add(m_sid);
+			add(m_filename);
+			add(m_size);
+			add(m_target);
+			add(m_percent);
 		}
 
-		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
-		Gtk::TreeModelColumn < Glib::ustring> filename;
-		Gtk::TreeModelColumn <int > size;
-		Gtk::TreeModelColumn <Glib::ustring> target;
-		Gtk::TreeModelColumn <
+		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icon;
+		Gtk::TreeModelColumn < std::string> m_sid;
+		Gtk::TreeModelColumn < Glib::ustring> m_filename;
+		Gtk::TreeModelColumn <int > m_size;
+		Gtk::TreeModelColumn <Glib::ustring> m_target;
+		Gtk::TreeModelColumn <int > m_percent;
+	};
+		XferColumns m_columns;
+		Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
+
+};
+*/
 #endif

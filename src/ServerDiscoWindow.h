@@ -28,31 +28,7 @@
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-//const char* agent_type_info[19][3];
 
-/*
-const char* agent_type_info[19][3] = {
-                                              { "aim", _("AIM Transports"), "aim.png"}
-                                              , { "icq", _("ICQ Transports"), "icq.png"}
-                                              , { "msn", _("MSN Transports"), "msn.png" }
-                                              , { "yahoo", _("Yahoo Transports"), "yahoo.png" }
-                                              , { "qq", _("QQ Transports"), "qq.png" }
-                                              , { "gadu-gadu", _("Gadu-Gadu Transports"), "gadu.png"}
-                                              , { "irc", _("IRC Transports"), "irc.png" }
-                                              , { "conference", _("Conference"), "groupchat.png" }
-                                              , { "rss", _("RSS Transports"), "rss.png" }
-                                              , { "weather", _("Weather"), "other.png" }
-                                              , { "sip", _("SIP"), "other.png" }
-                                              , { "bytestreams", _("Socks5 proxy"), "bytestreams.png" }
-                                              , { "pubsub", _("PubSub"), "pubsub.png" }
-                                              , { "http-ws" , _("Http-ws"), "other.png" }
-                                              , { "sms", _("SMS Transports"), "sms.png" }
-                                              , { "smtp", _("SMTP Transports"), "mail.png" }
-                                              , { "user", _("User"), "jud.png" }
-                                              , { "other", "", "other.png" }
-                                      };
-
-				      */
 enum { AGENT_AIM = 0, AGENT_ICQ, AGENT_MSN,
        AGENT_YAHOO, AGENT_QQ, AGENT_GADU,
        AGENT_IRC, AGENT_CONFERENCE, AGENT_RSS,
@@ -152,7 +128,7 @@ struct AgentColumns: public Gtk::TreeModel::ColumnRecord
 
 private:
         AgentColumns m_columns;
-        Glib::RefPtr<Gtk::ListStore> m_liststore;
+        Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 };
 
 

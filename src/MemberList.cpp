@@ -31,7 +31,7 @@ int MemberList::on_sort_compare(const Gtk::TreeModel::iterator& a,
 
                 int result;
 
-		if((result = (*a)[columns.affiliation]-(*b)[columns.affiliation])==0)
+		if((result = (*b)[columns.affiliation]-(*a)[columns.affiliation])==0)
                 {
 		if((result =
 			(*a)[columns.presence] - (*b)[columns.presence]) == 0)
