@@ -60,6 +60,7 @@ icalkimages_DATA = 	\
 	       gadu.png \
 	       weather.png 	\
 	       qq.png 		\
+	       border.png 	\
 	       avatar.png
 
 EXTRA_DIST = $(pixmaps_DATA) $(icalkimages_DATA)
