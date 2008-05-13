@@ -24,7 +24,6 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 #include <libsexymm/icon-entry.h>
-//#include <libsexymm/libsexymm/icon-entry.h>
 #include <iostream>
 #include <sigc++/connection.h>
 #include "Unit.h"

@@ -46,6 +46,7 @@ public:
         void on_button_stop();
         void on_button_del();
 	void on_button_continue();
+        bool on_key_press_event(GdkEventKey* ev);
 
 	protected:
 		class XferColumns: public Gtk::TreeModel::ColumnRecord
@@ -70,7 +71,7 @@ public:
 	};
 	XferColumns m_columns;
 private:
-        MainWindow* parent;
+        MainWindow* m_parent;
 	Gtk::TreeView m_TreeView;
 	Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 	Gtk::ScrolledWindow m_ScrolledWindow;

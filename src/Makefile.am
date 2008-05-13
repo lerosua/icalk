@@ -33,6 +33,7 @@ icalk_SOURCES = \
 	       BuddyInfoWindow.cpp \
 	       TreeViewTooltips.cpp \
 	       ServerDiscoWindow.cpp \
+	       FTWidget.cpp 	\
 	       TalkDiscoHandler.cpp \
 	       SmileyWnd.cpp	\
 	       Unit.cpp 	\
@@ -68,6 +69,7 @@ noinst_HEADERS = \
 		 BuddyInfoWindow.h \
 		 TreeViewTooltips.h \
 	         ServerDiscoWindow.h \
+		 FTWidget.h 	\
 		 ConfXml.h	\
 		 SmileTree.h 	\
 		 SmileyWnd.h	\

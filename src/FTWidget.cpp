@@ -10,16 +10,17 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  first_name last_name (fl), fl@my-company.com
- *        Company:  my-company
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
  *
  * =====================================================================================
  */
 
 #include <glib/gi18n.h>
 #include "FTWidget.h"
+#include "MainWindow.h"
 
-FTWidget::FTWidget()
+FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 {
 	set_title(_("File Translate"));
 	set_border_width(5);
@@ -27,6 +28,7 @@ FTWidget::FTWidget()
 	//m_VBox= Gtk::manage(new Gtk::VBox());
 	//m_ScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
 
+        set_transient_for(*m_parent);
 	add(m_VBox);
 	m_ScrolledWindow.add(m_TreeView);
 	m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
@@ -58,10 +60,74 @@ FTWidget::FTWidget()
 	m_refTreeModel = Gtk::ListStore::create(m_columns);
 	m_TreeView.set_model(m_refTreeModel);
 
+	//Add the TreeView's view columns;
+	m_TreeView.append_column("",m_columns.m_icon);
+	
+	//Display a progress bar instread of a decimal number:
+	Gtk::CellRendererProgress* cell = new Gtk::CellRendererProgress;
+	int cols_count = m_TreeView.append_column(_("percent"),*cell);
+	Gtk::TreeViewColumn* pColumn = m_TreeView.get_column(cols_count - 1);
+	if(pColumn)
+	{
+#ifdef GLIBMM_PROPERTIES_ENABLED
+		pColumn->add_attribute(cell->property_value(), m_columns.m_percent);
+#else
+		pColumn->add_attribute(*cell,"value",m_columns.m_percent);
+#endif
+	}
+	
+	m_TreeView.append_column(_("Filename"),m_columns.m_filename);
+	m_TreeView.append_column_numeric(_("size"),m_columns.m_size, "%010d");
+	
+
+	show_all_children();
+}
+
+FTWidget::~FTWidget()
+{
+
+}
+
+void FTWidget::on_button_quit()
+{
+	hide();
+}
+
+void FTWidget::on_button_del()
+{
+}
+
+void FTWidget::on_button_stop()
+{
+}
+
+void FTWidget::on_button_continue()
+{
+}
 
 
 
 
+bool FTWidget::on_key_press_event(GdkEventKey* ev)
+{
+        if (ev->type != GDK_KEY_PRESS)
+                return Gtk::Window::on_key_press_event(ev);
 
+        switch (ev->keyval) {
+
+        case GDK_Escape:
+		on_button_quit();
+                break;
+
+        case GDK_Return:
+        case GDK_KP_Enter:
+                break;
+
+        default:
+                return Gtk::Window::on_key_press_event(ev);
+        }
+
+        return true;
+}
 
 
