@@ -56,6 +56,10 @@ FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 	m_Button_Quit->signal_clicked().connect(sigc::mem_fun(*this,
 				&FTWidget::on_button_quit));
 
+	//设置默认的按钮状态
+	m_Button_Continue->set_sensitive(false);
+	m_Button_Stop->set_sensitive(false);
+	m_Button_Delete->set_sensitive(false);
 	//Create the TreeModel;
 	m_refTreeModel = Gtk::ListStore::create(m_columns);
 	m_TreeView.set_model(m_refTreeModel);
@@ -80,7 +84,7 @@ FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 	m_TreeView.append_column_numeric(_("size"),m_columns.m_size, "%010d");
 	
 
-	show_all_children();
+	show_all();
 }
 
 FTWidget::~FTWidget()
@@ -88,9 +92,13 @@ FTWidget::~FTWidget()
 
 }
 
+bool FTWidget::on_delete_event(GdkEventAny*)
+{
+	m_parent->on_fileXer_close(this);
+}
 void FTWidget::on_button_quit()
 {
-	hide();
+	m_parent->on_fileXer_close(this);
 }
 
 void FTWidget::on_button_del()

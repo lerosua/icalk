@@ -199,6 +199,10 @@ void ServerDiscoWindow::on_btGo_clicked()
 
 }
 
+bool ServerDiscoWindow::on_delete_event(GdkEventAny*)
+{
+	on_btclose_clicked();
+}
 void ServerDiscoWindow::on_btclose_clicked()
 {
         if (m_timeout.connected())

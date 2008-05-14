@@ -40,6 +40,7 @@
 #include "BuddyInfoWindow.h"
 #include "StatusMsgWidget.h"
 #include "ServerDiscoWindow.h"
+#include "FTWidget.h"
 #include "BuddyView.h"
 #include "pixmaps.h"
 #include "sounds.h"
@@ -87,6 +88,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='SysAddRoom'/>"
         " <menuitem action='SysFind'/>"
         " <menuitem action='SysDisco'/>"
+	" <menuitem action='FileXer'/>"
         "       <separator/>"
         " <menuitem action='ShowOffline'/>"
         " <menuitem action='Mute'/>"
@@ -105,6 +107,7 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
                 , statusEntry(NULL)
                 , discowindow(NULL)
                 , statusMsgWidget(NULL)
+		, ftwidget(NULL)
 {
         config.MUTE = false;
         config.SHOWALLFRIEND = false;
@@ -1211,6 +1214,19 @@ void MainWindow::on_serverDisco_close( ServerDiscoWindow* dlg)
         discowindow = NULL;
 }
 
+void MainWindow::on_fileXer_activate()
+{
+	if(NULL == ftwidget)
+		ftwidget = new FTWidget(this);
+	else 
+		return ftwidget->raise();
+}
+void MainWindow::on_fileXer_close(FTWidget* dlg)
+{
+	g_assert(dlg == ftwidget);
+	delete dlg;
+	ftwidget = NULL;
+}
 void MainWindow::on_freshList_activate()
 {
         list_view->refreshList();
@@ -1651,6 +1667,10 @@ void MainWindow::init_ui_manager()
         (Gtk::Action::create("SysDisco", Gtk::StockID("DISCO"), _("Server Discover")),
          sigc::mem_fun(*this, &MainWindow::
                        on_serverDisco_activate));
+
+	action_group->add
+		(Gtk::Action::create("FileXer",Gtk::Stock::FILE,_("File Transfer")),
+		 sigc::mem_fun(*this, &MainWindow::on_fileXer_activate));
 
         action_group->add
         (Gtk::ToggleAction::create("ShowOffline", _("Show offline")),

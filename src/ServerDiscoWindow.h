@@ -76,6 +76,7 @@ private:
         bool on_key_press_event(GdkEventKey* ev);
         void on_btGo_clicked();
         void on_btclose_clicked();
+        bool on_delete_event(GdkEventAny*);
 
 private:
         GlademmXML server_discovery_xml;

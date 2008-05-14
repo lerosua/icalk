@@ -28,7 +28,6 @@
 #include <sigc++/connection.h>
 #include "Unit.h"
 #include "MVC.h"
-//#include "icalk.h"
 
 #define main_ui     DATA_DIR"/ui/main_window.glade"
 typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
@@ -42,6 +41,7 @@ class Bodies;
 class BuddyView;
 class StatusMsgWidget;
 class ServerDiscoWindow;
+class FTWidget;
 /** 标识当前窗口为已连接后的页*/
 #define LOGIN_FINIAL 2 
 /** 标识当前窗口为正在连接的页*/
@@ -173,6 +173,10 @@ public:
         void on_serverDisco_activate();
         /** 查找服务的窗口的关闭的回调*/
         void on_serverDisco_close(ServerDiscoWindow* dlg);
+	/** 文件传输窗口显示*/
+	void on_fileXer_activate();
+	/** 关闭文件传输窗口*/
+	void on_fileXer_close(FTWidget* dlg);
         /** 刷新好友列表*/
         void on_freshList_activate();
         /** 显示关于窗口，关于窗口有作者信息，版权等*/
@@ -215,10 +219,14 @@ public:
         void on_account_changed();
         /**初始化房间*/
         void initRoom();
-        ServerDiscoWindow* get_disco_window()
+        ServerDiscoWindow* get_disco_window()const
         {
                 return discowindow;
         }
+	FTWidget* get_ftwidget()const 
+	{
+		return ftwidget;
+	}
 
 public:
         /** 获取当前的签名消息*/
@@ -271,6 +279,7 @@ private:
         Gtk::Entry* entryPort;
         Sexy::IconEntry* entryFilter;
         ServerDiscoWindow* discowindow;
+	FTWidget* ftwidget;
         StatusMsgWidget *statusMsgWidget;
         sigc::connection msgTimeout;
         Config config;
