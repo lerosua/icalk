@@ -9,7 +9,7 @@ icalkimages_DATA = 	\
 	       online.png  \
 	       offline.png  \
 	       status_online.png \
-	       status_ofline.png   \
+	       status_offline.png   \
 	       status_dnd.png  \
 	       status_ex.png   \
 	       status_away.png  \
