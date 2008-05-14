@@ -61,6 +61,10 @@ icalkimages_DATA = 	\
 	       weather.png 	\
 	       qq.png 		\
 	       border.png 	\
+	       ft_done.png 	\
+	       ft_error.png 	\
+	       ft_request.png 	\
+	       ft_stopped.png 	\
 	       avatar.png
 
 EXTRA_DIST = $(pixmaps_DATA) $(icalkimages_DATA)
