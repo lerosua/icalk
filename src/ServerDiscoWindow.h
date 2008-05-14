@@ -96,7 +96,7 @@ public:
         AgentLine();
         /**
          * @brief 添加代理进列表
-         * @param f_jid 代理的jid
+         * @param f_jid 代理的m_jid
          * @param f_type 代理的类型，比如msn的transport,icq的transport
          */
         void addLine(const std::string& f_jid, const int f_type = 0);
@@ -113,18 +113,18 @@ struct AgentColumns: public Gtk::TreeModel::ColumnRecord
                 AgentColumns()
                 {
                         add
-                                (icon);
+                                (m_icons);
 
                         add
-                                (name);
+                                (m_name);
 
                         add
-                                (jid);
+                                (m_jid);
                 }
 
-                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
-                Gtk::TreeModelColumn<std::string> name;
-                Gtk::TreeModelColumn<std::string> jid;
+                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icons;
+                Gtk::TreeModelColumn<std::string> m_name;
+                Gtk::TreeModelColumn<std::string> m_jid;
         };
 
 private:

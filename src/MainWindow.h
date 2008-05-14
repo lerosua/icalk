@@ -79,11 +79,13 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
         public:
                 ModelColumns()
                 {
+			add(m_icons);
                         add
-                                (col_status);
+                                (m_status);
                 }
 
-                Gtk::TreeModelColumn<Glib::ustring> col_status;
+                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icons;
+                Gtk::TreeModelColumn<Glib::ustring> m_status;
         };
 
         ModelColumns m_Columns;

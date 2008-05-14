@@ -21,8 +21,10 @@
 #include <gtkmm.h>
 #include <libglademm/xml.h>
 #include <gtkmm/treeview.h>
-#include <gtkmm/treestore.h>
+#include <gtkmm/liststore.h>
 #include <gtkmm/treeselection.h>
+#include <functional>
+#include <vector>
 
 //#define ftwidget_ui DATA_DIR"/ui/ftwidget.glade"
 using namespace std;
@@ -52,40 +54,75 @@ public:
         bool on_key_press_event(GdkEventKey* ev);
         bool on_delete_event(GdkEventAny*);
 
-	protected:
+        Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::
+                                             Children children,
+                                             const Glib::ustring & f_sid);
+	void addXfer(const Glib::ustring& f_sid,const std::string& f_filename,const std::string& f_target,long f_size,const std::string& type);
+	void updateXfer(const Glib::ustring& f_sid, long f_size);
+	void doneXfer(const Glib::ustring& f_sid,bool error=0);
+	std::string filesize_to_string(long size);
+	private:
 		class XferColumns: public Gtk::TreeModel::ColumnRecord
 	{
 		public:
 		XferColumns()
 		{
-			add(m_icon);
+			add(m_icons);
 			add(m_sid);
 			add(m_filename);
 			add(m_size);
+			add(m_totalsize);
+			add(m_showsize);
 			add(m_target);
 			add(m_percent);
+			add(m_type);
 		}
 
 		/** 传输过程的图标显示*/
-		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icon;
+		Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >m_icons;
 		/** 此传输的sid标识*/
-		Gtk::TreeModelColumn < std::string> m_sid;
+		Gtk::TreeModelColumn < Glib::ustring> m_sid;
 		/** 传输的文件的名字*/
-		Gtk::TreeModelColumn < Glib::ustring> m_filename;
-		/** 传输文件的大小*/
-		Gtk::TreeModelColumn <int > m_size;
+		Gtk::TreeModelColumn < std::string> m_filename;
+		//Gtk::TreeModelColumn < Glib::ustring> m_filename;
+		/** 传输文件的总大小*/
+		Gtk::TreeModelColumn <long > m_totalsize;
+		/** 以可读的形式显示文件的大小*/
+		Gtk::TreeModelColumn <std::string> m_showsize;
+		/** 已经传输的数据的大小*/
+		Gtk::TreeModelColumn <long > m_size;
 		/** 传输的接收方*/
 		Gtk::TreeModelColumn <Glib::ustring> m_target;
 		/** 传输进行时的完成的文件百分比*/
 		Gtk::TreeModelColumn <int > m_percent;
+		/** 标识此次传输为发送或接收*/
+		Gtk::TreeModelColumn <std::string> m_type;
 	};
 	XferColumns m_columns;
+
+	private:
+	struct CompareColumns: public binary_function < Gtk::TreeModel::Row,
+                                const Glib::ustring, bool >
+        {
+                explicit CompareColumns(const XferColumns &
+                                      column_): column(column_)
+                {}
+
+                bool operator () (const Gtk::TreeRow & lhs,
+                                  const Glib::ustring & var) const
+                {
+                        return lhs[column.m_sid] == var;
+                }
+
+                const XferColumns & column;
+        };
 private:
         MainWindow* m_parent;
 	Gtk::TreeView m_TreeView;
 	Glib::RefPtr<Gtk::ListStore> m_refTreeModel;
 	Gtk::ScrolledWindow m_ScrolledWindow;
 	Gtk::VBox m_VBox;
+	Gtk::Frame* frame;
 	Gtk::HButtonBox m_ButtonBox;
 	Gtk::Button* m_Button_Quit;
 	Gtk::Button* m_Button_Stop;

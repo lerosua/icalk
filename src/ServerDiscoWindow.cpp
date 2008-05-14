@@ -245,9 +245,9 @@ AgentLine::AgentLine()
 
         m_refTreeModel = Gtk::ListStore::create(m_columns);
         agentline->set_model(m_refTreeModel);
-        agentline->append_column("icon", m_columns.icon);
-        agentline->append_column("name", m_columns.name);
-        agentline->append_column("jid", m_columns.jid);
+        agentline->append_column("icons", m_columns.m_icons);
+        agentline->append_column("name", m_columns.m_name);
+        agentline->append_column("jid", m_columns.m_jid);
         agentline->show();
 
 
@@ -258,15 +258,15 @@ void AgentLine::addLine(const std::string& f_jid, const int f_type)
         Gtk::TreeModel::iterator iter = m_refTreeModel->append();
 
         if (f_type != AGENT_OTHER)
-                (*iter)[m_columns.name] = std::string(agent_type_info[f_type][agent_info]);
+                (*iter)[m_columns.m_name] = std::string(agent_type_info[f_type][agent_info]);
         else
-                (*iter)[m_columns.name] = f_jid;
+                (*iter)[m_columns.m_name] = f_jid;
 
-        (*iter)[m_columns.jid] = f_jid;
+        (*iter)[m_columns.m_jid] = f_jid;
 
         Glib::RefPtr < Gdk::Pixbuf > pix = getPix(agent_type_info[f_type][agent_icon]);
 
-        (*iter)[m_columns.icon] = pix;
+        (*iter)[m_columns.m_icons] = pix;
 }
 
 void AgentLine::clear()
@@ -299,7 +299,7 @@ bool AgentLine::on_button_press_event(GdkEventButton * ev)
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
                         ev->type == GDK_3BUTTON_PRESS)) {
-                //Glib::ustring msg = (*iter)[m_columns.jid];
+                //Glib::ustring msg = (*iter)[m_columns.m_jid];
 
         } else if ((ev->type == GDK_BUTTON_PRESS)
                 && (ev->button == 3)) {}

@@ -245,29 +245,36 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
 
         Gtk::TreeModel::Row row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("online");
+	row[m_Columns.m_icons] = getPix("status_online.png");
+        row[m_Columns.m_status] = _("online");
 
         row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("alway");
+	row[m_Columns.m_icons] = getPix("status_online.png");
+        row[m_Columns.m_status] = _("chat");
 
         row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("leave");
+	row[m_Columns.m_icons] = getPix("status_away.png");
+        row[m_Columns.m_status] = _("away");
 
         row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("don't disturb");
+	row[m_Columns.m_icons] = getPix("status_dnd.png");
+        row[m_Columns.m_status] = _("don't disturb");
 
         row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("extend leave");
+	row[m_Columns.m_icons] = getPix("status_ex.png");
+        row[m_Columns.m_status] = _("extend leave");
 
         row = *(m_refTreeModel->append());
 
-        row[m_Columns.col_status] = _("offline");
+	row[m_Columns.m_icons] = getPix("status_offline.png");
+        row[m_Columns.m_status] = _("offline");
 
-        statusCombo->pack_start(m_Columns.col_status);
+	statusCombo->pack_start(m_Columns.m_icons);
+        statusCombo->pack_start(m_Columns.m_status);
 
         statusCombo->set_active(0);
 
@@ -359,7 +366,24 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
 }
 
 MainWindow::~MainWindow()
-{}
+{
+	if(discowindow)
+	{
+		delete discowindow;
+		discowindow=NULL;
+	}
+	if(statusMsgWidget)
+	{
+		delete statusMsgWidget;
+		statusMsgWidget=NULL;
+	}
+	if(ftwidget)
+	{
+		delete ftwidget;
+		ftwidget=NULL;
+	}
+
+}
 
 void MainWindow::on_logining_cancel()
 {
@@ -1219,13 +1243,15 @@ void MainWindow::on_fileXer_activate()
 	if(NULL == ftwidget)
 		ftwidget = new FTWidget(this);
 	else 
-		return ftwidget->raise();
+		ftwidget->show();
+	return ftwidget->raise();
 }
 void MainWindow::on_fileXer_close(FTWidget* dlg)
 {
 	g_assert(dlg == ftwidget);
-	delete dlg;
-	ftwidget = NULL;
+	//delete dlg;
+	//ftwidget = NULL;
+	ftwidget->hide();
 }
 void MainWindow::on_freshList_activate()
 {

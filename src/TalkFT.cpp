@@ -5,6 +5,7 @@
 #include <libgen.h>
 #include "icalk.h"
 #include "Bodies.h"
+#include "FTWidget.h"
 #include "TalkFT.h"
 
 #define STOP_STATUS 0
@@ -14,12 +15,16 @@
 #define PORT 7777
 #define BLOCK_SIZE 200024
 
+#define SEND_TYPE _("send")
+#define RECV_TYPE _("receive")
+
 TalkFT::TalkFT(Client* client_): m_client(client_)
                 , recvThread(this, &TalkFT::loopRecv)
                 , sendThread(this, &TalkFT::loopSend)
                 , R_RUNNING(STOP_STATUS)
                 , S_RUNNING(STOP_STATUS)
                 , m_ft(NULL)
+		, m_ftwidget(NULL)
                 , m_server(NULL)
                 , recvCount(0)
                 , sendCount(0)
@@ -32,6 +37,7 @@ TalkFT::~TalkFT()
         m_client = NULL;
         m_server = NULL;
         m_ft = NULL;
+	m_ftwidget=NULL;
 
 }
 
@@ -253,9 +259,15 @@ void TalkFT::handleFTRequest(const JID & from,
 
                         std::fstream* recvfile = new std::fstream();
 
-                        //recvfile.open(name.c_str(), std::ios_base::out | std::ios_base::binary);
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
                         rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
+
+			//建立文件传输窗口
+			Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
+			if(m_ftwidget == NULL)
+				m_ftwidget = Bodies::Get_Bodies().get_main_window().get_ftwidget();
+			const Glib::ustring& f_sid = Glib::ustring(sid);
+			m_ftwidget->addXfer(f_sid,name,from.bare(),size,RECV_TYPE);
                         break;
                 }
 
@@ -287,6 +299,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
         //区别对待发送流与接收流
 
+	m_ftwidget->doneXfer(s5b->sid());
         if (isSend(s5b)) {
                 sendCount = sendCount - 1;
                 /** 如果发送文件数为0,则关闭发送线程 */
@@ -354,6 +367,7 @@ void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
 {
         DLOG("socks5 stream error\n");
         handleBytestreamClose(s5b);
+	m_ftwidget->doneXfer(s5b->sid(),1);
 }
 
 void TalkFT::handleBytestreamData(Bytestream * s5b,
@@ -361,6 +375,7 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 {
         FILELIST::iterator iter = rfilelist.find(s5b->sid());
         (*iter).second->write(data.c_str(), data.length());
+	m_ftwidget->updateXfer(s5b->sid(),data.length());
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)

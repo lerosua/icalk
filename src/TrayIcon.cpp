@@ -7,19 +7,19 @@
 TrayIcon::TrayIcon(MainWindow* wnd)
                 : _gwin(wnd)
 {
-        pixUser[0] = getPix("status_ofline.png");
+        pixUser[0] = getPix("status_offline.png");
         pixUser[1] = getPix("status_online.png");
         pixUser[2] = getPix("status_online.png");
         pixUser[3] = getPix("status_away.png");
         pixUser[4] = getPix("status_dnd.png");
         pixUser[5] = getPix("status_ex.png");
-        pixUser[6] = getPix("status_ofline.png");
+        pixUser[6] = getPix("status_offline.png");
         tooltip[0] = _("(Unknow)  ");
         tooltip[1] = _("(Online)  ");
-        tooltip[2] = _("(Alway)  ");
-        tooltip[3] = _("(Leave)  ");
+        tooltip[2] = _("(Chat)  ");
+        tooltip[3] = _("(Away)  ");
         tooltip[4] = _("(Don't Disturb)  ");
-        tooltip[5] = _("(Extend alway)  ");
+        tooltip[5] = _("(Extend away)  ");
         tooltip[6] = _("(Offline)  ");
         /*
          tooltip[0] = "(未知状态)  ";

@@ -17,22 +17,29 @@
  */
 
 #include <glib/gi18n.h>
-#include "FTWidget.h"
+#include <sstream>
+#include <iomanip>
 #include "MainWindow.h"
+#include "FTWidget.h"
+#include "pixmaps.h"
+#include "icalk.h"
 
 FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 {
-	set_title(_("File Translate"));
+	set_title(_("File Transfer"));
 	set_border_width(5);
-	set_default_size(400,200);
-	//m_VBox= Gtk::manage(new Gtk::VBox());
-	//m_ScrolledWindow = Gtk::manage(new Gtk::ScrolledWindow());
+	set_default_size(450,200);
 
-        set_transient_for(*m_parent);
+        //set_transient_for(*m_parent);
+        frame = Gtk::manage(new Gtk::Frame());
+	//add(*frame);
 	add(m_VBox);
+	//frame->add(m_VBox);
 	m_ScrolledWindow.add(m_TreeView);
 	m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
-	m_VBox.pack_start(m_ScrolledWindow);
+	frame->add(m_ScrolledWindow);
+	m_VBox.pack_start(*frame);
+	//m_VBox.pack_start(m_ScrolledWindow);
 	m_VBox.pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
 	m_ButtonBox.set_border_width(5);
 	m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
@@ -65,11 +72,11 @@ FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 	m_TreeView.set_model(m_refTreeModel);
 
 	//Add the TreeView's view columns;
-	m_TreeView.append_column("",m_columns.m_icon);
+	m_TreeView.append_column("   ",m_columns.m_icons);
 	
 	//Display a progress bar instread of a decimal number:
 	Gtk::CellRendererProgress* cell = new Gtk::CellRendererProgress;
-	int cols_count = m_TreeView.append_column(_("percent"),*cell);
+	int cols_count = m_TreeView.append_column(_("progress"),*cell);
 	Gtk::TreeViewColumn* pColumn = m_TreeView.get_column(cols_count - 1);
 	if(pColumn)
 	{
@@ -78,10 +85,14 @@ FTWidget::FTWidget(MainWindow* f_parent):m_parent(f_parent)
 #else
 		pColumn->add_attribute(*cell,"value",m_columns.m_percent);
 #endif
+		pColumn->set_fixed_width(80);
+		pColumn->set_resizable();
 	}
 	
 	m_TreeView.append_column(_("Filename"),m_columns.m_filename);
-	m_TreeView.append_column_numeric(_("size"),m_columns.m_size, "%010d");
+	//m_TreeView.append_column_numeric(_("size"),m_columns.m_size, "%010d");
+	m_TreeView.append_column(_("size"),m_columns.m_showsize);
+	m_TreeView.append_column(_("Type"),m_columns.m_type);
 	
 
 	show_all();
@@ -92,6 +103,14 @@ FTWidget::~FTWidget()
 
 }
 
+Gtk::TreeModel::iterator FTWidget::getListIter(Gtk::TreeModel::
+                                             Children children,
+                                             const Glib::ustring & f_sid)
+{
+        return find_if(children.begin(),
+                       children.end(),
+                       bind2nd(CompareColumns(m_columns), f_sid));
+}
 bool FTWidget::on_delete_event(GdkEventAny*)
 {
 	m_parent->on_fileXer_close(this);
@@ -139,3 +158,80 @@ bool FTWidget::on_key_press_event(GdkEventKey* ev)
 }
 
 
+void FTWidget::addXfer(const Glib::ustring& f_sid,const std::string& f_filename,const std::string& f_target,long f_size,const std::string& f_type)
+{
+
+        Gtk::TreeModel::iterator iter = m_refTreeModel->append();
+	(*iter)[m_columns.m_sid]=f_sid;
+	(*iter)[m_columns.m_filename] = f_filename;
+	(*iter)[m_columns.m_totalsize] = f_size;
+	(*iter)[m_columns.m_showsize] = filesize_to_string(f_size);
+	(*iter)[m_columns.m_size] = 0;
+	(*iter)[m_columns.m_target] = f_target;
+	(*iter)[m_columns.m_type] = f_type;
+	(*iter)[m_columns.m_percent]=0;
+	(*iter)[m_columns.m_icons] = getPix16("ft_request.png");
+
+}
+
+void FTWidget::updateXfer(const Glib::ustring& f_sid,long f_size)
+{
+        Gtk::TreeModel::Children children = m_refTreeModel->children();
+        Gtk::TreeModel::iterator iter;
+        iter = getListIter(children, f_sid);
+	if(iter == children.end())
+		return;
+
+	DLOG("compute the percent\n");
+	long recvsize= (*iter)[m_columns.m_size]+f_size;
+	long totalsize=(*iter)[m_columns.m_totalsize];
+	int percent =(int) recvsize*100/totalsize;
+	(*iter)[m_columns.m_size]=recvsize;
+	if(percent>100)
+		percent=100;
+	(*iter)[m_columns.m_percent] = percent;
+}
+/** 有些问题，有可能是因为调用太频繁了。*/
+void FTWidget::doneXfer(const Glib::ustring& f_sid, bool error)
+{
+        Gtk::TreeModel::Children children = m_refTreeModel->children();
+        Gtk::TreeModel::iterator iter;
+        iter = getListIter(children, f_sid);
+	if(iter == children.end())
+		return;
+
+	if(error)
+		(*iter)[m_columns.m_icons] = getPix16("ft_error.png");
+	else
+	{
+	(*iter)[m_columns.m_percent] = 100;
+	(*iter)[m_columns.m_icons] = getPix16("ft_done.png");
+	}
+}
+
+std::string FTWidget::filesize_to_string(long size) {
+    double size_display;
+    std::string format;
+    std::stringstream ret;
+
+    // the comparisons to 1000 * (2^(n10)) are intentional
+    // it's so you don't see something like "1023 bytes",
+    // instead you'll see ".9 KB"
+
+    if (size < 1000) {
+      format = "Bytes";
+      size_display = size;
+    } else if (size < 1000 * 1024) {
+      format = "KiB";
+      size_display = (double)size / 1024.0;
+    } else if (size < 1000 * 1024 * 1024) {
+      format = "MiB";
+      size_display = (double)size / (1024.0 * 1024.0);
+    } else {
+      format = "GiB";
+      size_display = (double)size / (1024.0 * 1024.0 * 1024.0);
+    }
+    
+    ret << std::setprecision(1) << std::setiosflags(std::ios::fixed) << size_display << " " << format;    
+    return ret.str();
+  }

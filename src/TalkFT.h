@@ -43,6 +43,7 @@ using namespace gloox;
 #endif
 
 class Bodies;
+class FTWidget;
 /**
  * 文件传输的类，负责接收与发送文件
  */
@@ -109,6 +110,7 @@ public:
 private:
         Client* m_client;
         SIProfileFT * m_ft;
+	FTWidget* m_ftwidget;
         SOCKS5BytestreamServer *m_server;
         std::list < Bytestream * >bs_recvList;
         std::list < Bytestream * >bs_sendList;
