@@ -174,7 +174,8 @@ void FTWidget::addXfer(const Glib::ustring& f_sid,const std::string& f_filename,
 
 }
 
-void FTWidget::updateXfer(const Glib::ustring& f_sid,long f_size)
+/** 有些问题，有可能是因为调用太频繁了。*/
+void FTWidget::updateXfer(const Glib::ustring& f_sid,int percent)
 {
         Gtk::TreeModel::Children children = m_refTreeModel->children();
         Gtk::TreeModel::iterator iter;
@@ -182,16 +183,15 @@ void FTWidget::updateXfer(const Glib::ustring& f_sid,long f_size)
 	if(iter == children.end())
 		return;
 
-	DLOG("compute the percent\n");
-	long recvsize= (*iter)[m_columns.m_size]+f_size;
-	long totalsize=(*iter)[m_columns.m_totalsize];
-	int percent =(int) recvsize*100/totalsize;
-	(*iter)[m_columns.m_size]=recvsize;
-	if(percent>100)
-		percent=100;
+	//DLOG("compute the percent\n");
+	//long recvsize= (*iter)[m_columns.m_size]+f_size;
+	//long totalsize=(*iter)[m_columns.m_totalsize];
+	//int percent =(int) recvsize*100/totalsize;
+	//(*iter)[m_columns.m_size]=recvsize;
+//	if(percent>100)
+//		percent=100;
 	(*iter)[m_columns.m_percent] = percent;
 }
-/** 有些问题，有可能是因为调用太频繁了。*/
 void FTWidget::doneXfer(const Glib::ustring& f_sid, bool error)
 {
         Gtk::TreeModel::Children children = m_refTreeModel->children();

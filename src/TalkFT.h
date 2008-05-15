@@ -42,8 +42,10 @@ using namespace gloox;
 # include <windows.h>
 #endif
 
+using namespace std;
 class Bodies;
 class FTWidget;
+class XferFile;
 /**
  * 文件传输的类，负责接收与发送文件
  */
@@ -55,7 +57,8 @@ public:
         TalkFT(Client * client_);
         ~TalkFT();
 
-        typedef std::map<std::string , std::fstream*> FILELIST;
+        //typedef std::map<std::string , std::fstream*> FILELIST;
+        typedef std::map<std::string , XferFile*> FILELIST;
         /** 初始化SIProfileFT类和接收/发送所需要的proxy服务器*/
         void initFT();
         /** 循环接收流函数 */

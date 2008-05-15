@@ -58,7 +58,7 @@ public:
                                              Children children,
                                              const Glib::ustring & f_sid);
 	void addXfer(const Glib::ustring& f_sid,const std::string& f_filename,const std::string& f_target,long f_size,const std::string& type);
-	void updateXfer(const Glib::ustring& f_sid, long f_size);
+	void updateXfer(const Glib::ustring& f_sid, int percent);
 	void doneXfer(const Glib::ustring& f_sid,bool error=0);
 	std::string filesize_to_string(long size);
 	private:
@@ -84,7 +84,6 @@ public:
 		Gtk::TreeModelColumn < Glib::ustring> m_sid;
 		/** 传输的文件的名字*/
 		Gtk::TreeModelColumn < std::string> m_filename;
-		//Gtk::TreeModelColumn < Glib::ustring> m_filename;
 		/** 传输文件的总大小*/
 		Gtk::TreeModelColumn <long > m_totalsize;
 		/** 以可读的形式显示文件的大小*/

@@ -7,6 +7,7 @@
 #include "Bodies.h"
 #include "FTWidget.h"
 #include "TalkFT.h"
+#include "FT.h"
 
 #define STOP_STATUS 0
 #define RUN_RECV  1
@@ -121,16 +122,21 @@ void* TalkFT::loopSend(void* )
                 for (; it != bs_sendList.end(); ++it) {
 
                         FILELIST::iterator iter = sfilelist.find((*it)->sid());
-                        std::fstream* sendfile = (*iter).second;
+                        //std::fstream* sendfile = (*iter).second;
+                        XferFile* sendfile = (*iter).second;
 
                         if ( !sendfile->eof()) {
                                 if ((*it)->isOpen()) {
+					int per_percent=sendfile->getPercent();
                                         sendfile->read(input, BLOCK_SIZE);
                                         std::string content(input, sendfile->gcount());
+				int new_percent= sendfile->getPercent();
 
                                         if (!(*it)->send(content))
                                                 DLOG("file send shuld be return\n");
 
+				if(new_percent>per_percent)
+					m_ftwidget->updateXfer((*it)->sid(),new_percent);
                                         ; //do something end the file send thread
                                 }
 
@@ -165,7 +171,9 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
 
         uint32_t m_size = f_stat.st_size;
 
-        std::fstream* sendfile = new std::fstream();
+        //std::fstream* sendfile = new std::fstream();
+        XferFile* sendfile = new XferFile();
+	sendfile->setTotalsize(m_size);
 
         sendfile->open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
 
@@ -184,6 +192,12 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
         sendCount++;
         sfilelist.insert(sfilelist.end(), FILELIST::value_type(sid, sendfile));
 
+			//建立文件传输窗口
+			Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
+			if(m_ftwidget == NULL)
+				m_ftwidget = Bodies::Get_Bodies().get_main_window().get_ftwidget();
+			const Glib::ustring& f_sid = Glib::ustring(sid);
+			m_ftwidget->addXfer(f_sid,m_filename,to.bare(),m_size,RECV_TYPE);
         if (S_RUNNING != RUN_SEND) {
                 S_RUNNING = RUN_SEND;
                 sendThread.start();
@@ -257,7 +271,9 @@ void TalkFT::handleFTRequest(const JID & from,
                                 recvThread.start();
                         }
 
-                        std::fstream* recvfile = new std::fstream();
+                        //std::fstream* recvfile = new std::fstream();
+                        XferFile* recvfile = new XferFile();
+			recvfile->setTotalsize(size);
 
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
                         rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
@@ -374,8 +390,11 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
                                   const std::string & data)
 {
         FILELIST::iterator iter = rfilelist.find(s5b->sid());
+	int per_percent=(*iter).second->getPercent();
         (*iter).second->write(data.c_str(), data.length());
-	m_ftwidget->updateXfer(s5b->sid(),data.length());
+	int new_percent= (*iter).second->getPercent();
+	if(new_percent>per_percent)
+		m_ftwidget->updateXfer(s5b->sid(),new_percent);
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)
