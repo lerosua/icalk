@@ -31,7 +31,7 @@
 BuddyView::BuddyView(MainWindow & f_parent):
                 m_parent(f_parent)
                 , SHOWALL(false)
-                , EXPAND(true)
+                , EXPAND(false)
                 , m_filterText("")
 {
         set_headers_visible(false);
@@ -767,14 +767,23 @@ void BuddyView::addRoom(const ConferenceListItem & ci)
         if (listiter == children.end())
                 listiter = addBuddyGroup(roomgroup);
 
+        Gtk::TreeModel::Children grandson = (*listiter).children();
+
         Gtk::TreeModel::iterator treeiter =
+                getListIter(grandson, ci.jid);
+
+        //如果在列表中，则返回。防止加载相同的聊天室
+        if (!(treeiter == grandson.end()))
+                return ;
+
+        treeiter =
                 m_treestore->append(listiter->children());
 
         (*treeiter)[buddyColumns.id] = ci.jid;
 
         (*treeiter)[buddyColumns.nickname] = ci.name;
 
-        (*treeiter)[buddyColumns.status] = 11;
+        (*treeiter)[buddyColumns.status] = STATUS_ROOM;
 
         (*treeiter)[buddyColumns.icon] = getPix30("room.png");
 

@@ -985,17 +985,62 @@ void MainWindow::on_buddyType_activate()
         auto_ptr<Gtk::Dialog> BuddyTypeDialog(dynamic_cast<Gtk::Dialog*>
                                               (typeDialog_xml->get_widget("dialog_buddyType")));
 
+        Gtk::ComboBox * combolist =
+                dynamic_cast <
+                Gtk::ComboBox *
+                > (typeDialog_xml->get_widget("combobox_type"));
+        Glib::RefPtr < Gtk::ListStore > m_refTreeModel;
+        m_refTreeModel = Gtk::ListStore::create(m_Columns);
+        combolist->set_model(m_refTreeModel);
+        Gtk::TreeModel::Row row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("CallOver.png");
+        row[m_Columns.m_status] = _("Friend");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("transport.png");
+        row[m_Columns.m_status] = _("GateWay");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("groupchat.png");
+        row[m_Columns.m_status] = _("GroupChat");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("bot.png");
+        row[m_Columns.m_status] = _("Bot");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("msn.png");
+        row[m_Columns.m_status] = _("MSN");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("icq.png");
+        row[m_Columns.m_status] = _("ICQ/AOL");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("yahoo.png");
+        row[m_Columns.m_status] = _("Yahoo Message");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("other.png");
+        row[m_Columns.m_status] = _("Other");
+        combolist->pack_start(m_Columns.m_status);
+        combolist->pack_start(m_Columns.m_icons);
+
+        Glib::RefPtr < Gtk::TreeSelection > selection =
+                list_view->get_selection();
+
+        if (!selection->count_selected_rows())
+                return ;
+
+        Gtk::TreeModel::iterator iter = selection->get_selected();
+
+        Glib::ustring name = list_view->getIDfromIter(iter);
+
+        Buddy *buddy = m_bodies.get_buddy_list().find_buddy(name);
+
+        int f_type = buddy->getType();
+
+        combolist->set_active(f_type);
 
         BuddyTypeDialog->raise();
+
         int result = BuddyTypeDialog->run();
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
-
-                        Gtk::ComboBox * combolist =
-                                dynamic_cast <
-                                Gtk::ComboBox *
-                                > (typeDialog_xml->get_widget("combobox_type"));
 
                         int type = combolist->get_active_row_number();
                         DLOG("select %d num\n", type);
@@ -1003,17 +1048,7 @@ void MainWindow::on_buddyType_activate()
                         if (type == -1)
                                 return ;
 
-                        Glib::RefPtr < Gtk::TreeSelection > selection =
-                                list_view->get_selection();
 
-                        if (!selection->count_selected_rows())
-                                return ;
-
-                        Gtk::TreeModel::iterator iter = selection->get_selected();
-
-                        Glib::ustring name = list_view->getIDfromIter(iter);
-
-                        Buddy *buddy = m_bodies.get_buddy_list().find_buddy(name);
 
                         buddy->setType(type);
 
@@ -1051,6 +1086,10 @@ void MainWindow::on_buddyAdd_activate()
                                                    get_widget
                                                    ("dialog_addBuddy")));
 
+        Gtk::ComboBox * combolist =
+                dynamic_cast <
+                Gtk::ComboBox *
+                > (addDialog_xml->get_widget("combobox_type"));
         Gtk::ComboBoxEntry * comboGroup =
                 dynamic_cast <
                 Gtk::ComboBoxEntry *
@@ -1082,6 +1121,7 @@ void MainWindow::on_buddyAdd_activate()
         }
 
         comboGroup->set_text_column(m_Columns.m_col_string);
+        combolist->set_active(0);
 
         addBuddyDialog->raise();
         int result = addBuddyDialog->run();
@@ -1113,6 +1153,10 @@ void MainWindow::on_buddyAdd_activate()
                                 m_bodies.get_client().rosterManager()->
                                 subscribe(*jid, alias, g);
 
+                                int type = combolist->get_active_row_number();
+                                char p[3];
+                                sprintf(p, "%d", type);
+                                list_view->setBlistTag("buddy", name, "type", p);
                         }
 
 
