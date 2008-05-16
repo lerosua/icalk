@@ -28,7 +28,6 @@
 #include "Unit.h"
 #include "TreeViewTooltips.h"
 
-
 BuddyView::BuddyView(MainWindow & f_parent):
                 m_parent(f_parent)
                 , SHOWALL(false)
@@ -140,8 +139,7 @@ int BuddyView::on_sort_compare(const Gtk::TreeModel::iterator & a,
         int result;
 
         if ((result =
-                                (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0)
-        {
+                                (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0) {
                 Glib::ustring an = (*a)[buddyColumns.nickname];
                 Glib::ustring bn = (*b)[buddyColumns.nickname];
                 //result = an.compare(bn);
@@ -1149,6 +1147,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 BuddyType mType = buddy->getType();
 
                 switch (mType) {
+
                 case TYPE_TRANPORT:
                         (*treeiter)[buddyColumns.audioicon] =
                                 getPix("transport.png");
@@ -1354,13 +1353,14 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         get_path_at_pos((int) ev->x, (int) ev->y, path, tvc, cx, cy))
                 return FALSE;
 
+        Glib::ustring mid = (*iter)[buddyColumns.id];
+
         if ((ev->type == GDK_2BUTTON_PRESS ||
                         ev->type == GDK_3BUTTON_PRESS)) {
                 if ((type != STATUS_GROUP) && (type != STATUS_ROOM)) {
-                        Glib::ustring name = (*iter)[buddyColumns.id];
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
-                                find_buddy(name);
+                                find_buddy(mid);
                         buddy->new_session();
                         MsgPage *page_ = buddy->get_page();
                         Bodies::Get_Bodies().get_msg_window().
@@ -1385,7 +1385,6 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         }
                 } else if (STATUS_ROOM == type) {
                         //房间的双击
-                        Glib::ustring mid = (*iter)[buddyColumns.id];
                         RoomItem *room =
                                 Bodies::Get_Bodies().getRoomHandler().
                                 findRoom(mid);
@@ -1423,14 +1422,20 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         if (buddyMenu)
                                 buddyMenu->popup(1, ev->time);
 
-                        //buddyMenu.popup(1, ev->time);
                 } else if (STATUS_ROOM == type) {
                         Gtk::Menu* roomMenu = m_parent.getRoomMenu();
+                        const std::string& blocked = getBlistTag("room", mid, "autojoin");
+
+                        Glib::RefPtr<Gtk::ToggleAction>melem = m_parent.get_menu_action("RoomBlock");
+
+                        if ("false" == blocked)
+                                melem->set_active();
+                        else
+                                melem->set_active(false);
 
                         if (roomMenu)
                                 roomMenu->popup(1, ev->time);
 
-                        //roomMenu.popup(1, ev->time);
                 }
         }
 

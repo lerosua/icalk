@@ -88,7 +88,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='SysAddRoom'/>"
         " <menuitem action='SysFind'/>"
         " <menuitem action='SysDisco'/>"
-	" <menuitem action='FileXer'/>"
+        " <menuitem action='FileXer'/>"
         "       <separator/>"
         " <menuitem action='ShowOffline'/>"
         " <menuitem action='Mute'/>"
@@ -107,7 +107,7 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
                 , statusEntry(NULL)
                 , discowindow(NULL)
                 , statusMsgWidget(NULL)
-		, ftwidget(NULL)
+                , ftwidget(NULL)
 {
         config.MUTE = false;
         config.SHOWALLFRIEND = false;
@@ -245,35 +245,42 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
 
         Gtk::TreeModel::Row row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_online.png");
+        row[m_Columns.m_icons] = getPix("status_online.png");
+
         row[m_Columns.m_status] = _("online");
 
         row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_online.png");
+        row[m_Columns.m_icons] = getPix("status_online.png");
+
         row[m_Columns.m_status] = _("chat");
 
         row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_away.png");
+        row[m_Columns.m_icons] = getPix("status_away.png");
+
         row[m_Columns.m_status] = _("away");
 
         row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_dnd.png");
+        row[m_Columns.m_icons] = getPix("status_dnd.png");
+
         row[m_Columns.m_status] = _("don't disturb");
 
         row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_ex.png");
+        row[m_Columns.m_icons] = getPix("status_ex.png");
+
         row[m_Columns.m_status] = _("extend leave");
 
         row = *(m_refTreeModel->append());
 
-	row[m_Columns.m_icons] = getPix("status_offline.png");
+        row[m_Columns.m_icons] = getPix("status_offline.png");
+
         row[m_Columns.m_status] = _("offline");
 
-	statusCombo->pack_start(m_Columns.m_icons);
+        statusCombo->pack_start(m_Columns.m_icons);
+
         statusCombo->pack_start(m_Columns.m_status);
 
         statusCombo->set_active(0);
@@ -367,21 +374,20 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
 
 MainWindow::~MainWindow()
 {
-	if(discowindow)
-	{
-		delete discowindow;
-		discowindow=NULL;
-	}
-	if(statusMsgWidget)
-	{
-		delete statusMsgWidget;
-		statusMsgWidget=NULL;
-	}
-	if(ftwidget)
-	{
-		delete ftwidget;
-		ftwidget=NULL;
-	}
+        if (discowindow) {
+                delete discowindow;
+                discowindow = NULL;
+        }
+
+        if (statusMsgWidget) {
+                delete statusMsgWidget;
+                statusMsgWidget = NULL;
+        }
+
+        if (ftwidget) {
+                delete ftwidget;
+                ftwidget = NULL;
+        }
 
 }
 
@@ -486,17 +492,18 @@ void MainWindow::set_logo(const std::string & iconpath)
                 }
 
                 if (0 == logo)
-                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png",32,32);
+                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
 
 
         } else
                 logo =
                         Gdk::Pixbuf::
-                        create_from_file(DATA_DIR "/images/avatar.png",32,32);
+                        create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
 
         Glib::RefPtr < Gdk::Pixbuf > border =
-           getPix("border.png");
-        logo->composite(border,0,0,32,32,2,2,1,1,Gdk::INTERP_BILINEAR,255);
+                getPix("border.png");
+
+        logo->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
 
         Gtk::Image * logo_ =
                 dynamic_cast <
@@ -505,7 +512,8 @@ void MainWindow::set_logo(const std::string & iconpath)
         //logo_->set
         //(logo->scale_simple(32, 32, Gdk::INTERP_BILINEAR));
 
-        logo_->set(border);
+        logo_->set
+        (border);
 
 }
 
@@ -1240,19 +1248,22 @@ void MainWindow::on_serverDisco_close( ServerDiscoWindow* dlg)
 
 void MainWindow::on_fileXer_activate()
 {
-	if(NULL == ftwidget)
-		ftwidget = new FTWidget(this);
-	else 
-		ftwidget->show();
-	return ftwidget->raise();
+        if (NULL == ftwidget)
+                ftwidget = new FTWidget(this);
+        else
+                ftwidget->show();
+
+        return ftwidget->raise();
 }
+
 void MainWindow::on_fileXer_close(FTWidget* dlg)
 {
-	g_assert(dlg == ftwidget);
-	//delete dlg;
-	//ftwidget = NULL;
-	ftwidget->hide();
+        g_assert(dlg == ftwidget);
+        //delete dlg;
+        //ftwidget = NULL;
+        ftwidget->hide();
 }
+
 void MainWindow::on_freshList_activate()
 {
         list_view->refreshList();
@@ -1414,6 +1425,12 @@ void MainWindow::on_roomChat_activate()
 
 }
 
+Glib::RefPtr<Gtk::ToggleAction> MainWindow::get_menu_action(const std::string& menu)
+{
+        return
+                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action(menu));
+}
+
 void MainWindow::on_roomBlock_activate()
 {
         Glib::RefPtr < Gtk::TreeSelection > selection =
@@ -1428,10 +1445,21 @@ void MainWindow::on_roomBlock_activate()
 
         RoomItem *room = m_bodies.getRoomHandler().findRoom(id);
 
-        room->leave();
+        Glib::RefPtr<Gtk::ToggleAction>melem =
+                Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("RoomBlock"));
 
-        list_view->setBlistTag("room", id,
-                               "autojoin", "false");
+        if (melem->get_active()) {
+
+                room->leave();
+
+                list_view->setBlistTag("room", id,
+                                       "autojoin", "false");
+        } else {
+                room->join();
+                list_view->setBlistTag("room", id,
+                                       "autojoin", "true");
+        }
+
 
 
 
@@ -1443,9 +1471,9 @@ void MainWindow::on_buddyBlock_activate()
         Glib::RefPtr<Gtk::ToggleAction>melem =
                 Glib::RefPtr<Gtk::ToggleAction>::cast_dynamic(action_group->get_action("BuddyBlock"));
 
-        if (melem->get_active()) {
-        } else {
-        }
+        if (melem->get_active()) {}
+        else {}
+
 }
 
 void MainWindow::on_roomNameEdit_activate()
@@ -1626,7 +1654,7 @@ void MainWindow::init_ui_manager()
 
         action_group->add
         (Gtk::ToggleAction::create("BuddyBlock", _("Block")),
-        //(Gtk::Action::create("BuddyBlock", Gtk::StockID("BLOCK"), _("_Block")),
+         //(Gtk::Action::create("BuddyBlock", Gtk::StockID("BLOCK"), _("_Block")),
          sigc::mem_fun(*this, &MainWindow::on_buddyBlock_activate));
 
         action_group->add
@@ -1694,9 +1722,9 @@ void MainWindow::init_ui_manager()
          sigc::mem_fun(*this, &MainWindow::
                        on_serverDisco_activate));
 
-	action_group->add
-		(Gtk::Action::create("FileXer",Gtk::Stock::FILE,_("File Transfer")),
-		 sigc::mem_fun(*this, &MainWindow::on_fileXer_activate));
+        action_group->add
+        (Gtk::Action::create("FileXer", Gtk::Stock::FILE, _("File Transfer")),
+         sigc::mem_fun(*this, &MainWindow::on_fileXer_activate));
 
         action_group->add
         (Gtk::ToggleAction::create("ShowOffline", _("Show offline")),

@@ -21,11 +21,10 @@
 using namespace std;
 
 XferFile::XferFile():
-                 totalsize(0)
+                totalsize(0)
                 , bytes_sent(0)
                 , status(XFER_STATUS_NOT_STARTED)
-{
-}
+{}
 
 XferFile::~XferFile()
 {}
@@ -41,10 +40,12 @@ bool XferFile::eof()const
 {
         return file.eof();
 }
-streamsize XferFile::gcount()const 
+
+streamsize XferFile::gcount()const
 {
-	return file.gcount();
+        return file.gcount();
 }
+
 void XferFile::write(const std::string& data, streamsize length)
 {
         file.write(data.c_str(), length);
@@ -59,8 +60,8 @@ void XferFile::read(char* data, streamsize length)
 
 void XferFile::close()
 {
-	if(file.is_open())
-		file.close();
+        if (file.is_open())
+                file.close();
 }
 
 void XferFile::setSentBytes(long bytes)
@@ -75,8 +76,8 @@ void XferFile::setTotalsize(long bytes)
 
 int XferFile::getPercent()const
 {
-        double result= ( ((double)(bytes_sent)) / ((double)(totalsize)))*100 ;
-	return (int)(result);
+        double result = ( ((double)(bytes_sent)) / ((double)(totalsize))) * 100 ;
+        return (int)(result);
 }
 
 void XferFile::setStatusType(XferStatusType f_status)

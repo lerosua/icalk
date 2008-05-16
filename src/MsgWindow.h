@@ -113,7 +113,7 @@ public:
         /**
          * @brief 设置当前聊天窗口(MsgPage)
          * @param page_ 需要设置的聊天窗口
-         */ void setCurrentPage(MsgPage * page_) 
+         */ void setCurrentPage(MsgPage * page_)
         {
                 int num = notebook->page_num(*page_);
                 notebook->set_current_page(num);

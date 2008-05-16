@@ -20,7 +20,7 @@
 #ifndef _TAG_LIST_H_
 #define _TAG_LIST_H_
 #include <gtkmm/texttag.h>
-#include <gtkmm/texttagtable.h>
+#include <gtkmm/texttagtable.h> 
 //#include <ext/hash_map>
 #include <stdint.h> 
 //using __gnu_cxx::hash_map;

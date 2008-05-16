@@ -39,6 +39,7 @@ class MsgLine;
 /**
  * 消息签名管理窗口类
  */
+
 class StatusMsgWidget: public Gtk::Window
 {
 

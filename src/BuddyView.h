@@ -36,7 +36,7 @@
 #include "ConfXml.h"
 #include "TreeModelDnd.h"
 #include "MainWindow.h"
-#include "icalk.h" 
+#include "icalk.h"
 
 using namespace std;
 
@@ -265,7 +265,7 @@ struct CompareBuddy: public binary_function < Gtk::TreeModel::Row,
         /** TreeView的排序函数*/
         int on_sort_compare(const Gtk::TreeModel::iterator & a,
                             const Gtk::TreeModel::iterator & b);
-		
+
 };
 
 #endif    // _BUDDY_VIEW_H_

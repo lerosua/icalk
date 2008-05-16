@@ -26,27 +26,26 @@ MemberList::MemberList()
 }
 
 int MemberList::on_sort_compare(const Gtk::TreeModel::iterator& a,
-                            const Gtk::TreeModel::iterator& b)
-        {
+                                const Gtk::TreeModel::iterator& b)
+{
 
-                int result;
+        int result;
 
-		if((result = (*b)[columns.affiliation]-(*a)[columns.affiliation])==0)
-                {
-		if((result =
-			(*a)[columns.presence] - (*b)[columns.presence]) == 0)
-		{
+        if ((result = (*b)[columns.affiliation] - (*a)[columns.affiliation]) == 0) {
+                if ((result =
+                                        (*a)[columns.presence] - (*b)[columns.presence]) == 0) {
 
                         Glib::ustring an = (*a)[columns.name];
                         Glib::ustring bn = (*b)[columns.name];
                         result = an.lowercase().compare(bn.lowercase());
                 }
-		}
-
-                return result;
-
-
         }
+
+        return result;
+
+
+}
+
 bool MemberList::isMember(const std::string& mid)
 {
         /*
@@ -119,7 +118,7 @@ void MemberList::addMember(const std::string& name, const Member& member)
         (*iter)[columns.mid] = member.id;
         (*iter)[columns.statusMsg] = member.status;
         (*iter)[columns.presence] = (int)member.presence;
-	(*iter)[columns.presence] = (int)member.affiliation;
+        (*iter)[columns.presence] = (int)member.affiliation;
 
 }
 
@@ -137,11 +136,12 @@ void MemberList::clearMember()
 
 void MemberList::removeMember(const std::string& name)
 {
-	Glib::ustring id(name);
-           Gtk::TreeModel::iterator iter =
-           getListIter(refListStore->children(), id);
-           if (iter != refListStore->children().end())
-           refListStore->erase(iter);
+        Glib::ustring id(name);
+        Gtk::TreeModel::iterator iter =
+                getListIter(refListStore->children(), id);
+
+        if (iter != refListStore->children().end())
+                refListStore->erase(iter);
 
 }
 

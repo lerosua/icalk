@@ -29,7 +29,7 @@
 #include "Buddy.h"
 #include "BuddyList.h"
 #include "TalkMsg.h"
-#include "TalkConnect.h"
+#include "TalkConnect.h" 
 //#include "MainWindow.h"
 #include "MsgWindow.h"
 #include "BuddyView.h"
@@ -45,6 +45,7 @@ using std::list;
 
 using namespace std;
 //class TalkFT;
+
 class MainWindow;
 //class TalkCard;
 
@@ -126,7 +127,7 @@ public:
         void set_status(Presence::PresenceType f_status, Glib::ustring f_msg = "") ;
 
         /** 返回文件传输处理类 */
-        TalkFT& getFThandler() 
+        TalkFT& getFThandler()
         {
                 return *m_talkFT;
         }
@@ -182,7 +183,7 @@ private:
         TalkMsg m_talkMsg;
         TalkRoomHandler m_roomHandler;
         TalkDiscoHandler m_discoHandler; // it can look over the server now
-	RoomInvitation   m_roominvitation;
+        RoomInvitation m_roominvitation;
         TalkCard* m_cardManage;
         TalkFT* m_talkFT;
         VCard* m_vcard;

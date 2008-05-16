@@ -18,9 +18,10 @@
 
 #ifndef  TREEVIEWTOOLTIPS_FILE_HEADER_INC
 #define  TREEVIEWTOOLTIPS_FILE_HEADER_INC
-#include <gtkmm.h>
-//#include "BuddyView.h" 
+#include <gtkmm.h> 
+//#include "BuddyView.h"
 //
+
 class BuddyView;
 /**
  * @brief 用于显示好友信息提示。

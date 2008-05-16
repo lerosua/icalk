@@ -38,7 +38,7 @@
 #include <gloox/delayeddelivery.h>
 #include <gloox/xhtmlim.h> 
 //#include "gtalkcaps.h"
-#include "MainWindow.h"
+#include "MainWindow.h" 
 //#include "TalkFT.h"
 //#include "TalkCard.h"
 #include "Bodies.h"
@@ -268,7 +268,7 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
         m_client->registerStanzaExtension(new DelayedDelivery(0));
         m_client->registerStanzaExtension(new XHtmlIM(0));
         m_client->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &m_talkConnect);
-	m_client->registerMUCInvitationHandler(&m_roominvitation);
+        m_client->registerMUCInvitationHandler(&m_roominvitation);
         m_client->setServer(server);
         m_client->setPort(port);
 

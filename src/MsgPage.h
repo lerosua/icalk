@@ -46,10 +46,10 @@ public:
 #include <gtkmm.h>
 #include <iostream>
 #include <gloox/mucroom.h>
-#include "MsgBox.h"
+#include "MsgBox.h" 
 //#include "CommandBar.h"
-#include "MemberList.h"
-//#include "MsgLog.h" 
+#include "MemberList.h" 
+//#include "MsgLog.h"
 //#include "RoomItem.h"
 
 using namespace gloox;
@@ -57,7 +57,9 @@ using namespace gloox;
 class Buddy;
 
 class RoomItem;
+
 class CommandBar;
+
 class MsgLog;
 /**
  * @brief 构造聊天窗口中的某一页，与某一会话相对应，嵌入到聊天窗口的笔记本控件中

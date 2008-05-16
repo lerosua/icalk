@@ -25,7 +25,7 @@
 #include <gtkmm/liststore.h>
 #include "pixmaps.h"
 #include <functional>
-#include "icalk.h" 
+#include "icalk.h"
 
 using namespace std;
 
@@ -96,7 +96,7 @@ struct CompareMember: public binary_function < Gtk::TreeModel::Row,
                                 const Glib::ustring, bool >
         {
                 explicit CompareMember(const MemberColumns &
-                                      column_): column(column_)
+                                       column_): column(column_)
                 {}
 
                 bool operator () (const Gtk::TreeRow & lhs,
