@@ -13,6 +13,7 @@
 *         Author:  wind (xihe), xihels@gmail.com
 *        Company:  cyclone
 *
+*		纪念5.12地震中消逝的那些生命
 * =====================================================================================
 */
 
@@ -729,10 +730,6 @@ void BuddyView::initRoomList()
                         ci.autojoin = 0;
                 else
                         ci.autojoin = 1;
-
-                std::cout << "room jid is " << ci.jid << std::endl;
-
-                std::cout << "room name is" << ci.name << std::endl;
 
                 addRoom(ci);
 
