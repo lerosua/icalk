@@ -70,6 +70,7 @@ private:
                 RefTagTable tagTable;
                 RefTag timeFont;
                 RefTag boldFont;
+		RefTag italitcFont;
                 RefTag urlFont;
                 RefTag selfTitleColor;
         };

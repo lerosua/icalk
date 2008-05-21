@@ -23,7 +23,7 @@
 
 MsgBox::MsgBox()
 {
-        set_pixels_below_lines(2);
+        set_pixels_below_lines(5);
         set_pixels_above_lines(2);
         set_left_margin(2);
         set_right_margin(2);
@@ -299,5 +299,4 @@ void MsgBox::clear()
         Gtk::TextBuffer::iterator start, end;
         buffer->get_bounds(start, end);
         buffer->erase(start, end);
-        //buffer->set_text("");
 }
