@@ -72,8 +72,8 @@ IMHtml::clear_format()
 f_type++
 
 #define VALID_OPT_TAG(x) if(( len=sub.uppercase().find( x " ")!=Glib::ustring::npos)) { \
-	f_len = len;								\
-	f_tag=sub;								\
+		if(( len=sub.uppercase().find( ">")!=Glib::ustring::npos))  \
+		f_tag=sub;								\
 	return true;								\
 }   \
 		f_type++
@@ -306,6 +306,7 @@ void IMHtml::showMessage(const Glib::ustring& f_msg, const std::string& f_time)
 
 
 	}
+		else if
 
 
 }
