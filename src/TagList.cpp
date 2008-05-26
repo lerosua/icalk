@@ -41,9 +41,13 @@ TagList::Tags::Tags()
 
         tagTable->add
         (boldFont);
-	italitcFont = Gtk::TextTag::create();
-	italitcFont->property_weight().set_value(Pango::STYLE_ITALIC);
-	tagTable->add(italitcFont);
+
+        italitcFont = Gtk::TextTag::create();
+
+        italitcFont->property_weight().set_value(Pango::STYLE_ITALIC);
+
+        tagTable->add
+        (italitcFont);
 
         urlFont = Gtk::TextTag::create();
 

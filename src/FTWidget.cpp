@@ -126,8 +126,7 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
 }
 
 FTWidget::~FTWidget()
-{
-}
+{}
 
 Gtk::TreeModel::iterator FTWidget::getListIter(Gtk::TreeModel::
                 Children children,

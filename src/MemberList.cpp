@@ -2,7 +2,7 @@
 #include "MemberList.h"
 #include <iostream>
 
-MemberList::MemberList()
+MemberList::MemberList(): m_number(0)
 {
         MemberList* memberList = this;
         memberList->set_flags(Gtk::CAN_FOCUS);
@@ -119,6 +119,7 @@ void MemberList::addMember(const std::string& name, const Member& member)
         (*iter)[columns.statusMsg] = member.status;
         (*iter)[columns.presence] = (int)member.presence;
         (*iter)[columns.presence] = (int)member.affiliation;
+        m_number++;
 
 }
 
@@ -132,6 +133,8 @@ void MemberList::clearMember()
                 //std::cout<<"erase ============"<<name<<std::endl;
                 iter = refListStore->erase(iter);
         }
+
+        m_number = 0;
 }
 
 void MemberList::removeMember(const std::string& name)
@@ -142,6 +145,8 @@ void MemberList::removeMember(const std::string& name)
 
         if (iter != refListStore->children().end())
                 refListStore->erase(iter);
+
+        m_number--;
 
 }
 

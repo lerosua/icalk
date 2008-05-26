@@ -284,9 +284,29 @@ MsgPage::MsgPage(const std::string& title, RoomItem* f_room, bool f_isRroom):
         frame3->add
         (*scrolledwindowmemberList);
 
+        Gtk::VBox* list_box = Gtk::manage(new class Gtk::VBox());
+
+        m_list_number = Gtk::manage(new class Gtk::Label());
+
+        //m_list_number->set_label("Many people chat room");
+        int number = m_memberList->getMemberNumber();
+
+        char buf[256];
+
+        sprintf(buf, _("there has %d people in the room"), number);
+
+        m_list_number->set_label(buf);
+
+        m_list_number->set_justify(Gtk::JUSTIFY_CENTER);
+
+        list_box->pack_start(*m_list_number, Gtk::PACK_SHRINK);
+
+        list_box->pack_start(*frame3);
+
         //hpaned2->pack2(*frame3,Gtk::SHRINK);
         //将列表置于右边的架构中
-        pack2(*frame3, Gtk::SHRINK);
+        //pack2(*frame3, Gtk::SHRINK);
+        pack2(*list_box, Gtk::SHRINK);
 
         //m_memberList->signal_button_press_event().connect(sigc::mem_fun(*this,
         //   &MsgPage::on_memberList_double_click_event),false);
@@ -566,11 +586,19 @@ void MsgPage::close()
 void MsgPage::addMember(const std::string& name, const Member& f_member)
 {
         m_memberList->addMember(name, f_member);
+        int number = m_memberList->getMemberNumber();
+        char buf[256];
+        sprintf(buf, _("there has %d people in the room"), number);
+        m_list_number->set_label(buf);
 }
 
 void MsgPage::removeMember(const std::string& id)
 {
         m_memberList->removeMember(id);
+        int number = m_memberList->getMemberNumber();
+        char buf[256];
+        sprintf(buf, _("there has %d people in the room"), number);
+        m_list_number->set_label(buf);
 }
 
 void MsgPage::refreshMember()
@@ -578,11 +606,18 @@ void MsgPage::refreshMember()
         const MemberMap& items = m_mucroom->getMemberMap();
 
         m_memberList->clearMember();
-        //printf("已经清空列表？\n");
         MemberMap::const_iterator it = items.begin();
 
         for (; it != items.end(); ++it)
                 m_memberList->addMember((*it).first, (*it).second);
+
+        int number = m_memberList->getMemberNumber();
+
+        char buf[256];
+
+        sprintf(buf, _("there has %d people in the room"), number);
+
+        m_list_number->set_label(buf);
 
 }
 

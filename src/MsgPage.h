@@ -211,6 +211,7 @@ private:
         CommandBar *toolbar;
         Gtk::Image * m_logo;
         Gtk::Label * m_titlelable;
+        Gtk::Label * m_list_number;
         Gtk::Entry * m_subject;
         bool hasColor;
         bool isRoom;

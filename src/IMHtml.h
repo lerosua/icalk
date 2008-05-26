@@ -23,36 +23,36 @@
 #include <gtkmm/image.h>
 
 
-class IMHtml:public Gtk::TextView
+class IMHtml: public Gtk::TextView
 {
 
-	public:
-		IMHtml();
-		~IMHtml();
+public:
+        IMHtml();
+        ~IMHtml();
 
-		void url_clicked();
-		void toggle_format();
-		void clear_format();
+        void url_clicked();
+        void toggle_format();
+        void clear_format();
 
-		void insert_link();
-		void insert_smiley();
-		void font_set_size(gint size);
+        void insert_link();
+        void insert_smiley();
+        void font_set_size(gint size);
 
-		void showMessage(const Glib::ustring& f_msg, const std::string& f_time);
+        void showMessage(const Glib::ustring& f_msg, const std::string& f_time);
 
-	private:
-		Glib::RefPtr < Gtk::TextBuffer > m_buffer;
+private:
+        Glib::RefPtr < Gtk::TextBuffer > m_buffer;
 
-		bool editable;
-		bool edit_bold;
-		bool edit_italic;
-		bool edit_underline;
-		bool edit_strike;
-		std::string forecolor;
-		std::string backcolor;
-		std::string background;
-		std::string fontface;
-		int fontsize;
+        bool editable;
+        bool edit_bold;
+        bool edit_italic;
+        bool edit_underline;
+        bool edit_strike;
+        std::string forecolor;
+        std::string backcolor;
+        std::string background;
+        std::string fontface;
+        int fontsize;
 
 
 
@@ -64,5 +64,6 @@ class IMHtml:public Gtk::TextView
 
 
 };
+
 #endif
 

@@ -41,6 +41,11 @@ public:
         void removeMember(const std::string& id);
         void clearMember();
         bool isMember(const std::string& mid);
+        int getMemberNumber()const
+        {
+                return m_number;
+        }
+
         /** 从聊天室成员的所属关系中获取相应的图标，有管理员，创建者，会员，被屏蔽者等等。*/
         Glib::RefPtr<Gdk::Pixbuf> getPixfromAffilliation(MUCRoomAffiliation affilliation);
 
@@ -112,6 +117,7 @@ struct CompareMember: public binary_function < Gtk::TreeModel::Row,
 private:
         MemberColumns columns;
         Glib::RefPtr<Gtk::ListStore> refListStore;
+        int m_number;
 
 };
 
