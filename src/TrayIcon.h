@@ -27,7 +27,9 @@
 class MainWindow;
 void on_statusicon_activated(GtkWidget*, gpointer object);
 void on_statusicon_popup(GtkStatusIcon*, guint button, guint activate_time, gpointer object);
-
+enum { STATUS_UNKNOW=0, STATUS_ONLINE,STATUS_CHAT,
+       STATUS_AWAY,STATUS_DND, STATUS_EX, STATUS_OFFLINE,
+       STATUS_NEW_MSG };
 /**
  * @brief 通知栏图标类
  */
@@ -44,8 +46,9 @@ public:
 
 private:
         MainWindow* _gwin;
-        Glib::RefPtr<Gdk::Pixbuf> pixUser[7];
-        Glib::ustring tooltip[7];
+        Glib::RefPtr<Gdk::Pixbuf> pixUser[8];
+        Glib::ustring tooltip[8];
+	int m_status;
 
 protected:
         // Methods:

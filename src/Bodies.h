@@ -151,6 +151,8 @@ public:
         /**发出获取本人VCard信息的命令*/
         void fetch_self_vcard() ;
 
+	/** 提示是否有新消息，调用TrayIcon的闪动显示*/
+	void promptMsg(bool f_new);
         void disco_node(const std::string& node);
         void disconnect();
 
@@ -176,6 +178,7 @@ private:
         MainWindow* main_window;
         MsgWindow* msg_window;
         TrayIcon* statusIcon;
+	int msg_count; //用于消息计数
 
         BuddyList buddy_list;
 

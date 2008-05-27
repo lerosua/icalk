@@ -36,11 +36,13 @@ public:
         MemberList();
 
 
+        /** 获取所选成员的mid*/
         Glib::ustring getSelectMemberid();
         void addMember(const std::string& name, const Member& f_member);
         void removeMember(const std::string& id);
         void clearMember();
         bool isMember(const std::string& mid);
+        /** 获取聊天室成员数量*/
         int getMemberNumber()const
         {
                 return m_number;
@@ -77,12 +79,12 @@ struct MemberColumns : public Gtk::TreeModel::ColumnRecord
                                 (affiliation);
                 }
 
-                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon;
-                Gtk::TreeModelColumn < Glib::ustring > name;
-                Gtk::TreeModelColumn < Glib::ustring > mid;
-                Gtk::TreeModelColumn < Glib::ustring > statusMsg;
-                Gtk::TreeModelColumn < int >presence;
-                Gtk::TreeModelColumn < int >affiliation;
+                Gtk::TreeModelColumn < Glib::RefPtr < Gdk::Pixbuf > >icon; //成员的状态图标
+                Gtk::TreeModelColumn < Glib::ustring > name;   //成员的名字
+                Gtk::TreeModelColumn < Glib::ustring > mid;     //成员的mid room@conference/name
+                Gtk::TreeModelColumn < Glib::ustring > statusMsg; //成员的presence消息
+                Gtk::TreeModelColumn < int >presence;     //成员的presence状态，离开，唠叼等
+                Gtk::TreeModelColumn < int >affiliation;  //成员的角色属性
 
         };
 
@@ -117,7 +119,7 @@ struct CompareMember: public binary_function < Gtk::TreeModel::Row,
 private:
         MemberColumns columns;
         Glib::RefPtr<Gtk::ListStore> refListStore;
-        int m_number;
+        int m_number; //聊天室里的成员计数
 
 };
 

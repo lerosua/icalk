@@ -134,7 +134,19 @@ void Bodies::set_status(Presence::PresenceType f_status, Glib::ustring f_msg)
         setAccountTag("message", f_msg);
 }
 
-
+void Bodies::promptMsg(bool f_new)
+{
+	if(f_new)
+	{
+		msg_count++;
+		statusIcon->setBlinking(f_new);
+	}
+	else{
+		msg_count--;
+		if(msg_count<1)
+			statusIcon->setBlinking(f_new);
+	}
+}
 
 USERLIST& Bodies::getUserList()
 {

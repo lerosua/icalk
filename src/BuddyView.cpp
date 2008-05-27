@@ -1367,8 +1367,8 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
                                 find_buddy(mid);
+                        MsgPage *page_ = buddy->new_page();
                         buddy->new_session();
-                        MsgPage *page_ = buddy->get_page();
                         Bodies::Get_Bodies().get_msg_window().
                         add_page(*page_);
                         Bodies::Get_Bodies().get_msg_window().show();

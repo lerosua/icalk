@@ -40,6 +40,14 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
                 DLOG("buddy is NULL");
         }
 
+        MsgPage* page_ = buddy->get_page();
+	//如果page_为空，则保留消息，等待用户唤醒消息
+	if(page_==NULL)
+	{
+		buddy->storeMessage( stanza);
+		Bodies::Get_Bodies().promptMsg(true);
+		return;
+	}
         /* 发送消息已经显示的事件*/
         buddy->raiseMessageEvent(MessageEventDisplayed);
 
@@ -49,9 +57,6 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         Glib::ustring sender;
 
         Glib::ustring msg = stanza.body();
-
-        MsgPage* page_ = buddy->get_page();
-
         sender = buddy->get_nickname();
 
         if (sender.empty())

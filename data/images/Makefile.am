@@ -13,6 +13,7 @@ icalkimages_DATA = 	\
 	       status_dnd.png  \
 	       status_ex.png   \
 	       status_away.png  \
+	       status_msg.png 	\
 	       menu_chat.png 	\
 	       menu_log.png 	\
 	       menu_add.png 	\

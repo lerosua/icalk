@@ -48,7 +48,7 @@ public:
         explicit Buddy(const RosterItem&);
         virtual ~Buddy();
         typedef std::map<std::string, Resource*> ResourceMap;
-
+	typedef std::vector<std::string> MessageList;
         void set_jid(const JID& f_jid) ;
 
         /**返回JID的bare（）值*/
@@ -70,7 +70,7 @@ public:
         }
 
         /** 设置昵称*/
-        void set_nickname(const std::string& name_);
+        void set_nickname(const std::string& f_name);
         /** 将VCard信息填充进Buddy里*/
         void set_vcard(const VCard*);
         /** 返回Buddy里的VCard信息*/
@@ -135,16 +135,9 @@ public:
         /**
          * @brief 返回当前标签页
          */
-        MsgPage* get_page()
-        {
-                if (NULL != page)
-                        return page;
-
-                const std::string label = jid.bare();
-
-                return new MsgPage(label, this);
-        }
-
+        MsgPage* get_page();
+	/** 返回当前有效的page或新建一个page */
+	MsgPage* new_page();
 
         /**
          *@brief 用于发起一个针对jid的会话
@@ -152,6 +145,8 @@ public:
          *@note 完成的功能：生成会话，生成标签页(调用@link set_session set_session @endlink)，发送正在打字的事件。
          */
         void new_session();
+	/** 将消息存于队列中*/
+	void storeMessage(const Message& f_message);
 
         /**
          * @brief 用于将Buddy里的session变量设置为给定的session，并注册
@@ -197,9 +192,9 @@ public:
                 return logo;
         }
 
-        void setLogo(Glib::RefPtr<Gdk::Pixbuf >logo_)
+        void setLogo(Glib::RefPtr<Gdk::Pixbuf > f_logo)
         {
-                logo = logo_ ;
+                logo = f_logo ;
         }
 
         /**
@@ -288,6 +283,7 @@ protected:
         std::string customSmile;
         BuddyType type;
         sigc::connection timer;
+	MessageList m_messagelist;
 };
 
 #endif // _BUDDY_H_

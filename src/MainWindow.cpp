@@ -865,9 +865,8 @@ void MainWindow::on_buddyChat_activate()
 
         Buddy *buddy = m_bodies.get_buddy_list().find_buddy(name);
 
+        MsgPage *page_ = buddy->new_page();
         buddy->new_session();
-
-        MsgPage *page_ = buddy->get_page();
 
         m_bodies.get_msg_window().add_page(*page_);
 
@@ -1194,8 +1193,8 @@ void MainWindow::on_roomAdd_activate()
         Gtk::Entry * name_entry =
                 dynamic_cast <
                 Gtk::Entry * > (addRoom_xml->get_widget("name_entry"));
-        std::string name_ = m_bodies.get_jid().username();
-        name_entry->set_text(name_);
+        std::string u_name = m_bodies.get_jid().username();
+        name_entry->set_text(u_name);
         addRoomDialog->raise();
         int result = addRoomDialog->run();
 
