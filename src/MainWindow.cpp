@@ -404,13 +404,19 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
         Glib::ustring passwd = entryPasswd->get_text();
         Glib::ustring server = entryServer->get_text();
         Glib::ustring port = entryPort->get_text();
-        int iport = atoi(port.c_str());
 
-        { // TODO clear
-                on_initialize();
-                main_notebook->set_current_page(LOGIN_LOADING);
-                config.STATUS = LOGIN_LOADING;
-        }
+	if(name.empty()||passwd.empty())
+		return;
+	if(server.empty())
+		server="talk.google.com";
+	if(port.empty())
+		port="5222";
+        int iport = atoi(port.c_str());
+         // TODO clear
+	on_initialize();
+	main_notebook->set_current_page(LOGIN_LOADING);
+	config.STATUS = LOGIN_LOADING;
+        
 
         if (!(f_handler->*f_call)(name, passwd, server, iport)) { // 登录失败
                 // 界面处理
@@ -447,7 +453,7 @@ void MainWindow::on_account_changed()
 {
         if (!comboAccount->get_active_text().empty()) {
                 Glib::ustring name = comboAccount->get_entry()->get_text();
-                printf("select name %s\n", name.c_str());
+                DLOG("select name %s\n", name.c_str());
                 GUnit::init(name.c_str());
                 m_bodies.loadAccountTag();
                 std::string keep_passwd = m_bodies.getAccountTag("keeppasswd");
@@ -470,8 +476,12 @@ void MainWindow::on_account_changed()
                         else
                                 entryPort->set_text("");
                 } else {
+			//清空
                         keepMe->set_active(false);
                         keeppasswd->set_active(false);
+			entryPasswd->set_text("");
+			entryServer->set_text("");
+			entryPort->set_text("");
                 }
 
 
@@ -483,8 +493,8 @@ void MainWindow::set_logo(const std::string & iconpath)
 {
         if (!iconpath.empty()) {
                 try {
-                        //logo = Gdk::Pixbuf::create_from_file(iconpath, 96, 96);
-                        logo = Gdk::Pixbuf::create_from_file(iconpath, 32, 32);
+                        //logo = Gdk::Pixbuf::create_from_file(iconpath, 32, 32);
+                        logo = Gdk::Pixbuf::create_from_file(iconpath);
                 } catch (Glib::FileError e) {
                         g_message("caught Glib::FileError in initBuddy create from file");
                 } catch (Gdk::PixbufError e) {
@@ -492,27 +502,29 @@ void MainWindow::set_logo(const std::string & iconpath)
                 }
 
                 if (0 == logo)
-                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
+                        //logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
+                        logo = Gdk::Pixbuf::create_from_file(DATA_DIR "/images/avatar.png");
 
 
         } else
-                logo =
-                        Gdk::Pixbuf::
-                        create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
-
+                logo =getPix("avatar.png");
+                        //Gdk::Pixbuf::
+                        //create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
         Glib::RefPtr < Gdk::Pixbuf > border =
                 getPix("border.png");
 
-        logo->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
+        Glib::RefPtr < Gdk::Pixbuf > logo32 =logo->scale_simple(32,32,Gdk::INTERP_NEAREST);
+        logo32->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
+        //logo->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
 
-        Gtk::Image * logo_ =
+        Gtk::Image * logo_frame =
                 dynamic_cast <
                 Gtk::Image * > (main_xml->get_widget("image_logo"));
 
-        //logo_->set
+        //logo_frame->set
         //(logo->scale_simple(32, 32, Gdk::INTERP_BILINEAR));
 
-        logo_->set
+        logo_frame->set
         (border);
 
 }
@@ -655,7 +667,7 @@ bool MainWindow::statusMsgWidgetTimeout()
 
         if (config.TIMECOUNT != TIMEOUT) {
                 config.TIMECOUNT = config.TIMECOUNT + 1;
-                //printf(" timecout is %d\n",config.TIMECOUNT);
+                //DLOG(" timecout is %d\n",config.TIMECOUNT);
                 return true;
         }
 
@@ -669,7 +681,7 @@ bool MainWindow::statusMsgWidgetTimeout()
         std::ifstream msgfile(buf);
 
         if (!msgfile) {
-                printf("not context\n");
+                DLOG("not context\n");
                 return true;
         }
 
@@ -687,7 +699,7 @@ bool MainWindow::statusMsgWidgetTimeout()
         else
                 linenum = rannum;
 
-        //printf(" linenum(%d) = random(%d) de  line(%d) \n", linenum,rannum,number);
+        //DLOG(" linenum(%d) = random(%d) de  line(%d) \n", linenum,rannum,number);
         //msgfile.seekg(0,std::ios::beg);
         msgfile.close();
 
@@ -705,7 +717,7 @@ bool MainWindow::statusMsgWidgetTimeout()
            snprintf(buf, 512, "/tmp/.icalkStatusMsgFileTimeout");
            std::ifstream msgfile(buf);
            if (!msgfile) {
-           printf("not context\n");
+           DLOG("not context\n");
            return true;
            }
            std::string line;
@@ -1275,7 +1287,7 @@ void MainWindow::on_roomLog_activate()
 
 void MainWindow::on_buddyFind_activate()
 {
-        printf("on_findBuddy_activeate clicked\n");
+        DLOG("on_findBuddy_activeate clicked\n");
 }
 
 void MainWindow::on_serverDisco_activate()
@@ -1324,7 +1336,7 @@ void MainWindow::on_about_activate()
 
 void MainWindow::on_setPrefer_activate()
 {
-        printf("on _setPrefer_clicked \n");
+        DLOG("on _setPrefer_clicked \n");
 }
 
 void MainWindow::on_sound_activate()
@@ -1371,7 +1383,6 @@ void MainWindow::on_show_all_friends()
 void MainWindow::show_tray_menu(guint button, guint activate_time)
 {
         trayMenu->popup(button, activate_time);
-        //trayMenu.popup(button, activate_time);
 }
 
 void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
@@ -1704,7 +1715,6 @@ void MainWindow::init_ui_manager()
 
         action_group->add
         (Gtk::ToggleAction::create("BuddyBlock", _("Block")),
-         //(Gtk::Action::create("BuddyBlock", Gtk::StockID("BLOCK"), _("_Block")),
          sigc::mem_fun(*this, &MainWindow::on_buddyBlock_activate));
 
         action_group->add
@@ -1726,7 +1736,6 @@ void MainWindow::init_ui_manager()
                        on_roomChat_activate));
 
         action_group->add
-        //(Gtk::Action::create("RoomBlock", Gtk::StockID("BLOCK"), _("_Block")),
         (Gtk::ToggleAction::create("RoomBlock", _("Block")),
          sigc::mem_fun(*this, &MainWindow::
                        on_roomBlock_activate));
