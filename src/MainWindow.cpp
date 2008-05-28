@@ -865,14 +865,18 @@ void MainWindow::on_buddyChat_activate()
 
         Buddy *buddy = m_bodies.get_buddy_list().find_buddy(name);
 
-        MsgPage *page_ = buddy->new_page();
-        buddy->new_session();
+        //MsgPage *page_ = buddy->new_page();
+        buddy->new_page();
 
-        m_bodies.get_msg_window().add_page(*page_);
+        /*
+               buddy->new_session();
 
-        m_bodies.get_msg_window().show();
+               m_bodies.get_msg_window().add_page(*page_);
 
-        m_bodies.get_msg_window().setCurrentPage(page_);
+               m_bodies.get_msg_window().show();
+
+               m_bodies.get_msg_window().setCurrentPage(page_);
+        */
 
 }
 
@@ -1422,6 +1426,9 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 
 void MainWindow::toggle_visibility()
 {
+        if ( m_bodies.get_buddy_list().popNewMsgBuddy())
+                return ;
+
         if (this->is_visible()) {
                 this->get_position(win_x, win_y);
                 this->hide();

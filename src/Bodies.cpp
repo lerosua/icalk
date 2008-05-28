@@ -134,18 +134,20 @@ void Bodies::set_status(Presence::PresenceType f_status, Glib::ustring f_msg)
         setAccountTag("message", f_msg);
 }
 
-void Bodies::promptMsg(bool f_new)
+void Bodies::promptMsg(const Glib::ustring& f_jid, bool f_new)
 {
-	if(f_new)
-	{
-		msg_count++;
-		statusIcon->setBlinking(f_new);
-	}
-	else{
-		msg_count--;
-		if(msg_count<1)
-			statusIcon->setBlinking(f_new);
-	}
+        if (f_new) {
+                buddy_list.addNewMsgBuddy(f_jid);
+                msg_count++;
+                statusIcon->setBlinking(f_new);
+                DLOG("have new message form %s\n", f_jid.c_str());
+        } else {
+                buddy_list.delNewMsgBuddy(f_jid);
+                msg_count--;
+
+                if (msg_count < 1)
+                        statusIcon->setBlinking(f_new);
+        }
 }
 
 USERLIST& Bodies::getUserList()

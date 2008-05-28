@@ -40,14 +40,14 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
                 DLOG("buddy is NULL");
         }
 
-        MsgPage* page_ = buddy->get_page();
-	//如果page_为空，则保留消息，等待用户唤醒消息
-	if(page_==NULL)
-	{
-		buddy->storeMessage( stanza);
-		Bodies::Get_Bodies().promptMsg(true);
-		return;
-	}
+        MsgPage* f_page = buddy->get_page();
+        //如果f_page为空，则保留消息，等待用户唤醒消息
+
+        if (f_page == NULL) {
+                buddy->storeMessage( stanza);
+                return ;
+        }
+
         /* 发送消息已经显示的事件*/
         buddy->raiseMessageEvent(MessageEventDisplayed);
 
@@ -57,6 +57,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         Glib::ustring sender;
 
         Glib::ustring msg = stanza.body();
+
         sender = buddy->get_nickname();
 
         if (sender.empty())
@@ -67,7 +68,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
                 return ;
         }
 
-        //page_->showMessage(sender,msg);
+        //f_page->showMessage(sender,msg);
         const XHtmlIM* x = stanza.findExtension<XHtmlIM>(ExtXHtmlIM);
 
         if (x) {
@@ -81,11 +82,11 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 
         if (dd) {
                 DLOG("message time is %s\n", dd->stamp().c_str());
-                page_->showMessage(sender, msg, dd->stamp());
+                f_page->showMessage(sender, msg, dd->stamp());
         } else
-                page_->showMessage(sender, msg);
+                f_page->showMessage(sender, msg);
 
-        Bodies::Get_Bodies().get_msg_window().add_page(*page_);
+        Bodies::Get_Bodies().get_msg_window().add_page(*f_page);
 
         Bodies::Get_Bodies().get_msg_window().show();
 }
@@ -94,6 +95,10 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 {
         DLOG( "received event: %d from: %s\n", event, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
+        MsgPage* f_page = buddy->get_page();
+
+        if (f_page == NULL)
+                return ;
 
         switch (event) {
 
@@ -104,7 +109,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
         case 1:
                 /*消息已经被离线的接受者的服务保存*/
-                buddy->get_page()->showSystemMsg(_("\t\tThe Message has stored by the receiver's server\n"));
+                f_page->showSystemMsg(_("\t\tThe Message has stored by the receiver's server\n"));
                 break;
 
         case 2:
@@ -128,8 +133,11 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
 void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 {
-        //DLOG( "received state: %d from: %s\n", state, from.full().c_str() );
         Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
+        MsgPage* f_page = buddy->get_page();
+
+        if (f_page == NULL)
+                return ;
 
         switch (state) {
 

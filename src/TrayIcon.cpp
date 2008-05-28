@@ -6,7 +6,7 @@
 
 TrayIcon::TrayIcon(MainWindow* wnd)
                 : _gwin(wnd)
-		  ,m_status(STATUS_UNKNOW)
+                , m_status(STATUS_UNKNOW)
 {
         pixUser[STATUS_UNKNOW] = getPix("status_offline.png");
         pixUser[STATUS_ONLINE] = getPix("status_online.png");
@@ -15,7 +15,7 @@ TrayIcon::TrayIcon(MainWindow* wnd)
         pixUser[STATUS_DND] = getPix("status_dnd.png");
         pixUser[STATUS_EX] = getPix("status_ex.png");
         pixUser[STATUS_OFFLINE] = getPix("status_offline.png");
-	pixUser[STATUS_NEW_MSG] = getPix("status_msg.png");
+        pixUser[STATUS_NEW_MSG] = getPix("status_msg.png");
         tooltip[STATUS_UNKNOW] = _("(Unknow)  ");
         tooltip[STATUS_ONLINE] = _("(Online)  ");
         tooltip[STATUS_CHAT] = _("(Chat)  ");
@@ -23,7 +23,7 @@ TrayIcon::TrayIcon(MainWindow* wnd)
         tooltip[STATUS_DND] = _("(Don't Disturb)  ");
         tooltip[STATUS_EX] = _("(Extend away)  ");
         tooltip[STATUS_OFFLINE] = _("(Offline)  ");
-	tooltip[STATUS_NEW_MSG] = _("New Message");
+        tooltip[STATUS_NEW_MSG] = _("New Message");
         /*
          tooltip[0] = "(未知状态)  ";
          tooltip[1] = "(在线)  ";
@@ -47,24 +47,28 @@ TrayIcon::~TrayIcon()
 
 void TrayIcon::setBlinking(bool blinking)
 {
-	if(blinking)
-		this->set(pixUser[STATUS_NEW_MSG]);
-	else
-		this->set(pixUser[m_status]);
-	this->set_blinking(blinking);
+        if (blinking)
+                this->set
+                (pixUser[STATUS_NEW_MSG]);
+        else
+                this->set
+                (pixUser[m_status]);
+
+        this->set_blinking(blinking);
 
 }
 
 void TrayIcon::on_status_change(int f_status, Glib::ustring nickname, Glib::ustring f_msg)
 {
 
-	if(!this->get_blinking())
-		this->set(pixUser[f_status]);
+        if (!this->get_blinking())
+                this->set
+                (pixUser[f_status]);
 
         // Set the tooltip
         this->set_tooltip(nickname + tooltip[f_status] + f_msg);
 
-	m_status = f_status;
+        m_status = f_status;
 }
 
 void on_statusicon_activated(GtkWidget* widget, gpointer object)

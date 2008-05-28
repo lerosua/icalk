@@ -22,6 +22,7 @@
 #include <iostream>
 #include <gloox/rostermanager.h>
 #include <map>
+#include "icalk.h"
 
 using namespace gloox;
 
@@ -37,11 +38,11 @@ class BuddyList: public RosterListener
 {
 
 public:
-        BuddyList()
-        {}
+        BuddyList();
 
         /** 保存好友数据的结构，以好友id为关键字*/
         typedef std::map<Glib::ustring, Buddy*> BUDDY_MAP;
+        typedef std::vector<Glib::ustring> BUDDY_NEW_MSG;
 
         ~BuddyList();
 
@@ -68,6 +69,15 @@ public:
         {
                 std::for_each(buddy_map.begin(), buddy_map.end(), fun);
         }
+
+        void addNewMsgBuddy(const Glib::ustring& f_jid);
+        /** 好友末读消息列表中删除好友,标识此好友的信息已被读取*/
+        void delNewMsgBuddy(const Glib::ustring& f_jid);
+        /**
+         * @brief 将所有新消息都跳出到窗口（page）中
+         * @return 返回真则有新消息跳出，返回非真则没有新消息跳出
+         */
+        bool popNewMsgBuddy();
 
 protected:
         /**
@@ -124,12 +134,14 @@ protected:
          */
         bool handleUnsubscriptionRequest(const JID& jid, const std::string& msg);
         /** 在 gloox 1.0-beta2后，这个函数被废除*/
-        void handleNonrosterPresence(Presence* stanza);
+        ICALK_DEPRECATED void handleNonrosterPresence(Presence* stanza);
         /** 当一个不在好友列表中的人发来Presence::PresenceType信息时回调,奇怪~*/
         void handleNonrosterPresence(const Presence& stanza);
+        /** 好友末读消息列表中添加一个末读消息好友*/
 
 private:
-        BUDDY_MAP buddy_map;
+        BUDDY_MAP buddy_map; //存储好友列表
+        BUDDY_NEW_MSG buddy_msg; //存储有新消息来临的好友
 };
 
 #endif   /* ----- #ifndef BUDDYLIST_FILE_HEADER_INC  ----- */

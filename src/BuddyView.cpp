@@ -1334,6 +1334,46 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
         //this->expand_all();
 }
 
+void BuddyView::newMsgBuddy(const Glib::ustring& f_jid, bool f_new)
+{
+        Gtk::TreeModel::Children children = m_treestore->children();
+        Gtk::TreeModel::iterator listiter;
+
+        Buddy *buddy =
+                Bodies::Get_Bodies().get_buddy_list().find_buddy(f_jid);
+        StringList g = buddy->getGroups();
+
+        if (g.empty()) {
+                std::string mainGroup = "iCalk";
+                g.push_back(mainGroup);
+        }
+
+        StringList::const_iterator it_g = g.begin();
+
+        for (; it_g != g.end(); ++it_g) {
+                listiter = getListIter(children, *it_g);
+
+                if (listiter == children.end())
+                        return ;
+
+                Gtk::TreeModel::Children grandson = (*listiter).children();
+
+                Gtk::TreeModel::iterator treeiter =
+                        getListIter(grandson, f_jid);
+
+                if (treeiter == grandson.end())
+                        return ;
+
+                if (f_new) {
+                        Glib::RefPtr < Gdk::Pixbuf > new_msg_icon =
+                                getPix("sip.png");
+                        (*treeiter)[buddyColumns.icon] = new_msg_icon;
+                } else {
+                        refreshBuddyStatus(f_jid);
+                }
+        }
+
+}
 
 bool BuddyView::on_button_press_event(GdkEventButton * ev)
 {
@@ -1367,13 +1407,16 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                         Buddy *buddy =
                                 Bodies::Get_Bodies().get_buddy_list().
                                 find_buddy(mid);
-                        MsgPage *page_ = buddy->new_page();
-                        buddy->new_session();
-                        Bodies::Get_Bodies().get_msg_window().
-                        add_page(*page_);
-                        Bodies::Get_Bodies().get_msg_window().show();
-                        Bodies::Get_Bodies().get_msg_window().
-                        setCurrentPage(page_);
+                        //MsgPage *page_ = buddy->new_page();
+                        buddy->new_page();
+                        //buddy->new_session();
+                        /*
+                                             Bodies::Get_Bodies().get_msg_window().
+                                             add_page(*page_);
+                                             Bodies::Get_Bodies().get_msg_window().show();
+                                             Bodies::Get_Bodies().get_msg_window().
+                                             setCurrentPage(page_);
+                        */
                 } else if (STATUS_GROUP == type) {
                         //组的双击
 

@@ -23,6 +23,12 @@
 #include "TalkCard.h"
 #include "icalk.h"
 
+BuddyList::BuddyList()
+{
+        buddy_msg.clear();
+
+}
+
 Buddy* BuddyList::find_buddy(const Glib::ustring& id) const
 {
         BUDDY_MAP::const_iterator iter = buddy_map.find(id);
@@ -41,6 +47,13 @@ BuddyList::~BuddyList()
         for (; iter != buddy_map.end();iter++) {
                 //delete iter->second;
                 buddy_map.erase(iter);
+        }
+
+        BUDDY_NEW_MSG::iterator iter2 = buddy_msg.begin();
+
+        for (; iter2 != buddy_msg.end();iter2++) {
+                //delete iter->second;
+                buddy_msg.erase(iter2);
         }
 }
 
@@ -194,4 +207,52 @@ void BuddyList::handleRosterError(const IQ& iq)
 
         std::cout << "handleRosterError " << iq.tag()->xml() << std::endl;
 
+}
+
+void BuddyList::addNewMsgBuddy(const Glib::ustring& f_jid)
+{
+
+        BUDDY_NEW_MSG::iterator result = std::find(buddy_msg.begin(), buddy_msg.end(), f_jid);
+
+        if (result == buddy_msg.end()) {
+                buddy_msg.push_back(f_jid);
+                Bodies::Get_Bodies().get_main_window().get_buddy_view().newMsgBuddy(f_jid, true);
+
+        }
+}
+
+void BuddyList::delNewMsgBuddy(const Glib::ustring& f_jid)
+{
+        BUDDY_NEW_MSG::iterator result = std::find(buddy_msg.begin(), buddy_msg.end(), f_jid);
+
+        if (result != buddy_msg.end()) {
+                buddy_msg.erase(result);
+                Bodies::Get_Bodies().get_main_window().get_buddy_view().newMsgBuddy(f_jid, false);
+        }
+
+}
+
+bool BuddyList::popNewMsgBuddy()
+{
+        if (buddy_msg.empty())
+                return false;
+
+        do {
+                BUDDY_NEW_MSG::iterator iter = buddy_msg.begin();
+
+                if (iter == buddy_msg.end())
+                        break;
+
+                const Glib::ustring& f_jid = (*iter);
+
+                Buddy* f_buddy = find_buddy(f_jid);
+
+                if (NULL != f_buddy) {
+                        f_buddy->new_page();
+                }
+        } while (true);
+
+        buddy_msg.clear();
+
+        return true;
 }

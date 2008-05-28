@@ -73,32 +73,43 @@ Buddy::~Buddy()
                 page = NULL;
         }
 }
+
 #if 0
 MsgPage* Buddy::get_page()
-        {
-                if (NULL != page)
-                        return page;
+{
+        if (NULL != page)
+                return page;
 
-                const std::string label = jid.bare();
+        const std::string label = jid.bare();
 
-                return new MsgPage(label, this);
-        }
+        return new MsgPage(label, this);
+}
+
 #else
 MsgPage* Buddy::get_page()
 {
-	return page;
+        return page;
 }
+
 #endif
 MsgPage* Buddy::new_page()
 {
-	if (NULL == page) {
-                        if (!nickname.empty())
-                                page = new MsgPage(nickname, this);
-                        else {
-                                page = new MsgPage(jid.bare(), this);
-                        }
+        if (NULL == page) {
+                if (!nickname.empty())
+                        page = new MsgPage(nickname, this);
+                else {
+                        page = new MsgPage(jid.bare(), this);
                 }
-	return page;
+
+                new_session();
+                Bodies::Get_Bodies().get_msg_window().
+                add_page(*page);
+                Bodies::Get_Bodies().get_msg_window().show();
+                Bodies::Get_Bodies().get_msg_window().
+                setCurrentPage(page);
+        }
+
+        return page;
 }
 
 void Buddy::set_jid(const JID& f_jid)
@@ -222,29 +233,32 @@ void Buddy::new_session()
                 session = new MessageSession(&jclient_, jid);
                 TalkMsg& handler_ = Bodies::Get_Bodies().getTalkMsg();
                 set_session(session, &handler_);
+        } else {
+                Glib::ustring sender;
+
+                if (nickname.empty())
+                        sender = jid.bare();
+                else
+                        sender = nickname;
+
+                MessageList::iterator iter = m_messagelist.begin();
+
+                for ( ; iter != m_messagelist.end();iter++) {
+                        std::string f_msg = (*iter);
+                        page->showMessage(sender, f_msg);
+                        Bodies::Get_Bodies().promptMsg(jid.bare(), false);
+                }
+
+                m_messagelist.clear();
+
         }
-	else{
-			Glib::ustring sender;
-			if(nickname.empty())
-				sender = jid.bare();
-			else
-				sender = nickname;
-
-		MessageList::iterator iter = m_messagelist.begin();
-		for( ; iter !=m_messagelist.end();iter++)
-		{
-			std::string f_msg = (*iter);
-			page->showMessage(sender,f_msg);
-			Bodies::Get_Bodies().promptMsg(false);
-		}
-		m_messagelist.clear();
-
-	}
 }
+
 void Buddy::storeMessage(const Message& f_message)
 {
 
-	m_messagelist.push_back(f_message.body());
+        m_messagelist.push_back(f_message.body());
+        Bodies::Get_Bodies().promptMsg(jid.bare(), true);
 
 }
 
@@ -267,6 +281,7 @@ void Buddy::set_session(MessageSession* f_session, TalkMsg* handler)
                 /* 这里还需要生成标签页*/
 
 #if 0
+
                 if (NULL == page) {
                         if (!nickname.empty())
                                 page = new MsgPage(nickname, this);
@@ -275,7 +290,9 @@ void Buddy::set_session(MessageSession* f_session, TalkMsg* handler)
                                 page = new MsgPage(label, this);
                         }
                 }
+
 #endif
+
         }
 
 }

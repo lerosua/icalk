@@ -46,8 +46,6 @@ class Bodies;
 
 class BuddyList;
 
-//class MainWindow;
-
 class TreeViewTooltips;
 /**
  * @brief  用于显示好友列表的控件.继承Gtk::TreeView
@@ -174,6 +172,13 @@ public:
         void setBlistTag(const std::string& tagname, const std::string& name, const std::string& attr, const std::string & value);
 
         void removeBlistTag(const std::string& tagname, const std::string& name);
+
+        /**
+         * @brief 标识好友列表上的好友是否有新消息末读
+         * @param f_jid 列表上的好友jid
+         * @param f_new  为真则有末读消息，非真则还原状态（既消息已读)
+         */
+        void newMsgBuddy(const Glib::ustring& f_jid, bool f_new);
 
         /**得到当前treeview中的所有分组*/
         StringList& getGroupList()
