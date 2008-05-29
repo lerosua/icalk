@@ -296,13 +296,6 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         connect(sigc::
                 mem_fun(*this, &MainWindow::on_btnSystem_clicked));
 
-        /*
-        Gtk::Button * btAudio = dynamic_cast <
-            Gtk::Button * >(main_xml->get_widget("button_audio"));
-        btAudio->signal_clicked().
-            connect(sigc::
-             mem_fun(*this, &MainWindow::on_btnAudio_clicked));
-             */
 
         Gtk::Button * buttonLogo =
                 dynamic_cast <
@@ -404,22 +397,25 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
         Glib::ustring passwd = entryPasswd->get_text();
         Glib::ustring server = entryServer->get_text();
         Glib::ustring port = entryPort->get_text();
+	int iport;
 
 	if(name.empty()||passwd.empty())
 		return;
 	if(server.empty())
 		server="talk.google.com";
 	if(port.empty())
-		port="5222";
-        int iport = atoi(port.c_str());
+		iport=5222;
+	else
+		iport = atoi(port.c_str());
          // TODO clear
-	on_initialize();
+	on_initialize(name);
 	main_notebook->set_current_page(LOGIN_LOADING);
 	config.STATUS = LOGIN_LOADING;
         
 
         if (!(f_handler->*f_call)(name, passwd, server, iport)) { // 登录失败
                 // 界面处理
+		DLOG("登录失败\n");
         }
 
         // 登录成功，界面处理
@@ -427,8 +423,11 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
 
 }
 
-void MainWindow::on_initialize()
+void MainWindow::on_initialize(const Glib::ustring& f_name)
 {
+	GUnit::init(f_name.c_str());
+	m_bodies.loadAccountTag();
+
         list_view->loadBlistTag();
         const std::string & sound = m_bodies.getAccountTag("sound");
 
@@ -454,8 +453,9 @@ void MainWindow::on_account_changed()
         if (!comboAccount->get_active_text().empty()) {
                 Glib::ustring name = comboAccount->get_entry()->get_text();
                 DLOG("select name %s\n", name.c_str());
-                GUnit::init(name.c_str());
-                m_bodies.loadAccountTag();
+                //GUnit::init(name.c_str());
+                //m_bodies.loadAccountTag();
+		on_initialize(name);
                 std::string keep_passwd = m_bodies.getAccountTag("keeppasswd");
 
                 if ("true" == keep_passwd) {

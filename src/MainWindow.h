@@ -66,7 +66,7 @@ public:
         bool KeepUser();
         bool KeepPassword();
         /** 用于初始化一些菜单的动作。*/
-        void on_initialize();
+        void on_initialize(const Glib::ustring& f_name);
 
         /**返回好友列表UI类*/
         BuddyView& get_buddy_view()

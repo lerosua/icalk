@@ -19,7 +19,7 @@ Tag* ConfXml::xml_from_file(char* filename)
                 infile.open(filename, ios::in | ios::binary);
 
                 if (!infile)
-                        std::cerr << "can't not open file" << filename << std::endl;
+                        std::cerr << "can't open file " << filename << std::endl;
         }
 
         //将文件读入string的代码
