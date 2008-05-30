@@ -54,7 +54,7 @@ MsgWindow::MsgWindow()
 
         showEncryptImage(false);
 
-        set_default_size(650, 420);
+        set_default_size(600, 400);
 
         Glib::RefPtr < Gdk::Pixbuf > pix = getPix("default.png");
 

@@ -506,6 +506,11 @@ bool BuddyView::remove
 
         Buddy *buddy =
                 Bodies::Get_Bodies().get_buddy_list().find_buddy(id);
+	if(NULL==buddy)
+	{
+		DLOG("buddy of %s is NULL\n",id.c_str());
+		return false;
+	}
         StringList g = buddy->getGroups();
 
         if (g.empty()) {
@@ -856,6 +861,11 @@ void BuddyView::add
         Buddy *buddy =
                 Bodies::Get_Bodies().get_buddy_list().find_buddy(jid_str);
 
+	if(NULL==buddy)
+	{
+		DLOG("buddy of %s is NULL\n",jid_str.c_str());
+		return;
+	}
         StringList g = buddy->getGroups();
         StringList::const_iterator it_g;
         Gtk::TreeModel::Children children = m_treestore->children();
