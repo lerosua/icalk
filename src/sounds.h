@@ -32,7 +32,7 @@ const int ARRIVE_SOUND = 1;
 const int LEAVE_SOUND = 2;
 /** 接收到信息时的声音*/
 const int RECEIVE_SOUND = 3;
-const int REDALERT_SOUND = 4;
+const int ALERT_SOUND = 4;
 /** 发送后的声音*/
 const int SEND_SOUND = 5;
 

@@ -21,7 +21,7 @@ bool TreeModelDnd::row_draggable_vfunc(const Gtk::TreeModel::Path& path)const
         if (iter) {
                 Row row = *iter;
                 int status_ = row[buddyColumns.status];
-                //printf("status_ is %d\n",status_);
+                printf("status_ is %d\n",status_);
 
                 if (STATUS_GROUP  == status_)
                         return false;

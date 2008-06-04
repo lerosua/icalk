@@ -77,8 +77,8 @@ void sounds::play(int code)
                 snprintf(filename, 255, "%sreceive.wav", GUnit::getSoundPath());
                 break;
 
-        case REDALERT_SOUND:
-                snprintf(filename, 255, "%sredalert.wav", GUnit::getSoundPath());
+        case ALERT_SOUND:
+                snprintf(filename, 255, "%salert.wav", GUnit::getSoundPath());
                 break;
 
         case SEND_SOUND:

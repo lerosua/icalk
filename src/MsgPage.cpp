@@ -410,10 +410,10 @@ MsgPage::~MsgPage()
         delete m_msgLog;
 }
 
-void MsgPage::showHistroy(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_)
+void MsgPage::showHistroy(const std::string& f_sender, const Glib::ustring& f_msg, const std::string& f_time)
 {
-        m_msgBox->showTitle(sender_, false);
-        m_msgBox->showGrayMsg(msg_);
+        m_msgBox->showTitle(f_sender, false);
+        m_msgBox->showGrayMsg(f_msg);
         m_msgBox->showGrayMsg("\n");
 
 }
@@ -425,7 +425,7 @@ void MsgPage::showStatusBarMsg(const std::string& msg, unsigned int id)
         // statusbar->push(msg,id);
 }
 
-void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_, const std::string& time_, bool self)
+void MsgPage::showMessage(const std::string& f_sender, const Glib::ustring& f_msg, const std::string& f_time, bool self)
 {
         if (!isRoom) {
                 Glib::RefPtr<Gdk::Pixbuf>pix_;
@@ -442,16 +442,16 @@ void MsgPage::showMessage(const std::string& sender_, const Glib::ustring& msg_,
                 //Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
                 //m_msgBox->insertImage(image);
                 if ((TYPE_GROUPCHAT != m_buddy->getType()) || self)
-                        m_msgBox->showTitle(sender_, self);
+                        m_msgBox->showTitle(f_sender, self);
         } else {
                 sounds::play(sounds::RECEIVE_SOUND);
                 setTitleColor(true);
-                m_msgBox->showTitle(sender_, self);
+                m_msgBox->showTitle(f_sender, self);
         }
 
-        m_msgBox->showMessage(msg_, time_);
+        m_msgBox->showMessage(f_msg, f_time);
 
-        m_msgLog->write(sender_, msg_);
+        m_msgLog->write(f_sender, f_msg);
 }
 
 void MsgPage::showPicture(const char* picname, bool self)

@@ -28,6 +28,8 @@
 #include "sounds.h"
 #include "Unit.h"
 #include "TreeViewTooltips.h"
+#include "RoomItem.h"
+#include "Buddy.h"
 
 BuddyView::BuddyView(MainWindow & f_parent):
                 m_parent(f_parent)
@@ -56,8 +58,6 @@ BuddyView::BuddyView(MainWindow & f_parent):
         set_model(m_treemodelfilter);
 
         append_column("ICON", buddyColumns.icon);
-        //append_column("ID", buddyColumns.id);
-        //append_column("Name", buddyColumns.nickname);
         //set_show_expanders(false); //gtkmm 2.12
 
         /*
@@ -114,7 +114,7 @@ BuddyView::BuddyView(MainWindow & f_parent):
 
         //设置可托拽
         this->enable_model_drag_source();
-        this->enable_model_drag_dest();
+        this->enable_model_drag_dest(Gdk::ACTION_MOVE);
 
         this->signal_motion_notify_event().
         connect(sigc::mem_fun(*this, &BuddyView::on_motion_event),
@@ -126,6 +126,7 @@ BuddyView::BuddyView(MainWindow & f_parent):
            this->signal_enter_notify_event().connect(sigc::mem_fun(
            *this,&BuddyView::on_enter_event));
          */
+	show_all_children();
 }
 
 BuddyView::~BuddyView()
@@ -143,7 +144,6 @@ int BuddyView::on_sort_compare(const Gtk::TreeModel::iterator & a,
                                 (*a)[buddyColumns.status] - (*b)[buddyColumns.status]) == 0) {
                 Glib::ustring an = (*a)[buddyColumns.nickname];
                 Glib::ustring bn = (*b)[buddyColumns.nickname];
-                //result = an.compare(bn);
                 result = an.lowercase().compare(bn.lowercase());
         }
 

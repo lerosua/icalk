@@ -31,8 +31,6 @@
 #include <gloox/gloox.h>
 #include <gloox/bookmarkhandler.h>
 #include <sigc++/connection.h>
-#include "RoomItem.h"
-#include "TalkRoomHandler.h"
 #include "ConfXml.h"
 #include "TreeModelDnd.h"
 #include "MainWindow.h"
@@ -45,6 +43,8 @@ using namespace gloox;
 class Bodies;
 
 class BuddyList;
+
+class Buddy;
 
 class TreeViewTooltips;
 /**
