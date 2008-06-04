@@ -1396,8 +1396,6 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
         if (!selection->count_selected_rows())
                 return result;
 
-        int type = (*iter)[buddyColumns.status];
-
         Gtk::TreeModel::Path path(iter);
 
         Gtk::TreeViewColumn * tvc;
@@ -1410,6 +1408,7 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                 return FALSE;
 
         Glib::ustring mid = (*iter)[buddyColumns.id];
+        int type = (*iter)[buddyColumns.status];
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
                         ev->type == GDK_3BUTTON_PRESS)) {

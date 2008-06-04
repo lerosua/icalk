@@ -1,6 +1,7 @@
 
-#include "TreeModelDnd.h"
 #include <iostream>
+#include "TreeModelDnd.h"
+#include "icalk.h"
 
 TreeModelDnd::TreeModelDnd(const Gtk::TreeModelColumnRecord& columns)
 {
@@ -22,11 +23,17 @@ bool TreeModelDnd::row_draggable_vfunc(const Gtk::TreeModel::Path& path)const
                 int status_ = row[buddyColumns.status];
                 //printf("status_ is %d\n",status_);
 
-                if (9 == status_)
+                if (STATUS_GROUP  == status_)
                         return false;
+		else 
+			return true;
         }
 
-        return true;
+#ifdef GLIBMM_VFUNCS_ENABLED
+	return Gtk::TreeStore::row_draggable_vfunc(path);
+#else
+        return false;
+#endif
 
 }
 
@@ -40,15 +47,15 @@ bool TreeModelDnd::row_drop_possible_vfunc(const Gtk::TreeModel::Path& dest,
         if (!dest_is_not_top_level || dest_parent.empty()) {
                 //The user wants to move something to the top-level.
                 //Let's always allow that.
-                //printf(" drag this \n");
+                printf(" drag this \n");
         } else {
                 TreeModelDnd* unconstThis = const_cast<TreeModelDnd*>(this);
                 const_iterator iter_dest_parent = unconstThis->get_iter(dest_parent);
                 Row row = *iter_dest_parent;
                 Glib::ustring name = row[buddyColumns.id];
-                //printf("name is %s\n",name.c_str());
+                printf("name is %s\n",name.c_str());
                 int status_ = row[buddyColumns.status];
-                //printf("status_ is %d\n",status_);
+                printf("status_ is %d\n",status_);
 
                 if (iter_dest_parent) {
                         return true;
