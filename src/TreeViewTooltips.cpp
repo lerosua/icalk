@@ -71,8 +71,16 @@ bool TreeViewTooltips::on_expose_event(GdkEventExpose* ev)
         Gtk::Widget* widget = dynamic_cast<Gtk::Widget*>(this);
         const Glib::RefPtr<Gdk::Window> window = this->get_window();
         const Gdk::Rectangle* area = 0;
+        //style->paint_flat_box(window, Gtk::STATE_NORMAL, Gtk::SHADOW_OUT,
+        //                      *area, *widget, "tooltip", 0, 0, width, height);
         style->paint_flat_box(window, Gtk::STATE_NORMAL, Gtk::SHADOW_OUT,
-                              *area, *widget, "tooltip", 0, 0, width, height);
+                              *area, *widget, "tooltip", 0, 0, -1,1 );
+        style->paint_flat_box(window, Gtk::STATE_NORMAL, Gtk::SHADOW_OUT,
+                              *area, *widget, "tooltip", 0,height-1,  -1, 1);
+        style->paint_flat_box(window, Gtk::STATE_NORMAL, Gtk::SHADOW_OUT,
+                              *area, *widget, "tooltip", 0, 0, 1, -1);
+        style->paint_flat_box(window, Gtk::STATE_NORMAL, Gtk::SHADOW_OUT,
+                              *area, *widget, "tooltip", width-1, 0, 1, -1);
         return Gtk::Window::on_expose_event(ev);
 }
 

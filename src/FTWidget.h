@@ -52,15 +52,35 @@ public:
         void on_button_del();
         /** 对于文件传输窗口里的所选项的传输继续，如果传输未完成的情况下*/
         void on_button_continue();
+	/** 文件传输窗口的按钮处理*/
         bool on_key_press_event(GdkEventKey* ev);
         bool on_delete_event(GdkEventAny*);
 
         Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::
                                              Children children,
                                              const Glib::ustring & f_sid);
+	/** 
+	 * @brief 添加新的文件传输选项
+	 * @param f_sid 此次传输的sid
+	 * @param f_filename 此次传输的文件的文件名
+	 * @param f_target	传输的对方的名字
+	 * @param f_size	传输文件的大小
+	 * @param f_type	正在传输的状态
+	 */
         void addXfer(const Glib::ustring& f_sid, const std::string& f_filename, const std::string& f_target, long f_size, const std::string& type);
+	/**
+	 * @brief 更新传输选项状态
+	 * @param f_sid 传输的sid号
+	 * @param percent 传输状态的百分比
+	 */
         void updateXfer(const Glib::ustring& f_sid, int percent);
+	/**
+	 * @brief 完成传输设置
+	 * @param f_sid 传输的sid号
+	 * @param error 标识此次传输是否有错误，0为完成传输
+	 */
         void doneXfer(const Glib::ustring& f_sid, bool error = 0);
+	/**将long类型的大小转化为可读的MB，GB之类的显示字符,取自libjingle代码*/
         std::string filesize_to_string(long size);
 
 private:

@@ -117,9 +117,11 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
         }
 
         m_TreeView.append_column(_("Filename"), m_columns.m_filename);
-        //m_TreeView.append_column_numeric(_("size"),m_columns.m_size, "%010d");
         m_TreeView.append_column(_("size"), m_columns.m_showsize);
         m_TreeView.append_column(_("Type"), m_columns.m_type);
+        m_TreeView.append_column(_("Target"), m_columns.m_target);
+//	this->signal_button_press_event().connect(sigc::mem_fun
+//			(*this,&FTWidget::on_button_press_event));
 
 
         show_all();
@@ -179,7 +181,8 @@ bool FTWidget::on_key_press_event(GdkEventKey* ev)
                 return Gtk::Window::on_key_press_event(ev);
         }
 
-        return true;
+        //return true;
+	return Gtk::Window::on_key_press_event(ev);
 }
 
 
@@ -199,7 +202,6 @@ void FTWidget::addXfer(const Glib::ustring& f_sid, const std::string& f_filename
 
 }
 
-/** 有些问题，有可能是因为调用太频繁了。*/
 void FTWidget::updateXfer(const Glib::ustring& f_sid, int percent)
 {
         Gtk::TreeModel::Children children = m_refTreeModel->children();
@@ -209,13 +211,6 @@ void FTWidget::updateXfer(const Glib::ustring& f_sid, int percent)
         if (iter == children.end())
                 return ;
 
-        //DLOG("compute the percent\n");
-        //long recvsize= (*iter)[m_columns.m_size]+f_size;
-        //long totalsize=(*iter)[m_columns.m_totalsize];
-        //int percent =(int) recvsize*100/totalsize;
-        //(*iter)[m_columns.m_size]=recvsize;
-        // if(percent>100)
-        //  percent=100;
         (*iter)[m_columns.m_percent] = percent;
 }
 
@@ -229,10 +224,14 @@ void FTWidget::doneXfer(const Glib::ustring& f_sid, bool error)
                 return ;
 
         if (error)
+	{
                 (*iter)[m_columns.m_icons] = getPix16("ft_error.png");
+		(*iter)[m_columns.m_type] = _("error");
+	}
         else {
                 (*iter)[m_columns.m_percent] = 100;
                 (*iter)[m_columns.m_icons] = getPix16("ft_done.png");
+		(*iter)[m_columns.m_type] = _("done");
         }
 }
 
@@ -250,13 +249,13 @@ std::string FTWidget::filesize_to_string(long size)
                 format = "Bytes";
                 size_display = size;
         } else if (size < 1000 * 1024) {
-                format = "KiB";
+                format = "KB";
                 size_display = (double)size / 1024.0;
         } else if (size < 1000 * 1024 * 1024) {
-                format = "MiB";
+                format = "MB";
                 size_display = (double)size / (1024.0 * 1024.0);
         } else {
-                format = "GiB";
+                format = "GB";
                 size_display = (double)size / (1024.0 * 1024.0 * 1024.0);
         }
 

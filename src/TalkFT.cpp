@@ -63,9 +63,9 @@ void TalkFT::initFT()
 
         //m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
 
-        m_ft->addStreamHost(m_client->jid(), "192.168.1.103", 28011);
-        m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
-                            PORT);
+        //m_ft->addStreamHost(m_client->jid(), "192.168.1.103", 28011);
+        //m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
+        //                    PORT);
         m_ft->addStreamHost(JID("proxy.netlab.cz"), "77.48.19.1",
                             PORT);
 }

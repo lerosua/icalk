@@ -175,8 +175,6 @@ bool MemberList::on_button_press_event(GdkEventButton * ev)
         if (!selection->count_selected_rows())
                 return result;
 
-        Glib::ustring name = (*iter)[columns.mid];
-
         Gtk::TreeModel::Path path(iter);
 
         Gtk::TreeViewColumn * tvc;
@@ -187,6 +185,7 @@ bool MemberList::on_button_press_event(GdkEventButton * ev)
         if (!this->
                         get_path_at_pos((int) ev->x, (int) ev->y, path, tvc, cx, cy))
                 return FALSE;
+        Glib::ustring name = (*iter)[columns.mid];
 
         if ((ev->type == GDK_2BUTTON_PRESS ||
                         ev->type == GDK_3BUTTON_PRESS)) {
