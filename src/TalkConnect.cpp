@@ -16,11 +16,12 @@
 * =====================================================================================
 */
 
-#include "TalkConnect.h"
 #include <gtkmm.h>
 #include <gtkmm/dialog.h>
+#include <glib/gi18n.h>
 #include "TalkCard.h"
 #include "Bodies.h"
+#include "TalkConnect.h"
 
 
 TalkConnect::TalkConnect()
@@ -65,7 +66,7 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         case ConnStreamError:
                 std::cout << "ConnStreamError" << er << std::endl;
-                std::cout << "streamError " << Bodies::Get_Bodies().get_client().streamError() << std::endl;
+                //std::cout << "streamError " << Bodies::Get_Bodies().get_client().streamError() << std::endl;
                 askDialog.
                 set_secondary_text
                 ("连接错误，连接流错误\n重新连接请按确定");
@@ -174,9 +175,9 @@ void TalkConnect::onDisconnect(ConnectionError er)
         switch (result) {
         case (Gtk::RESPONSE_OK):
                                         DLOG("OK clicked\n");
-                Bodies::Get_Bodies().get_main_window().on_relogin();
+                //Bodies::Get_Bodies().get_main_window().on_relogin();
                 //调用重新连接函数
-                //(m_login_handler->*m_relogin_call)();
+                (m_login_handler->*m_relogin_call)();
                 break;
 
 
@@ -188,9 +189,9 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         default:
                 std::cout << "nothing clicked" << std::endl;
-                Bodies::Get_Bodies().logout();
+                //Bodies::Get_Bodies().logout();
                 //调用重新连接函数
-                //(m_login_handler->*m_relogin_call)();
+                (m_login_handler->*m_relogin_call)();
                 break;
 
         }
@@ -243,10 +244,8 @@ void TalkConnect::signal_has_login(CLogin::Handler* f_handler, CLogin::Model::Fu
         m_login_call = f_call;
 }
 
-/*
 void TalkConnect::signal_relogin(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
 {
         m_login_handler = f_handler;
         m_relogin_call = f_call;
 }
-*/

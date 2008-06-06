@@ -66,7 +66,7 @@ Bodies::Bodies():
         // 绑定登录回调函数
         main_window->signal_on_login(this, &Bodies::on_login);
         m_talkConnect.signal_has_login(this, &Bodies::has_login);
-        //m_talkConnect.signal_has_login(this, &Bodies::relogin);
+        m_talkConnect.signal_relogin(this, &Bodies::relogin);
 }
 
 Bodies::~Bodies()
@@ -386,8 +386,12 @@ void Bodies::logout()
 
 void Bodies::relogin()
 {
-        logout();
         main_window->on_relogin();
+}
+
+void Bodies::reconnect()
+{
+        connectIO.disconnect();
 }
 
 void Bodies::disco_node(const std::string& node)

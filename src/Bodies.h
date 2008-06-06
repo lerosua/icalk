@@ -203,6 +203,8 @@ protected:
         virtual void has_login();
         //退回登录界面，重新登录
         virtual void relogin();
+	//在出错的时候设置重新连接
+	virtual void reconnect();
 };
 
 #endif // _BODIES_H_
