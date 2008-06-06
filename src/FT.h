@@ -27,12 +27,12 @@ using namespace std;
  *   */
 typedef enum
 {
-        XFER_STATUS_UNKNOWN = 0,           /**< Unknown, the xfer may be null. */
-        XFER_STATUS_NOT_STARTED,           /**< It hasn't started yet. */
-        XFER_STATUS_ACCEPTED,              /**< Receive accepted, but destination file not selected yet */
-        XFER_STATUS_STARTED,               /**< The xfer has started. */
-        XFER_STATUS_DONE,                  /**< The xfer completed successfully. */
-        XFER_STATUS_CANCEL_LOCAL,          /**< The xfer was canceled by us. */
+        XFER_STATUS_UNKNOWN = 0,            /**< Unknown, the xfer may be null. */
+        XFER_STATUS_NOT_STARTED,            /**< It hasn't started yet. */
+        XFER_STATUS_ACCEPTED,               /**< Receive accepted, but destination file not selected yet */
+        XFER_STATUS_STARTED,                /**< The xfer has started. */
+        XFER_STATUS_DONE,                   /**< The xfer completed successfully. */
+        XFER_STATUS_CANCEL_LOCAL,           /**< The xfer was canceled by us. */
         XFER_STATUS_CANCEL_REMOTE  /**< The xfer was canceled by the other end, or we couldn't connect. */
 } XferStatusType;
 

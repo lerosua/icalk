@@ -201,6 +201,8 @@ protected:
         virtual bool on_login(string f_name, string f_passwd, string f_server, int f_port);
         // 连接建立成功，由 TalkConnect 回调
         virtual void has_login();
+        //退回登录界面，重新登录
+        virtual void relogin();
 };
 
 #endif // _BODIES_H_

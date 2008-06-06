@@ -120,8 +120,8 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
         m_TreeView.append_column(_("size"), m_columns.m_showsize);
         m_TreeView.append_column(_("Type"), m_columns.m_type);
         m_TreeView.append_column(_("Target"), m_columns.m_target);
-//	this->signal_button_press_event().connect(sigc::mem_fun
-//			(*this,&FTWidget::on_button_press_event));
+        // this->signal_button_press_event().connect(sigc::mem_fun
+        //   (*this,&FTWidget::on_button_press_event));
 
 
         show_all();
@@ -182,7 +182,7 @@ bool FTWidget::on_key_press_event(GdkEventKey* ev)
         }
 
         //return true;
-	return Gtk::Window::on_key_press_event(ev);
+        return Gtk::Window::on_key_press_event(ev);
 }
 
 
@@ -223,15 +223,13 @@ void FTWidget::doneXfer(const Glib::ustring& f_sid, bool error)
         if (iter == children.end())
                 return ;
 
-        if (error)
-	{
+        if (error) {
                 (*iter)[m_columns.m_icons] = getPix16("ft_error.png");
-		(*iter)[m_columns.m_type] = _("error");
-	}
-        else {
+                (*iter)[m_columns.m_type] = _("error");
+        } else {
                 (*iter)[m_columns.m_percent] = 100;
                 (*iter)[m_columns.m_icons] = getPix16("ft_done.png");
-		(*iter)[m_columns.m_type] = _("done");
+                (*iter)[m_columns.m_type] = _("done");
         }
 }
 

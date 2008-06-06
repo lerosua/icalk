@@ -257,154 +257,154 @@ void IMHtml::showMessage(const Glib::ustring& f_msg, const std::string& f_time)
 
                         switch (type) {
 
-                        case 1:      /*B */
+                        case 1:       /*B */
 
-                        case 2:      /*BOLD*/
+                        case 2:       /*BOLD*/
 
-                        case 54:      /*STRONG*/
-
-                                break;
-
-                        case 3:       /* /B */
-
-                        case 4:       /* /BOLD */
-
-                        case 55:      /* /STRONG */
+                        case 54:       /*STRONG*/
 
                                 break;
 
-                        case 5:       /* I */
+                        case 3:        /* /B */
 
-                        case 6:       /* ITALIC */
+                        case 4:        /* /BOLD */
 
-                        case 52:      /* EM */
-
-                                break;
-
-                        case 7:       /* /I */
-
-                        case 8:       /* /ITALIC */
-
-                        case 53:      /* /EM */
-                                break;
-
-                        case 9:       /* U */
-
-                        case 10:      /* UNDERLINE */
+                        case 55:       /* /STRONG */
 
                                 break;
 
-                        case 11:      /* /U */
+                        case 5:        /* I */
 
-                        case 12:      /* /UNDERLINE */
+                        case 6:        /* ITALIC */
+
+                        case 52:       /* EM */
+
                                 break;
 
-                        case 13:      /* S */
+                        case 7:        /* /I */
 
-                        case 14:      /* STRIKE */
+                        case 8:        /* /ITALIC */
+
+                        case 53:       /* /EM */
                                 break;
 
-                        case 15:      /* /S */
+                        case 9:        /* U */
 
-                        case 16:      /* /STRIKE */
+                        case 10:       /* UNDERLINE */
+
                                 break;
 
-                        case 17:      /* SUB */
+                        case 11:       /* /U */
+
+                        case 12:       /* /UNDERLINE */
                                 break;
 
-                        case 18:      /* /SUB */
+                        case 13:       /* S */
+
+                        case 14:       /* STRIKE */
                                 break;
 
-                        case 19:      /* SUP */
+                        case 15:       /* /S */
+
+                        case 16:       /* /STRIKE */
                                 break;
 
-                        case 20:      /* /SUP */
+                        case 17:       /* SUB */
                                 break;
 
-                        case 21:      /* PRE */
+                        case 18:       /* /SUB */
                                 break;
 
-                        case 22:      /* /PRE */
+                        case 19:       /* SUP */
                                 break;
 
-                        case 23:      /* TITLE */
+                        case 20:       /* /SUP */
                                 break;
 
-                        case 24:      /* /TITLE */
+                        case 21:       /* PRE */
                                 break;
 
-                        case 25:      /* BR */
-
-                        case 58:      /* BR/ */
-
-                        case 61:      /* BR (opt) */
+                        case 22:       /* /PRE */
                                 break;
 
-                        case 26:             /* HR */
-
-                        case 42:             /* HR (opt) */
+                        case 23:       /* TITLE */
                                 break;
 
-                        case 27:      /* /FONT */
+                        case 24:       /* /TITLE */
                                 break;
 
-                        case 28:             /* /A    */
+                        case 25:       /* BR */
+
+                        case 58:       /* BR/ */
+
+                        case 61:       /* BR (opt) */
                                 break;
 
-                        case 29:      /* P */
+                        case 26:              /* HR */
 
-                        case 30:      /* /P */
-
-                        case 31:      /* H3 */
-
-                        case 32:      /* /H3 */
-
-                        case 33:      /* HTML */
-
-                        case 34:      /* /HTML */
-
-                        case 35:      /* BODY */
+                        case 42:              /* HR (opt) */
                                 break;
 
-                        case 36:      /* /BODY */
+                        case 27:       /* /FONT */
                                 break;
 
-                        case 37:      /* FONT */
-
-                        case 38:      /* HEAD */
-
-                        case 39:      /* /HEAD */
-
-                        case 40:      /* BINARY */
-
-                        case 41:      /* /BINARY */
+                        case 28:              /* /A    */
                                 break;
 
-                        case 43:      /* FONT (opt) */
+                        case 29:       /* P */
+
+                        case 30:       /* /P */
+
+                        case 31:       /* H3 */
+
+                        case 32:       /* /H3 */
+
+                        case 33:       /* HTML */
+
+                        case 34:       /* /HTML */
+
+                        case 35:       /* BODY */
                                 break;
 
-                        case 44:      /* BODY (opt) */
+                        case 36:       /* /BODY */
                                 break;
 
-                        case 45:      /* A (opt) */
+                        case 37:       /* FONT */
+
+                        case 38:       /* HEAD */
+
+                        case 39:       /* /HEAD */
+
+                        case 40:       /* BINARY */
+
+                        case 41:       /* /BINARY */
                                 break;
 
-                        case 46:      /* IMG (opt) */
-
-                        case 59:      /* IMG */
+                        case 43:       /* FONT (opt) */
                                 break;
 
-                        case 47:      /* P (opt) */
+                        case 44:       /* BODY (opt) */
+                                break;
 
-                        case 48:      /* H3 (opt) */
+                        case 45:       /* A (opt) */
+                                break;
 
-                        case 49:      /* HTML (opt) */
+                        case 46:       /* IMG (opt) */
 
-                        case 50:      /* CITE */
+                        case 59:       /* IMG */
+                                break;
 
-                        case 51:      /* /CITE */
+                        case 47:       /* P (opt) */
 
-                        case 56:      /* SPAN (opt) */
+                        case 48:       /* H3 (opt) */
+
+                        case 49:       /* HTML (opt) */
+
+                        case 50:       /* CITE */
+
+                        case 51:       /* /CITE */
+
+                        case 56:       /* SPAN (opt) */
                                 /* Inline CSS Support - Douglas Thrift
                                  *
                                  * color
@@ -421,13 +421,13 @@ void IMHtml::showMessage(const Glib::ustring& f_msg, const std::string& f_time)
                                  * font-style
                                  */
 
-                        case 57:      /* /SPAN */
+                        case 57:       /* /SPAN */
                                 break;
 
-                        case 60:         /* SPAN */
+                        case 60:          /* SPAN */
                                 break;
 
-                        case 62:      /* comment */
+                        case 62:       /* comment */
                                 break;
 
                         default:

@@ -114,7 +114,7 @@ BuddyView::BuddyView(MainWindow & f_parent):
 
         //设置可托拽
         this->enable_model_drag_source();
-        this->enable_model_drag_dest(Gdk::ACTION_MOVE);
+        this->enable_model_drag_dest();
 
         this->signal_motion_notify_event().
         connect(sigc::mem_fun(*this, &BuddyView::on_motion_event),
@@ -126,7 +126,7 @@ BuddyView::BuddyView(MainWindow & f_parent):
            this->signal_enter_notify_event().connect(sigc::mem_fun(
            *this,&BuddyView::on_enter_event));
          */
-	show_all_children();
+        show_all_children();
 }
 
 BuddyView::~BuddyView()
@@ -506,11 +506,12 @@ bool BuddyView::remove
 
         Buddy *buddy =
                 Bodies::Get_Bodies().get_buddy_list().find_buddy(id);
-	if(NULL==buddy)
-	{
-		DLOG("buddy of %s is NULL\n",id.c_str());
-		return false;
-	}
+
+        if (NULL == buddy) {
+                DLOG("buddy of %s is NULL\n", id.c_str());
+                return false;
+        }
+
         StringList g = buddy->getGroups();
 
         if (g.empty()) {
@@ -861,11 +862,11 @@ void BuddyView::add
         Buddy *buddy =
                 Bodies::Get_Bodies().get_buddy_list().find_buddy(jid_str);
 
-	if(NULL==buddy)
-	{
-		DLOG("buddy of %s is NULL\n",jid_str.c_str());
-		return;
-	}
+        if (NULL == buddy) {
+                DLOG("buddy of %s is NULL\n", jid_str.c_str());
+                return ;
+        }
+
         StringList g = buddy->getGroups();
         StringList::const_iterator it_g;
         Gtk::TreeModel::Children children = m_treestore->children();
@@ -1408,6 +1409,7 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                 return FALSE;
 
         Glib::ustring mid = (*iter)[buddyColumns.id];
+
         int type = (*iter)[buddyColumns.status];
 
         if ((ev->type == GDK_2BUTTON_PRESS ||

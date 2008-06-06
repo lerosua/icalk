@@ -27,7 +27,7 @@ using namespace gloox;
 
 using namespace std;
 
-class Bodies;
+//class Bodies;
 
 /**
  * @brief 监听网络连接的类
@@ -40,7 +40,8 @@ class TalkConnect: public ConnectionListener, public LogHandler
 public:
         TalkConnect();
         virtual ~TalkConnect();
-        void Observer(CLogin::Handler* f_handler, CLogin::Model::Func f_call);
+        void signal_has_login(CLogin::Handler* f_handler, CLogin::Model::Func f_call);
+        //void signal_relogin(CLogin::Handler* f_handler,CLogin::Model::Func f_call);
 
 protected:
         virtual void onConnect();
@@ -54,6 +55,7 @@ protected:
 private:
         CLogin::Handler* m_login_handler;
         CLogin::Model::Func m_login_call;
+        //CLogin::Model::Func m_relogin_call;
 };
 
 

@@ -62,7 +62,7 @@ class MainWindow: public Gtk::Window
 public:
         MainWindow(Bodies& f_bodies);
 
-        void Observer(CLogin::Handler* f_handler, CLogin::View::Func f_call);
+        void signal_on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call);
         bool KeepUser();
         bool KeepPassword();
         /** 用于初始化一些菜单的动作。*/
@@ -212,11 +212,7 @@ public:
         /**登录成功后显示列表页*/
         void on_login_finial();
         /** 重新登录，显示登录框的页*/
-        void on_relogin()
-        {
-                main_notebook->set_current_page(LOGIN_INIT);
-                config.STATUS = LOGIN_INIT;
-        }
+        void on_relogin();
 
         /** 在登录中取消登录*/
         void on_logining_cancel();

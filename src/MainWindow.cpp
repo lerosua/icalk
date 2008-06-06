@@ -62,6 +62,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='Info'/>"
         " <menuitem action='Preferences'/>"
         "       <separator/>"
+        " <menuitem action='Disconnect'/>"
         " <menuitem action='Quit'/>"
         "</popup>"
         "<popup name='BuddyMenu'>"
@@ -94,6 +95,7 @@ Glib::ustring ui_menu_info =
         " <menuitem action='Mute'/>"
         " <menuitem action='Preferences'/>"
         "       <separator/>"
+        " <menuitem action='Disconnect'/>"
         " <menuitem action='Quit'/>"
         "</popup>"
         "</ui>";
@@ -397,25 +399,30 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
         Glib::ustring passwd = entryPasswd->get_text();
         Glib::ustring server = entryServer->get_text();
         Glib::ustring port = entryPort->get_text();
-	int iport;
+        int iport;
 
-	if(name.empty()||passwd.empty())
-		return;
-	if(server.empty())
-		server="talk.google.com";
-	if(port.empty())
-		iport=5222;
-	else
-		iport = atoi(port.c_str());
-         // TODO clear
-	on_initialize(name);
-	main_notebook->set_current_page(LOGIN_LOADING);
-	config.STATUS = LOGIN_LOADING;
-        
+        if (name.empty() || passwd.empty())
+                return ;
+
+        if (server.empty())
+                server = "talk.google.com";
+
+        if (port.empty())
+                iport = 5222;
+        else
+                iport = atoi(port.c_str());
+
+        // TODO clear
+        on_initialize(name);
+
+        main_notebook->set_current_page(LOGIN_LOADING);
+
+        config.STATUS = LOGIN_LOADING;
+
 
         if (!(f_handler->*f_call)(name, passwd, server, iport)) { // 登录失败
                 // 界面处理
-		DLOG("登录失败\n");
+                DLOG("登录失败\n");
         }
 
         // 登录成功，界面处理
@@ -425,8 +432,8 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
 
 void MainWindow::on_initialize(const Glib::ustring& f_name)
 {
-	GUnit::init(f_name.c_str());
-	m_bodies.loadAccountTag();
+        GUnit::init(f_name.c_str());
+        m_bodies.loadAccountTag();
 
         list_view->loadBlistTag();
         const std::string & sound = m_bodies.getAccountTag("sound");
@@ -455,7 +462,7 @@ void MainWindow::on_account_changed()
                 DLOG("select name %s\n", name.c_str());
                 //GUnit::init(name.c_str());
                 //m_bodies.loadAccountTag();
-		on_initialize(name);
+                on_initialize(name);
                 std::string keep_passwd = m_bodies.getAccountTag("keeppasswd");
 
                 if ("true" == keep_passwd) {
@@ -476,12 +483,12 @@ void MainWindow::on_account_changed()
                         else
                                 entryPort->set_text("");
                 } else {
-			//清空
+                        //清空
                         keepMe->set_active(false);
                         keeppasswd->set_active(false);
-			entryPasswd->set_text("");
-			entryServer->set_text("");
-			entryPort->set_text("");
+                        entryPasswd->set_text("");
+                        entryServer->set_text("");
+                        entryPort->set_text("");
                 }
 
 
@@ -507,14 +514,17 @@ void MainWindow::set_logo(const std::string & iconpath)
 
 
         } else
-                logo =getPix("avatar.png");
-                        //Gdk::Pixbuf::
-                        //create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
+                logo = getPix("avatar.png");
+
+        //Gdk::Pixbuf::
+        //create_from_file(DATA_DIR "/images/avatar.png", 32, 32);
         Glib::RefPtr < Gdk::Pixbuf > border =
                 getPix("border.png");
 
-        Glib::RefPtr < Gdk::Pixbuf > logo32 =logo->scale_simple(32,32,Gdk::INTERP_NEAREST);
+        Glib::RefPtr < Gdk::Pixbuf > logo32 = logo->scale_simple(32, 32, Gdk::INTERP_NEAREST);
+
         logo32->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
+
         //logo->composite(border, 0, 0, 32, 32, 2, 2, 1, 1, Gdk::INTERP_BILINEAR, 255);
 
         Gtk::Image * logo_frame =
@@ -580,7 +590,9 @@ void MainWindow::on_clean_entry()
 
 void MainWindow::on_quit()
 {
-        //m_bodies.logout();
+        if (config.STATUS != LOGIN_INIT)
+                m_bodies.logout();
+
         //m_bodies.~Bodies();
         Gtk::Main::quit();
 }
@@ -1462,7 +1474,7 @@ void MainWindow::on_roomChat_activate()
         Glib::ustring mid = list_view->getIDfromIter(iter);
 
         RoomItem *room =
-                Bodies::Get_Bodies().getRoomHandler().
+                m_bodies.getRoomHandler().
                 findRoom(mid);
 
         MsgPage *page = room->getPage();
@@ -1477,12 +1489,12 @@ void MainWindow::on_roomChat_activate()
                 page = room->getPage();
                 page->setSubject();
                 page->refreshMember();
-                Bodies::Get_Bodies().get_msg_window().
+                m_bodies.get_msg_window().
                 add_page(*page);
         }
 
-        Bodies::Get_Bodies().get_msg_window().show();
-        Bodies::Get_Bodies().get_msg_window().setCurrentPage(page);
+        m_bodies.get_msg_window().show();
+        m_bodies.get_msg_window().setCurrentPage(page);
 
 }
 
@@ -1697,6 +1709,10 @@ void MainWindow::init_ui_manager()
          sigc::mem_fun(*this, &MainWindow::on_setPrefer_activate));
 
         action_group->add
+        (Gtk::Action::create("Disconnect", Gtk::Stock::DISCONNECT, _("Disconnect")),
+         sigc::mem_fun(*this, &MainWindow::on_relogin));
+
+        action_group->add
         (Gtk::Action::create("Quit", Gtk::Stock::QUIT, _("Quit")),
          sigc::mem_fun(*this, &MainWindow::on_quit));
 
@@ -1807,7 +1823,7 @@ void MainWindow::init_ui_manager()
 
 }
 
-void MainWindow::Observer(CLogin::Handler* f_handler, CLogin::View::Func f_call)
+void MainWindow::signal_on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
 {
         Button* button_ok = dynamic_cast <Button*>(main_xml->get_widget("login_ok"));
         button_ok->signal_clicked().connect(sigc::bind(
@@ -1823,4 +1839,15 @@ bool MainWindow::KeepUser()
 bool MainWindow::KeepPassword()
 {
         return keeppasswd->get_active();
+}
+
+void MainWindow::on_relogin()
+{
+        if (config.STATUS != LOGIN_INIT)
+                m_bodies.logout();
+
+        main_notebook->set_current_page(LOGIN_INIT);
+
+        config.STATUS = LOGIN_INIT;
+
 }

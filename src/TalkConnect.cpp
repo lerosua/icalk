@@ -46,9 +46,15 @@ void TalkConnect::onDisconnect(ConnectionError er)
         if (ConnNoError == er)
                 return ;
 
+        if (ConnUserDisconnected == er) {
+                std::cout << "ConnUserDisconnected " << er << std::endl;
+                return ;
+        } else if (ConnNotConnected == er)
+                std::cout << "ConnNotConnected " << er << std::endl;
+
         DLOG("Talk onDisconnect error in %d\n", er);
 
-        Gtk::MessageDialog askDialog("连接错误",
+        Gtk::MessageDialog askDialog(_("Connect Error"),
                                      false /*use markup */ ,
                                      Gtk::MESSAGE_QUESTION,
                                      Gtk::BUTTONS_OK_CANCEL);
@@ -56,11 +62,6 @@ void TalkConnect::onDisconnect(ConnectionError er)
         int result;
 
         switch (er) {
-                /*
-                   case 0:
-                   std::cout<<"ConnNoError "<< er << std::endl;
-                   break;
-                 */
 
         case ConnStreamError:
                 std::cout << "ConnStreamError" << er << std::endl;
@@ -171,33 +172,30 @@ void TalkConnect::onDisconnect(ConnectionError er)
         result = askDialog.run();
 
         switch (result) {
-        case (Gtk::RESPONSE_OK): {
-                        std::cout << "OK clicked" << std::endl;
-                        Bodies::Get_Bodies().logout();
-                        Bodies::Get_Bodies().get_main_window().
-                        on_relogin();
-                        break;
-                }
+        case (Gtk::RESPONSE_OK):
+                                        DLOG("OK clicked\n");
+                Bodies::Get_Bodies().get_main_window().on_relogin();
+                //调用重新连接函数
+                //(m_login_handler->*m_relogin_call)();
+                break;
 
-        case (Gtk::RESPONSE_CANCEL): {
-                        std::cout << "Cancel clicked" << std::endl;
-                        //Bodies::Get_Bodies().logout();
-                        Bodies::Get_Bodies().get_main_window().on_quit();
-                        break;
-                }
 
-        default: {
-                        std::cout << "nothing clicked" << std::endl;
-                        Bodies::Get_Bodies().logout();
-                        break;
-                }
+        case (Gtk::RESPONSE_CANCEL):
+                                        DLOG("Cancel cliecked\n");
+                Bodies::Get_Bodies().get_main_window().on_quit();
+                break;
+
+
+        default:
+                std::cout << "nothing clicked" << std::endl;
+                Bodies::Get_Bodies().logout();
+                //调用重新连接函数
+                //(m_login_handler->*m_relogin_call)();
+                break;
+
         }
 
 
-        if (ConnUserDisconnected == er)
-                std::cout << "ConnUserDisconnected " << er << std::endl;
-        else if (ConnNotConnected == er)
-                std::cout << "ConnNotConnected " << er << std::endl;
 }
 
 void TalkConnect::onResourceBindError(ResourceBindError error)
@@ -239,8 +237,16 @@ void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& mes
 
 }
 
-void TalkConnect::Observer(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
+void TalkConnect::signal_has_login(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
 {
         m_login_handler = f_handler;
         m_login_call = f_call;
 }
+
+/*
+void TalkConnect::signal_relogin(CLogin::Handler* f_handler, CLogin::Model::Func f_call)
+{
+        m_login_handler = f_handler;
+        m_relogin_call = f_call;
+}
+*/

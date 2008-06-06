@@ -64,8 +64,9 @@ Bodies::Bodies():
         statusIcon = new TrayIcon(main_window);
 
         // 绑定登录回调函数
-        main_window->Observer(this, &Bodies::on_login);
-        m_talkConnect.Observer(this, &Bodies::has_login);
+        main_window->signal_on_login(this, &Bodies::on_login);
+        m_talkConnect.signal_has_login(this, &Bodies::has_login);
+        //m_talkConnect.signal_has_login(this, &Bodies::relogin);
 }
 
 Bodies::~Bodies()
@@ -381,6 +382,12 @@ void Bodies::set_vcard(const VCard* f_vcard)
 void Bodies::logout()
 {
         m_client->disconnect();
+}
+
+void Bodies::relogin()
+{
+        logout();
+        main_window->on_relogin();
 }
 
 void Bodies::disco_node(const std::string& node)
