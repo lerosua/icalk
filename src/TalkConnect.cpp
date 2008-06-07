@@ -20,8 +20,8 @@
 #include <gtkmm/dialog.h>
 #include <glib/gi18n.h>
 #include "TalkCard.h"
-#include "Bodies.h"
 #include "TalkConnect.h"
+#include "icalk.h"
 
 
 TalkConnect::TalkConnect()
@@ -174,21 +174,23 @@ void TalkConnect::onDisconnect(ConnectionError er)
 
         switch (result) {
         case (Gtk::RESPONSE_OK):
-                                        DLOG("OK clicked\n");
+		DLOG("OK clicked\n");
                 //Bodies::Get_Bodies().get_main_window().on_relogin();
-                //调用重新连接函数
+		//i want this time call the reconnect function,so it must fixed
                 (m_login_handler->*m_relogin_call)();
                 break;
 
 
         case (Gtk::RESPONSE_CANCEL):
-                                        DLOG("Cancel cliecked\n");
-                Bodies::Get_Bodies().get_main_window().on_quit();
+		DLOG("Cancel cliecked\n");
+                //Bodies::Get_Bodies().get_main_window().on_quit();
+		//this time must call relogin function
+                (m_login_handler->*m_relogin_call)();
                 break;
 
 
         default:
-                std::cout << "nothing clicked" << std::endl;
+		DLOG("Nothing clicked\n");
                 //Bodies::Get_Bodies().logout();
                 //调用重新连接函数
                 (m_login_handler->*m_relogin_call)();

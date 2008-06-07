@@ -1638,23 +1638,6 @@ void MainWindow::register_stock_items()
         const Gtk::StockID stock_id_type("TYPE");
         const Gtk::StockID stock_id_disco("DISCO");
 
-        /*
-               factory_chat->add
-               (stock_id_chat, icon_set_chat);
-
-               factory_log->add
-               (stock_id_log, icon_set_log);
-
-               factory_block->add
-               (stock_id_block, icon_set_block);
-
-               factory_type->add
-               (stock_id_type, icon_set_type);
-
-               factory_disco->add
-               (stock_id_disco, icon_set_disco);
-        */
-
         factory->add
         (stock_id_chat, icon_set_chat);
 

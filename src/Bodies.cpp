@@ -382,6 +382,7 @@ void Bodies::set_vcard(const VCard* f_vcard)
 void Bodies::logout()
 {
         m_client->disconnect();
+	disconnect();
 }
 
 void Bodies::relogin()
