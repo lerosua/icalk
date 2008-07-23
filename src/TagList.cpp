@@ -30,7 +30,8 @@ TagList::Tags::Tags()
         //timeFont->property_justification().set_value(Gtk::JUSTIFY_RIGHT);
         //timeFont->property_size().set_value(8 * Pango::SCALE);
         //timeFont->property_weight().set_value(Pango::WEIGHT_BOLD);
-        timeFont->property_foreground().set_value("#AFB3B2");
+        timeFont->property_foreground().set_value("#16569D");
+        //timeFont->property_foreground().set_value("#AFB3B2");
 
         tagTable->add
         (timeFont);

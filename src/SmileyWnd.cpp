@@ -109,7 +109,11 @@ void SmileyWnd::on_smiley_clicked(Glib::ustring code)
                 page->insertSmiley(code);
         }
 }
-
+void SmileyWnd::showWindow()
+{
+                show();
+                raise();
+}
 bool SmileyWnd::on_leave_event(GdkEventCrossing* ev)
 {
         hide();

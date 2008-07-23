@@ -46,11 +46,7 @@ public:
         ~SmileyWnd();
         bool on_key_press_event(GdkEventKey * ev);
         bool on_leave_event(GdkEventCrossing* ev);
-        void showWindow()
-        {
-                show();
-                raise();
-        }
+        void showWindow();
 
 private:
         void on_smiley_clicked(Glib::ustring code);

@@ -149,7 +149,8 @@ void MsgBox::showTime(const std::string& time_)
                 time_t now;
                 time(&now);
                 tmw = localtime(&now);
-                snprintf(timetext, 32, "%02d:%02d:%02d ", tmw->tm_hour, tmw->tm_min, tmw->tm_sec);
+                //snprintf(timetext, 32, "%02d:%02d:%02d ", tmw->tm_hour, tmw->tm_min, tmw->tm_sec);
+                snprintf(timetext, 34, "(%02d:%02d:%02d):", tmw->tm_hour, tmw->tm_min, tmw->tm_sec);
         } else {
                 printf("Debug in time stamp\n");
                 snprintf(timetext, time_.size(), time_.c_str());
@@ -168,11 +169,11 @@ void MsgBox::showTime(const std::string& time_)
 
         buffer->move_mark(mark, end);
 
-        end = buffer->insert_with_tag(end, "\t\t\t\t\t\t", taglist.getBoldFont());
+        //end = buffer->insert_with_tag(end, "\t\t\t\t\t\t", taglist.getBoldFont());
         end =
                 buffer->insert_with_tag(end, Glib::ustring(timetext), taglist.getBoldFont());
 
-        end = buffer->insert_with_tag(end, "\n", taglist.getBoldFont());
+        //end = buffer->insert_with_tag(end, "\n", taglist.getBoldFont());
         first = mark->get_iter();
         buffer->apply_tag(titlecolor, first, end);
 
@@ -204,7 +205,7 @@ void MsgBox::showTitle(const std::string & sender, bool self)
 
         end = buffer->insert_with_tag(end, sender, taglist.getBoldFont());
 
-        end = buffer->insert_with_tag(end, ": ", taglist.getBoldFont());
+        //end = buffer->insert_with_tag(end, ": ", taglist.getBoldFont());
 
         first = mark->get_iter();
 
