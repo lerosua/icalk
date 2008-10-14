@@ -52,7 +52,7 @@ class ServerDiscoWindow: public Gtk::Window
 {
 
 public:
-        ServerDiscoWindow(MainWindow* parent_);
+        ServerDiscoWindow(MainWindow* f_parent);
         ~ServerDiscoWindow();
         /** 添加代理*/
         void addAgent(const std::string& f_jid);

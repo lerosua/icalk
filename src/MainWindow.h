@@ -45,6 +45,9 @@ class StatusMsgWidget;
 class ServerDiscoWindow;
 
 class FTWidget;
+
+class PluginPref;
+
 /** 标识当前窗口为已连接后的页*/
 #define LOGIN_FINIAL 2 
 /** 标识当前窗口为正在连接的页*/
@@ -184,6 +187,10 @@ public:
         void on_fileXer_activate();
         /** 关闭文件传输窗口*/
         void on_fileXer_close(FTWidget* dlg);
+	/** 打开插件管理窗口*/
+	void on_plugin_manager();
+	/** 关闭插件管理窗口*/
+	void on_plugin_close(PluginPref* dlg);
         /** 刷新好友列表*/
         void on_freshList_activate();
         /** 显示关于窗口，关于窗口有作者信息，版权等*/
@@ -285,6 +292,7 @@ private:
         Gtk::Entry* entryPort;
         Sexy::IconEntry* entryFilter;
         ServerDiscoWindow* discowindow;
+	PluginPref* pluginpref;
         FTWidget* ftwidget;
         StatusMsgWidget *statusMsgWidget;
         sigc::connection msgTimeout;

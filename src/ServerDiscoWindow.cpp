@@ -44,7 +44,7 @@ const char* agent_type_info[19][3] =
                 , { "other", "", "other.png" }
         };
 
-ServerDiscoWindow::ServerDiscoWindow(MainWindow * parent_): m_parent(parent_)
+ServerDiscoWindow::ServerDiscoWindow(MainWindow * f_parent): m_parent(f_parent)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
         server_discovery_xml = Gnome::Glade::Xml::create(server_discovery_ui, "vBox");

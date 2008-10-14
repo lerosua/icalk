@@ -243,6 +243,8 @@ bool Bodies::callback(Glib::IOCondition condition)
 
         if ( ce == ConnNoError) {
                 ce = m_client->recv(1000); // microseconds, not milliseconds
+		if(ce != ConnNoError)
+			DLOG("recv error %d\n",ce);
         }
 
         //DLOG("recv return %d\n", ce);

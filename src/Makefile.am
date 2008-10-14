@@ -26,6 +26,7 @@ icalk_SOURCES = \
 	       TagList.cpp   	\
 	       TalkFT.cpp 	\
 	       FT.cpp 		\
+	       PluginPref.cpp 	\
 	       MsgBox.cpp 	\
 	       TreeModelDnd.cpp \
 	       CommandBar.cpp 	\
@@ -62,6 +63,7 @@ noinst_HEADERS = \
 		 TagList.h     \
 		 TalkFT.h 	\
 		 FT.h 		\
+		 PluginPref.h 	\
 	         TalkCard.h 	\
 		 MsgBox.h  	\
 		 TreeModelDnd.h \

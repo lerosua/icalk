@@ -1,4 +1,4 @@
-SUBDIRS = src data po doc
+SUBDIRS = src data po doc plugins
 
 EXTRA_DIST =                    \
 	Doxyfile		\
