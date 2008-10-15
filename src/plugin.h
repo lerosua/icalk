@@ -20,18 +20,6 @@
 
 #include <glibmm/module.h>
 
-/**
- * 插件类型.
- */
-typedef enum
-{
-	TALK_PLUGIN_UNKONW = -1,  /**<未知类型 */
-	TALK_PLUGIN_STANDARD = 0, /**<独立插件 */
-	TALK_PLUGIN_LOADER,	  /**<可加载插件 */
-	TALK_PLUGIN_PROTOCOL	  /**<协议插件   */
-
-} TalkPluginType;
-
 
 /**
  * 插件接口类
@@ -41,25 +29,9 @@ class Plugin
 {
 	public:
 		Plugin();
-
 		bool load();
 		bool unload();
-
-
 	private:
-		unsigned int magic;
-		unsigned int major_version;
-		unsigned int minor_version;
-		TalkPluginType type;
-		
-		std::string id;
-		std::string name;
-		std::string version;
-		std::string summary;
-		std::string description;
-		std::string author;
-		std::string homepage;
-
 
 };
 
@@ -76,10 +48,30 @@ class TalkPlugin
 		 */
 		void destory(Plugin* f_plugin);
 
-
-
-
 };
+
+class PluginManager
+{
+	public:
+		PluginManager();
+		bool probe(const char* ext);
+		GenericPlugin* plugin_probe(const char* path);
+		bool load( Plugin* f_plugin);
+		bool unload(Plugin* f_plugin);
+		/**
+		 * 卸载插件并从内存中销毁它
+		 * @param f_plugin The plugin handle
+		 */
+		void destory(Plugin* f_plugin);
+		
+		void add_search_path(const char* f_path);
+		bool has_file_extension(const char* filename,const char* ext);
+	private:
+		GList* search_paths;
+		GList* plugins;
+		GList* loaded_plugins;
+
+}
 
 #endif
 

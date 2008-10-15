@@ -19,12 +19,23 @@
 #include <iostream>
 #include "sample.h"
 
+SamplePlugin::SamplePlugin()
+{}
+
 int SamplePlugin::action()
 {
 	std::cout<<"Hello form sample plug-in!"<<std::endl;
 	return 0;
 
 }
+
+TalkPluginInfo* SamplePlugin::getPluginInfo()
+{
+	
+	return &info;
+
+}
+	
 GenericPlugin * CreatePlug()
 {
 	return new SamplePlugin;
