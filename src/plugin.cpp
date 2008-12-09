@@ -15,30 +15,36 @@
  *
  * =====================================================================================
  */
-
+#include <stdlib.h>
+#include "plugin.h"
 
 PluginManager::PluginManager():search_paths(NULL)
 			       ,plugins(NULL)
 				,loaded_plugins(NULL)
 {
+	char buf[512];
+	char* homedir = getenv("HOME");
+	snprintf(buf,512,"%s/.icalk/plugins",homedir);
+	add_search_path(buf);
 }
 
-bool PluginManager::probe()
+void PluginManager::probe(const char *ext)
 {
 	GDir *dir;
 	const gchar *file;
 	gchar *path;
-	GenericPlugin* plugin;
+	//GenericPlugin* plugin;
 	GList *cur;
 	const char *search_path;
+	//const char* ext=".so";
 
-	if (!g_module_supported())
-		return;
+	//if (!g_module_supported())
+	//	return;
 
 	/* Probe plugins */
 	for (cur = search_paths; cur != NULL; cur = cur->next)
 	{
-		search_path = cur->data;
+		search_path = (const char*)cur->data;
 
 		dir = g_dir_open(search_path, 0, NULL);
 
@@ -49,7 +55,8 @@ bool PluginManager::probe()
 				path = g_build_filename(search_path, file, NULL);
 
 				if (ext == NULL || has_file_extension(file, ext))
-					plugin = plugin_probe(path);
+					 plugin_probe(path);
+					//plugin = plugin_probe(path);
 
 				g_free(path);
 			}
@@ -60,11 +67,44 @@ bool PluginManager::probe()
 
 }
 
-GenericPlugin* PluginManager::plugin_probe(const char* path)
+//GenericPlugin* PluginManager::plugin_probe(const char* path)
+void  PluginManager::plugin_probe(const char* path)
 {
+	/*just testing for probe plugin*/
+	printf("loading plugin %s\n",path);
+#if 0
+     GenericPlugin* (*CreatePlug)();
 
+     Glib::Module *m_module=new Glib::Module(path);
+     if(m_module->gobj()!=NULL)
+     {
+	     if(m_module->get_symbol("CreatePlug", (void*&)CreatePlug))
+	     {
+		     GenericPlugin *m_plugin=CreatePlug();
+			 TalkPluginInfo* info=m_plugin->getPluginInfo();
+			printf("get plugin homepage  : %s\n",info->homepage);
+			return m_plugin;
+	     }
+	     else
+	     {
+		 std::cout << "Error: " << m_module->get_last_error() << std::endl;
+		 return -1;
+	     }
+
+     }
+     else
+     {
+         std::cout << "Error: " << m_module->get_last_error() << std::endl;
+	 return -1;
+     }
+	     
+
+#endif
 }
 
+//void PluginManager::destory(Plugin* f_plugin)
+//{
+//}
 void PluginManager::add_search_path(const char* path)
 {
 	g_return_if_fail(path !=NULL);

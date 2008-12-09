@@ -1325,14 +1325,15 @@ void MainWindow::on_plugin_manager()
 	if(NULL == pluginpref)
 		pluginpref = new PluginPref(this);
 	else
-		return pluginpref->raise();
+		return pluginpref->show();
 
 }
 void MainWindow::on_plugin_close(PluginPref* dlg)
 {
 	g_assert(dlg == pluginpref);
-	delete dlg;
-	pluginpref= NULL;
+	dlg->hide();
+	//delete dlg;
+	//pluginpref= NULL;
 }
 
 void MainWindow::on_fileXer_activate()

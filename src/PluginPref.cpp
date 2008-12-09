@@ -22,6 +22,7 @@
 
 PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
+		, m_plugin_manager(NULL)
 		, m_Button_Quit(_("Close"))
 {
 	set_title(_("Plugins"));
@@ -54,6 +55,10 @@ PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
 	row[m_Columns.m_plugin_id]=1;
 	row[m_Columns.m_plugin_load]=true;
 	row[m_Columns.m_plugin_name]="Icalk plugin example";
+
+	//创建插件管理类
+	m_plugin_manager = new PluginManager();
+	m_plugin_manager->probe(G_MODULE_SUFFIX);
 
 
         show_all();

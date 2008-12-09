@@ -27,11 +27,13 @@
 #include <gtkmm/treeselection.h>
 #include <functional>
 #include <vector>
+#include "plugin.h"
 
 
 using namespace std;
 
 class MainWindow;
+class PluginManager;
 
 class PluginPref:public Gtk::Window
 {
@@ -68,6 +70,7 @@ class PluginPref:public Gtk::Window
 
 	private:
 		MainWindow* parent;
+		PluginManager* m_plugin_manager;
 };
 
 
