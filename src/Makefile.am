@@ -66,6 +66,7 @@ noinst_HEADERS = \
 		 FT.h 		\
 		 PluginPref.h 	\
 		 plugin.h 	\
+		 genericplugin.h \
 	         TalkCard.h 	\
 		 MsgBox.h  	\
 		 TreeModelDnd.h \

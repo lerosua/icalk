@@ -60,6 +60,21 @@ PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
 	m_plugin_manager = new PluginManager();
 	m_plugin_manager->probe(G_MODULE_SUFFIX);
 
+	//遍历插件
+	const GList* m_plugin_list = m_plugin_manager->get_plugins_list();
+	const GList *cur;
+	GenericPlugin* plugin;
+	for (cur = m_plugin_list; cur != NULL; cur = cur->next)
+	{
+		plugin =(GenericPlugin*) cur->data;
+		if(plugin )
+		{
+		     TalkPluginInfo* info=plugin->getPluginInfo();
+		     DLOG("get plugin homepage  : %s\n",info->homepage);
+		}
+
+	}
+
 
         show_all();
 }

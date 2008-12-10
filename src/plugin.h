@@ -20,6 +20,7 @@
 
 #include <glibmm/module.h>
 #include <glib.h>
+#include "genericplugin.h"
 
 
 /**
@@ -54,6 +55,10 @@ class TalkPlugin
 #endif
 
 
+/**
+ * 插件管理
+ * 查找所有插件并加载需要加载的插件，保存于一GList中
+ */
 class PluginManager
 {
 	public:
@@ -63,12 +68,12 @@ class PluginManager
 		 * @param ext 插件的后缀
 		 */
 		void probe(const char* ext);
-		//GenericPlugin* plugin_probe(const char* path);
 		/**
 		 * @brief 探测某插件是否加载
 		 * @param f_file 插件名
+		 * @return 返回值是插件类指针
 		 */
-		void  plugin_probe(const char* f_file);
+		GenericPlugin* plugin_probe(const char* f_file);
 		/*
 		bool load( Plugin* f_plugin);
 		bool unload(Plugin* f_plugin);
@@ -83,10 +88,11 @@ class PluginManager
 		void add_search_path(const char* f_path);
 		/** 检测文件名是否包含了ext所指向的后缀，比如so,dll*/
 		bool has_file_extension(const char* filename,const char* ext);
+		const GList* get_plugins_list()const { return plugins;};
 	private:
-		GList* search_paths;
+		GList* search_paths;   //插件所找路径
 		GList* plugins;
-		GList* loaded_plugins;
+		GList* loaded_plugins;  //加载的插件列表
 
 };
 

@@ -17,6 +17,7 @@
  */
 #include <stdlib.h>
 #include "plugin.h"
+#include "icalk.h"
 
 PluginManager::PluginManager():search_paths(NULL)
 			       ,plugins(NULL)
@@ -33,10 +34,9 @@ void PluginManager::probe(const char *ext)
 	GDir *dir;
 	const gchar *file;
 	gchar *path;
-	//GenericPlugin* plugin;
+	GenericPlugin* plugin;
 	GList *cur;
 	const char *search_path;
-	//const char* ext=".so";
 
 	//if (!g_module_supported())
 	//	return;
@@ -55,8 +55,10 @@ void PluginManager::probe(const char *ext)
 				path = g_build_filename(search_path, file, NULL);
 
 				if (ext == NULL || has_file_extension(file, ext))
-					 plugin_probe(path);
-					//plugin = plugin_probe(path);
+				{
+					plugin = plugin_probe(path);
+					plugins = g_list_append(plugins,plugin);
+				}
 
 				g_free(path);
 			}
@@ -67,12 +69,11 @@ void PluginManager::probe(const char *ext)
 
 }
 
-//GenericPlugin* PluginManager::plugin_probe(const char* path)
-void  PluginManager::plugin_probe(const char* path)
+GenericPlugin* PluginManager::plugin_probe(const char* path)
 {
 	/*just testing for probe plugin*/
-	printf("loading plugin %s\n",path);
-#if 0
+	DLOG("loading plugin %s\n",path);
+#if 1
      GenericPlugin* (*CreatePlug)();
 
      Glib::Module *m_module=new Glib::Module(path);
@@ -81,23 +82,28 @@ void  PluginManager::plugin_probe(const char* path)
 	     if(m_module->get_symbol("CreatePlug", (void*&)CreatePlug))
 	     {
 		     GenericPlugin *m_plugin=CreatePlug();
-			 TalkPluginInfo* info=m_plugin->getPluginInfo();
-			printf("get plugin homepage  : %s\n",info->homepage);
+		     //TalkPluginInfo* info=m_plugin->getPluginInfo();
+		     //DLOG("get plugin homepage  : %s\n",info->homepage);
+		     //delete m_module;
+
 			return m_plugin;
 	     }
 	     else
 	     {
-		 std::cout << "Error: " << m_module->get_last_error() << std::endl;
-		 return -1;
+		 DLOG("Error: %s\n",m_module->get_last_error().c_str());
+		 goto out;
 	     }
 
      }
      else
      {
-         std::cout << "Error: " << m_module->get_last_error() << std::endl;
-	 return -1;
+		 DLOG("Error: %s\n",m_module->get_last_error().c_str());
+		 goto out;
      }
 	     
+out:
+     delete m_module;
+     return NULL;
 
 #endif
 }
