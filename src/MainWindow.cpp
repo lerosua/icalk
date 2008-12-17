@@ -356,7 +356,7 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         roomMenu = dynamic_cast<Gtk::Menu*>(ui_manager->get_widget("/RoomMenu"));
 
 
-        set_default_size(200, 600);
+        set_default_size(250, 600);
 
         set_title(_("Friend list"));
 

@@ -17,8 +17,11 @@
  */
 
 #include <glib/gi18n.h>
+#include <iostream>
 #include "PluginPref.h"
 #include "MainWindow.h"
+
+using namespace std;
 
 PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
@@ -50,11 +53,13 @@ PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
 	m_TreeView.append_column_editable(_("Load"),m_Columns.m_plugin_load);
 	m_TreeView.append_column(_("Name"),m_Columns.m_plugin_name);
 
+#if 0
 	//添加一个example来展示
 	Gtk::TreeModel::Row row = *(m_refTreeModel->append());
 	row[m_Columns.m_plugin_id]=1;
 	row[m_Columns.m_plugin_load]=true;
 	row[m_Columns.m_plugin_name]="Icalk plugin example";
+#endif
 
 	//创建插件管理类
 	m_plugin_manager = new PluginManager();
@@ -64,6 +69,7 @@ PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
 	const GList* m_plugin_list = m_plugin_manager->get_plugins_list();
 	const GList *cur;
 	GenericPlugin* plugin;
+	int i=2;
 	for (cur = m_plugin_list; cur != NULL; cur = cur->next)
 	{
 		plugin =(GenericPlugin*) cur->data;
@@ -71,6 +77,10 @@ PluginPref::PluginPref(MainWindow * f_parent):parent(f_parent)
 		{
 		     TalkPluginInfo* info=plugin->getPluginInfo();
 		     DLOG("get plugin homepage  : %s\n",info->homepage);
+			Gtk::TreeModel::Row row = *(m_refTreeModel->append());
+			row[m_Columns.m_plugin_id]=i++;
+			row[m_Columns.m_plugin_load]=true;
+			row[m_Columns.m_plugin_name]=string(info->name);
 		}
 
 	}
