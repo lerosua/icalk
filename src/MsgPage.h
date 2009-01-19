@@ -164,7 +164,7 @@ public:
          * @endcode
          * 然后用@link showMessage showMessage() @endlink显示文件
          */
-        void sendMessage();
+        void sendMessage(void);
         /**
          * @brief 设置Msgpaga标签页的颜色
          */

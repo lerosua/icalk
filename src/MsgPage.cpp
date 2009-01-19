@@ -486,7 +486,8 @@ void MsgPage::showPicture(const char* picname, bool self)
 
 }
 
-void MsgPage::sendMessage()
+
+void MsgPage::sendMessage(void )
 {
         Glib::ustring utext;
         m_inputMsgBox->getText(utext);
@@ -494,6 +495,7 @@ void MsgPage::sendMessage()
         if (utext.empty())
                 return ;
 
+	/*私人好友的发送信息*/
         if (!isRoom) {
                 /*然后发送utext*/
 
@@ -503,10 +505,12 @@ void MsgPage::sendMessage()
                         m_buddy->setChatState( ChatStatePaused );
                 }
         } else {
+	/*聊天室的信息发送*/
                 m_mucroom->send(utext);
         }
 
 
+	/*将发送后的信息打印到会话里，聊天室的会话不自己打印*/
         if (!isRoom) {
                 std::string sender = Bodies::Get_Bodies().get_jid().username();
                 showMessage(sender, utext, TIME_NULL, MSG_ME);

@@ -70,7 +70,7 @@ public:
         }
 
         /** 发送信息 */
-        void send(Glib::ustring& text)
+        void send(const Glib::ustring& text)
         {
                 m_mucroom->send(text);
         }
