@@ -58,6 +58,7 @@ Bodies::Bodies():
                 , m_cardManage(NULL)
                 , m_vcard(NULL)
                 , accountTag(NULL)
+		, m_roominvitation(NULL)
 {
         main_window = new MainWindow(*this);
         msg_window = new MsgWindow();
@@ -265,6 +266,10 @@ void Bodies::disconnect()
                 delete m_cardManage;
                 m_cardManage = NULL;
         }
+	if( m_roominvitation) {
+		delete m_roominvitation;
+		m_roominvitation = NULL;
+	}
 }
 
 int Bodies::connect(const string& name, const string& passwd, const string& server, const int port = 5222)
@@ -285,7 +290,7 @@ int Bodies::connect(const string& name, const string& passwd, const string& serv
         m_client->registerStanzaExtension(new DelayedDelivery(0));
         m_client->registerStanzaExtension(new XHtmlIM(0));
         m_client->logInstance().registerLogHandler(LogLevelDebug, LogAreaAll, &m_talkConnect);
-        m_client->registerMUCInvitationHandler(&m_roominvitation);
+        //m_client->registerMUCInvitationHandler(&m_roominvitation);
         m_client->setServer(server);
         m_client->setPort(port);
 
@@ -367,6 +372,8 @@ void Bodies::has_login()
         /** 初始化VCard管理类*/
         m_cardManage = new TalkCard(m_client.get());
 
+	m_roominvitation = new RoomInvitation(m_client.get());
+	m_client->registerMUCInvitationHandler(m_roominvitation);
         /** 初始化文件传输接收类*/
         m_talkFT = new TalkFT(m_client.get());
         m_talkFT->initFT();

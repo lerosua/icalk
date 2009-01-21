@@ -16,6 +16,7 @@
  * =====================================================================================
  */
 #include <stdlib.h>
+#include <string.h>
 #include "plugin.h"
 #include "icalk.h"
 

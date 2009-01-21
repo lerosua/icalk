@@ -22,6 +22,8 @@
 #include <iostream>
 #include <gloox/rostermanager.h>
 #include <map>
+#include <vector>
+#include <glibmm/ustring.h>
 #include "icalk.h"
 
 using namespace gloox;

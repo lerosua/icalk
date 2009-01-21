@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include <gloox/mucinvitationhandler.h>
+#include <gloox/client.h>
 
 using namespace gloox;
 
@@ -30,10 +31,10 @@ class RoomInvitation: public MUCInvitationHandler
 {
 
 public:
-        RoomInvitation();
+        RoomInvitation(Client* f_client);
         ~RoomInvitation();
         void handleMUCInvitation(const JID& room, const JID& from
-                                 , const std::string& reason, const std::string& body, const std::string & password, bool cont);
+                                 , const std::string& reason, const std::string& body, const std::string & password, bool cont,const std::string& thread);
 
 };
 

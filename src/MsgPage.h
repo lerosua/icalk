@@ -19,6 +19,7 @@
 #ifndef _MSG_PAGE_H_
 #define _MSG_PAGE_H_
 
+#if 0
 #if !defined(GLADEMM_DATA)
 #define GLADEMM_DATA
 #include <gtkmm/accelgroup.h>
@@ -42,8 +43,11 @@ public:
 
 #endif    //GLADEMM_DATA
 
+#endif
 
 #include <gtkmm.h>
+//#include <gtkmm/paned.h>
+//#include <gtkmm/image.h>
 #include <iostream>
 #include <gloox/mucroom.h>
 #include "MsgBox.h" 

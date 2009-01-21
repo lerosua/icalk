@@ -16,12 +16,11 @@
 * =====================================================================================
 */
 #include <glib/gi18n.h>
-#include <gtkmm/dialog.h>
-#include "BuddyList.h"
-#include "Buddy.h"
+//#include <gtkmm/dialog.h>
+//#include "BuddyList.h"
+//#include "Buddy.h"
 #include "Bodies.h"
-#include "TalkCard.h"
-#include "icalk.h"
+//#include "TalkCard.h"
 
 BuddyList::BuddyList()
 {
