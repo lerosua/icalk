@@ -38,10 +38,13 @@ public:
 
         /** 获取所选成员的mid*/
         Glib::ustring getSelectMemberid();
+	/** 添加一个成员进列表*/
         void addMember(const std::string& name, const Member& f_member);
+	/** 从列表中删除一个成员*/
         void removeMember(const std::string& id);
+	/** 清空成员列表*/
         void clearMember();
-        bool isMember(const std::string& mid);
+        ICALK_DEPRECATED bool isMember(const std::string& mid);
         /** 获取聊天室成员数量*/
         int getMemberNumber()const
         {

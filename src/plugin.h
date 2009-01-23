@@ -56,7 +56,7 @@ class TalkPlugin
 
 
 /**
- * 插件管理
+ *@brief  插件管理
  * 查找所有插件并加载需要加载的插件，保存于一GList中
  */
 class PluginManager

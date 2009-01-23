@@ -17,7 +17,7 @@ MsgLog::MsgLog(const std::string& jid_): jid(jid_)
         snprintf(dirname, 255, "%s%s", GUnit::getLogPath(), jid.c_str());
         mkdir(dirname, 0744);
 
-        snprintf(filename, 255, "%s/%04d-%02d-%02d.txt ", dirname, tmw->tm_year + 1900, tmw->tm_mon + 1, tmw->tm_mday);
+        snprintf(filename, 255, "%s/%04d-%02d-%02d.txt", dirname, tmw->tm_year + 1900, tmw->tm_mon + 1, tmw->tm_mday);
 
         logfile.open(filename, std::ios::binary | std::ios::app);
 

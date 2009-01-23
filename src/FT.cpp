@@ -8,10 +8,10 @@
 *        Version:  1.0
 *        Created:  2008年05月15日 13时04分59秒
 *       Revision:  none
-*       Compiler:  gcc
+*       Compiler:  g++
 *
-*         Author:  first_name last_name (fl), fl@my-company.com
-*        Company:  my-company
+*         Author:  lerosua (), lerosua@gmail.com
+*        Company:  Cyclone
 *
 * =====================================================================================
 */

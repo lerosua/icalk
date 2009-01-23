@@ -42,17 +42,18 @@ private:
         GlademmData *gmm_data;
 
 public:
-        SmileyWnd(MsgPage* _page);
+        SmileyWnd(MsgPage* f_page);
         ~SmileyWnd();
         bool on_key_press_event(GdkEventKey * ev);
         bool on_leave_event(GdkEventCrossing* ev);
+	/** 显示表情窗口*/
         void showWindow();
 
 private:
         void on_smiley_clicked(Glib::ustring code);
 
 private:
-        Gtk::Tooltips _tooltips;
+        Gtk::Tooltips m_tooltips;
         MsgPage* page;
 };
 

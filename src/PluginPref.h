@@ -35,6 +35,9 @@ using namespace std;
 class MainWindow;
 class PluginManager;
 
+/**
+ * @brief 插件管理窗口
+ */
 class PluginPref:public Gtk::Window
 {
 	public:

@@ -391,7 +391,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_logining_cancel()
 {
-        m_bodies.disconnect();
+        //m_bodies.disconnect();
         on_relogin();
 }
 
@@ -408,17 +408,17 @@ void MainWindow::on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
                 return ;
 
         if (server.empty())
-                server = "talk.google.com";
+                server = DEFAULTSERVER;
 
         if (port.empty())
-                iport = 5222;
+                iport = DEFAULTPORT;
         else
                 iport = atoi(port.c_str());
 
         // TODO clear
         on_initialize(name);
 
-        main_notebook->set_current_page(LOGIN_LOADING);
+        main_notebook->set_current_page(LOGIN_LOADING); //设置当前状态为登录中
 
         config.STATUS = LOGIN_LOADING;
 
@@ -596,7 +596,6 @@ void MainWindow::on_quit()
         if (config.STATUS != LOGIN_INIT)
                 m_bodies.logout();
 
-        //m_bodies.~Bodies();
         Gtk::Main::quit();
 }
 
@@ -1432,7 +1431,6 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 
         if (SYSTEM_MENU == id) {
                 widget = GTK_WIDGET(buttonSystem->gobj());
-                //menu = systemMenu.gobj();
                 menu = systemMenu->gobj();
         } else {
                 //widget = GTK_WIDGET(buttonUser->gobj());

@@ -31,7 +31,7 @@ using namespace gloox;
 class TalkRoomHandler;
 
 /**
- * 聊天室类，一个RoomItem对应一个聊天室，聊天室包含聊天会话，成员列表等。
+ *@brief 聊天室类，一个RoomItem对应一个聊天室，聊天室包含聊天会话，成员列表等。
  */
 
 class RoomItem

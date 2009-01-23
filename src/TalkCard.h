@@ -38,7 +38,9 @@ class TalkCard : public VCardHandler
 public:
         TalkCard (Client * jclient_);
         ~TalkCard ();
+	/** 发出获取vcard命令*/
         void fetch_vcard(const JID& jid);
+	/** 发出存贮vcard命令*/
         void store_vcard(VCard* vcard_);
         /**
          * @brief 当VCard成功取回时调用此函数。

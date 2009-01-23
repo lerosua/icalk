@@ -8,7 +8,7 @@
 *        Version:  1.0
 *        Created:  2008年02月22日 20时05分59秒 CST
 *       Revision:  none
-*       Compiler:  gcc
+*       Compiler:  g++
 *
 *         Author:  lerosua (), lerosua@gmail.com
 *        Company:  Cyclone
@@ -24,6 +24,8 @@
 
 #define ICALK_VERSION  "0.04"
 #define OS  "Linux"
+#define DEFAULTSERVER  "talk.google.com"
+#define DEFAULTPORT	5222
 
 using std::list;
 

@@ -130,11 +130,13 @@ public:
         void register_stock_items();
         /** 从xml的UI信息里构建菜单*/
         void init_ui_manager();
+	/** 取得列表中好友右键菜单*/
         Gtk::Menu* getBuddyMenu()
         {
                 return buddyMenu;
         }
 
+	/** 取得列表中聊天室右键菜单*/
         Gtk::Menu* getRoomMenu()
         {
                 return roomMenu;
@@ -231,11 +233,13 @@ public:
         void initRoom();
         /** 返回指定的菜单的选项，一般返回ToggleAction 菜单*/
         Glib::RefPtr<Gtk::ToggleAction> get_menu_action(const std::string& menu);
+	/** 取得服务发现窗口*/
         ServerDiscoWindow* get_disco_window()const
         {
                 return discowindow;
         }
 
+	/** 取得文件传输窗口*/
         FTWidget* get_ftwidget()const
         {
                 return ftwidget;

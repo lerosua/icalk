@@ -163,14 +163,27 @@ public:
 
         /**
          * @brief 用于取得配置文件Tag类中属于buddy的attr属性
-         * @param name_ buddy的名字
-         * @param attr  buddy的属性
+	 * @param tagname tag类型，例如有buddy,room
+         * @param name tag的名字,例如buddy的名字
+         * @param attr  某项属性
          * @return  返回buddy的某attr属性的属性值
          */
         const std::string getBlistTag(const std::string& tagname, const std::string& name, const std::string& attr);
 
+	/**
+	 * @brief 用于设置配置文件中Tag类中属于buddy的attr属性
+	 * @param tagname tag类型，例如有buddy,room
+         * @param name tag的名字,例如buddy的名字
+         * @param attr  某项属性
+	 * @param value 属性值
+	 */
         void setBlistTag(const std::string& tagname, const std::string& name, const std::string& attr, const std::string & value);
 
+	/**
+	 * @brief 用于删除配置文件中Tag类中某个名字设置
+	 * @param tagname tag类型，例如有buddy,room
+         * @param name tag的名字,例如buddy的名字
+	 */
         void removeBlistTag(const std::string& tagname, const std::string& name);
 
         /**
@@ -196,12 +209,13 @@ public:
 protected:
         bool on_button_press_event(GdkEventButton *);
 
-        /** 鼠标在　TreeView里移动的信号回调*/
+        /** 鼠标在TreeView里移动的信号回调*/
         bool on_motion_event(GdkEventMotion* ev);
 
         /** 鼠标离开时的回调*/
         bool on_leave_event(GdkEventCrossing* ev);
 
+	/** 鼠标进入时的回调*/
         bool on_enter_event(GdkEventCrossing* ev);
 
 private:

@@ -35,7 +35,8 @@ using namespace std;
 class MainWindow;
 
 /**
- * 显示文件传输状态的窗口
+ * @brief 显示文件传输状态的窗口
+ * @author lerosua@gmail.com
  */
 
 class FTWidget: public Gtk::Window
@@ -54,6 +55,7 @@ public:
         void on_button_continue();
         /** 文件传输窗口的按钮处理*/
         bool on_key_press_event(GdkEventKey* ev);
+	/** 销毁事件处理*/
         bool on_delete_event(GdkEventAny*);
 
         Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::

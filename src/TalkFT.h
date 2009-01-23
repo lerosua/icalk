@@ -50,7 +50,7 @@ class FTWidget;
 
 class XferFile;
 /**
- * 文件传输的类，负责接收与发送文件
+ *@brief  文件传输的类，负责接收与发送文件
  */
 
 class TalkFT: public SIProfileFTHandler, public BytestreamDataHandler

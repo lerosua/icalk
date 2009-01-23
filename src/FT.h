@@ -36,6 +36,10 @@ typedef enum
         XFER_STATUS_CANCEL_REMOTE  /**< The xfer was canceled by the other end, or we couldn't connect. */
 } XferStatusType;
 
+/**
+ * @brief 文件传输中文件的实际处理
+ */
+
 class XferFile
 {
 

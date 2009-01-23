@@ -63,7 +63,7 @@ public:
         ~Bodies();
         /**得到全局的Bodies类*/
         static Bodies& Get_Bodies();
-        /**退出登录*/
+        /**登出*/
         void logout();
         /**读取文件中的Account结构*/
         void loadAccountTag();
@@ -151,10 +151,17 @@ public:
         /**发出获取本人VCard信息的命令*/
         void fetch_self_vcard() ;
 
-        /** 提示是否有新消息，调用TrayIcon的闪动显示*/
+        /** 
+	 * @brief 提示是否有新消息，调用TrayIcon的闪动显示
+	 * @param f_jid 消息来自f_jid
+	 * @param f_new 是否闪动TrayIcon
+	 */
         void promptMsg(const Glib::ustring& f_jid, bool f_new);
+	/** 
+	 * @brief 服务发现某服务器
+	 * @param node 服务器名
+	 */
         void disco_node(const std::string& node);
-        void disconnect();
 
 private:
         /**
@@ -171,6 +178,10 @@ private:
          * @return 先不用理这个了。
          */
         int connect(const string& name, const string& passwd, const string& server, const int port);
+	/**
+	 * @brief 低层的断开连接，io断开及处理，由上层函数 @link logout  logout() @endlink 调用
+	 */
+        void disconnect();
 
 private:
         JID m_jid;
@@ -180,19 +191,17 @@ private:
         TrayIcon* statusIcon;
         int msg_count; //用于消息计数
 
-        BuddyList buddy_list;
+        BuddyList buddy_list; //好友列表
 
-        TalkConnect m_talkConnect;
-        TalkMsg m_talkMsg;
-        TalkRoomHandler m_roomHandler;
+        TalkConnect m_talkConnect; //连接处理
+        TalkMsg m_talkMsg; //消息处理
+        TalkRoomHandler m_roomHandler; //聊天室消息处理
         TalkDiscoHandler m_discoHandler; // it can look over the server now
-        //RoomInvitation m_roominvitation;
-        RoomInvitation* m_roominvitation;
-        TalkCard* m_cardManage;
-        TalkFT* m_talkFT;
+        RoomInvitation* m_roominvitation; //聊天室邀请处理
+        TalkCard* m_cardManage; //Vcard处理
+        TalkFT* m_talkFT; //文件传输
         VCard* m_vcard;
-        //用于保存account结构的Tag
-        Tag* accountTag;
+        Tag* accountTag; //用于保存account结构的Tag
         USERLIST userlist;
         sigc::connection connectIO;
 

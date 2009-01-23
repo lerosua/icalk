@@ -27,8 +27,8 @@
 
 #include "pixmaps.h"
 
-SmileyWnd::SmileyWnd(MsgPage* page_) :
-                page(page_)
+SmileyWnd::SmileyWnd(MsgPage* f_page) :
+                page(f_page)
 {
         Gtk::Window* smiley = this;
         gmm_data = new GlademmData(get_accel_group());
@@ -68,7 +68,7 @@ SmileyWnd::SmileyWnd(MsgPage* page_) :
 
                 tip = (*iter).first;
 
-                _tooltips.set_tip(*button, tip, "");
+                m_tooltips.set_tip(*button, tip, "");
 
                 button->signal_clicked().connect(
                         sigc::bind<Glib::ustring>(
