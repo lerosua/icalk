@@ -72,19 +72,16 @@ int main(int argc,char *argv[])
 	}
 	conf_file.close();
 
-	/*
 	if((mkfifo(FIFO_MSG,PERMS))<0){
 		perror("mkfifo");
-		exit(-1);
 	}
 	if((mkfifo(FIFO_SEND,PERMS))<0){
 		perror("mkfifo");
-		exit(-1);
 	}
-	*/
 
+	int num=atoi(port.c_str());
 	  BotCalk *bot = new BotCalk();
-	  bot->start(jid,pwd,server);
+	  bot->start(jid,pwd,server,num);
 
 	  delete( bot );
 	    return 0;

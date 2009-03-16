@@ -18,8 +18,8 @@
 
 #include "BotCalk.h"
 #include <stdio.h>
-//#include <sys/types.h>
-//#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -28,25 +28,23 @@
 
 BotCalk::BotCalk():m_client(NULL), m_room(NULL)
 {
-	/*
 	if((put_msg = open(FIFO_MSG,O_WRONLY))<0){
 		printf("BotCalk:: can't open write fifo:%s\n",FIFO_MSG);
 		exit(1);
 	}
-	if((send_msg=open(FIFO_SEND,O_RDONLY))<1){
+	if((send_msg=open(FIFO_SEND,O_RDONLY|O_NONBLOCK))<1){
 		printf("BotCalk:: can't open read fifo:%s\n",FIFO_SEND);
 		exit(1);
 	}
-	*/
 
 }
 
 BotCalk::~BotCalk()
 {
-//	close(put_msg);
-//	close(send_msg);
-//	remove(FIFO_MSG);
-//	remove(FIFO_SEND);
+        close(put_msg);
+	close(send_msg);
+	remove(FIFO_MSG);
+	remove(FIFO_SEND);
 
 	// cleanup
 	delete m_room;
@@ -73,13 +71,23 @@ void BotCalk::start(const std::string & f_jid, const std::string & pwd,
 	m_client->logInstance().registerLogHandler(LogLevelDebug,
 						   LogAreaAll, this);
 
-	JID nick("linuxcn@conference.jabber.org/BotCalk");
+	JID nick("linuxcn@conference.jabber.org/iBot");
 	m_room = new MUCRoom(m_client, nick, this, 0);
 
 	if (m_client->connect(false)) {
 		ConnectionError ce = ConnNoError;
 		while (ce == ConnNoError) {
 			ce = m_client->recv();
+
+			char buf[1024]={0};
+			if(read(send_msg,buf,sizeof(buf))<0){
+				printf("read fifo error\n");
+				return;
+			}
+			if(strcmp(buf,"0")!=0)
+				m_room->send(std::string(buf));
+
+
 		}
 		printf("ce: %d\n", ce);
 	}
@@ -114,7 +122,7 @@ void BotCalk::start(const std::string & f_jid, const std::string & pwd,
  void BotCalk::handleLog(LogLevel level, LogArea area,
 				const std::string & message)
 {
-	//printf("log: level: %d, area: %d, %s\n", level, area, message.c_str() );
+	printf("log: level: %d, area: %d, %s\n", level, area, message.c_str() );
 }
 
 void BotCalk::handleMUCParticipantPresence(MUCRoom * /*room */ ,
@@ -153,12 +161,31 @@ void BotCalk::handleMUCParticipantPresence(MUCRoom * /*room */ ,
 		m_room->send("hi i am BotCalk, just a Bot");
 	}
 	if(!msg.when()){
-		std::string str_t = msg.from().resource()+msg.body();
+		std::string str_t = msg.body();
+		//m_room->send(tmp_msg);
+#if 0
+			char cmd[1024]="/tmp/showtitle.sh ";
+			strcat(cmd,str_t.c_str());
+			system(cmd);
 
-		//if(write(put_msg,str_t.c_str(),sizeof(str_t))<0){
-		//	printf("write fifo error\n");
-		//}
-	}
+			if((send_msg=open(FIFO_SEND,O_RDONLY))<1){
+				printf("BotCalk:: can't open read fifo:%s\n",FIFO_SEND);
+				exit(1);
+			}
+			char buf[1024];
+			if(read(send_msg,buf,sizeof(buf))<0){
+				printf("read fifo error\n");
+				return;
+			}
+			m_room->send(std::string(buf));
+			close(send_msg);
+#endif
+
+		if(write(put_msg,str_t.c_str(),str_t.size())<0){
+			printf("write fifo error\n");
+		}
+
+				}
 }
 
  void BotCalk::handleMUCSubject(MUCRoom * /*room */ ,

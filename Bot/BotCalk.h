@@ -36,17 +36,17 @@ using namespace gloox;
 #include <stdio.h>
 #include <locale.h>
 #include <string>
-//#include <sys/types.h>
-//#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #ifdef WIN32
 #include <windows.h>
 #endif
 
 
-//#define FIFO_MSG "/tmp/bot_fifo_msg"
-//#define FIFO_SEND "/tmp/bot_fifo_send"
-//#define PERMS 0666
+#define FIFO_MSG "/tmp/bot_fifo_msg"
+#define FIFO_SEND "/tmp/bot_fifo_send"
+#define PERMS 0666
 
 
 class BotCalk : public ConnectionListener, LogHandler, MUCRoomHandler
@@ -81,8 +81,8 @@ class BotCalk : public ConnectionListener, LogHandler, MUCRoomHandler
   private:
 	    Client *m_client;
 	    MUCRoom *m_room;
-//	    int put_msg;
-//	    int send_msg;
+	    int put_msg;
+	    int send_msg;
 };
 #endif   /* ----- #ifndef BOTCALK_FILE_HEADER_INC  ----- */
 
