@@ -400,7 +400,6 @@ void MainWindow::on_logining_cancel()
 
 void MainWindow::on_login_emit()
 {
-	((sigc::signal<void>)button_ok->signal_clicked()).emit();
 }
 
 // 只处理视图(界面)
