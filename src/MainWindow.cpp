@@ -400,6 +400,7 @@ void MainWindow::on_logining_cancel()
 
 void MainWindow::on_login_emit()
 {
+	button_ok->clicked();
 }
 
 // 只处理视图(界面)
