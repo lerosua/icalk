@@ -146,6 +146,7 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         connect(sigc::mem_fun(*this, &MainWindow::on_logining_cancel));
 
         /** 第一页标签*/
+        button_ok = dynamic_cast <Button*>(main_xml->get_widget("login_ok"));
         Gtk::Button * button_cancel =
                 dynamic_cast <
                 Gtk::Button * > (main_xml->get_widget("login_cancel"));
@@ -168,6 +169,8 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
                        dynamic_cast <
                        Gtk::Entry * > (main_xml->get_widget("entryPasswd"));
         */
+	entryPasswd->signal_activate().connect(sigc::mem_fun(*this,
+				&MainWindow::on_login_emit));
         comboAccount->signal_changed().
         connect(sigc::mem_fun(*this, &MainWindow::on_account_changed));
         USERLIST & userlist = m_bodies.getUserList();
@@ -393,6 +396,11 @@ void MainWindow::on_logining_cancel()
 {
         //m_bodies.disconnect();
         on_relogin();
+}
+
+void MainWindow::on_login_emit()
+{
+	((sigc::signal<void>)button_ok->signal_clicked()).emit();
 }
 
 // 只处理视图(界面)
@@ -1828,7 +1836,6 @@ void MainWindow::init_ui_manager()
 
 void MainWindow::signal_on_login(CLogin::Handler* f_handler, CLogin::View::Func f_call)
 {
-        Button* button_ok = dynamic_cast <Button*>(main_xml->get_widget("login_ok"));
         button_ok->signal_clicked().connect(sigc::bind(
                                                     sigc::mem_fun(*this, &MainWindow::on_login), f_handler, f_call));
 }

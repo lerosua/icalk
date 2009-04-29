@@ -218,6 +218,7 @@ public:
         /** 屏蔽好友，将收不到好友信息*/
         void on_buddyBlock_activate();
 
+	void on_login_emit();
         /**登录成功后显示列表页*/
         void on_login_finial();
         /** 重新登录，显示登录框的页*/
@@ -295,6 +296,7 @@ private:
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
         Sexy::IconEntry* entryFilter;
+	Button* button_ok;
         ServerDiscoWindow* discowindow;
 	PluginPref* pluginpref;
         FTWidget* ftwidget;
