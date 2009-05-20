@@ -35,6 +35,9 @@ public:
         ~RoomInvitation();
         void handleMUCInvitation(const JID& room, const JID& from
                                  , const std::string& reason, const std::string& body, const std::string & password, bool cont,const std::string& thread);
+        void handleMUCInvitation(const JID& room, const JID& from
+			,const std::string& reason,const std::string& body
+			,const std::string& pass,bool cont);
 
 };
 

@@ -24,12 +24,18 @@
 #include "RoomItem.h"
 #include "MsgPage.h"
 
-RoomInvitation::RoomInvitation(Client* f_client):MUCInvitationHandler(f_client)
+//RoomInvitation::RoomInvitation(Client* f_client):MUCInvitationHandler(f_client)
+//{}
+RoomInvitation::RoomInvitation(Client* f_client)
 {}
 
 RoomInvitation::~RoomInvitation()
 {}
 
+void RoomInvitation::handleMUCInvitation(const JID& room, const JID& from
+                , const std::string& reason, const std::string& body, const std::string & password, bool cont)
+{
+}
 void RoomInvitation::handleMUCInvitation(const JID& room, const JID& from
                 , const std::string& reason, const std::string& body, const std::string & password, bool cont,const std::string& thread)
 {

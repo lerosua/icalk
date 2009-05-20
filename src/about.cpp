@@ -7,5 +7,7 @@ createAboutDialog::createAboutDialog()
         Gtk::AboutDialog* aboutDialog = 0;
         about_xml->get_widget("aboutdialog", aboutDialog);
         aboutDialog->set_license("GPL");
-        aboutDialog->show();
+        //aboutDialog->show();
+        aboutDialog->run();
+        aboutDialog->hide();
 }

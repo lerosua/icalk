@@ -218,6 +218,7 @@ protected:
 	/** 鼠标进入时的回调*/
         bool on_enter_event(GdkEventCrossing* ev);
 
+	bool on_tooltip_show(int x,int y, bool key_mode,const Glib::RefPtr<Gtk::Tooltip>& tooltip);
 private:
 
         /*

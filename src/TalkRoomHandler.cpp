@@ -159,7 +159,7 @@ void TalkRoomHandler::handleMUCSubject(MUCRoom * room ,
 void TalkRoomHandler::handleMUCError(MUCRoom * room , StanzaError error)
 {
         DLOG(" room %s got an error: %d\n", room->name().c_str(), error);
-        room->leave();
+        //room->leave();
 }
 
 void TalkRoomHandler::handleMUCInfo(MUCRoom * room , int features,

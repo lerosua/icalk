@@ -116,12 +116,18 @@ BuddyView::BuddyView(MainWindow & f_parent):
         this->enable_model_drag_source();
         this->enable_model_drag_dest();
 
+	this->set_tooltip_window( *m_tooltips);
+	this->set_has_tooltip();
+	this->signal_query_tooltip().connect(sigc::mem_fun(*this,
+				&BuddyView::on_tooltip_show));
+	/*
         this->signal_motion_notify_event().
         connect(sigc::mem_fun(*this, &BuddyView::on_motion_event),
                 false);
         this->signal_leave_notify_event().
         connect(sigc::mem_fun(*this, &BuddyView::on_leave_event),
                 false);
+	*/
         /*
            this->signal_enter_notify_event().connect(sigc::mem_fun(
            *this,&BuddyView::on_enter_event));
@@ -186,6 +192,81 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
 
         return true;
 }
+
+bool BuddyView::on_tooltip_show(int x,int y, bool key_mode,const Glib::RefPtr<Gtk::Tooltip>& tooltip)
+{
+        Gtk::TreeModel::Path path;
+        Gtk::TreeViewColumn * column;
+        int cell_x, cell_y;
+
+        if (this->get_path_at_pos(x, y, path, column, cell_x,cell_y)){
+                Gtk::TreeModel::iterator iter =
+                        this->get_model()->get_iter(path);
+
+                if (!iter)
+                        return false;
+
+                int type = (*iter)[buddyColumns.status];
+
+                Glib::ustring jid = (*iter)[buddyColumns.id];
+
+                Glib::ustring text_, status_, status_sub, msg_;
+
+                if (STATUS_ROOM != type) {
+                        Buddy *buddy =
+                                Bodies::Get_Bodies().get_buddy_list().
+                                find_buddy(jid);
+
+                        if (NULL == buddy)
+                                return false;
+
+                        SubscriptionType substrEnum =
+                                buddy->getSubscription();
+
+                        status_sub = "<span weight='bold'>";
+
+                        if (S10nBoth == substrEnum)
+                                status_sub =
+                                        status_sub +
+                                        _("subscribed: </span>Both \n");
+                        else
+                                status_sub =
+                                        status_sub +
+                                        _("subscribed: </span>Delay \n");
+
+                        text_ =
+                                "<span weight='bold'>" + jid + "\n" +
+                                status_sub + _("Status (");
+
+                        status_ =
+                                buddy->getResource() + "):</span> " +
+                                buddy->get_sign_msg() + "\n";
+
+                        msg_ = text_ + status_;
+
+                        m_tooltips->setLabel(msg_);
+
+                        Glib::RefPtr < Gdk::Pixbuf > logo =
+                                buddy->getLogo();
+
+                        m_tooltips->setImage(logo);
+
+                        //m_tooltips->showTooltip(ev);
+                } else {
+                        text_ =
+                                "<span weight='bold'>" + jid + "\n" +
+                                "type:</span> Room\n";
+                        Glib::RefPtr < Gdk::Pixbuf > logo_ =
+                                getPix("room.png");
+                        m_tooltips->setLabel(text_);
+                        m_tooltips->setImage(logo_);
+                        //m_tooltips->showTooltip(ev);
+                }
+		return true;
+        }
+	return false;
+}
+
 
 bool BuddyView::tooltip_timeout(GdkEventMotion * ev)
 {
