@@ -240,6 +240,7 @@ void TalkFT::handleFTBytestream(Bytestream * bs)
 
 
 void TalkFT::handleFTRequest(const JID & from,
+			     const JID & to,
                              const std::string & sid,
                              const std::string & name, long size,
                              const std::string & hash,

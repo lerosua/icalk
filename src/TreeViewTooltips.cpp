@@ -54,11 +54,13 @@ TreeViewTooltips::TreeViewTooltips(BuddyView* view): m_buddyview(view)
         this->signal_expose_event().connect(sigc::mem_fun(*this,
                                             &TreeViewTooltips::on_expose_event));
 
+	/*
         this->signal_motion_notify_event().connect(sigc::mem_fun(
                                 *this, &TreeViewTooltips::on_motion_event), false);
 
         this->signal_leave_notify_event().connect(sigc::mem_fun(
                                 *this, &TreeViewTooltips::on_leave_event), false);
+	*/
 
 }
 

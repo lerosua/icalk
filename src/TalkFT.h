@@ -77,6 +77,7 @@ public:
         void handleFTSend(const JID& to, const std::string& m_file);
         /** 此函数在对方要发送一个文件给你时调用。*/
         void handleFTRequest(const JID & from,
+			     const JID & to,
                              const std::string & sid,
                              const std::string & name, long size,
                              const std::string & hash,
@@ -90,6 +91,7 @@ public:
         void handleFTBytestream(Bytestream * bs);
         /** 如果协商好用OOB策略传输则调用此函数*/
         virtual const std::string handleOOBRequestResult(const JID & from,
+			const JID& to,
                         const std::
                         string & sid)
         {

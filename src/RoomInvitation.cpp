@@ -24,10 +24,10 @@
 #include "RoomItem.h"
 #include "MsgPage.h"
 
-//RoomInvitation::RoomInvitation(Client* f_client):MUCInvitationHandler(f_client)
-//{}
-RoomInvitation::RoomInvitation(Client* f_client)
+RoomInvitation::RoomInvitation(Client* f_client):MUCInvitationHandler(f_client)
 {}
+//RoomInvitation::RoomInvitation(Client* f_client)
+//{}
 
 RoomInvitation::~RoomInvitation()
 {}
