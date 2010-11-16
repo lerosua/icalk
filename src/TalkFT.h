@@ -83,8 +83,7 @@ public:
                              const std::string & hash,
                              const std::string & date,
                              const std::string & mimetype,
-                             const std::string & desc, int /*stypes */ ,
-                             long /*offset */ , long /*length */ );
+                             const std::string & desc, int /*stypes */ );
         /** 此函数处理文件发送请求错误或者被拒绝时调用*/
         void handleFTRequestError(const IQ & iq, const std::string & sid);
         /** 传输一个协商好的SOCKS5流，此流尚打开也没准备好发送/接收数据*/

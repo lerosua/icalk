@@ -246,8 +246,7 @@ void TalkFT::handleFTRequest(const JID & from,
                              const std::string & hash,
                              const std::string & date,
                              const std::string & mimetype,
-                             const std::string & desc, int /*stypes */ ,
-                             long /*offset */ , long /*length */ )
+                             const std::string & desc, int /*stypes */ )
 {
         DLOG("received m_ft request from %s: %s (%ld bytes, sid : %s). hash: %s, date: %s, mime-type: %s\ndesc: %s\n", from.full().c_str(), name.c_str(), size, sid.c_str(), hash.c_str(), date.c_str(), mimetype.c_str(), desc.c_str());
 

@@ -427,7 +427,7 @@ int main(int argc, char *argv[])
                 exit(1);
         }
 
-        Gtk::Main kit(argc, argv);
+        static Gtk::Main kit(argc, argv);
 
         Bodies::Get_Bodies();
         kit.run();
