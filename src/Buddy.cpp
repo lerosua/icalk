@@ -160,7 +160,7 @@ defalut:
 
 void Buddy::setType(BuddyType f_type)
 {
-        if (f_type >= 0 && f_type < 9)
+        if (f_type >= 0 && f_type < 12)
                 type = f_type ;
         else
                 type = TYPE_FRIEND;
