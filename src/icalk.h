@@ -35,6 +35,7 @@ typedef list<std::string> USERLIST;
 /** 定义Buddy的一些类型*/
 enum BuddyType { TYPE_FRIEND = 0, TYPE_TRANPORT, TYPE_GROUPCHAT
                  , TYPE_BOT, TYPE_MSN, TYPE_ICQ, TYPE_YAHOO
+				 , TYPE_QQ,  TYPE_IRC, TYPE_TWITTER, TYPE_FACEBOOK
                  , TYPE_OTHER
                };
 /**定义Buddy的状态的类型，用于扩展组和聊天室*/

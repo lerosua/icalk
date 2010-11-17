@@ -215,6 +215,12 @@ BuddyType Buddy::guessType()const
         if (0 == server.find("yahoo."))
                 return TYPE_YAHOO;
 
+		if (0 == server.find("twitter."))
+				return TYPE_TWITTER;
+
+		if (0 == server.find("qq."))
+				return TYPE_QQ;
+
         /** 资源开头为conference，则可能为Gtalk群机器人*/
         if (0 == m_resource.find("conference"))
                 return TYPE_GROUPCHAT;

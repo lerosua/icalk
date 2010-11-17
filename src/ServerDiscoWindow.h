@@ -36,6 +36,7 @@ enum { AGENT_AIM = 0, AGENT_ICQ, AGENT_MSN,
        AGENT_PUBSUB,
        AGENT_HTTP_WS, AGENT_SMS, AGENT_SMTP,
        AGENT_JUD,
+	   AGENT_TWITTER,
        AGENT_OTHER
      };
 #define agent_jid 0

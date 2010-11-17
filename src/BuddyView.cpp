@@ -718,6 +718,24 @@ void BuddyView::initBuddy(Buddy * value)
                         (*treeiter)[buddyColumns.audioicon] =
                                 getPix("msn.png");
                         break;
+				case TYPE_TWITTER:
+                        (*treeiter)[buddyColumns.type] = TYPE_TWITTER;
+                        value->setType(TYPE_TWITTER);
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("twitter.png");
+						break;
+				case TYPE_QQ:
+                        (*treeiter)[buddyColumns.type] = TYPE_QQ;
+                        value->setType(TYPE_QQ);
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("qq.png");
+						break;
+				case TYPE_ICQ:
+                        (*treeiter)[buddyColumns.type] = TYPE_ICQ;
+                        value->setType(TYPE_ICQ);
+                        (*treeiter)[buddyColumns.audioicon] =
+                                getPix("icq.png");
+						break;
 
                 default:
                         (*treeiter)[buddyColumns.type] = TYPE_FRIEND;

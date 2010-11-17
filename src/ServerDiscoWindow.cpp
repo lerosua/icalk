@@ -20,7 +20,7 @@
 #include "Bodies.h"
 #include "MainWindow.h"
 
-const char* agent_type_info[19][3] =
+const char* agent_type_info[20][3] =
         {
                 { "aim", _("AIM Transports"), "aim.png"
                 }
@@ -41,6 +41,7 @@ const char* agent_type_info[19][3] =
                 , { "sms", _("SMS Transports"), "sms.png" }
                 , { "smtp", _("SMTP Transports"), "mail.png" }
                 , { "user", _("User"), "jud.png" }
+				, { "twitter",_("TWitter"), "twitter.png" }
                 , { "other", "", "other.png" }
         };
 
@@ -126,6 +127,8 @@ void ServerDiscoWindow::addAgent(const std::string& f_jid)
                 f_type = AGENT_SMTP;
         else if (0 == f_jid.find("users.") || 0 == f_jid.find("vjud."))
                 f_type = AGENT_JUD;
+		else if (0 == f_jid.find("twitter."))
+				f_type = AGENT_TWITTER;
         else
                 f_type = AGENT_OTHER;
 

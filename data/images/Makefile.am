@@ -61,6 +61,7 @@ icalkimages_DATA = 	\
 	       gadu.png \
 	       weather.png 	\
 	       qq.png 		\
+		   twitter.png 	\
 	       border.png 	\
 	       ft_done.png 	\
 	       ft_error.png 	\
