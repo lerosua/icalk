@@ -1834,18 +1834,8 @@ the Buddy Type sometimes will impact the Buddy action.</property>
                   </packing>
                 </child>
                 <child>
-                  <widget class="GtkComboBox" id="combobox_type1">
+                  <widget class="GtkComboBox" id="combobox_type">
                     <property name="visible">True</property>
-                    <property name="can_default">True</property>
-                    <property name="has_default">True</property>
-                    <property name="items" translatable="yes">Friend
-GateWay
-GroupChat
-Bot
-MSN
-ICQ
-Yahoo Message
-Other</property>
                   </widget>
                   <packing>
                     <property name="position">2</property>

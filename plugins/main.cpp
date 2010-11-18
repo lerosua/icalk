@@ -1,4 +1,5 @@
 
+#include <stdio.h>
 #include <iostream>
 #include <glibmm/module.h>
 #include "genericplugin.h"

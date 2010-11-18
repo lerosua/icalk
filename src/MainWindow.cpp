@@ -1051,8 +1051,17 @@ void MainWindow::on_buddyType_activate()
         row[m_Columns.m_icons] = getPix("yahoo.png");
         row[m_Columns.m_status] = _("Yahoo Message");
         row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("qq.png");
+        row[m_Columns.m_status] = _("QQ");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("irc.png");
+        row[m_Columns.m_status] = _("IRC");
+        row = *(m_refTreeModel->append());
         row[m_Columns.m_icons] = getPix("twitter.png");
         row[m_Columns.m_status] = _("TWitter");
+        row = *(m_refTreeModel->append());
+        row[m_Columns.m_icons] = getPix("other.png");
+        row[m_Columns.m_status] = _("FACEBOOK");
         row = *(m_refTreeModel->append());
         row[m_Columns.m_icons] = getPix("other.png");
         row[m_Columns.m_status] = _("Other");
