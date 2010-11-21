@@ -1437,16 +1437,16 @@ void MainWindow::show_tray_menu(guint button, guint activate_time)
 
 void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 {
-        GtkWidget *active;
-        GtkWidget *child;
+        //GtkWidget *active;
+        //GtkWidget *child;
         GtkRequisition requisition;
-        GList *children;
+        //GList *children;
 
         int menu_xpos;
         int menu_ypos;
         int menu_height;
 
-        GtkWidget *widget;
+        GtkWidget *widget=0;
         GtkMenu *menu;
 
         if (SYSTEM_MENU == id) {

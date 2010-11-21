@@ -50,7 +50,6 @@ public:
 #include "MsgPage.h"
 
 #define msg_ui  DATA_DIR"/ui/msg_window.glade"
-typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 /**
  * @brief 会话中的消息窗口。
@@ -129,9 +128,10 @@ public:
 
 private:
         MsgWindow(const MsgWindow & rhs); //禁止拷贝
-        MsgWindow & operator =(const MsgWindow rhs); //禁止拷贝
+        MsgWindow & operator =(const MsgWindow& rhs); //禁止拷贝
 
 private:
+		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
         GlademmXML msg_xml;
         Gtk::Notebook * notebook;
         GlademmData *gmm_data;

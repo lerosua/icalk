@@ -30,7 +30,6 @@
 
 using namespace std;
 
-typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 class MainWindow;
 
@@ -55,6 +54,7 @@ public:
         bool on_key_press_event(GdkEventKey* ev);
 
 private:
+		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
         MainWindow* parent;
         MsgLine* msgline;
         Gtk::CheckButton* timeoutButton;

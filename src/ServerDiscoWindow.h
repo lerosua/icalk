@@ -27,7 +27,6 @@
 //#include <sigc++/compatibility.h>
 
 #define server_discovery_ui DATA_DIR"/ui/service_discovery_window.glade"
-typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 enum { AGENT_AIM = 0, AGENT_ICQ, AGENT_MSN,
        AGENT_YAHOO, AGENT_QQ, AGENT_GADU,
@@ -80,6 +79,7 @@ private:
         bool on_delete_event(GdkEventAny*);
 
 private:
+		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
         GlademmXML server_discovery_xml;
         MainWindow* m_parent;
         AgentLine* agentline;

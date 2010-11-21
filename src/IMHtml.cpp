@@ -441,3 +441,4 @@ void IMHtml::showMessage(const Glib::ustring& f_msg, const std::string& f_time)
 
 
         }
+}

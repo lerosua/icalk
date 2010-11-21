@@ -24,7 +24,7 @@
 #include "icalk.h"
 
 
-TalkConnect::TalkConnect()
+TalkConnect::TalkConnect():m_login_handler(0)
 {}
 
 TalkConnect::~TalkConnect()

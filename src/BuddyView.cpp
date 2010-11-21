@@ -161,7 +161,6 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
         Gtk::TreeModel::Path path;
         Gtk::TreeViewColumn * column;
         int cell_x, cell_y;
-        int delay = 600;
 
         if (m_tipTimeout.connected()) {
 
@@ -175,6 +174,7 @@ bool BuddyView::on_motion_event(GdkEventMotion * ev)
                 Gtk::TreeModel::iterator iter =
                         this->get_model()->get_iter(path);
                 int type = (*iter)[buddyColumns.status];
+				int delay = 600;
 
                 if (STATUS_GROUP != type)
                         m_tipTimeout =

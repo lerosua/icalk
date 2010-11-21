@@ -354,8 +354,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
                 s5b->removeBytestreamDataHandler();
 
-                if (s5b)
-                        s5b->close();
+				s5b->close();
         } else {
                 recvCount = recvCount - 1;
 
@@ -381,8 +380,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 //recvfile.close();
                 s5b->removeBytestreamDataHandler();
 
-                if (s5b)
-                        s5b->close();
+				s5b->close();
         }
 
         //if (s5b)

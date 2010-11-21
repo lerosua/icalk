@@ -40,11 +40,11 @@ void GUnit::init(const char* user)
         snprintf(homePath, MAX_NUM, "%s/.icalk", homedir);
         mkdir(homePath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-        char* userdir;
+        //char* userdir;
         snprintf(userPath, MAX_NUM, "%s/%s", homePath, user);
         mkdir(userPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
-        char* icondir;
+        //char* icondir;
         snprintf(iconPath, MAX_NUM, "%s/icons", homePath);
         mkdir(iconPath, S_IRUSR | S_IWUSR | S_IXUSR);
 
