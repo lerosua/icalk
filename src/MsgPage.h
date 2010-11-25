@@ -208,6 +208,7 @@ public:
         void on_toolbar_link();
         void on_toolbar_smiley();
         void on_toolbar_image();
+		void on_send_file();
 
 private:
         MsgBox * m_msgBox;

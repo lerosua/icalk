@@ -47,17 +47,15 @@ MsgWindow::MsgWindow()
         statusbar = dynamic_cast< Gtk::Statusbar* >
                     (msg_xml->get_widget("statusbar"));
 
-        add
-                (*widget);
+        add(*widget);
+
+		btsendfile = dynamic_cast< Gtk::Button*> ( msg_xml->get_widget("btsendfile"));
+		btsendfile->signal_clicked().connect(sigc::mem_fun(*this, &MsgWindow::on_send_file));
 
         showTypeImage(false);
-
         showEncryptImage(false);
-
         set_default_size(600, 400);
-
         Glib::RefPtr < Gdk::Pixbuf > pix = getPix("default.png");
-
         set_icon(pix);
 
         hide();
@@ -341,4 +339,12 @@ void MsgWindow::showStatusBarMsg(const std::string& msg, unsigned int id)
 {
         statusbar->pop(id);
         statusbar->push(msg, id);
+}
+
+void MsgWindow::on_send_file()
+{
+	MsgPage *page = getCurrentPage();
+	page->on_send_file();
+
+
 }

@@ -55,8 +55,7 @@ MsgPage::MsgPage(const std::string& title, Buddy* f_buddy):
         m_logo = Gtk::manage(new Gtk::Image(pix));
         Gtk::AspectFrame* aspectframe1 = Gtk::manage(new Gtk::AspectFrame());
 
-        aspectframe1->add
-        (*m_logo);
+        aspectframe1->add(*m_logo);
 
         rightVbox->pack_start(*aspectframe1);
 
@@ -170,7 +169,6 @@ MsgPage::MsgPage(const std::string& title, Buddy* f_buddy):
         send_textview->set_size_request(90, -1);
 
         hbox3->pack_end(*send_textview, false, false, 0);
-
 
         Gtk::Button* btSend = Gtk::manage(new Gtk::Button(_("Send(_S)"), true));
 
@@ -654,6 +652,40 @@ void MsgPage::on_toolbar_link()
 
 void MsgPage::on_toolbar_smiley()
 {}
+
+void MsgPage::on_send_file()
+{
+        if (NULL == m_buddy)
+                return ;
+		Gtk::FileChooserDialog dialog(_("Please select a file"),
+                                      Gtk::FILE_CHOOSER_ACTION_OPEN);
+
+        dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
+        dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
+
+        std::string filename ;
+
+        //dialog.set_current_folder("~/Desktop");
+        int result = dialog.run();
+
+        switch (result) {
+        case (Gtk::RESPONSE_OK): {
+                        filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
+                        break;
+                }
+        case (Gtk::RESPONSE_CANCEL): {
+                        std::cout << "Cannel choose icon" << std::endl;
+                        return ;
+                }
+        default: {
+                        std::cout << "Cannel choose icon" << std::endl;
+                        return ;
+                }
+        }
+        std::cout << "选择文件： " << filename << std::endl;
+        m_buddy->sendFile(filename);
+
+}
 
 void MsgPage::on_toolbar_image()
 {

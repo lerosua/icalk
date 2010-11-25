@@ -163,7 +163,7 @@ bool TalkFT::isSend(Bytestream* bs)
 
 }
 
-void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
+void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamtypes)
 {
 
         struct stat f_stat;

@@ -77,6 +77,10 @@ public:
          */
         void on_switch_page(GtkNotebookPage * page, guint index);
         void on_page_close_click();
+		/**
+		 * @brief 发送文件的回调
+		 */
+		void on_send_file();
         /**
          * @brief 添加聊天窗口页
          * @param page 需要删除的聊天窗口页
@@ -136,6 +140,7 @@ private:
         Gtk::Notebook * notebook;
         GlademmData *gmm_data;
         Gtk::Statusbar * statusbar;
+		Gtk::Button* btsendfile;
 };
 
 

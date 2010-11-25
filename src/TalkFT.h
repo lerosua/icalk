@@ -73,8 +73,8 @@ public:
         /** 是否发送的流*/
         bool isSend(Bytestream* bs);
 
-        /** 自定义的发送文件的处理*/
-        void handleFTSend(const JID& to, const std::string& m_file);
+        /** 自定义的发送文件的处理, streamtypes 是发送的方式，0为sock5stream, 1 为ibbstream*/
+        void handleFTSend(const JID& to, const std::string& m_file, int streamtypes=0);
         /** 此函数在对方要发送一个文件给你时调用。*/
         void handleFTRequest(const JID & from,
 			     const JID & to,
