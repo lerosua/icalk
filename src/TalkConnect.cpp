@@ -236,7 +236,7 @@ void TalkConnect::onStreamEvent(StreamEvent event)
 
 void TalkConnect::handleLog(LogLevel level, LogArea area, const std::string& message)
 {
-        //printf("log: level: %d, area %d, %s\n",level, area,message.c_str());
+	printf("log: level: %d, area %d, %s\n",level, area,message.c_str());
 
 }
 

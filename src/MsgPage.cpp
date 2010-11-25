@@ -679,7 +679,8 @@ void MsgPage::on_toolbar_image()
 
         filter_jpg.set_name("JPG files");
 
-        filter_jpg.add_mime_type("image/jpg");
+        filter_jpg.add_pattern("*.jpg");
+        filter_jpg.add_pattern("*.JPG");
 
         dialog.add_filter(filter_jpg);
 
@@ -687,7 +688,8 @@ void MsgPage::on_toolbar_image()
 
         filter_gif.set_name("GIF files");
 
-        filter_gif.add_mime_type("image/gif");
+        filter_gif.add_pattern("*.gif");
+        filter_gif.add_pattern("*.GIF");
 
         dialog.add_filter(filter_gif);
 
@@ -696,7 +698,7 @@ void MsgPage::on_toolbar_image()
 
         filter_any.set_name("Any files");
 
-        filter_any.add_mime_type("*");
+        filter_any.add_pattern("*");
 
         dialog.add_filter(filter_any);
 

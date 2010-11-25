@@ -61,13 +61,13 @@ void TalkFT::initFT()
 
         m_ft->registerSOCKS5BytestreamServer(m_server);
 
-        //m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
+        m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
 
-        //m_ft->addStreamHost(m_client->jid(), "192.168.1.103", 28011);
+        m_ft->addStreamHost(m_client->jid(), "localhost", 6666);
         //m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
         //                    PORT);
-        m_ft->addStreamHost(JID("proxy.netlab.cz"), "77.48.19.1",
-                            PORT);
+		//m_ft->addStreamHost(JID("proxy.jabber.no"), "80.239.54.118",
+		//PORT);
 }
 
 
@@ -143,7 +143,8 @@ void* TalkFT::loopSend(void* )
 
                                 (*it)->recv(1);
                         } else if ((*it)) {
-                                (*it)->close();
+                                (*it)->recv(1);
+								//(*it)->close();
                         }
                 }
 
@@ -184,7 +185,8 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file)
 
         std::string m_filename(basename(const_cast<char *>(m_file.c_str())));
 
-        const std::string sid = m_ft->requestFT(to, m_filename, m_size);
+		const std::string sid = m_ft->requestFT(to, m_filename, m_size);
+		//const std::string sid = m_ft->requestFT(to, m_filename, m_size,"","send_image","2010","image/png",2);
 
         if (sid.empty()) {
                 DLOG("requestFT error\n");
@@ -352,10 +354,8 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 */
                 DLOG(" close send bs sid %s\n", s5b->sid().c_str());
 
-                s5b->removeBytestreamDataHandler();
-
-                if (s5b)
-                        s5b->close();
+				s5b->removeBytestreamDataHandler();
+				s5b->close();
         } else {
                 recvCount = recvCount - 1;
 
@@ -379,15 +379,12 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 DLOG(" close bs2 sid %s\n", s5b->sid().c_str());
 
                 //recvfile.close();
-                s5b->removeBytestreamDataHandler();
-
-                if (s5b)
-                        s5b->close();
+				s5b->removeBytestreamDataHandler();
+				s5b->close();
         }
 
-        //if (s5b)
-        //        s5b->close();
-        //s5b->removeBytestreamDataHandler();
+		//s5b->close();
+		//s5b->removeBytestreamDataHandler();
 }
 
 void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
