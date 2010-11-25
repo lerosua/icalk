@@ -32,7 +32,7 @@ CommandBar::CommandBar(MsgPage* _parent) :
                 parent(reinterpret_cast<MsgPage*>(_parent)),
                 smileyWnd(NULL)
 {
-        CommandBar* commandBar = this;
+        //CommandBar* commandBar = this;
 
         Gtk::Image* image_ = getImage("insert-fonts.png");
         Gtk::ToolButton* item = Gtk::manage(new Gtk::ToolButton(*image_));

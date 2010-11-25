@@ -206,26 +206,26 @@ BuddyType Buddy::guessType()const
         }
 
         /** 服务器开头为”msn.“ 则可能为MSN用户*/
-        if (0 == server.find("msn."))
+        if (0 == server.compare(0,4, "msn." ))
                 return TYPE_MSN;
 
-        if (0 == server.find("icq."))
+        if (0 == server.compare(0,4,"icq."))
                 return TYPE_ICQ;
 
-        if (0 == server.find("yahoo."))
+        if (0 == server.compare(0,6,"yahoo."))
                 return TYPE_YAHOO;
 
-		if (0 == server.find("twitter."))
+		if (0 == server.compare(0,8,"twitter."))
 				return TYPE_TWITTER;
 
-		if (0 == server.find("qq."))
+		if (0 == server.compare(0,3,"qq."))
 				return TYPE_QQ;
 
         /** 资源开头为conference，则可能为Gtalk群机器人*/
-        if (0 == m_resource.find("conference"))
+        if (0 == m_resource.compare(0,10,"conference"))
                 return TYPE_GROUPCHAT;
 
-        if (0 == m_resource.find("bot"))
+        if (0 == m_resource.compare(0,3,"bot"))
                 return TYPE_BOT;
 
         return TYPE_FRIEND;

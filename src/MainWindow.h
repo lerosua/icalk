@@ -30,7 +30,6 @@
 #include "MVC.h"
 
 #define main_ui     DATA_DIR"/ui/main_window.glade"
-typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 using namespace Gtk;
 
@@ -283,6 +282,7 @@ private:
 private:
         Bodies& m_bodies;
         BuddyView* list_view;
+		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
         GlademmXML main_xml;
         Gtk::ComboBox* statusCombo;
         Gtk::Entry* statusEntry;
@@ -296,9 +296,9 @@ private:
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
         Sexy::IconEntry* entryFilter;
-	Button* button_ok;
+		Button* button_ok;
         ServerDiscoWindow* discowindow;
-	PluginPref* pluginpref;
+		PluginPref* pluginpref;
         FTWidget* ftwidget;
         StatusMsgWidget *statusMsgWidget;
         sigc::connection msgTimeout;

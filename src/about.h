@@ -6,13 +6,14 @@
 #include <libglademm/xml.h>
 #define about_ui DATA_DIR"/ui/about.glade"
 
-typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 class createAboutDialog
 {
 
 public:
         createAboutDialog();
+private:
+		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 
 };
 

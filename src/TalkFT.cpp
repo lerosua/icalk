@@ -355,6 +355,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 DLOG(" close send bs sid %s\n", s5b->sid().c_str());
 
 				s5b->removeBytestreamDataHandler();
+
 				s5b->close();
         } else {
                 recvCount = recvCount - 1;
@@ -379,7 +380,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 DLOG(" close bs2 sid %s\n", s5b->sid().c_str());
 
                 //recvfile.close();
-				s5b->removeBytestreamDataHandler();
+                s5b->removeBytestreamDataHandler();
 				s5b->close();
         }
 

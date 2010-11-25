@@ -93,7 +93,6 @@ void sounds::play(int code)
 void sounds::do_play(const char* filename)
 {
         pid_t pid;
-        int status;
         pid = fork();
 
         if ( -1 == pid) {

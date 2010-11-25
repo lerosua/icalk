@@ -224,7 +224,7 @@ public:
                 return m_resource;
         }
 
-        void setResource(const std::string resource_)
+        void setResource(const std::string& resource_)
         {
                 m_resource = resource_ ;
                 jid.setResource(m_resource);
