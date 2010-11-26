@@ -33,6 +33,10 @@ TalkFT::TalkFT(Client* client_): m_client(client_)
 
 TalkFT::~TalkFT()
 {
+		R_RUNNING = STOP_STATUS;
+		S_RUNNING = STOP_STATUS;
+		recvThread.join();
+		sendThread.join();
         delete m_server;
         delete m_ft;
         m_client = NULL;
@@ -350,8 +354,10 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
                 if (s_iter != sfilelist.end()) {
                         (*s_iter).second->close();
-						Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->target().bare());
-						buddy->finish_recv_pic( (*s_iter).second->getFilePath());
+						if(s5b->type() == Bytestream::IBB ){
+							Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->target().bare());
+							buddy->finish_recv_pic( (*s_iter).second->getFilePath());
+						}
                         delete (*s_iter).second;
                         sfilelist.erase(s_iter);
                 }
@@ -374,9 +380,10 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 if (iter != rfilelist.end()) {
                         (*iter).second->close();
 
-						DLOG(" who = %s", s5b->target().bare().c_str());
-						Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->target().bare());
-						buddy->finish_recv_pic( (*iter).second->getFilePath());
+						if(s5b->type() == Bytestream::IBB ){
+							Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->initiator().bare());
+							buddy->finish_recv_pic( (*iter).second->getFilePath());
+						}
                         delete (*iter).second;
                         rfilelist.erase(iter);
                         DLOG(" close recv bs sid %s\n", s5b->sid().c_str());

@@ -341,7 +341,6 @@ void Buddy::recvPicture(const std::string& filename)
 }
 void Buddy::finish_recv_pic(const std::string& filename)
 {
-	DLOG(" successing ======== %s=",filename.c_str());
 	page = new_page();
 	page->finishNetPic(filename);
 
