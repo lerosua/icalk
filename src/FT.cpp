@@ -46,6 +46,7 @@ int XferFile::open(const char * filename,
         if (stat(filename, &f_stat))
                 return -2;
         totalsize  = f_stat.st_size;
+		filepath = std::string(filename);
 		return 0;
 }
 
@@ -62,16 +63,12 @@ void XferFile::read(char* data, streamsize length)
         bytes_sent += file.gcount();
 }
 
-void XferFile::close()
-{
-        if (file.is_open())
-                file.close();
-}
-
+/*
 int XferFile::getPercent()const
 {
         double result = ( ((double)(bytes_sent)) / ((double)(totalsize))) * 100 ;
         return (int)(result);
 }
+*/
 
 

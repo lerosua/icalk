@@ -50,6 +50,7 @@ public:
 //#include <gtkmm/image.h>
 #include <iostream>
 #include <gloox/mucroom.h>
+#include <map>
 #include "MsgBox.h" 
 //#include "CommandBar.h"
 #include "MemberList.h" 
@@ -124,8 +125,8 @@ public:
          * @param time   消息的时间
          * @param self   确认信息是不是自己发送的,为真则是自己发送的.
          */
-        void showMessage(const std::string & sender,
-                         const Glib::ustring & msg,
+        void showMessage(const std::string& sender,
+                         const Glib::ustring& msg,
                          const std::string& time = ""
                                                    , bool self = 0);
 
@@ -134,13 +135,15 @@ public:
          * @param picname 图片的文件名
          * @param self 确认信息不是自己发送的。
          */
-        void showPicture(const char* picname, bool self = 0);
+        void showPicture(const std::string&  picname, bool self = 0);
+        void waitNetPic(const std::string& picname, bool self = 0);
+		void finishNetPic(const std::string& picname);
         /**
          * @brief 显示状态栏里的信息
          * @param msg 信息内容
          * @note 主要用于显示用户的一些动作，聊天室里的离开，进入等
          */
-        void showStatusBarMsg(const std::string & msg, unsigned int id =
+        void showStatusBarMsg(const std::string& msg, unsigned int id =
                                       0);
         /**
          * @brief 用于显示聊天室里的历史信息
@@ -225,6 +228,8 @@ private:
         RoomItem *m_mucroom;
         MemberList *m_memberList;
         MsgLog *m_msgLog;
+		typedef std::map<string, Gtk::Image*> WaitImages;
+		WaitImages m_wait_images;
 
 };
 

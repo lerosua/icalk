@@ -315,9 +315,7 @@ void Buddy::close_session(bool closePage)
 
                 /** 关闭会话 */
                 session->disposeMessageFilter(message_event_filter);
-
                 session->disposeMessageFilter(chat_state_filter);
-
                 message_event_filter = NULL;
 
                 chat_state_filter = NULL;
@@ -328,7 +326,6 @@ void Buddy::close_session(bool closePage)
                 if (NULL != session) {
                         session = NULL;
                 }
-
         }
 
         /** 关闭标签页 */
@@ -337,44 +334,23 @@ void Buddy::close_session(bool closePage)
         }
 }
 
-void Buddy::sendPicture()
+void Buddy::recvPicture(const std::string& filename)
 {
-        //std::string id = jid.full() + "/" + getResource();
-        //JID f_jid(id);
+	page = new_page();
+	page->waitNetPic(filename,false);
 }
+void Buddy::finish_recv_pic(const std::string& filename)
+{
+	DLOG(" successing ======== %s=",filename.c_str());
+	page = new_page();
+	page->finishNetPic(filename);
 
+}
 void Buddy::sendPicture(const std::string& filename)
 {
-        /**加载图片进数据*/
-
 		int ibb=1;
         Bodies::Get_Bodies().getFThandler().handleFTSend(jid, filename, ibb);
-        /*
-           std::ifstream fin(filename.c_str(),std::ios::binary);
-           fin.seekg(0,std::ios::end);
-           int filesize=fin.tellg();
-           fin.seekg(0,std::ios::beg);
-           if(filesize<PICZIAE)
-           {
-         std::copy((std::istreambuf_iterator<char>(fin)),
-           std::istreambuf_iterator<char>(),
-           std::inserter(customSmile,customSmile.begin()));
-         page->showPicture(filename.c_str(),true);
-           }
-           else
-           {
-            printf("图片大小超过40K\n");
-            //std::string msg="图片大小超过100K,默认将不发送";
-            std::string msg=_("picture size must be under 100k bytes");
-            Gtk::MessageDialog dialog("alarm",false,
-              Gtk::MESSAGE_INFO);
-            dialog.set_secondary_text(msg);
-            dialog.run();
-            return;
-           }
-           fin.close();
-
-        */
+        page->waitNetPic(filename,true);
 }
 
 void Buddy::sendFile(const std::string& filename)

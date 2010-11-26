@@ -247,10 +247,10 @@ void TalkFT::handleFTRequest(const JID & from,
 		if(0 == desc.compare(0,5,"image")){
 				m_ft->acceptFT(from, sid, SIProfileFT::FTTypeIBB);
 				recvCount++;
-            if (R_RUNNING != RUN_RECV) {
-                    R_RUNNING = RUN_RECV;
-                    recvThread.start();
-            }
+				if (R_RUNNING != RUN_RECV) {
+						R_RUNNING = RUN_RECV;
+						recvThread.start();
+				}
 
             XferFile* recvfile = new XferFile();
             recvfile->setTotalsize(size);
@@ -262,6 +262,12 @@ void TalkFT::handleFTRequest(const JID & from,
                     m_ftwidget = Bodies::Get_Bodies().get_main_window().get_ftwidget();
             const Glib::ustring& f_sid = Glib::ustring(sid);
             m_ftwidget->addXfer(f_sid, name, from.bare(), size, RECV_TYPE);
+
+			//显示到用户聊天窗口中，先显示loading占位，传输完毕后用真正图片替代
+			Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(from.bare());
+			assert(buddy != NULL);
+			buddy->recvPicture(name);
+
 			return ;
 		}
 
@@ -269,7 +275,6 @@ void TalkFT::handleFTRequest(const JID & from,
                                      false /*use markup */ ,
                                      Gtk::MESSAGE_QUESTION,
                                      Gtk::BUTTONS_OK_CANCEL);
-
         Glib::ustring msg_ =
                 from.full() + _(" want to send you a file: ") + name;
 
@@ -287,7 +292,6 @@ void TalkFT::handleFTRequest(const JID & from,
                                 recvThread.start();
                         }
 
-                        //std::fstream* recvfile = new std::fstream();
                         XferFile* recvfile = new XferFile();
                         recvfile->setTotalsize(size);
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
@@ -346,6 +350,8 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
                 if (s_iter != sfilelist.end()) {
                         (*s_iter).second->close();
+						Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->target().bare());
+						buddy->finish_recv_pic( (*s_iter).second->getFilePath());
                         delete (*s_iter).second;
                         sfilelist.erase(s_iter);
                 }
@@ -365,15 +371,18 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 				bs_sendList.remove(s5b);
                 s5b->removeBytestreamDataHandler();
                 FILELIST::iterator iter = rfilelist.find(s5b->sid());
-				//s5b->close();
                 if (iter != rfilelist.end()) {
                         (*iter).second->close();
+
+						DLOG(" who = %s", s5b->target().bare().c_str());
+						Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->target().bare());
+						buddy->finish_recv_pic( (*iter).second->getFilePath());
                         delete (*iter).second;
                         rfilelist.erase(iter);
-                        DLOG(" close bs sid %s\n", s5b->sid().c_str());
+                        DLOG(" close recv bs sid %s\n", s5b->sid().c_str());
                 }
-                DLOG(" close bs2 sid %s\n", s5b->sid().c_str());
 				//m_ft->dispose(s5b);
+				//s5b->close();
         }
 }
 

@@ -452,7 +452,7 @@ void MsgPage::showMessage(const std::string& f_sender, const Glib::ustring& f_ms
         m_msgLog->write(f_sender, f_msg);
 }
 
-void MsgPage::showPicture(const char* picname, bool self)
+void MsgPage::showPicture(const std::string&  picname, bool self)
 {
 
         Glib::RefPtr < Gdk::Pixbuf > pic = Gdk::Pixbuf::create_from_file(picname);
@@ -664,8 +664,7 @@ void MsgPage::on_send_file()
         dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 
         std::string filename ;
-
-        //dialog.set_current_folder("~/Desktop");
+        dialog.set_current_folder("~/Desktop");
         int result = dialog.run();
 
         switch (result) {
@@ -696,71 +695,91 @@ void MsgPage::on_toolbar_image()
                                       Gtk::FILE_CHOOSER_ACTION_OPEN);
 
         dialog.add_button(Gtk::Stock::CANCEL, Gtk::RESPONSE_CANCEL);
-
         dialog.add_button(Gtk::Stock::OPEN, Gtk::RESPONSE_OK);
 
         Gtk::FileFilter filter_png;
-
         filter_png.set_name("PNG files");
-
         filter_png.add_mime_type("image/png");
-
         dialog.add_filter(filter_png);
-
         Gtk::FileFilter filter_jpg;
-
         filter_jpg.set_name("JPG files");
-
         filter_jpg.add_pattern("*.jpg");
-        filter_jpg.add_pattern("*.JPG");
-
         dialog.add_filter(filter_jpg);
-
         Gtk::FileFilter filter_gif;
-
         filter_gif.set_name("GIF files");
-
         filter_gif.add_pattern("*.gif");
         filter_gif.add_pattern("*.GIF");
-
         dialog.add_filter(filter_gif);
-
-
         Gtk::FileFilter filter_any;
-
         filter_any.set_name("Any files");
-
         filter_any.add_pattern("*");
-
         dialog.add_filter(filter_any);
 
         std::string filename ;
-
         //dialog.set_current_folder("~/Desktop");
         int result = dialog.run();
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
                         filename = dialog.get_filename(); //注意：这里取回的并不是Glib::ustring, 而是std::string.
-
                         break;
                 }
-
         case (Gtk::RESPONSE_CANCEL): {
                         std::cout << "Cannel choose icon" << std::endl;
                         return ;
-                        //break;
                 }
-
         default: {
-
                         std::cout << "Cannel choose icon" << std::endl;
                         return ;
-                        //break;
                 }
         }
-
         std::cout << "选择文件： " << filename << std::endl;
-
         m_buddy->sendPicture(filename);
+}
+
+void MsgPage::finishNetPic(const std::string& picname)
+{
+	WaitImages::iterator iter = m_wait_images.find(picname);
+	if (iter != m_wait_images.end())
+	{
+        Glib::RefPtr < Gdk::PixbufAnimation > pic = Gdk::PixbufAnimation::create_from_file(picname);
+		(*iter).second->set(pic);
+		m_wait_images.erase(iter);
+		DLOG(" successing ==================");
+	}
+		DLOG(" successing ==================");
+
+}
+
+void MsgPage::waitNetPic(const std::string& picname, bool self)
+{
+
+        Glib::RefPtr < Gdk::PixbufAnimation > pic = Gdk::PixbufAnimation::create_from_file(DATA_DIR"/images/loading.gif");
+        Gtk::Image* picimage = Gtk::manage(new Gtk::Image(pic));
+
+		m_wait_images.insert(m_wait_images.end(), WaitImages::value_type(picname, picimage));
+
+        std::string sender;
+        Glib::RefPtr<Gdk::Pixbuf>pix_;
+
+        if (self) {
+                setTitleColor(false);
+                pix_ = Bodies::Get_Bodies().get_main_window().getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
+                sender = Bodies::Get_Bodies().get_jid().username();
+        } else {
+                sounds::play(sounds::RECEIVE_SOUND);
+                setTitleColor(true);
+                pix_ = m_buddy->getLogo()->scale_simple(30, 30, Gdk::INTERP_NEAREST);
+                sender = m_buddy->get_nickname();
+                if (sender.empty())
+                        sender = m_buddy->getJID().username();
+        }
+
+        Gtk::Image* image = Gtk::manage(new Gtk::Image(pix_));
+
+        m_msgBox->insertImage(image);
+        m_msgBox->showTitle(sender, self);
+        m_msgBox->insertImage(picimage);
+        m_msgBox->showMessage("");
+
 }

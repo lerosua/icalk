@@ -50,7 +50,10 @@ public:
         void read(char* data, streamsize length);
         int open(const char * filename,
                   ios_base::openmode mode = ios_base::in | ios_base::out );
-        void close();
+        void close() { 
+			if (file.is_open())
+				file.close();
+		}
         bool eof()const { return file.eof();}
         streamsize gcount()const{ return file.gcount();}
         long getTotalsize()const
@@ -59,6 +62,7 @@ public:
         }
 		void setTotalsize(long size) { totalsize = size ; }
 
+		const std::string& getFilePath()const  { return filepath; }
         long getSentBytes()const
         {
                 return bytes_sent;
@@ -70,7 +74,7 @@ public:
         }
 
         /** 获取已传输数据的占总数据的百分比*/
-        int getPercent()const;
+        int getPercent()const { return (int) ( ( ((double)(bytes_sent)) / ((double)(totalsize))) * 100) ; }
 
         void setStatusType(XferStatusType f_status) {
 				status = f_status;
@@ -80,6 +84,7 @@ private:
         std::string sid;       /**此次传输的sid */
         std::string who; /**传输的对方*/
         std::fstream file; /** 传输的文件流*/
+		std::string filepath; /** 带路径的文件名*/
         long totalsize;  /** 文件的总大小*/
         long bytes_sent;  /**已传输的字节数*/
         XferStatusType status;  /**传输的状态*/

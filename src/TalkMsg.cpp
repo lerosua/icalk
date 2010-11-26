@@ -38,11 +38,11 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
 
         if (!buddy) {
                 DLOG("buddy is NULL");
+				return ;
         }
 
         MsgPage* f_page = buddy->get_page();
         //如果f_page为空，则保留消息，等待用户唤醒消息
-
         if (f_page == NULL) {
                 buddy->storeMessage( stanza);
                 return ;
@@ -85,9 +85,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
                 f_page->showMessage(sender, msg, dd->stamp());
         } else
                 f_page->showMessage(sender, msg);
-
         Bodies::Get_Bodies().get_msg_window().add_page(*f_page);
-
         Bodies::Get_Bodies().get_msg_window().show();
 }
 

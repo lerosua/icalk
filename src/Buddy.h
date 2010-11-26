@@ -243,8 +243,10 @@ public:
         /** 根据用户ID的特殊猜测用户的类型*/
         BuddyType guessType()const ;
 
-        /** 带内数据传输地发送图片--测试*/
-        void sendPicture();
+		/** 开始收到自定义图片时,显示loading*/
+		void recvPicture(const std::string& filename);
+		/** 完成接收图片*/
+		void finish_recv_pic(const std::string& filename);
         /** 带内数据传输地发送图片--filename为文件名*/
         void sendPicture(const std::string& filename);
         /** 发送文件*/
@@ -253,11 +255,6 @@ public:
         {
                 return customSmile;
         }
-
-        //void set_ibbstream(InBandBytestream* ibb){ m_ibb=ibb;}
-        //InBandBytestream* get_ibbstream(){ return m_ibb;}
-        //void ibbattachToSession(){ if(m_ibb&&session) m_ibb->attachTo(session);}
-        //void cleanIBBstream();
 
 public:
 
