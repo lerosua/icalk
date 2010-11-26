@@ -16,6 +16,9 @@
 * =====================================================================================
 */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "FT.h"
 
 using namespace std;
@@ -27,35 +30,36 @@ XferFile::XferFile():
 {}
 
 XferFile::~XferFile()
-{}
+{
+	close();
+}
 
 
-void XferFile::open(const char * filename,
+int XferFile::open(const char * filename,
                     ios_base::openmode mode)
 {
         file.open(filename, mode);
+		if(!file)
+			return -1;
+
+		struct stat f_stat;
+        if (stat(filename, &f_stat))
+                return -2;
+        totalsize  = f_stat.st_size;
+		return 0;
 }
 
-bool XferFile::eof()const
-{
-        return file.eof();
-}
-
-streamsize XferFile::gcount()const
-{
-        return file.gcount();
-}
 
 void XferFile::write(const std::string& data, streamsize length)
 {
         file.write(data.c_str(), length);
-        bytes_sent += length;
+        bytes_sent += file.gcount();
 }
 
 void XferFile::read(char* data, streamsize length)
 {
         file.read(data, length);
-        bytes_sent += length;
+        bytes_sent += file.gcount();
 }
 
 void XferFile::close()
@@ -64,24 +68,10 @@ void XferFile::close()
                 file.close();
 }
 
-void XferFile::setSentBytes(long bytes)
-{
-        bytes_sent += bytes;
-}
-
-void XferFile::setTotalsize(long bytes)
-{
-        totalsize = bytes;
-}
-
 int XferFile::getPercent()const
 {
         double result = ( ((double)(bytes_sent)) / ((double)(totalsize))) * 100 ;
         return (int)(result);
 }
 
-void XferFile::setStatusType(XferStatusType f_status)
-{
-        status = f_status;
-}
 

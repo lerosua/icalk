@@ -61,13 +61,8 @@ void TalkFT::initFT()
 
         m_ft->registerSOCKS5BytestreamServer(m_server);
 
-        m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
-
         m_ft->addStreamHost(m_client->jid(), "localhost", 6666);
-        //m_ft->addStreamHost(JID("proxy.jabber.org"), "208.245.212.98",
-        //                    PORT);
-		//m_ft->addStreamHost(JID("proxy.jabber.no"), "80.239.54.118",
-		//PORT);
+        m_ft->addStreamHost(JID("reflector.amessage.eu"), "reflector.amessage.eu", 6565);
 }
 
 
@@ -104,13 +99,11 @@ void* TalkFT::loopSend(void* )
         while (S_RUNNING == RUN_SEND) {
                 if (m_server) {
                         se = m_server->recv(100);
-
                         if (se != ConnNoError) {
                                 DLOG("SOCKS5BytestreamServer returned: %d\n", se);
                                 //something error happen,please exit the send file
                         }
                 }
-
                 if ( 0 == sendCount ) {
                         bs_sendList.clear();
                         DLOG("all send bytestream clear\n");
@@ -122,7 +115,8 @@ void* TalkFT::loopSend(void* )
                 for (; it != bs_sendList.end(); ++it) {
 
                         FILELIST::iterator iter = sfilelist.find((*it)->sid());
-                        //std::fstream* sendfile = (*iter).second;
+						if(iter == sfilelist.end())
+								break;
                         XferFile* sendfile = (*iter).second;
 
                         if ( !sendfile->eof()) {
@@ -135,7 +129,7 @@ void* TalkFT::loopSend(void* )
                                         if (!(*it)->send(content))
                                                 DLOG("file send shuld be return\n");
 
-                                        if (new_percent > per_percent)
+                                        if (new_percent >= per_percent)
                                                 m_ftwidget->updateXfer((*it)->sid(), new_percent);
 
                                         ; //do something end the file send thread
@@ -143,8 +137,7 @@ void* TalkFT::loopSend(void* )
 
                                 (*it)->recv(1);
                         } else if ((*it)) {
-                                (*it)->recv(1);
-								//(*it)->close();
+							(*it)->recv(1);
                         }
                 }
 
@@ -166,27 +159,24 @@ bool TalkFT::isSend(Bytestream* bs)
 void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamtypes)
 {
 
+	/*
         struct stat f_stat;
-
         if (stat(m_file.c_str(), &f_stat))
                 return ;
-
         uint32_t m_size = f_stat.st_size;
-
-        //std::fstream* sendfile = new std::fstream();
+	*/
         XferFile* sendfile = new XferFile();
-
-        sendfile->setTotalsize(m_size);
-
+        //sendfile->setTotalsize(m_size);
         sendfile->open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
 
-        if (!sendfile)
-                return ;
-
         std::string m_filename(basename(const_cast<char *>(m_file.c_str())));
-
-		const std::string sid = m_ft->requestFT(to, m_filename, m_size);
-		//const std::string sid = m_ft->requestFT(to, m_filename, m_size,"","send_image","2010","image/png",2);
+		std::string sid;
+		long m_size = sendfile->getTotalsize();
+		if(streamtypes){
+			sid = m_ft->requestFT(to, m_filename, m_size,"","image","2010","",SIProfileFT::FTTypeIBB);
+		}
+		else
+			sid = m_ft->requestFT(to, m_filename, m_size);
 
         if (sid.empty()) {
                 DLOG("requestFT error\n");
@@ -204,7 +194,7 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamty
 
         const Glib::ustring& f_sid = Glib::ustring(sid);
 
-        m_ftwidget->addXfer(f_sid, m_filename, to.bare(), m_size, RECV_TYPE);
+        m_ftwidget->addXfer(f_sid, m_filename, to.bare(), m_size, SEND_TYPE);
 
         if (S_RUNNING != RUN_SEND) {
                 S_RUNNING = RUN_SEND;
@@ -254,6 +244,26 @@ void TalkFT::handleFTRequest(const JID & from,
 
         if (R_RUNNING == RUN_SEND)
                 return ;
+		if(0 == desc.compare(0,5,"image")){
+				m_ft->acceptFT(from, sid, SIProfileFT::FTTypeIBB);
+				recvCount++;
+            if (R_RUNNING != RUN_RECV) {
+                    R_RUNNING = RUN_RECV;
+                    recvThread.start();
+            }
+
+            XferFile* recvfile = new XferFile();
+            recvfile->setTotalsize(size);
+            recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+            rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
+            //建立文件传输窗口
+            Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
+            if (m_ftwidget == NULL)
+                    m_ftwidget = Bodies::Get_Bodies().get_main_window().get_ftwidget();
+            const Glib::ustring& f_sid = Glib::ustring(sid);
+            m_ftwidget->addXfer(f_sid, name, from.bare(), size, RECV_TYPE);
+			return ;
+		}
 
         Gtk::MessageDialog askDialog(_("File Transport"),
                                      false /*use markup */ ,
@@ -279,23 +289,15 @@ void TalkFT::handleFTRequest(const JID & from,
 
                         //std::fstream* recvfile = new std::fstream();
                         XferFile* recvfile = new XferFile();
-
                         recvfile->setTotalsize(size);
-
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
-
                         rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
-
                         //建立文件传输窗口
                         Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
-
                         if (m_ftwidget == NULL)
                                 m_ftwidget = Bodies::Get_Bodies().get_main_window().get_ftwidget();
-
                         const Glib::ustring& f_sid = Glib::ustring(sid);
-
                         m_ftwidget->addXfer(f_sid, name, from.bare(), size, RECV_TYPE);
-
                         break;
                 }
 
@@ -338,25 +340,18 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                         sendThread.join();
                 }
 
+				bs_sendList.remove(s5b);
+				s5b->removeBytestreamDataHandler();
                 FILELIST::iterator s_iter = sfilelist.find(s5b->sid());
 
                 if (s_iter != sfilelist.end()) {
-                        //(*s_iter).second->close();
+                        (*s_iter).second->close();
                         delete (*s_iter).second;
                         sfilelist.erase(s_iter);
                 }
-
-                /*
-                              S_RUNNING = STOP_STATUS;
-                              sendThread.join();
-                              sendfile.close();
-                              //m_bs_send = NULL;
-                */
-                DLOG(" close send bs sid %s\n", s5b->sid().c_str());
-
-				s5b->removeBytestreamDataHandler();
-
-				s5b->close();
+			   DLOG(" close send bs sid %s\n", s5b->sid().c_str());
+				m_ft->dispose(s5b);
+				//s5b->close();
         } else {
                 recvCount = recvCount - 1;
 
@@ -367,25 +362,19 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                         recvThread.join();
                 }
 
+				bs_sendList.remove(s5b);
+                s5b->removeBytestreamDataHandler();
                 FILELIST::iterator iter = rfilelist.find(s5b->sid());
-
+				//s5b->close();
                 if (iter != rfilelist.end()) {
                         (*iter).second->close();
                         delete (*iter).second;
                         rfilelist.erase(iter);
                         DLOG(" close bs sid %s\n", s5b->sid().c_str());
-
                 }
-
                 DLOG(" close bs2 sid %s\n", s5b->sid().c_str());
-
-                //recvfile.close();
-                s5b->removeBytestreamDataHandler();
-				s5b->close();
+				//m_ft->dispose(s5b);
         }
-
-		//s5b->close();
-		//s5b->removeBytestreamDataHandler();
 }
 
 void TalkFT::handleBytestreamError(Bytestream * s5b, const IQ & stanza)
@@ -400,7 +389,7 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 {
         FILELIST::iterator iter = rfilelist.find(s5b->sid());
         int per_percent = (*iter).second->getPercent();
-        (*iter).second->write(data.c_str(), data.length());
+        (*iter).second->write(data, data.length());
         int new_percent = (*iter).second->getPercent();
 
         if (new_percent > per_percent)

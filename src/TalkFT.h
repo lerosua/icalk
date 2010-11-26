@@ -28,9 +28,6 @@
 
 using namespace gloox;
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <stdio.h>
 #include <string>
 #include <fstream>
@@ -45,9 +42,7 @@ using namespace gloox;
 using namespace std;
 
 class Bodies;
-
 class FTWidget;
-
 class XferFile;
 /**
  *@brief  文件传输的类，负责接收与发送文件

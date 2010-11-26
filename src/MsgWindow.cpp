@@ -49,7 +49,7 @@ MsgWindow::MsgWindow()
 
         add(*widget);
 
-		btsendfile = dynamic_cast< Gtk::Button*> ( msg_xml->get_widget("btsendfile"));
+		btsendfile = dynamic_cast< Gtk::Button*> ( msg_xml->get_widget("bt_send_file"));
 		btsendfile->signal_clicked().connect(sigc::mem_fun(*this, &MsgWindow::on_send_file));
 
         showTypeImage(false);

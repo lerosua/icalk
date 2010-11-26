@@ -48,19 +48,17 @@ public:
         ~XferFile();
         void write(const std::string& data, streamsize length);
         void read(char* data, streamsize length);
-        void open(const char * filename,
+        int open(const char * filename,
                   ios_base::openmode mode = ios_base::in | ios_base::out );
         void close();
-        bool eof()const;
-        streamsize gcount()const;
+        bool eof()const { return file.eof();}
+        streamsize gcount()const{ return file.gcount();}
         long getTotalsize()const
         {
                 return totalsize;
         }
+		void setTotalsize(long size) { totalsize = size ; }
 
-        void setTotalsize(long bytes);
-
-        void setSentBytes(long bytes);
         long getSentBytes()const
         {
                 return bytes_sent;
@@ -74,7 +72,9 @@ public:
         /** 获取已传输数据的占总数据的百分比*/
         int getPercent()const;
 
-        void setStatusType(XferStatusType f_status);
+        void setStatusType(XferStatusType f_status) {
+				status = f_status;
+		}
 
 private:
         std::string sid;       /**此次传输的sid */
