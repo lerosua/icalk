@@ -7,11 +7,11 @@
 *
 *        Version:  1.0
 *        Created:  2008年05月15日 13时01分49秒
-*       Revision:  none
-*       Compiler:  gcc
+*       Revision:  git
+*       Compiler:  g++
 *
-*         Author:  first_name last_name (fl), fl@my-company.com
-*        Company:  my-company
+*         Author:  lerosua@gmail.com
+*        Company:  cyclone
 *
 * =====================================================================================
 */
@@ -55,6 +55,8 @@ public:
 				file.close();
 		}
         bool eof()const { return file.eof();}
+		/** 检测接收文件是否完成*/
+		bool end() const { printf(" send %ld : total %ld\n",bytes_sent, totalsize); return bytes_sent >= totalsize ; }
         streamsize gcount()const{ return file.gcount();}
         long getTotalsize()const
         {

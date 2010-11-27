@@ -129,6 +129,7 @@ void* TalkFT::loopSend(void* )
                                         sendfile->read(input, BLOCK_SIZE);
                                         std::string content(input, sendfile->gcount());
                                         int new_percent = sendfile->getPercent();
+										DLOG("loop send %ld\n",sendfile->gcount());
 
                                         if (!(*it)->send(content))
                                                 DLOG("file send shuld be return\n");
@@ -141,9 +142,12 @@ void* TalkFT::loopSend(void* )
 
                                 (*it)->recv(1);
                         } else if ((*it)) {
-							(*it)->recv(1);
+							//(*it)->recv(1);
+							(*it)->close();
+							DLOG(" == send end loop ==        ");
                         }
                 }
+				DLOG("send thread ");
 
         }
 
@@ -163,14 +167,7 @@ bool TalkFT::isSend(Bytestream* bs)
 void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamtypes)
 {
 
-	/*
-        struct stat f_stat;
-        if (stat(m_file.c_str(), &f_stat))
-                return ;
-        uint32_t m_size = f_stat.st_size;
-	*/
         XferFile* sendfile = new XferFile();
-        //sendfile->setTotalsize(m_size);
         sendfile->open(m_file.c_str(), std::ios_base::in | std::ios_base::binary);
 
         std::string m_filename(basename(const_cast<char *>(m_file.c_str())));
@@ -216,7 +213,6 @@ void TalkFT::handleFTBytestream(Bytestream * bs)
         // 如果发起者是本人的话，则表示这是发送的流
 
         if (isSend(bs)) {
-                //m_bs_send = bs;
                 bs_sendList.push_back(bs);
         } else
                 bs_recvList.push_back(bs);
@@ -257,8 +253,8 @@ void TalkFT::handleFTRequest(const JID & from,
 				}
 
             XferFile* recvfile = new XferFile();
-            recvfile->setTotalsize(size);
             recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+            recvfile->setTotalsize(size);
             rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
             //建立文件传输窗口
             Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
@@ -297,8 +293,8 @@ void TalkFT::handleFTRequest(const JID & from,
                         }
 
                         XferFile* recvfile = new XferFile();
-                        recvfile->setTotalsize(size);
                         recvfile->open(name.c_str(), std::ios_base::out | std::ios_base::binary);
+                        recvfile->setTotalsize(size);
                         rfilelist.insert(rfilelist.end(), FILELIST::value_type(sid, recvfile));
                         //建立文件传输窗口
                         Bodies::Get_Bodies().get_main_window().on_fileXer_activate();
@@ -362,7 +358,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                         sfilelist.erase(s_iter);
                 }
 			   DLOG(" close send bs sid %s\n", s5b->sid().c_str());
-				m_ft->dispose(s5b);
+				//m_ft->dispose(s5b);
 				//s5b->close();
         } else {
                 recvCount = recvCount - 1;
@@ -410,6 +406,12 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 
         if (new_percent > per_percent)
                 m_ftwidget->updateXfer(s5b->sid(), new_percent);
+		(*iter).second->getTotalsize();
+		if ((*iter).second->end())
+		{
+			DLOG(" recv filer close the s5b\n");
+			s5b->close();
+		}
 }
 
 void TalkFT::handleFTRequestError(const IQ & iq, const std::string & sid)

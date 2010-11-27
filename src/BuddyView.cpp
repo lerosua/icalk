@@ -1441,7 +1441,7 @@ void BuddyView::refreshBuddyStatus(const Glib::ustring & jid_ctr)
                 g_free(marktext);
         }
 
-        //this->expand_all();
+        this->expand_all();
 }
 
 void BuddyView::newMsgBuddy(const Glib::ustring& f_jid, bool f_new)
