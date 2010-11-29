@@ -225,11 +225,11 @@ void FTWidget::doneXfer(const Glib::ustring& f_sid, bool error)
 
         if (error) {
                 (*iter)[m_columns.m_icons] = getPix16("ft_error.png");
-                (*iter)[m_columns.m_type] = _("error");
+                //(*iter)[m_columns.m_type] = _("error");
         } else {
                 (*iter)[m_columns.m_percent] = 100;
                 (*iter)[m_columns.m_icons] = getPix16("ft_done.png");
-                (*iter)[m_columns.m_type] = _("done");
+                //(*iter)[m_columns.m_type] = _("done");
         }
 }
 

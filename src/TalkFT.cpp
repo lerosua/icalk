@@ -142,8 +142,22 @@ void* TalkFT::loopSend(void* )
 
                                 (*it)->recv(1);
                         } else if ((*it)) {
-							//(*it)->recv(1);
-							(*it)->close();
+							switch ((*it)->type()){
+								case Bytestream::IBB:
+									(*it)->close();
+									DLOG(" IBBB loop");
+									break;
+								case Bytestream::S5B:
+									if ( ConnStreamClosed == (*it)->recv(1))
+									{
+										(*it)->close();
+										DLOG(" S5B loop");
+									}
+									break;
+								default:
+									break;
+							}
+
 							DLOG(" == send end loop ==        ");
                         }
                 }
@@ -333,15 +347,16 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
 
         //区别对待发送流与接收流
 
-        m_ftwidget->doneXfer(s5b->sid());
 
         if (isSend(s5b)) {
+				m_ftwidget->doneXfer(s5b->sid());
                 sendCount = sendCount - 1;
                 /** 如果发送文件数为0,则关闭发送线程 */
 
                 if (sendCount <= 0) {
                         S_RUNNING = STOP_STATUS;
                         sendThread.join();
+						DLOG("stop the send thread\n");
                 }
 
 				bs_sendList.remove(s5b);
@@ -368,6 +383,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 if (recvCount <= 0) {
                         R_RUNNING = STOP_STATUS;
                         recvThread.join();
+						DLOG("stop the recv thread\n");
                 }
 
 				bs_sendList.remove(s5b);
@@ -375,6 +391,7 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 FILELIST::iterator iter = rfilelist.find(s5b->sid());
                 if (iter != rfilelist.end()) {
                         (*iter).second->close();
+						m_ftwidget->doneXfer(s5b->sid(), !(*iter).second->finish() );
 
 						if(s5b->type() == Bytestream::IBB ){
 							Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(s5b->initiator().bare());
@@ -406,8 +423,8 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 
         if (new_percent > per_percent)
                 m_ftwidget->updateXfer(s5b->sid(), new_percent);
-		(*iter).second->getTotalsize();
-		if ((*iter).second->end())
+		//(*iter).second->getTotalsize();
+		if ((*iter).second->finish())
 		{
 			DLOG(" recv filer close the s5b\n");
 			s5b->close();
