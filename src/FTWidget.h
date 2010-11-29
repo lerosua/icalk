@@ -55,7 +55,7 @@ public:
         void on_button_continue();
         /** 文件传输窗口的按钮处理*/
         bool on_key_press_event(GdkEventKey* ev);
-	/** 销毁事件处理*/
+		/** 销毁事件处理*/
         bool on_delete_event(GdkEventAny*);
 
         Gtk::TreeModel::iterator getListIter(Gtk::TreeModel::
@@ -86,39 +86,20 @@ public:
         std::string filesize_to_string(long size);
 
 private:
-
-class XferColumns: public Gtk::TreeModel::ColumnRecord
+	class XferColumns: public Gtk::TreeModel::ColumnRecord
         {
-
         public:
                 XferColumns()
                 {
-                        add
-                                (m_icons);
-
-                        add
-                                (m_sid);
-
-                        add
-                                (m_filename);
-
-                        add
-                                (m_size);
-
-                        add
-                                (m_totalsize);
-
-                        add
-                                (m_showsize);
-
-                        add
-                                (m_target);
-
-                        add
-                                (m_percent);
-
-                        add
-                                (m_type);
+                        add(m_icons);
+                        add(m_sid);
+                        add(m_filename);
+                        add(m_size);
+                        add(m_totalsize);
+                        add(m_showsize);
+                        add(m_target);
+                        add(m_percent);
+                        add(m_type);
                 }
 
                 /** 传输过程的图标显示*/
@@ -140,7 +121,6 @@ class XferColumns: public Gtk::TreeModel::ColumnRecord
                 /** 标识此次传输为发送或接收*/
                 Gtk::TreeModelColumn <std::string> m_type;
         };
-
         XferColumns m_columns;
 
 private:

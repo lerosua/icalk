@@ -928,7 +928,6 @@ void BuddyView::delRoom(const Glib::ustring & jid)
                 return ;
 
         Gtk::TreeModel::Children grandson = (*listiter).children();
-
         Gtk::TreeModel::iterator treeiter = getListIter(grandson, jid);
 
         if (treeiter == grandson.end())

@@ -894,9 +894,7 @@ void MainWindow::on_buddyChat_activate()
                 return ;
 
         Gtk::TreeModel::iterator iter = selection->get_selected();
-
         Glib::ustring name = list_view->getIDfromIter(iter);
-
         Buddy *buddy = m_bodies.get_buddy_list().find_buddy(name);
 
         //MsgPage *page_ = buddy->new_page();

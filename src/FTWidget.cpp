@@ -34,64 +34,47 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
         frame = Gtk::manage(new Gtk::Frame());
         //add(*frame);
 
-        add
-                (m_VBox);
+        add(m_VBox);
 
         //frame->add(m_VBox);
         m_ScrolledWindow.add(m_TreeView);
 
         m_ScrolledWindow.set_policy(Gtk::POLICY_AUTOMATIC, Gtk::POLICY_AUTOMATIC);
 
-        frame->add
-        (m_ScrolledWindow);
+        frame->add(m_ScrolledWindow);
 
         m_VBox.pack_start(*frame);
 
         //m_VBox.pack_start(m_ScrolledWindow);
         m_VBox.pack_start(m_ButtonBox, Gtk::PACK_SHRINK);
-
         m_ButtonBox.set_border_width(5);
-
         m_ButtonBox.set_layout(Gtk::BUTTONBOX_END);
-
         m_Button_Continue = Gtk::manage(new Gtk::Button(_("Continue")));
-
         m_Button_Stop = Gtk::manage(new Gtk::Button(_("Stop")));
-
         m_Button_Delete = Gtk::manage(new Gtk::Button(_("Delete")));
-
         m_Button_Quit = Gtk::manage(new Gtk::Button(_("Quit")));
 
         m_ButtonBox.pack_start(*m_Button_Continue, Gtk::PACK_SHRINK);
-
         m_ButtonBox.pack_start(*m_Button_Stop, Gtk::PACK_SHRINK);
-
         m_ButtonBox.pack_start(*m_Button_Delete, Gtk::PACK_SHRINK);
-
         m_ButtonBox.pack_start(*m_Button_Quit, Gtk::PACK_SHRINK);
 
         m_Button_Continue->signal_clicked().connect(sigc::mem_fun(*this,
                         &FTWidget::on_button_continue));
-
         m_Button_Stop->signal_clicked().connect(sigc::mem_fun(*this,
                                                 &FTWidget::on_button_stop));
-
         m_Button_Delete->signal_clicked().connect(sigc::mem_fun(*this,
                         &FTWidget::on_button_del));
-
         m_Button_Quit->signal_clicked().connect(sigc::mem_fun(*this,
                                                 &FTWidget::on_button_quit));
 
         //设置默认的按钮状态
         m_Button_Continue->set_sensitive(false);
-
         m_Button_Stop->set_sensitive(false);
-
-        m_Button_Delete->set_sensitive(false);
+        m_Button_Delete->set_sensitive(true);
 
         //Create the TreeModel;
         m_refTreeModel = Gtk::ListStore::create(m_columns);
-
         m_TreeView.set_model(m_refTreeModel);
 
         //Add the TreeView's view columns;
@@ -99,9 +82,7 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
 
         //Display a progress bar instread of a decimal number:
         Gtk::CellRendererProgress* cell = new Gtk::CellRendererProgress;
-
         int cols_count = m_TreeView.append_column(_("progress"), *cell);
-
         Gtk::TreeViewColumn* pColumn = m_TreeView.get_column(cols_count - 1);
 
         if (pColumn) {
@@ -120,8 +101,6 @@ FTWidget::FTWidget(MainWindow* f_parent): m_parent(f_parent)
         m_TreeView.append_column(_("size"), m_columns.m_showsize);
         m_TreeView.append_column(_("Type"), m_columns.m_type);
         m_TreeView.append_column(_("Target"), m_columns.m_target);
-        // this->signal_button_press_event().connect(sigc::mem_fun
-        //   (*this,&FTWidget::on_button_press_event));
 
 
         show_all();
@@ -150,7 +129,14 @@ void FTWidget::on_button_quit()
 }
 
 void FTWidget::on_button_del()
-{}
+{
+	Glib::RefPtr < Gtk::TreeSelection > selection =
+                m_TreeView.get_selection();
+	if (!selection->count_selected_rows())
+			return ;
+	Gtk::TreeModel::iterator iter = selection->get_selected();
+	m_refTreeModel->erase(iter);
+}
 
 void FTWidget::on_button_stop()
 {}
@@ -262,3 +248,5 @@ std::string FTWidget::filesize_to_string(long size)
 
         return ret.str();
 }
+
+
