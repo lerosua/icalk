@@ -158,10 +158,10 @@ void* TalkFT::loopSend(void* )
 									break;
 							}
 
-							DLOG(" == send end loop ==        ");
+							//DLOG(" == send end loop ==        ");
                         }
                 }
-				DLOG("send thread ");
+				//DLOG("send thread ");
 
         }
 
@@ -189,6 +189,10 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamty
 		long m_size = sendfile->getTotalsize();
 		if(streamtypes){
 			sid = m_ft->requestFT(to, m_filename, m_size,"","image","2010","",SIProfileFT::FTTypeIBB);
+
+			Buddy* buddy = Bodies::Get_Bodies().get_buddy_list().find_buddy(to.bare());
+			assert(buddy != NULL);
+			buddy->recvPicture(m_file);
 		}
 		else
 			sid = m_ft->requestFT(to, m_filename, m_size);
@@ -221,9 +225,9 @@ void TalkFT::handleFTSend(const JID& to, const std::string& m_file, int streamty
 
 void TalkFT::handleFTBytestream(Bytestream * bs)
 {
-        DLOG("received bytestream type: %s from %s \n",
-             bs->type() ==
-             Bytestream::S5B ? "sock5bytestream" : "ibbstream", bs->sid().c_str());
+	//DLOG("received bytestream type: %s from %s \n",
+	//bs->type() ==
+	//Bytestream::S5B ? "sock5bytestream" : "ibbstream", bs->sid().c_str());
         // 如果发起者是本人的话，则表示这是发送的流
 
         if (isSend(bs)) {
@@ -374,7 +378,6 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                 }
 			   DLOG(" close send bs sid %s\n", s5b->sid().c_str());
 				//m_ft->dispose(s5b);
-				//s5b->close();
         } else {
                 recvCount = recvCount - 1;
 
@@ -402,7 +405,6 @@ void TalkFT::handleBytestreamClose(Bytestream * s5b)
                         DLOG(" close recv bs sid %s\n", s5b->sid().c_str());
                 }
 				//m_ft->dispose(s5b);
-				//s5b->close();
         }
 }
 
@@ -423,7 +425,6 @@ void TalkFT::handleBytestreamData(Bytestream * s5b,
 
         if (new_percent > per_percent)
                 m_ftwidget->updateXfer(s5b->sid(), new_percent);
-		//(*iter).second->getTotalsize();
 		if ((*iter).second->finish())
 		{
 			DLOG(" recv filer close the s5b\n");

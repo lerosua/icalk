@@ -56,7 +56,7 @@ public:
 		}
         bool eof()const { return file.eof();}
 		/** 检测接收文件是否完成*/
-		bool finish() const { printf(" send %ld : total %ld\n",bytes_sent, totalsize); return bytes_sent == totalsize ; }
+		bool finish() const {  return bytes_sent == totalsize ; }
         streamsize gcount()const{ return file.gcount();}
         long getTotalsize()const
         {

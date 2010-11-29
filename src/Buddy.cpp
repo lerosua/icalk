@@ -349,7 +349,8 @@ void Buddy::sendPicture(const std::string& filename)
 {
 		int ibb=1;
         Bodies::Get_Bodies().getFThandler().handleFTSend(jid, filename, ibb);
-        page->waitNetPic(filename,true);
+		//page = new_page();
+		//page->waitNetPic(filename,true);
 }
 
 void Buddy::sendFile(const std::string& filename)

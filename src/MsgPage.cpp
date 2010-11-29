@@ -747,7 +747,6 @@ void MsgPage::finishNetPic(const std::string& picname)
 		m_wait_images.erase(iter);
 		DLOG(" successing ==================");
 	}
-		DLOG(" successing ==================");
 
 }
 
