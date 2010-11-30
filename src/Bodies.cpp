@@ -350,7 +350,6 @@ bool Bodies::on_login(string f_name, string f_passwd, string f_server, int f_por
         }
 
         connectIO = Glib::signal_io().connect(
-
                             sigc::mem_fun(*this, &Bodies::callback),
                             mysock,
                             Glib::IO_IN | Glib::IO_HUP);

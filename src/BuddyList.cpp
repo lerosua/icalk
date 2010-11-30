@@ -45,14 +45,14 @@ BuddyList::~BuddyList()
 
         for (; iter != buddy_map.end();iter++) {
                 //delete iter->second;
-                buddy_map.erase(iter);
+                //buddy_map.erase(iter);
         }
 
         BUDDY_NEW_MSG::iterator iter2 = buddy_msg.begin();
 
         for (; iter2 != buddy_msg.end();iter2++) {
                 //delete iter->second;
-                buddy_msg.erase(iter2);
+                //buddy_msg.erase(iter2);
         }
 }
 

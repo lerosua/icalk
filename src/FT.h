@@ -54,6 +54,10 @@ public:
 			if (file.is_open())
 				file.close();
 		}
+		const std::string& sid() const { return m_sid; }
+		void set_sid(const std::string& f_sid) { m_sid = f_sid; }
+		const std::string& who() const { return m_who; }
+		void set_who(const std::string& f_who) { m_who = f_who; }
         bool eof()const { return file.eof();}
 		/** 检测接收文件是否完成*/
 		bool finish() const {  return bytes_sent == totalsize ; }
@@ -83,8 +87,8 @@ public:
 		}
 
 private:
-        std::string sid;       /**此次传输的sid */
-        std::string who; /**传输的对方*/
+        std::string m_sid;       /**此次传输的sid */
+        std::string m_who; /**传输的对方*/
         std::fstream file; /** 传输的文件流*/
 		std::string filepath; /** 带路径的文件名*/
         long totalsize;  /** 文件的总大小*/

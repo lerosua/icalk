@@ -28,6 +28,7 @@
 
 using namespace gloox;
 
+#include <glibmm.h>
 #include <stdio.h>
 #include <string>
 #include <fstream>
@@ -55,7 +56,8 @@ public:
         TalkFT(Client * client_);
         ~TalkFT();
 
-        //typedef std::map<std::string , std::fstream*> FILELIST;
+		/** 发送或接收线程中用来通知进度条的回调*/
+		void progressIncrement();
         typedef std::map<std::string , XferFile*> FILELIST;
         /** 初始化SIProfileFT类和接收/发送所需要的proxy服务器*/
         void initFT();
@@ -116,6 +118,7 @@ private:
         SOCKS5BytestreamServer *m_server;
         std::list < Bytestream * >bs_recvList;
         std::list < Bytestream * >bs_sendList;
+		Glib::Dispatcher signal_increment;
 
         FILELIST rfilelist;
         FILELIST sfilelist;
