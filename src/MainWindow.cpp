@@ -1484,7 +1484,7 @@ void MainWindow::on_popup_menu_pos(int &x, int &y, bool & push_in, int id)
 
 void MainWindow::toggle_visibility()
 {
-        if ( m_bodies.get_buddy_list().popNewMsgBuddy())
+        if ( LOGIN_FINIAL== config.STATUS &&  m_bodies.get_buddy_list().popNewMsgBuddy())
                 return ;
 
         if (this->is_visible()) {
