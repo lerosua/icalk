@@ -158,12 +158,12 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         Gtk::HBox* hbox2 =
                 dynamic_cast <
                 Gtk::HBox* > (main_xml->get_widget("passwd_box"));
-        entryPasswd = Gtk::manage(new Sexy::IconEntry());
+        entryPasswd = Gtk::manage(new Gtk::Entry());
         hbox2->pack_start(*entryPasswd);
         entryPasswd->set_visibility(false);
-        Gtk::Image* icon = Gtk::manage(new Gtk::Image(Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_MENU));
-        icon->show();
-        entryPasswd->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
+        //Gtk::Image* icon = Gtk::manage(new Gtk::Image(Gtk::Stock::DIALOG_AUTHENTICATION, Gtk::ICON_SIZE_MENU));
+        //icon->show();
+        //entryPasswd->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
         /*
                entryPasswd =
                        dynamic_cast <
@@ -209,17 +209,17 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         Gtk::HBox* hboxfiler = dynamic_cast<Gtk::HBox*>
                                (main_xml->get_widget("filter_box"));
 
-        entryFilter = Gtk::manage(new Sexy::IconEntry());
+        entryFilter = Gtk::manage(new Gtk::Entry());
 
         hboxfiler->pack_start(*entryFilter);
 
-        entryFilter->add_clear_button();
+        //entryFilter->add_clear_button();
 
-        icon = Gtk::manage(new Gtk::Image(Gtk::Stock::FIND, Gtk::ICON_SIZE_MENU));
+        //icon = Gtk::manage(new Gtk::Image(Gtk::Stock::FIND, Gtk::ICON_SIZE_MENU));
 
-        icon->show();
+        //icon->show();
 
-        entryFilter->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
+       // entryFilter->set_icon(Sexy::ICON_ENTRY_PRIMARY, icon);
 
         /*
                entryFilter = dynamic_cast<Gtk::Entry*>

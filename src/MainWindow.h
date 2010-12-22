@@ -23,7 +23,7 @@
 
 #include <gtkmm.h>
 #include <libglademm/xml.h>
-#include <libsexymm/icon-entry.h>
+//#include <libsexymm/icon-entry.h>
 #include <iostream>
 #include <sigc++/connection.h>
 #include "Unit.h"
@@ -290,12 +290,12 @@ private:
         Glib::RefPtr<Gdk::Pixbuf> logo;
         Gtk::Notebook* main_notebook;
         Gtk::ComboBoxEntryText* comboAccount;
-        Sexy::IconEntry* entryPasswd;
+        Gtk::Entry* entryPasswd;
         Gtk::CheckButton* keeppasswd;
         Gtk::CheckButton* keepMe;
         Gtk::Entry* entryServer;
         Gtk::Entry* entryPort;
-        Sexy::IconEntry* entryFilter;
+        Gtk::Entry* entryFilter;
 		Button* button_ok;
         ServerDiscoWindow* discowindow;
 		PluginPref* pluginpref;
