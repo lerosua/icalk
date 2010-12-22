@@ -3,7 +3,7 @@
 #define _ABOUT_GLADE_H
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #define about_ui DATA_DIR"/ui/about.glade"
 
 
@@ -13,7 +13,8 @@ class createAboutDialog
 public:
         createAboutDialog();
 private:
-		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
+		//typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
 
 };
 

@@ -20,7 +20,7 @@
 #define _BUDDY_VIEW_H_
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>

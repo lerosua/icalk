@@ -36,20 +36,20 @@
 MsgWindow::MsgWindow()
 {
         gmm_data = new GlademmData(get_accel_group());
-        msg_xml = Gnome::Glade::Xml::create(msg_ui, "vbMain");
-        Gtk::Widget * widget = msg_xml->get_widget("vbMain");
+        msg_xml = Gtk::Builder::create_from_file(msg_ui, "vbMain");
+        Gtk::Widget * widget = 0;
+		msg_xml->get_widget("vbMain",widget);
+		msg_xml->get_widget("nbMsg", notebook);
 
-        notebook = dynamic_cast < Gtk::Notebook * >
-                   (msg_xml->get_widget("nbMsg"));
         notebook->signal_switch_page().
         connect(sigc::mem_fun(*this, &MsgWindow::on_switch_page));
 
-        statusbar = dynamic_cast< Gtk::Statusbar* >
-                    (msg_xml->get_widget("statusbar"));
+		msg_xml->get_widget("statusbar", statusbar);
 
         add(*widget);
 
-		btsendfile = dynamic_cast< Gtk::Button*> ( msg_xml->get_widget("bt_send_file"));
+		msg_xml->get_widget("bt_send_file", btsendfile);
+
 		btsendfile->signal_clicked().connect(sigc::mem_fun(*this, &MsgWindow::on_send_file));
 
         showTypeImage(false);
@@ -177,9 +177,8 @@ void MsgWindow::on_switch_page(GtkNotebookPage * page, guint index)
 
 void MsgWindow::showTypeImage(bool isShow)
 {
-        Gtk::Image * typeImage =
-                dynamic_cast <
-                Gtk::Image * > (msg_xml->get_widget("image_type"));
+        Gtk::Image * typeImage = 0;
+		msg_xml->get_widget("image_type", typeImage);
 
         if (isShow) {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("typed.png");
@@ -192,9 +191,8 @@ void MsgWindow::showTypeImage(bool isShow)
 
 void MsgWindow::showEncryptImage(bool isShow)
 {
-        Gtk::Image * encryptImage =
-                dynamic_cast <
-                Gtk::Image * > (msg_xml->get_widget("image_encrypt"));
+        Gtk::Image * encryptImage = 0;
+		msg_xml->get_widget("image_encrypt", encryptImage);
 
         if (isShow) {
                 Glib::RefPtr < Gdk::Pixbuf > pix = getPix("crypto.png");

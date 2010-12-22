@@ -135,8 +135,8 @@ private:
         MsgWindow & operator =(const MsgWindow& rhs); //禁止拷贝
 
 private:
-		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-        GlademmXML msg_xml;
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
+		GBuilderXML msg_xml;
         Gtk::Notebook * notebook;
         GlademmData *gmm_data;
         Gtk::Statusbar * statusbar;

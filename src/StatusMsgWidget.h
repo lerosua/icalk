@@ -20,7 +20,7 @@
 #define  STATUSMSGWIDGET_FILE_HEADER_INC
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>
@@ -54,7 +54,7 @@ public:
         bool on_key_press_event(GdkEventKey* ev);
 
 private:
-		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
         MainWindow* parent;
         MsgLine* msgline;
         Gtk::CheckButton* timeoutButton;
@@ -87,11 +87,8 @@ struct MsgColumns: public Gtk::TreeModel::ColumnRecord
         {
                 MsgColumns()
                 {
-                        add
-                                (num);
-
-                        add
-                                (message);
+                        add(num);
+                        add(message);
                 }
 
                 Gtk::TreeModelColumn<Glib::ustring> message;

@@ -4,18 +4,16 @@
 
 BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_)
 {
-        Glib::RefPtr<Gnome::Glade::Xml> info_xml =
-                Gnome::Glade::Xml::create(main_ui, "vbox_info");
+		GBuilderXML  info_xml = Gtk::Builder::create_from_file(main_ui, "vbox_info");
         Gtk::Window* infowin = this;
         infowin->set_default_size(530, 400);
-        Gtk::VBox* vBox = dynamic_cast<Gtk::VBox*>(info_xml->get_widget("vbox_info"));
+        Gtk::VBox* vBox = 0;
+		info_xml->get_widget("vbox_info", vBox);
 
-        infowin->add
-        (*vBox);
+        infowin->add(*vBox);
 
-        Gtk::Label * label =
-                dynamic_cast <
-                Gtk::Label * > (info_xml->get_widget("label_vcard"));
+        Gtk::Label * label = 0;
+		info_xml->get_widget("label_vcard", label);
 
         label->set_use_markup(true);
 
@@ -39,15 +37,15 @@ BuddyInfoWindow::BuddyInfoWindow(Buddy* buddy_): buddy(buddy_)
 
         logo = buddy->getLogo();
 
-        Gtk::VBox * vbox =
-                dynamic_cast < Gtk::VBox * >(info_xml->get_widget("vBox"));
+        Gtk::VBox * vbox = 0;
+		info_xml->get_widget("vBox", vbox);
 
         infoBox = new MsgBox();
 
         vbox->pack_end(*infoBox);
 
-        Gtk::Button* btclose = dynamic_cast<Gtk::Button*>(info_xml->
-                               get_widget("button_close"));
+        Gtk::Button* btclose = 0;
+		info_xml->get_widget("button_close", btclose);
 
         btclose->signal_clicked().connect(sigc::mem_fun(*this,
                                           &BuddyInfoWindow::on_btclose_clicked));

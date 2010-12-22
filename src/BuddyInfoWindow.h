@@ -20,7 +20,7 @@
 #define  BUDDYINFOWINDOW_FILE_HEADER_INC
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include "MainWindow.h"
 #include "Buddy.h"
 
@@ -36,6 +36,7 @@ private:
         void on_btclose_clicked();
 
 private:
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
         Buddy* buddy;
         MsgBox *infoBox;
 };

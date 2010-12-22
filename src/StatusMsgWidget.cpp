@@ -9,14 +9,13 @@
 StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
-        GlademmXML vbox_xml =
-                Gnome::Glade::Xml::create(statusmsg_ui, "statusMsgBox");
-        Gtk::VBox * vBox =
-                dynamic_cast <
-                Gtk::VBox * > (vbox_xml->get_widget("statusMsgBox"));
+        GBuilderXML vbox_xml =
+                Gtk::Builder::create_from_file(statusmsg_ui, "statusMsgBox");
+        Gtk::VBox * vBox = 0;
 
-        add
-                (*vBox);
+        vbox_xml->get_widget("statusMsgBox",vBox);
+
+        add(*vBox);
 
         set_transient_for(*parent);
 
@@ -47,29 +46,22 @@ StatusMsgWidget::StatusMsgWidget(MainWindow * parent_): parent(parent_)
 
         vBox->pack_start(*frameline);
 
-        Gtk::Button * btok =
-                dynamic_cast <
-                Gtk::Button * > (vbox_xml->get_widget("button_ok"));
+        Gtk::Button * btok = 0;
+        vbox_xml->get_widget("button_ok",btok);
 
-        Gtk::Button * btcancel =
-                dynamic_cast <
-                Gtk::Button * > (vbox_xml->get_widget("button_cancel"));
+        Gtk::Button * btcancel = 0;
+		vbox_xml->get_widget("button_cancel",btcancel);
 
-        Gtk::Button* btadd =
-                dynamic_cast <
-                Gtk::Button * > (vbox_xml->get_widget("button_add"));
+        Gtk::Button* btadd = 0;
+		vbox_xml->get_widget("button_add",btadd);
 
-        Gtk::Button* btdelete =
-                dynamic_cast <
-                Gtk::Button * > (vbox_xml->get_widget("button_del"));
+        Gtk::Button* btdelete = 0;
+		vbox_xml->get_widget("button_del",btdelete);
 
-        Gtk::Button* btedit =
-                dynamic_cast <
-                Gtk::Button * > (vbox_xml->get_widget("button_edit"));
+        Gtk::Button* btedit = 0;
+        vbox_xml->get_widget("button_edit",btedit);
 
-        timeoutButton =
-                dynamic_cast <
-                Gtk::CheckButton* > (vbox_xml->get_widget("checkbutton_timeout"));
+		vbox_xml->get_widget("checkbutton_timeout",timeoutButton);
 
         btok->signal_clicked().
         connect(sigc::mem_fun(*this, &StatusMsgWidget::on_button_ok));
@@ -119,23 +111,19 @@ void StatusMsgWidget::on_button_cancel()
 void StatusMsgWidget::on_button_add()
 {
 
-        Glib::RefPtr < Gnome::Glade::Xml >
-        addDialog_xml =
-                Gnome::Glade::Xml::create(statusmsg_ui, "dialog_add");
+	GBuilderXML addDialog_xml =
+                Gtk::Builder::create_from_file(statusmsg_ui, "dialog_add");
 
-        auto_ptr < Gtk::Dialog > addMsgDialog(dynamic_cast <
-                                              Gtk::Dialog *
-                                              > (addDialog_xml->
-                                                 get_widget
-                                                 ("dialog_add")));
+
+	Gtk::Dialog* addMsgDialog =0;
+	addDialog_xml->get_widget("dialog_add", addMsgDialog);
         addMsgDialog->raise();
         int result = addMsgDialog->run();
 
         switch (result) {
         case (Gtk::RESPONSE_OK): {
-                        Gtk::TextView* textview = dynamic_cast <
-                                                  Gtk::TextView* > (addDialog_xml->
-                                                                    get_widget("textview_add"));
+                        Gtk::TextView* textview = 0;
+                       addDialog_xml->get_widget("textview_add",textview);
                         Glib::ustring text = textview->get_buffer()->get_text();
 
                         if (text.empty())
@@ -184,27 +172,23 @@ void StatusMsgWidget::on_button_edit()
 
         Gtk::TreeModel::iterator iter = selection->get_selected();
 
-        Glib::RefPtr < Gnome::Glade::Xml >
+		GBuilderXML
         addDialog_xml =
-                Gnome::Glade::Xml::create(statusmsg_ui, "dialog_add");
+                Gtk::Builder::create_from_file(statusmsg_ui, "dialog_add");
 
 
-        auto_ptr < Gtk::Dialog > addMsgDialog(dynamic_cast <
-                                              Gtk::Dialog *
-                                              > (addDialog_xml->
-                                                 get_widget
-                                                 ("dialog_add")));
+         Gtk::Dialog * addMsgDialog = 0;
+                     addDialog_xml->get_widget("dialog_add",addMsgDialog);
 
         addMsgDialog->set_title(_("Edit Message"));
 
-        Gtk::Label* label = dynamic_cast<Gtk::Label*>(addDialog_xml->
-                            get_widget("label_addMsg"));
+        Gtk::Label* label = 0;
+		addDialog_xml->get_widget("label_addMsg",label);
 
         label->set_text(_("\n  Edit the Status Message by here   \n"));
 
-        Gtk::TextView* textview = dynamic_cast <
-                                  Gtk::TextView* > (addDialog_xml->
-                                                    get_widget("textview_add"));
+        Gtk::TextView* textview = 0;
+		  addDialog_xml->get_widget("textview_add",textview);
 
         Glib::ustring text;
 

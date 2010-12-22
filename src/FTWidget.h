@@ -19,7 +19,7 @@
 #ifndef FTWIDGET_H_
 #define FTWIDGET_H_
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/liststore.h>
 #include <gtkmm/treeselection.h>

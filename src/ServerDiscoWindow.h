@@ -20,7 +20,7 @@
 #define  SERVERDISCOVERYWINDOW_FILE_HEADER_INC
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <sigc++/connection.h>
 #include <glib/gi18n.h>
 #include <iostream> 
@@ -79,8 +79,8 @@ private:
         bool on_delete_event(GdkEventAny*);
 
 private:
-		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-        GlademmXML server_discovery_xml;
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
+        GBuilderXML server_discovery_xml;
         MainWindow* m_parent;
         AgentLine* agentline;
         Gtk::ProgressBar* m_progressbar;

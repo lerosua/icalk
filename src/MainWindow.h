@@ -22,7 +22,7 @@
 
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 //#include <libsexymm/icon-entry.h>
 #include <iostream>
 #include <sigc++/connection.h>
@@ -282,8 +282,9 @@ private:
 private:
         Bodies& m_bodies;
         BuddyView* list_view;
-		typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
-        GlademmXML main_xml;
+		//typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
+		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
+        GBuilderXML main_xml;
         Gtk::ComboBox* statusCombo;
         Gtk::Entry* statusEntry;
         Gtk::Button* buttonSystem;

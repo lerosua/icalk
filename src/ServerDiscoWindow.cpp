@@ -48,32 +48,31 @@ const char* agent_type_info[20][3] =
 ServerDiscoWindow::ServerDiscoWindow(MainWindow * f_parent): m_parent(f_parent)
                 , Gtk::Window(Gtk::WINDOW_TOPLEVEL)
 {
-        server_discovery_xml = Gnome::Glade::Xml::create(server_discovery_ui, "vBox");
-        Gtk::VBox* vBox = dynamic_cast<Gtk::VBox*>(server_discovery_xml->get_widget("vBox"));
+        server_discovery_xml = Gtk::Builder::create_from_file(server_discovery_ui, "vBox");
+        Gtk::VBox* vBox = 0;
+		server_discovery_xml->get_widget("vBox", vBox);
 
-        add
-                (*vBox);
+        add(*vBox);
 
         set_transient_for(*m_parent);
 
-        m_label = dynamic_cast<Gtk::Label*>(server_discovery_xml->get_widget("banner_agent_label"));
-
-        m_nodeEntry = dynamic_cast<Gtk::ComboBoxEntry*>(server_discovery_xml->get_widget("address_comboboxentry"));
-
-        Gtk::Button* btGo = dynamic_cast<Gtk::Button*>(server_discovery_xml->get_widget("browse_button"));
+		server_discovery_xml->get_widget("banner_agent_label", m_label);
+		server_discovery_xml->get_widget("address_comboboxentry", m_nodeEntry);
+        Gtk::Button* btGo = 0;
+		server_discovery_xml->get_widget("browse_button", btGo);
 
         btGo->signal_clicked().
         connect(sigc::mem_fun(*this, &ServerDiscoWindow::on_btGo_clicked));
 
-        Gtk::Button* btClose = dynamic_cast<Gtk::Button*>(server_discovery_xml->get_widget("close_button"));
+        Gtk::Button* btClose = 0;
+		server_discovery_xml->get_widget("close_button", btClose);
 
         btClose->signal_clicked().
         connect(sigc::mem_fun(*this, &ServerDiscoWindow::on_btclose_clicked));
 
-        m_progressbar = dynamic_cast<Gtk::ProgressBar*>(server_discovery_xml->get_widget("services_progressbar"));
-
-
-        Gtk::ScrolledWindow * scrolledwin = dynamic_cast<Gtk::ScrolledWindow*>(server_discovery_xml->get_widget("services_scrollwin"));
+		server_discovery_xml->get_widget("services_progressbar", m_progressbar);
+        Gtk::ScrolledWindow * scrolledwin = 0;
+		server_discovery_xml->get_widget("services_scrollwin", scrolledwin);
 
         agentline = Gtk::manage(new class AgentLine);
 
