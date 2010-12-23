@@ -1,21 +1,32 @@
-<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
-<!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
-
-<glade-interface>
-
-<widget class="GtkAboutDialog" id="aboutdialog">
-  <property name="visible">True</property>
-  <property name="destroy_with_parent">True</property>
-  <property name="name" translatable="yes">iCalk</property>
-  <property name="copyright" translatable="yes">GPL (C) 2007 Cyclone Team</property>
-  <property name="comments" translatable="yes">    A tool for jabber message。   </property>
-  <property name="license" translatable="yes">GPL</property>
-  <property name="wrap_license">True</property>
-  <property name="website">http://groups.google.com/group/icalk?hl=zh-CN</property>
-  <property name="authors">lerosua (lerosua@gmail.com)
+<?xml version="1.0"?>
+<interface>
+  <!-- interface-requires gtk+ 2.6 -->
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAboutDialog" id="aboutdialog">
+    <property name="visible">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">normal</property>
+    <property name="copyright" translatable="yes">GPL (C) 2007 -2010 Cyclone Team</property>
+    <property name="comments" translatable="yes">    A tool for jabber message&#x3002;   </property>
+    <property name="website">http://www.lerosua.org/project</property>
+    <property name="license" translatable="yes">GPLv2</property>
+    <property name="authors">lerosua (lerosua@gmail.com)
 wind (xihels@gmail.com)</property>
-  <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
-  <property name="logo">default.png</property>
-</widget>
-
-</glade-interface>
+    <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
+    <property name="logo">default.png</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <object class="GtkVBox" id="dialog-vbox1">
+        <property name="orientation">vertical</property>
+        <child internal-child="action_area">
+          <object class="GtkHButtonBox" id="dialog-action_area1"/>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

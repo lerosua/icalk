@@ -1097,6 +1097,7 @@ void MainWindow::on_buddyType_activate()
                         break;
                 }
         }
+		delete  BuddyTypeDialog;
 
 }
 
@@ -1188,7 +1189,6 @@ void MainWindow::on_buddyAdd_activate()
                                 list_view->setBlistTag("buddy", name, "type", p);
                         }
 
-
                         break;
                 }
 
@@ -1202,6 +1202,7 @@ void MainWindow::on_buddyAdd_activate()
                         break;
                 }
         }
+		delete addBuddyDialog;
 
 }
 

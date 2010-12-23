@@ -282,7 +282,6 @@ private:
 private:
         Bodies& m_bodies;
         BuddyView* list_view;
-		//typedef Glib::RefPtr < Gnome::Glade::Xml > GlademmXML;
 		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
         GBuilderXML main_xml;
         Gtk::ComboBox* statusCombo;

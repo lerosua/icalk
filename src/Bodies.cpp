@@ -31,8 +31,8 @@
 #include <libintl.h>
 #include <exception>
 #include <gtkmm.h>
-#include <libglademm/xml.h>
-#include <libglademm/variablesmap.h>
+//#include <libglademm/xml.h>
+//#include <libglademm/variablesmap.h>
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
 #include <gloox/delayeddelivery.h>

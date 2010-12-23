@@ -21,7 +21,7 @@
 #define PLUGIN_PREF_HREADER_INC
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <gtkmm/treeview.h>
 #include <gtkmm/treestore.h>
 #include <gtkmm/treeselection.h>

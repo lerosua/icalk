@@ -42,7 +42,7 @@ public:
 #endif    //GLADEMM_DATA
 
 #include <gtkmm.h>
-#include <libglademm/xml.h>
+//#include <libglademm/xml.h>
 #include <iostream>
 #include <gtkmm/notebook.h>
 #include <gdk/gdkkeysyms.h>
