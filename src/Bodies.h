@@ -80,11 +80,7 @@ public:
                 return *main_window;
         }
 
-        /**得到聊天窗口*/
-        MsgWindow& get_msg_window()
-        {
-                return *msg_window;
-        }
+        
 
         /**得到好友列表类*/
         BuddyList& get_buddy_list()

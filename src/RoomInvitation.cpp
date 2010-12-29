@@ -79,12 +79,12 @@ void RoomInvitation::handleMUCInvitation(const JID& room, const JID& from
                                 page = item->getPage();
                                 page->setSubject();
                                 page->refreshMember();
-                                bodies.get_msg_window().
+                                bodies.get_main_window().get_msg_window().
                                 add_page(*page);
                         }
 
-                        bodies.get_msg_window().show();
-                        bodies.get_msg_window().setCurrentPage(page);
+                        bodies.get_main_window().show_msg_window();
+                        bodies.get_main_window().get_msg_window().setCurrentPage(page);
 
 
                         break;

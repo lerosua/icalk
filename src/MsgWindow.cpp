@@ -35,10 +35,10 @@
 
 MsgWindow::MsgWindow()
 {
-        gmm_data = new GlademmData(get_accel_group());
-        msg_xml = Gtk::Builder::create_from_file(msg_ui, "vbMain");
-        Gtk::Widget * widget = 0;
-		msg_xml->get_widget("vbMain",widget);
+	//gmm_data = new GlademmData(get_accel_group());
+        msg_xml = Gtk::Builder::create_from_file(msg_ui, "msg_vbox");
+		Gtk::Widget * widget = 0;
+		msg_xml->get_widget("msg_vbox",widget);
 		msg_xml->get_widget("nbMsg", notebook);
 
         notebook->signal_switch_page().
@@ -46,19 +46,20 @@ MsgWindow::MsgWindow()
 
 		msg_xml->get_widget("statusbar", statusbar);
 
-        add(*widget);
+		pack_start(*widget);
+        //add(*widget);
 
-		msg_xml->get_widget("bt_send_file", btsendfile);
+		//msg_xml->get_widget("bt_send_file", btsendfile);
 
-		btsendfile->signal_clicked().connect(sigc::mem_fun(*this, &MsgWindow::on_send_file));
+		//btsendfile->signal_clicked().connect(sigc::mem_fun(*this, &MsgWindow::on_send_file));
 
         showTypeImage(false);
         showEncryptImage(false);
-        set_default_size(600, 400);
-        Glib::RefPtr < Gdk::Pixbuf > pix = getPix("default.png");
-        set_icon(pix);
+        //set_default_size(600, 400);
+		//Glib::RefPtr < Gdk::Pixbuf > pix = getPix("default.png");
+		//set_icon(pix);
 
-        hide();
+        //hide();
 
 }
 
@@ -71,7 +72,7 @@ void MsgWindow::setNewMsgTitle(bool mode)
         else
                 marktext = _(" iCalk");
 
-        set_title(marktext);
+        //set_title(marktext);
 }
 
 
@@ -114,23 +115,24 @@ void MsgWindow::add_page(MsgPage & page)
 
         notebook->append_page(page, *box);
 
-        //setCurrentPage(&page);
+        setCurrentPage(&page);
 
-        set_focus(*(page.getFocusWidge()));
+		//set_focus(*(page.getFocusWidge()));
 
         box->show_all();
 
         showTypeImage(false);
 
-        show_all();
+		//show_all();
 }
 
 
 MsgWindow::~MsgWindow()
 {
-        delete gmm_data;
+	//delete gmm_data;
 }
 
+#if 0
 bool MsgWindow::on_delete_event(GdkEventAny *)
 {
         int num;
@@ -145,6 +147,7 @@ bool MsgWindow::on_delete_event(GdkEventAny *)
 
         hide();
 }
+#endif
 
 void MsgWindow::del_page(MsgPage & page)
 {
@@ -153,8 +156,8 @@ void MsgWindow::del_page(MsgPage & page)
         notebook->remove_page(num);
         num = notebook->get_n_pages();
 
-        if (0 == num)
-                hide();
+		//if (0 == num)
+		//hide();
 
         showTypeImage(false);
 
@@ -203,6 +206,7 @@ void MsgWindow::showEncryptImage(bool isShow)
                 encryptImage->clear();
 }
 
+#if 0
 bool MsgWindow::on_key_press_event(GdkEventKey * ev)
 {
         MsgPage *page;
@@ -331,6 +335,7 @@ bool MsgWindow::on_key_press_event(GdkEventKey * ev)
         //return Gtk::Window::on_key_press_event(ev);
 
 }
+#endif
 
 
 void MsgWindow::showStatusBarMsg(const std::string& msg, unsigned int id)
@@ -343,6 +348,11 @@ void MsgWindow::on_send_file()
 {
 	MsgPage *page = getCurrentPage();
 	page->on_send_file();
+
+
+}
+void MsgWindow::show()
+{
 
 
 }

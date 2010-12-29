@@ -31,8 +31,6 @@
 #include <libintl.h>
 #include <exception>
 #include <gtkmm.h>
-//#include <libglademm/xml.h>
-//#include <libglademm/variablesmap.h>
 #include <gloox/disco.h>
 #include <gloox/stanzaextension.h>
 #include <gloox/delayeddelivery.h>
@@ -61,7 +59,7 @@ Bodies::Bodies():
 		, m_roominvitation(NULL)
 {
         main_window = new MainWindow(*this);
-        msg_window = new MsgWindow();
+        //msg_window = new MsgWindow();
         statusIcon = new TrayIcon(main_window);
 
         // 绑定登录回调函数
@@ -79,10 +77,12 @@ Bodies::~Bodies()
                 main_window = NULL;
         }
 
+#if 0
         if (msg_window) {
                 delete msg_window;
                 msg_window = NULL;
         }
+#endif
 
         if (statusIcon) {
                 delete statusIcon;

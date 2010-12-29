@@ -52,7 +52,7 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
         buddy->raiseMessageEvent(MessageEventDisplayed);
 
         /*取消打字事件*/
-        Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
+        Bodies::Get_Bodies().get_main_window().get_msg_window().showTypeImage(false);
 
         Glib::ustring sender;
 
@@ -85,8 +85,8 @@ void TalkMsg::handleMessage(const Message & stanza, MessageSession *session)
                 f_page->showMessage(sender, msg, dd->stamp());
         } else
                 f_page->showMessage(sender, msg);
-        Bodies::Get_Bodies().get_msg_window().add_page(*f_page);
-        Bodies::Get_Bodies().get_msg_window().show();
+        Bodies::Get_Bodies().get_main_window().get_msg_window().add_page(*f_page);
+        Bodies::Get_Bodies().get_main_window().show_msg_window();
 }
 
 void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
@@ -102,7 +102,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
         case 0:
                 /*取消打字事件*/
-                Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
+                Bodies::Get_Bodies().get_main_window().get_msg_window().showTypeImage(false);
                 break;
 
         case 1:
@@ -120,7 +120,7 @@ void TalkMsg::handleMessageEvent( const JID& from, MessageEventType event)
 
         case 8:
                 /*用户正在打字事件*/
-                Bodies::Get_Bodies().get_msg_window().showTypeImage(true);
+                Bodies::Get_Bodies().get_main_window().get_msg_window().showTypeImage(true);
                 break;
 
         default:
@@ -145,12 +145,12 @@ void TalkMsg::handleChatState( const JID& from, ChatStateType state )
 
         case 2:
                 /*用户正在打字 */
-                Bodies::Get_Bodies().get_msg_window().showTypeImage(true);
+                Bodies::Get_Bodies().get_main_window().get_msg_window().showTypeImage(true);
                 break;
 
         case 4:
                 /*用户停止了打字*/
-                Bodies::Get_Bodies().get_msg_window().showTypeImage(false);
+                Bodies::Get_Bodies().get_main_window().get_msg_window().showTypeImage(false);
                 break;
 
         case 8:

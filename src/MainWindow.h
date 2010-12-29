@@ -28,6 +28,7 @@
 #include <sigc++/connection.h>
 #include "Unit.h"
 #include "MVC.h"
+#include "MsgWindow.h"
 
 #define main_ui     DATA_DIR"/ui/main_window.glade"
 
@@ -97,6 +98,7 @@ class ModelColumns: public Gtk::TreeModel::ColumnRecord
 
         ModelColumns m_Columns;
 
+		MsgWindow& get_msg_window();
         /** 状态栏改变时回调*/
         void on_combo_change();
         /** 当签名改变时回调*/
@@ -217,7 +219,7 @@ public:
         /** 屏蔽好友，将收不到好友信息*/
         void on_buddyBlock_activate();
 
-	void on_login_emit();
+		void on_login_emit();
         /**登录成功后显示列表页*/
         void on_login_finial();
         /** 重新登录，显示登录框的页*/
@@ -231,6 +233,7 @@ public:
         void on_account_changed();
         /**初始化房间*/
         void initRoom();
+		void show_msg_window();
         /** 返回指定的菜单的选项，一般返回ToggleAction 菜单*/
         Glib::RefPtr<Gtk::ToggleAction> get_menu_action(const std::string& menu);
 	/** 取得服务发现窗口*/
@@ -289,6 +292,7 @@ private:
         Gtk::Button* buttonSystem;
         Glib::RefPtr<Gdk::Pixbuf> logo;
         Gtk::Notebook* main_notebook;
+		Gtk::Notebook* msg_notebook;
         Gtk::ComboBoxEntryText* comboAccount;
         Gtk::Entry* entryPasswd;
         Gtk::CheckButton* keeppasswd;
@@ -313,6 +317,7 @@ private:
         Gtk::Menu* trayMenu;
         Gtk::Menu* buddyMenu;
         Gtk::Menu* roomMenu;
+		MsgWindow* msg_window;
 
 };
 

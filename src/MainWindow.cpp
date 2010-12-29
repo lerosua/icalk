@@ -122,6 +122,7 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
         //main_xml = Gnome::Glade::Xml::create(main_ui, "main_notebook");
 		main_xml = Gtk::Builder::create_from_file(main_ui, "main_notebook");
 		main_xml->get_widget("main_notebook", main_notebook);
+		main_xml->get_widget("notebook_all", msg_notebook);
         main_notebook->set_current_page(0);
         main_notebook->set_show_tabs(false);
         /** 第二页标签*/
@@ -341,9 +342,10 @@ MainWindow::MainWindow(Bodies & f_bodies): m_bodies(f_bodies)
 
         set_icon(pix);
 
-        add
-                (*main_notebook);
+        add(*main_notebook);
 
+        msg_window = new MsgWindow();
+		msg_notebook->add(*msg_window);
         show_all();
 }
 
@@ -1507,12 +1509,15 @@ void MainWindow::on_roomChat_activate()
                 page = room->getPage();
                 page->setSubject();
                 page->refreshMember();
-                m_bodies.get_msg_window().
-                add_page(*page);
+				//m_bodies.get_msg_window().add_page(*page);
+				msg_window->add_page(*page);
+
         }
 
-        m_bodies.get_msg_window().show();
-        m_bodies.get_msg_window().setCurrentPage(page);
+		show_msg_window();
+		//m_bodies.get_msg_window().show();
+		//m_bodies.get_msg_window().setCurrentPage(page);
+		msg_window->setCurrentPage(page);
 
 }
 
@@ -1853,4 +1858,12 @@ void MainWindow::on_relogin()
 
         config.STATUS = LOGIN_INIT;
 
+}
+MsgWindow& MainWindow::get_msg_window()
+{
+                return *msg_window;
+}
+void MainWindow::show_msg_window()
+{
+	msg_notebook->set_current_page(1);
 }

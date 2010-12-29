@@ -1559,13 +1559,13 @@ bool BuddyView::on_button_press_event(GdkEventButton * ev)
                                 page = room->getPage();
                                 page->setSubject();
                                 page->refreshMember();
-                                Bodies::Get_Bodies().get_msg_window().
+                                Bodies::Get_Bodies().get_main_window().get_msg_window().
                                 add_page(*page);
                         }
 
-                        Bodies::Get_Bodies().get_msg_window().show();
+                        Bodies::Get_Bodies().get_main_window().show();
 
-                        Bodies::Get_Bodies().get_msg_window().
+                        Bodies::Get_Bodies().get_main_window().get_msg_window().
                         setCurrentPage(page);
 
 

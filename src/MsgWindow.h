@@ -42,21 +42,21 @@ public:
 #endif    //GLADEMM_DATA
 
 #include <gtkmm.h>
-//#include <libglademm/xml.h>
 #include <iostream>
 #include <gtkmm/notebook.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtkmm/accelgroup.h>
 #include "MsgPage.h"
 
-#define msg_ui  DATA_DIR"/ui/msg_window.glade"
+#define msg_ui  DATA_DIR"/ui/main_window.glade"
 
 /**
  * @brief 会话中的消息窗口。
  *
  */
 
-class MsgWindow: public Gtk::Window
+//class MsgWindow: public Gtk::Window
+class MsgWindow: public Gtk::HBox
 {
 
 public:
@@ -66,17 +66,18 @@ public:
         /**
          * @brief 响应删除窗口事件
          */
-        bool on_delete_event(GdkEventAny * events);
+        //bool on_delete_event(GdkEventAny * events);
         /**
          * @brief 整个聊天窗口的按键事件处理回调
          * @param ev 事件参数
          */
-        bool on_key_press_event(GdkEventKey * ev);
+        //bool on_key_press_event(GdkEventKey * ev);
         /**
          * @brief 聊天窗口页上的关闭按钮的回调函数，用于关闭窗口
          */
         void on_switch_page(GtkNotebookPage * page, guint index);
         void on_page_close_click();
+		void show();
 		/**
 		 * @brief 发送文件的回调
 		 */
@@ -138,9 +139,9 @@ private:
 		typedef Glib::RefPtr < Gtk::Builder> GBuilderXML;
 		GBuilderXML msg_xml;
         Gtk::Notebook * notebook;
-        GlademmData *gmm_data;
+		/*GlademmData *gmm_data;*/
         Gtk::Statusbar * statusbar;
-		Gtk::Button* btsendfile;
+		//Gtk::Button* btsendfile;
 };
 
 

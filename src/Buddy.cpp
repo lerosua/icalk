@@ -102,11 +102,10 @@ MsgPage* Buddy::new_page()
                 }
 
                 new_session();
-                Bodies::Get_Bodies().get_msg_window().
-                add_page(*page);
-                Bodies::Get_Bodies().get_msg_window().show();
-                Bodies::Get_Bodies().get_msg_window().
-                setCurrentPage(page);
+                Bodies::Get_Bodies().get_main_window().show_msg_window();
+                Bodies::Get_Bodies().get_main_window().get_msg_window().add_page(*page);
+                //Bodies::Get_Bodies().get_msg_window().show();
+                Bodies::Get_Bodies().get_main_window().get_msg_window().setCurrentPage(page);
         }
 
         return page;

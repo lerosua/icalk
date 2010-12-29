@@ -418,7 +418,7 @@ void MsgPage::showHistroy(const std::string& f_sender, const Glib::ustring& f_ms
 
 void MsgPage::showStatusBarMsg(const std::string& msg, unsigned int id)
 {
-        Bodies::Get_Bodies().get_msg_window().showStatusBarMsg(msg, id);
+        Bodies::Get_Bodies().get_main_window().get_msg_window().showStatusBarMsg(msg, id);
         // statusbar->pop(id);
         // statusbar->push(msg,id);
 }
@@ -551,7 +551,7 @@ bool MsgPage::on_inputMsgBox_focus_out_event(GdkEventFocus* ev)
 
 void MsgPage::setTitleColor(bool hascolor)
 {
-        Bodies::Get_Bodies().get_msg_window().setNewMsgTitle(hascolor);
+        Bodies::Get_Bodies().get_main_window().get_msg_window().setNewMsgTitle(hascolor);
 
         if ((NULL != m_titlelable) && (hascolor != hasColor)) {
                 if (hascolor && !(m_inputMsgBox->is_focus())) {
@@ -581,7 +581,7 @@ void MsgPage::close()
                 m_mucroom->closePage();
         }
 
-        Bodies::Get_Bodies().get_msg_window().del_page(*this);
+        Bodies::Get_Bodies().get_main_window().get_msg_window().del_page(*this);
 }
 
 

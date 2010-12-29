@@ -116,7 +116,7 @@ void TalkRoomHandler::handleMUCMessage(MUCRoom* room,
                 page = item->getPage();
                 page->refreshMember();
                 page->setSubject();
-                Bodies::Get_Bodies().get_msg_window().add_page(*page);
+                Bodies::Get_Bodies().get_main_window().get_msg_window().add_page(*page);
         }
 
         if (priv) {
